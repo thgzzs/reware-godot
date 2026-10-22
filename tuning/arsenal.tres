@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="WeaponLoadout" load_steps=6 format=3]
+[ext_resource type="Script" path="res://tuning/weapon_loadout.gd" id="1"]
+[ext_resource type="Resource" path="res://tuning/weapon.tres" id="2"]
+[ext_resource type="Script" path="res://tuning/weapon_profile.gd" id="3"]
+[sub_resource type="Resource" id="Rifle"]
+script = ExtResource("3")
+display_name = "LAB rifle"
+interval = 0.1
+magazine_size = 30
+animation_group = "rifle"
+heavy = true
+[sub_resource type="Resource" id="Shotgun"]
+script = ExtResource("3")
+display_name = "LAB shotgun"
+interval = 0.8
+magazine_size = 8
+animation_group = "shotgun"
+pellets = 6
+spread_radians = 0.035
+[resource]
+script = ExtResource("1")
+profiles = Array[ExtResource("3")]([ExtResource("2"),SubResource("Rifle"),SubResource("Shotgun")])

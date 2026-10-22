@@ -1,0 +1,150 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (24 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | PedBrain[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | ImportedAssetSetup[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | ImportedGameplayDatabase[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | ReferencePose[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | FollowCameraRig[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | DamageReceiver[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | WeaponController[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | ImportedAnimationBrowser[39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | LabOverlay[39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | GameplayTelemetry[39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | WheelForceSolver[39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | DisplayController[39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | DisplayProfile[39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | ShotPresentation[39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | CameraProfile[39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | HandlingProfile[39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | MovementProfile[39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | WeaponLoadout[39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | LabGeometry[39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS exact engine 4.7.2-stable (official)
+PASS Jolt selected <null>
+PASS ground support 0.90001207590103
+PASS movement accelerates to configured speed 5.0
+PASS movement distance in one second 4.41669654846191
+PASS release decelerates to rest 0.0
+PASS camera relative forward rotates movement (-4.416687, 0.0, 0.0)
+PASS aim movement modifier 2.5
+PASS aim FOV converges 54.0022201538086
+PASS jump launches after windup { "launch_delay_s": 0.15, "apex_m": 1.12139159440994, "airborne_s": 0.66666666666667 }
+PASS jump apex within ballistic tolerance 1.12139159440994
+PASS jump lands and recovers 434
+PASS landing state clears grounded
+PASS buffered press launches on landing 1
+PASS wall collision prevents tunneling 13.4794960021973
+PASS jump ceiling collision 1.32416331768036
+PASS step traversal climbs configured low steps (-10.0, 1.700375, -2.890589)
+PASS walkable slope gains height (-16.0, 1.689436, 4.380012)
+PASS steep slope does not become walkable (-21.0, 0.900375, 5.648016)
+PASS camera obstruction sweep retracts 0.6591796875
+PASS camera aim resolves hits true
+PASS damage applied to target 50.0
+PASS firing cadence every 12 ticks at 60 Hz [1061, 1073, 1085, 1097, 1109]
+PASS ammo decreases per shot 4
+PASS reload transfers reserve without duplication [12, 228]
+PASS suspension supports four wheel contacts 4
+PASS suspension settles near static weight { "load_N": 11772.0000370226, "height_m": 0.67803120613098, "vertical_speed": 0.00000015038417 }
+PASS suspension vertical oscillation settles 0.00000015038417
+PASS valid approach reserves seat <null>
+PASS duplicate occupancy rejected <null>
+PASS entry commits control once driving
+PASS entry duration bounded by one tick 0.65
+PASS vehicle accelerates forward { "time_s": 2.5, "speed_mps": 12.5156745910645, "distance_m": 16.2738437652588 }
+PASS moving exit rejected <null>
+PASS steering changes heading 0.5007466673851
+PASS brakes bring vehicle to rest { "initial_speed_mps": 13.1152744293213, "distance_m": 8.80601406097412, "time_s": 1.3 }
+PASS reverse engages after stop -4.37067890167236
+PASS blocked exits preserve ownership <null>
+PASS clear exit begins transition <null>
+PASS exit restores on foot ownership and collision on_foot
+PASS exit timing bounded by one tick 0.56666666666667
+PASS movement resumes without restarting <null>
+PASS three additional enter exit cycles 3
+PASS late exit blockers cancel commit safely driving
+PASS vehicle dynamics invariant under world translation [5.38962984085083, 5.38962984085083]
+PASS vehicle remains stable after control restoration 0.00635265558958
+PASS weapon control resumes after driving <null>
+PASS vehicle body collides without crossing wall (17.9991, 0.667273, 27.13922)
+RESULT 48 assertions / 0 failures
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS all arena blocks retain plain colors by default <null>
+PASS nearest vehicle returns the actual registered body <null>
+PASS input installation is idempotent <null>
+PASS switch to rifle succeeds <null>
+PASS weapon switch cancels reload and preserves shot lock <null>
+PASS weapon ammo belongs to its slot <null>
+PASS second weapon retains its own magazine <null>
+PASS cadence follows source 30 Hz animation conversion 0.24
+PASS walk and run blend at matching normalized phase <null>
+PASS aim preserves leg locomotion <null>
+PASS upper action actually moves the gun arm <null>
+PASS action changes crossfade instead of snapping <null>
+PASS heavy gun permits source sprint clip ["sprint_civi", 3.60000348091125]
+PASS aiming and walking coexist <null>
+PASS walking aiming and firing advance together <null>
+PASS reload blends its own upper action while legs remain available <null>
+PASS every equipped weapon supports sprint <null>
+PASS death plays once and holds its terminal frame ["dead", 0.5]
+PASS death blocks movement and leaves a low world collision shape <null>
+PASS respawn restores health and standing shape <null>
+PASS Jolt door hinge opens under motor force -1.17947780369072
+PASS open hinge stays attached to chassis <null>
+PASS door closes and latches without pinning chassis to world 0.0
+PASS chassis sweep finds and reacts to pedestrian [1, 87.1314164977521, "down"]
+PASS run-over reaction stays bounded 0.68211704492569
+PASS low speed impact knocks down instead of instantly killing <null>
+PASS nonfatal pedestrian gets up with standing volume clearance ["alive", (-28.0, 0.900012, 34.79982)]
+PASS blocked standing volume prevents unsafe get-up <null>
+PASS get-up retries after overhead obstruction clears <null>
+PASS fatal impact reaches death and repeated corpse hits do not restart it <null>
+PASS right door opens in the opposite direction 1.17947780369072
+PASS right door also closes and latches <null>
+PASS animated entry reserves a single owner <null>
+PASS door action respects opening contact delay <null>
+PASS entry advances from opening to get-in <null>
+PASS inside close uses its own distinct source clip <null>
+PASS animated stages commit after total clip duration <null>
+PASS animated exit starts its get-out clip <null>
+PASS outside close uses the outside source clip <null>
+PASS animated exit restores control exactly once <null>
+PASS death during entry releases reservation and controller <null>
+RESULT 41 assertions / 0 failures
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Verified 48 assertions with 4.7.2.stable.official.ed1daf0bf
+Verified 41 action/door/impact assertions

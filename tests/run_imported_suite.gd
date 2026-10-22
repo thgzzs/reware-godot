@@ -93,7 +93,9 @@ func run() -> void:
  check("player and four pedestrians use identical motor script",arena.pedestrians.size()==4 and arena.pedestrians.all(func(p: CharacterMotor): return p.get_script()==actor.get_script() and p.reference_enabled))
  check("health and weapon components shared by actor types",arena.pedestrians.all(func(p: CharacterMotor): return p.health is PedHealth and p.weapon is WeaponController))
  check("player heading source unit converted explicitly",absf(actor.profile.turn_rate-deg_to_rad(15*50))<0.00001,actor.profile.turn_rate)
- check("weapon DAT fields applied",arena.weapon.magazine==17 and absf(arena.weapon.profile.interval-0.25)<0.00001 and absf(arena.weapon.profile.reload_seconds-0.45)<0.00001,arena.weapon.profile.display_name)
+ var source_weapon := db.find_record("weapons","Colt45")
+ var expected_interval := (float(source_weapon.animation_frames[1])-float(source_weapon.animation_frames[0]))*0.03
+ check("weapon DAT fields and derived animation cadence applied",arena.weapon.magazine==17 and absf(arena.weapon.profile.interval-expected_interval)<0.00001 and absf(arena.weapon.profile.reload_seconds-0.45)<0.00001,arena.weapon.profile.display_name)
  check("dimensionally mapped vehicle fields applied",car.mass==1600 and absf(car.profile.max_speed-160.0/3.6)<0.001 and absf(car.profile.steering_angle-deg_to_rad(30))<0.001)
  await place(Vector3(-30,0.94,40))
  var walking := GameplayCommand.new()
@@ -156,8 +158,8 @@ func run() -> void:
  check("browser exposes all imported clip names",arena.animation_browser.names.size()==234)
  await place(car.global_position+Vector3(-1.7,0.25,0))
  check("entry request accepted in imported mode",seat.request_enter(car))
- await frames(45)
- check("entry commits after imported get-in clip duration",seat.state=="driving" and absf(seat.last_duration-seat.profile.enter_seconds)<1.0/60.0+0.00001,[seat.state,seat.last_duration])
+ await frames(ceili(seat.profile.enter_seconds*60)+2)
+ check("entry commits after open get-in and close clips",seat.state=="driving" and absf(seat.last_duration-seat.profile.enter_seconds)<1.0/60.0+0.00001,[seat.state,seat.last_duration])
  var drive := GameplayCommand.new()
  drive.move = Vector2(0,-1)
  await frames(90,drive)
@@ -166,7 +168,7 @@ func run() -> void:
  brake.brake = true
  await frames(180,brake)
  check("exit request accepted",seat.request_exit())
- await frames(42)
+ await frames(ceili(seat.profile.exit_seconds*60)+2)
  check("exit returns to shared on-foot actor",seat.state=="on_foot" and actor.control_enabled and actor.reference_enabled,seat.state)
  var before_shots: int = arena.weapon.shots
  var shoot := GameplayCommand.new()
@@ -195,3 +197,4 @@ func run() -> void:
  arena.queue_free()
  await process_frame
  quit(1 if failures>0 else 0)
+

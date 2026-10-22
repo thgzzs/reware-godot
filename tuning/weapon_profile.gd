@@ -9,3 +9,7 @@ extends Resource
 @export var range_meters := 100.0
 @export var spread_radians := 0.008
 @export var recoil_radians := 0.012
+@export var animation_group := "colt45"
+@export var heavy := false
+@export_range(1,16,1) var pellets := 1
+

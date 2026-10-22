@@ -105,8 +105,11 @@ func _physics_process(dt: float) -> void:
 	if cmd.interact:
 		if transition.state == "on_foot": transition.request_enter(nearest_vehicle())
 		elif transition.state == "driving": transition.request_exit()
+	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
+		actor.respawn(Vector3(-3,0.94,4))
 	transition.tick(dt)
 	var driving := transition.state == "driving"
+	actor.actions.aim_pitch = rig.pitch
 	actor.tick(cmd,rig.yaw,dt)
 	if driving: vehicle.command(cmd)
 	else: vehicle.park()
@@ -115,7 +118,8 @@ func _physics_process(dt: float) -> void:
 	if transition.state!="on_foot": exclude.append(vehicle.get_rid())
 	rig.tick(pivot,cmd,driving,exclude,dt)
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
-	weapon.tick(cmd,transition.state=="on_foot" and actor.health.health>0,get_world_3d().direct_space_state,rig.camera,muzzle,exclude,dt)
+	if is_instance_valid(actor.weapon_muzzle): muzzle = actor.weapon_muzzle.global_position
+	weapon.tick(cmd,transition.state=="on_foot" and actor.control_enabled and actor.health.health>0,get_world_3d().direct_space_state,rig.camera,muzzle,exclude,dt)
 	vehicle.update_visuals(dt)
 	if actor.global_position.y < -15 and transition.state == "on_foot": actor.reset_at(Vector3(-3,1,4))
 	last_tick_us = Time.get_ticks_usec()-start_us
@@ -187,3 +191,4 @@ func build_world() -> void:
 	LabGeometry.box(self,Vector3(4,0.25,4),Vector3(-15,2.35,14),Color("516c76"),true).name = "LowCeiling"
 	for x in [-34,38]:
 		LabGeometry.box(self,Vector3(0.8,1.0,100),Vector3(x,0.5,0),Color("748e8b"),true)
+

@@ -67,7 +67,7 @@ func test_skin() -> void:
  check("player and NPCs share skinned presentation and actor components",arena.pedestrians.all(func(p: CharacterMotor): return p.reference_pose is SkinnedMotionVisual and p.get_script()==arena.actor.get_script() and p.reference_pose.skeleton!=skeleton))
  check("pistol is bound to the actual right hand",skeleton.find_child("@BoneAttachment3D@*",false,false)!=null or skeleton.get_children().any(func(n: Node): return n is BoneAttachment3D and n.bone_name=="R Hand"))
  var car: Node3D = arena.vehicle.get_node("VehiclePresentation")
- check("Idaho retains wheel door and seat markers",car.find_child("wheel_lf_dummy",true,false)!=null and car.find_child("door_lf_dummy",true,false)!=null and car.find_child("ped_frontseat",true,false)!=null)
+ check("Idaho retains wheel door and seat markers",car.find_child("wheel_lf_dummy",true,false)!=null and arena.vehicle.find_child("door_lf_dummy",true,false)!=null and car.find_child("ped_frontseat",true,false)!=null)
  check("damaged and low-detail variants are hidden",not car.find_child("chassis_vlo",true,false).visible and not car.find_child("bonnet_hi_dam",true,false).visible)
  check("axle spacing derives from original wheel markers",absf(arena.vehicle.mounts[0].z+1.692)<0.002 and absf(arena.vehicle.mounts[2].z-1.693)<0.002,arena.vehicle.mounts)
  check("vehicle hull covers placeholder body length",arena.vehicle.get_node("Hull").shape.size.z>=5.4)
@@ -139,3 +139,4 @@ func run() -> void:
  arena.queue_free()
  await process_frame
  quit(1 if failures>0 else 0)
+

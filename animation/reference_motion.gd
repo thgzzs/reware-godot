@@ -15,9 +15,11 @@ var preview_clip := ""
 var preview_time := 0.0
 var preview_playing := true
 var roots := {}
+var clip_names := {}
 func _init(source: AnimationLibrary) -> void:
  library = source
  for name in library.get_animation_list():
+  clip_names[String(name).to_lower()] = String(name)
   var a := library.get_animation(name)
   roots[name] = a.find_track(NodePath("Skeleton3D:Root"),Animation.TYPE_POSITION_3D)
 func duration(name: String) -> float:
@@ -34,10 +36,17 @@ func segment(name: String, a: float, b: float) -> Vector3:
  return position_at(name,b)-position_at(name,a)
 func loop_segment(name: String, a: float, b: float) -> Vector3:
  var length := duration(name)
+ if length<=0: return Vector3.ZERO
  var start := fposmod(a,length)
  var finish := start+(b-a)
  if finish<=length: return segment(name,start,finish)
  return segment(name,start,length)+segment(name,0,finish-length)
+func pose_layers() -> Array[Dictionary]:
+ if not preview_clip.is_empty(): return [{"clip":preview_clip,"time":preview_time,"weight":1.0}]
+ if phase=="move" and not was_sprinting:
+  var blend := clampf(intensity-1.0,0,1)
+  return [{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":1.0-blend},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":blend}]
+ return [{"clip":clip,"time":time,"weight":1.0}]
 func force_action(name: String, dt: float) -> void:
  if clip!=name: set_clip(name)
  else: time = minf(time+dt,duration(name))
@@ -96,3 +105,4 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  time = cycle*duration(clip)
  local_delta.y = 0
  return local_delta
+

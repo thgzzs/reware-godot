@@ -13,9 +13,12 @@ extends Resource
 @export var vehicle_secondary := Color("bdbba5")
 @export var vehicle_hull_size := Vector3(2.1,0.6,5.5)
 @export var vehicle_offset := Vector3(0,0.15,0)
+@export var decorate_arena := false
+@export var weapon_scenes: Dictionary[String,String] = {}
 @export var texture_paths: Dictionary[String,String] = {}
 func scene(path: String) -> PackedScene:
  return load(path) as PackedScene if ResourceLoader.exists(path) else null
 func texture(key: String) -> Texture2D:
  var path: String = texture_paths.get(key,"")
  return load(path) as Texture2D if not path.is_empty() and ResourceLoader.exists(path) else null
+

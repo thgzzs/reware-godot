@@ -6,11 +6,18 @@ extends CharacterBody3D
 @onready var visual: Node3D = $Visual
 var reference_motion: ReferenceMotion
 var weapon: WeaponController
+var weapon_muzzle: Node3D
 var health: PedHealth
 var archetype := "STAT_PLAYER"
 var reference_enabled := false
 var attack_multiplier := 1.0
 var reference_pose: Node3D
+var actions := ActorActionState.new()
+var reaction_velocity := Vector3.ZERO
+var impact_cooldown := 0.0
+var down_time := 0.0
+var normal_shape: Shape3D
+var low_shape := SphereShape3D.new()
 var grounded := false
 var support_normal := Vector3.UP
 var phase := "airborne"
@@ -33,7 +40,13 @@ func _ready() -> void:
  add_child(weapon)
  health = PedHealth.new()
  add_child(health)
- health.depleted.connect(func(): control_enabled = false)
+ normal_shape = $CollisionShape3D.shape
+ low_shape.radius = 0.32
+ health.depleted.connect(func():
+  control_enabled = false
+  actions.begin_life("dying")
+  set_reaction_shape())
+ weapon.shot_fired.connect(func(_a: Vector3,_b: Vector3,_hit: bool): actions.fire(weapon.profile.interval))
 func configure_reference(db: ImportedGameplayDatabase, stat: String, library: AnimationLibrary) -> void:
  archetype = stat
  var record := db.find_record("ped_stats",stat)
@@ -44,6 +57,7 @@ func configure_reference(db: ImportedGameplayDatabase, stat: String, library: An
   health.defense_multiplier = record.defense_multiplier
   attack_multiplier = record.attack_multiplier
  reference_motion = ReferenceMotion.new(library)
+ actions.motion = reference_motion
  if stat!="STAT_PLAYER":
   reference_motion.walk_clip = "WOMAN_walknorm" if "GIRL" in stat else "WALK_civi"
   reference_motion.run_clip = "woman_run" if "GIRL" in stat else "run_civi"
@@ -60,19 +74,78 @@ func configure_reference(db: ImportedGameplayDatabase, stat: String, library: An
  reference_pose.motion = reference_motion
  visual.add_child(reference_pose)
 func receive_damage(amount: float, _point: Vector3, _direction: Vector3) -> void:
+ reaction_velocity += _direction.normalized()*minf(2.0,amount*0.02)
  health.receive(amount)
+func set_reaction_shape() -> void:
+ collision_layer = 8 if health.health>0 else 0
+ collision_mask = 1
+ $CollisionShape3D.set_deferred("shape",low_shape)
+ $CollisionShape3D.set_deferred("position",Vector3(0,-0.58,0))
+func receive_vehicle_impact(car: DriveVehicle, closing_speed: float, direction: Vector3) -> void:
+ if impact_cooldown>0 or health.health<=0 or not visible or closing_speed<actions.profile.impact_min_speed: return
+ impact_cooldown = actions.profile.impact_cooldown_seconds
+ reaction_velocity = direction.normalized()*minf(closing_speed*0.65,9.0)+Vector3.UP*minf(closing_speed*0.10,1.5)
+ health.receive(pow(maxf(0,closing_speed-actions.profile.impact_min_speed),2)*actions.profile.impact_damage_coefficient)
+ if health.health>0: actions.begin_life("down")
+ down_time = 0
+ control_enabled = false
+ set_reaction_shape()
+ ignore_vehicle_until_restored(car)
+func tick_reaction(dt: float) -> void:
+ down_time += dt
+ actions.tick(GameplayCommand.new(),weapon,dt)
+ reaction_velocity.x = move_toward(reaction_velocity.x,0,4.0*dt)
+ reaction_velocity.z = move_toward(reaction_velocity.z,0,4.0*dt)
+ reaction_velocity.y -= profile.gravity*dt
+ var hit := move_and_collide(reaction_velocity*dt,false,0.002)
+ if hit!=null:
+  reaction_velocity = reaction_velocity.slide(hit.get_normal())
+  grounded = hit.get_normal().y>=slope_cos()
+ velocity = reaction_velocity
+ if health.health<=0: return
+ if actions.life=="down" and down_time>actions.profile.knockdown_seconds+maxf(0.1,reference_motion.duration(actions.life_clip) if reference_enabled else 0.6):
+  var query := PhysicsShapeQueryParameters3D.new()
+  query.shape = normal_shape
+  query.transform = global_transform
+  query.collision_mask = 15
+  query.exclude = [get_rid()]
+  if get_world_3d().direct_space_state.intersect_shape(query,1).is_empty():
+   actions.life = "getting_up"
+   actions.life_time = 0
+   actions.life_clip = actions.resolve(actions.profile.getup_clips)
+ if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
+  restore_control()
+func restore_control() -> void:
+ actions.reset()
+ control_enabled = true
+ collision_layer = 10 if reference_enabled else 2
+ collision_mask = 15 if reference_enabled else 13
+ $CollisionShape3D.shape = normal_shape
+ $CollisionShape3D.position = Vector3.ZERO
+ reaction_velocity = Vector3.ZERO
+ if reference_enabled:
+  reference_motion.phase = "idle"
+  reference_motion.set_clip("IDLE_stance")
+func respawn(where: Vector3) -> void:
+ health.reset()
+ restore_control()
+ reset_at(where)
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
- if not control_enabled:
-  if reference_enabled:
-   if health.health<=0: reference_motion.force_action("FALL_front",dt)
-   elif reference_motion.phase=="seated": reference_motion.force_action("CAR_sit",dt)
-  velocity = Vector3.ZERO
-  return
+ impact_cooldown = maxf(0,impact_cooldown-dt)
  if is_instance_valid(ignored_vehicle):
   collision_grace -= dt
-  if collision_grace <= 0:
+  if collision_grace<=0 and actions.life=="alive":
    remove_collision_exception_with(ignored_vehicle)
    ignored_vehicle = null
+ if actions.life!="alive":
+  tick_reaction(dt)
+  return
+ actions.tick(cmd,weapon,dt)
+ if not control_enabled:
+  if reference_enabled:
+   if reference_motion.phase=="seated": reference_motion.force_action("CAR_sit",dt)
+  velocity = Vector3.ZERO
+  return
  last_step = 0.0
  jump_left = maxf(0.0,jump_left-dt)
  grace_left = profile.coyote_time if grounded else maxf(0.0,grace_left-dt)
@@ -98,17 +171,15 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   elif phase=="launch": reference_motion.force_action("JUMP_launch",dt)
   elif phase=="landing": reference_motion.force_action("JUMP_land",dt)
   elif not grounded: reference_motion.force_action("JUMP_glide",dt)
-  elif cmd.aim:
-   reference_motion.force_action("IDLE_armed",dt)
-   reference_motion.phase = "idle"
-   reference_motion.was_sprinting = false
   else:
-   local_delta = reference_motion.step(direction.length(),cmd.sprint,cmd.walk,dt)
+   local_delta = reference_motion.step(direction.length(),cmd.sprint and not cmd.aim and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy),cmd.walk,dt)
   if not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim):
    var angle := camera_yaw if cmd.aim else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,profile.turn_rate*dt)
   visual.rotation.y = facing
   if grounded and phase!="launch": drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
+  if grounded and cmd.aim:
+   drive_velocity = direction*Vector2(local_delta.x,local_delta.z).length()/maxf(0.00001,dt)*actions.profile.aim_movement_multiplier
   horizontal = drive_velocity
   if grounded: horizontal = horizontal.slide(support_normal)
   velocity.x = horizontal.x
@@ -232,3 +303,4 @@ func reset_at(where: Vector3) -> void:
  grace_left = 0
  phase_left = 0
  phase = "airborne"
+

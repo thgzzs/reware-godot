@@ -7,6 +7,7 @@ static func apply_character(actor: CharacterMotor, assets: PlaceholderAssets) ->
  var driver := SkinnedMotionVisual.new()
  driver.name = "SkinnedPresentation"
  driver.motion = actor.reference_motion
+ driver.actions = actor.actions
  driver.position = assets.character_offset
  driver.add_child(packed.instantiate())
  actor.visual.add_child(driver)
@@ -18,9 +19,9 @@ static func apply_character(actor: CharacterMotor, assets: PlaceholderAssets) ->
   var hand := BoneAttachment3D.new()
   driver.skeleton.add_child(hand)
   hand.bone_name = assets.weapon_bone
-  var weapon := weapon_scene.instantiate() as Node3D
-  weapon.position = assets.weapon_offset
-  weapon.rotation_degrees = assets.weapon_rotation
+  var weapon := EquippedWeaponVisual.new()
+  weapon.actor = actor
+  weapon.assets = assets
   hand.add_child(weapon)
 static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
  var packed := assets.scene(assets.vehicle_scene)
@@ -30,12 +31,26 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
  model.name = "VehiclePresentation"
  model.position = assets.vehicle_offset
  car.add_child(model)
+ for pair in [[0,"door_lf_dummy"],[1,"door_rf_dummy"]]:
+  var frame := model.find_child(pair[1],true,false) as Node3D
+  if frame!=null:
+   var door: VehicleDoor = car.doors[pair[0]]
+   door.hinge_offset = car.to_local(frame.global_position)
+   door.joint.position = door.hinge_offset
+   door.global_transform = car.global_transform*Transform3D(Basis.IDENTITY,door.hinge_offset)
+   door.attach_model(frame)
  var hull := car.get_node("Hull") as CollisionShape3D
  hull.shape = hull.shape.duplicate()
  (hull.shape as BoxShape3D).size = assets.vehicle_hull_size
- for mesh in model.find_children("*","MeshInstance3D",true,false):
+ car.impact_probe.shape = hull.shape
+ var seat := model.find_child("ped_frontseat",true,false) as Node3D
+ if seat!=null:
+  car.door_profile.seat_offset = car.to_local(seat.global_position)
+  car.door_profile.seat_offset.x = -absf(car.door_profile.seat_offset.x)
+ for mesh in car.find_children("*","MeshInstance3D",true,false):
   for surface in range(mesh.mesh.get_surface_count()):
    var material: StandardMaterial3D = mesh.mesh.surface_get_material(surface)
+   if material==null: continue
    var channel: int = material.get_meta("vehicle_color_channel",0)
    if channel>0:
     var paint := material.duplicate() as StandardMaterial3D
@@ -78,6 +93,20 @@ static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  apply_character(arena.actor,assets)
  for ped in arena.pedestrians: apply_character(ped,assets)
  apply_vehicle(arena.vehicle,assets)
+ var prop := assets.scene(assets.prop_scene)
+ if prop!=null:
+  for at in [Vector3(4,0,7),Vector3(4,0,10)]:
+   var body := StaticBody3D.new()
+   arena.add_child(body)
+   body.position = at
+   body.add_child(prop.instantiate())
+   var shape := CollisionShape3D.new()
+   var box := BoxShape3D.new()
+   box.size = Vector3(0.78,1.04,0.88)
+   shape.shape = box
+   shape.position.y = 0.52
+   body.add_child(shape)
+ if not assets.decorate_arena: return
  for pair in [["Ground","ground"],["Road","road"]]:
   var geometry := arena.get_node_or_null(pair[0])
   if geometry==null: continue
@@ -96,19 +125,6 @@ static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  for target in arena.targets:
   var face := target.get_node_or_null("Mesh/Bullseye") as MeshInstance3D
   if face!=null: apply_surface(face,assets.texture("target"),Vector3.ONE)
- var prop := assets.scene(assets.prop_scene)
- if prop!=null:
-  for at in [Vector3(4,0,7),Vector3(4,0,10)]:
-   var body := StaticBody3D.new()
-   arena.add_child(body)
-   body.position = at
-   body.add_child(prop.instantiate())
-   var shape := CollisionShape3D.new()
-   var box := BoxShape3D.new()
-   box.size = Vector3(0.78,1.04,0.88)
-   shape.shape = box
-   shape.position.y = 0.52
-   body.add_child(shape)
  # The existing graybox light was tuned for flat colors. Use a moderate shared
  # light level with the imported albedo textures; this is placeholder lighting.
  for child in arena.get_children():
@@ -121,3 +137,4 @@ static func apply_surface(mesh: MeshInstance3D, texture: Texture2D, tiling: Vect
  material.uv1_scale = tiling
  material.roughness = 1
  mesh.material_override = material
+

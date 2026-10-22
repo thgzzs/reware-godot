@@ -1,6 +1,9 @@
 class_name DriveVehicle
 extends RigidBody3D
 @export var profile: HandlingProfile
+@export var door_profile: VehicleDoorProfile = preload("res://tuning/doors.tres")
+var doors: Array[VehicleDoor] = []
+var impact_probe: PedestrianImpactProbe
 var driver: Node = null
 var reservation: Node = null
 var throttle := 0.0
@@ -15,6 +18,7 @@ var force_telemetry := GameplayTelemetry.new()
 var reset_pending := false
 var reset_transform := Transform3D.IDENTITY
 func _ready() -> void:
+ door_profile = door_profile.duplicate()
  mass = profile.mass
  center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
  center_of_mass = profile.center_of_mass
@@ -25,6 +29,24 @@ func _ready() -> void:
  for i in range(4):
   wheels.append(WheelForceSolver.new())
   wheel_visuals.append(get_node("Wheel%d" % i))
+ for i in range(2):
+  var door := VehicleDoor.new()
+  door.configure(self,i)
+  doors.append(door)
+ impact_probe = PedestrianImpactProbe.new()
+ impact_probe.configure(self)
+func _physics_process(dt: float) -> void:
+ impact_probe.sweep(dt)
+func set_door_open(side: int, value: bool) -> void:
+ if side>=0 and side<doors.size(): doors[side].request_open(value)
+func seat_position() -> Vector3:
+ return global_transform*door_profile.seat_offset
+func approach_position() -> Vector3:
+ var p := global_transform*door_profile.stand_offset
+ var query := PhysicsRayQueryParameters3D.create(p+Vector3.UP*2,p-Vector3.UP*3,1,[get_rid()])
+ var floor_hit := get_world_3d().direct_space_state.intersect_ray(query)
+ if not floor_hit.is_empty() and floor_hit.normal.y>0.65: p.y = floor_hit.position.y+0.93
+ return p
 func command(cmd: GameplayCommand) -> void:
  var pedal := -cmd.move.y
  throttle = pedal
@@ -39,6 +61,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
   state.transform = reset_transform
   state.linear_velocity = Vector3.ZERO
   state.angular_velocity = Vector3.ZERO
+  for door in doors: door.reset_with_chassis(state.transform)
   reset_pending = false
  var forward := -state.transform.basis.z
  speed = state.linear_velocity.dot(forward)
@@ -81,3 +104,4 @@ func reset_at(where: Vector3) -> void:
  reset_transform = Transform3D(Basis.IDENTITY,where)
  reset_pending = true
  park()
+

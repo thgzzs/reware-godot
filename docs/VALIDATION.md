@@ -1,20 +1,21 @@
 # Current validation
 
-Godot **4.7.2 Stable**, official `ed1daf0bf`, built-in **Jolt Physics**, fixed 60 Hz. The exact official engine and documentation references are pinned in provenance.json.
+Godot **4.7.2 Stable**, official `ed1daf0bf`, built-in **Jolt Physics**, fixed 60 Hz. The downloaded official archive SHA-256 was verified against its release digest. Engine/API sources remain pinned in provenance.json.
 
-| Group | Latest result |
-| --- | --- |
-| Baseline gameplay assertions, imported mode disabled | 48 passed |
-| Imported animation/data and continuous gameplay loop | 36 passed |
-| Native models, real skin, display/layout/input/adaptation | 28 passed |
-| Python parser, selective extractor and model/texture tests | 18 passed |
-| Independent IFP decoder comparison | 87,546 source keys; zero mismatches |
-| Native animation round trip | 95,427 channel keys; zero mismatches within tolerance |
-| Native Godot software-OpenGL captures | 6 captured and visually reviewed |
+| Current revision | Result | Scope |
+| --- | --- | --- |
+| Editor import / script parsing | Passed | Exact 4.7.2 editor |
+| Existing gameplay suite | 48 passed | Real Jolt, primitive fallback |
+| Action/door/impact revision suite | 41 passed | Real Jolt plus synthetic animation library and seven-bone skeleton |
+| Python tests | 14 passed, 9 skipped | ZIP, parser, converter fixtures; private input tests skipped |
+| Strict ZIP extraction regression | Passed | 217-file fixture with missing original directory entries, byte-preserving repair, parent directories written before files |
+| Original converted model/animation suites | Not rerun | Private asset-inclusive build ZIP unavailable in this workspace |
+| Browser import / exported HTML | Not run | ZIP layout fix validated through a strict extraction simulation |
+| New rendered visual checks | Not run | No display server or private source assets available |
 
-The model suite checks 25 native frames/24 skin binds, every weight/palette index, inverse-bind/rest cancellation, upright idle deformation, root-motion ownership, shared player/NPC components, hand attachment, car markers/variants/hull and spawn settling. Window sizes 640×360, 1024×768, 1280×720, 1920×1080, 2560×1080, 3440×1440, 3840×2160 and 1080×1920 verify HUD bounds, nonoverlapping cards and centered camera rays. It also checks independent UI/3D scale changes, menu input blocking, input resumption, adaptive recovery/cooldown and minimum scale.
+New checks cover phase-matched walk/run blending, preserved leg motion under aiming, action crossfades, simultaneous aim/walk/fire, reload blending, every equipped gun sprinting, one-shot death/respawn, per-slot ammunition and reload/cooldown policy, opening/closing both physical door hinges, source clip stages and contact delay, continuous entry/exit, ownership cancellation on death, swept pedestrian impacts, bounded reactions, fatal/nonfatal outcomes and clearance-gated get-up.
 
-Reports: tests/latest_results.json, imported_results.json, presentation_results.json and independent_decoder_results.json. The transcripts record exact measurements and assertion labels. Native image/key/vertex data checks do not prove gameplay equivalence.
+Reports: tests/latest_results.json and tests/revision_results.json. The revision transcript is tests/revision_validation_transcript.txt. Source findings and remaining visual/calibration gaps are in REVISION_SOURCE_REVIEW.md.
 
 ## Reproduce
 
@@ -23,20 +24,22 @@ python3 tools/validate.py --godot /absolute/path/to/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-The validator rejects other engines, imports before testing, fails on script errors and runs asset-dependent suites only when their inputs exist. It does not fetch an engine. Private conversion tests skip if source inputs are unavailable; Pillow is needed for Python texture tests. For rendered checks on a desktop, run tests/render_model_preview.gd through the same exact editor with a working display.
-
-## Rendered scope
-
-The virtual-window setup was repaired for this milestone. Actual Godot Compatibility rendering used Mesa llvmpipe software OpenGL 4.5. Captures in this private build show the selected skin/texture/car, HUD, display settings, 4:3, wide, portrait and animation browser. Earlier milestone statements that no window rendering was possible are historical and superseded. Audio was explicitly disabled for captures because no sound system is implemented.
-
-Screenshots are controlled automated visual checks, not reference-game comparisons or a complete physical-device usability review. The full gameplay loop was verified with real Jolt headlessly. No original-game runtime trace comparison or full 234-action visual correctness claim is made.
+The validator rejects other engines, imports before testing and fails on script errors. Imported suites run only if their private assets are present. Historical imported_results.json, presentation_results.json, independent_decoder_results.json and older transcripts are retained as prior-milestone evidence; they do not validate the new pose layering or door/model attachment.
 
 ## Profiling
 
-Each gameplay JSON report includes callback CPU summaries. The main arena measurement covers player movement/camera/weapon/transition orchestration and presentation refresh, excluding independent NPC callbacks, Jolt solving, UI drawing and GPU work. Vehicle telemetry covers its four wheel-query/force calculations. presentation_results.json additionally samples one player's SkinnedMotionVisual.sample_pose CPU time over 180 frames, explicitly excluding other actors, physics and rendering. These are narrow shared-environment measurements, not complete frame budgets.
+Current per-callback samples are recorded in the two JSON reports. Gameplay orchestration excludes independent NPC/probe/door callbacks, Jolt solving, UI drawing and rendering. Vehicle force samples cover the four wheel queries and force calculations. The synthetic pose sample covers seven bones in a death pose, excludes the actual 25-frame native skin, rendering and Jolt, and must not be treated as the cost of the real asset build.
 
-The software-OpenGL captures are not a target-hardware performance benchmark. Adaptive scaling uses sustained frame-time feedback, not a GPU timer; no before/after speedup is claimed. No performance superiority is asserted. Gameplay, visual and performance parity remain separate open validation goals.
+Latest diagnostic samples (microseconds):
 
-## Remaining checks
+| Callback | Samples | Mean | p95 |
+| --- | ---: | ---: | ---: |
+| Arena orchestration | 3488 | 51.6 | 117.0 |
+| Four-wheel query/force calculation | 3488 | 34.9 | 48.0 |
+| Seven-bone synthetic death pose | 180 | 23.1 | 48.0 |
 
-Reference runtime captures/tolerances, complete blending/IK/action coverage, full vehicle handling calibration, original wheel geometry, doors/passengers, seated driver presentation, camera comfort and real-device input/readability still require work. See DISCREPANCIES.md and MODEL_AND_DISPLAY_MILESTONE.md.
+No before/after speedup or complete frame budget is claimed. Measurements from the shared headless environment are diagnostic baselines. Target GPU/browser/device measurements, original-game runtime traces, gameplay parity, visual parity and performance parity remain separate open validation goals.
+
+## Prior milestone evidence
+
+Before this revision, the private build recorded 36 imported-animation assertions, 28 model/display assertions, 87,546 independently decoded source keys with no mismatch, 95,427 native channel keys within tolerance and six software-OpenGL captures. These are historical conversion and layout checks. Those assets and images have not been regenerated. Once the existing ZIP is supplied, overlay the revised source with rebuild_test_build.py and rerun the imported and model suites plus visual checks.

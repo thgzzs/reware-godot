@@ -24,3 +24,5 @@ common/physics_ticks_per_second=60
 3d_physics/layer_2="Characters"
 3d_physics/layer_3="Vehicles"
 3d_physics/layer_4="Damageable"
+3d_physics/layer_5="Vehicle doors"
+

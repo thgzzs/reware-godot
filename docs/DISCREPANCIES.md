@@ -1,6 +1,16 @@
+# Current revision status
+
+See [REVISION_SOURCE_REVIEW.md](REVISION_SOURCE_REVIEW.md) for the current changes and source evidence. This revision has source-only and synthetic animation validation; the earlier private assets and screenshots are unavailable in this workspace. Original-model visual checks and a repaired asset-inclusive ZIP remain blocked until the previous build ZIP is attached.
+
+Delivered in this revision: explicit ZIP directories and byte-preserving rebuild tool; arena indentation; phase-matched walk/run and action crossfades; upper-body aim/fire/reload plus IK fallbacks; one-shot death and safe knockdown recovery; three weapon slots with separate ammo; all-gun sprint option; physical front door hinges and distinct entry/exit stages; predicted chassis/pedestrian impacts; HUD life/slot/reticle fixes; plain arena surfaces.
+
+Remaining: original weapon IFP blocks, visual blend/contact/death alignment checks, directional aim clips, source-calibrated impact/door coefficients, visible seated driver, passengers/jacking/locks/broken doors/ragdoll, full handling/crowd/world parity, target-device/browser/GPU tests. No original-game runtime parity is claimed.
+
+The table below records the prior milestone's scope; entries about single-clip playback, absent switching and absent doors are superseded by this revision.
+
 # Discrepancies and remaining scope
 
-The current test build includes selected original placeholders, real skin/bind data, shared pedestrians, 234 animations, responsive HUD/UI and independent render/interface scaling. Model and basic layout checks pass; full reference gameplay, visual and performance parity remain unverified. See MODEL_AND_DISPLAY_MILESTONE.md for the completed import/display scope.
+The prior asset-inclusive test build includes selected original placeholders, real skin/bind data, shared pedestrians, 234 animations, responsive HUD/UI and independent render/interface scaling. Model and basic layout checks pass; full reference gameplay, visual and performance parity remain unverified. See MODEL_AND_DISPLAY_MILESTONE.md for the completed import/display scope.
 
 | Area | Delivered | Gap / evidence needed | Priority |
 | --- | --- | --- | --- |
@@ -20,3 +30,4 @@ The current test build includes selected original placeholders, real skin/bind d
 
 
 The custom physics coefficients and behavior acceptance bounds remain prototype values. Actual meshes do not establish physical equivalence. The selected car uses original axle markers, an approximate body hull and procedural textured wheels; full wheel geometry, door action and seated driver presentation remain open. The rendered checks use software OpenGL in a virtual window server, not a full physical-device usability review.
+

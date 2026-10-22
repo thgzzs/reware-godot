@@ -120,3 +120,15 @@ Remaining: gta3.img upload failed again; matching gta3.dir and model/texture byt
 ## M1.3 — Selected models, native skin and responsive display
 
 See MODEL_AND_DISPLAY_MILESTONE.md for the created/modified file register, implemented systems, selection evidence, validation and remaining gaps. The archive arrived this milestone, superseding the M1.1/M1.2 upload blockers. Four model roots and 25 textures are included in the private build; no full IMG extraction occurred.
+
+## Action, interaction and packaging revision
+
+Implemented explicit ZIP parent directories and a byte-preserving old-build repair/overlay tool; normalized arena indentation; layered locomotion/action/upper-body animation with aim/reload IK and recoil fallback; one-shot death and clearance-gated knockdown recovery; per-slot weapon state and Resource-driven arsenal; sprint with all guns; physical front doors and staged entry/exit; predicted pedestrian impacts; HUD life/weapon/reticle fixes and plain arena surfaces.
+
+Created modules: animation/action_profile.gd, animation/actor_action_state.gd, driving/door_profile.gd, driving/vehicle_door.gd, driving/pedestrian_impact.gd, presentation/equipped_weapon_visual.gd, tuning/weapon_loadout.gd, tuning/actions.tres, tuning/doors.tres and tuning/arsenal.tres. Created tools: package_project.py and rebuild_test_build.py. New tests: run_revision_suite.gd, test_project_package.py and test_rebuild_test_build.py. New source review, test reports/transcripts and file register accompany them.
+
+Modified actor health/motor, motion sampling, weapon/command/input, imported data wiring, vehicle/transition, HUD/model bindings, tuning, arena, validation helpers and existing asset-dependent tests. Exact created/modified paths, including Godot UIDs, are in revision_files.json. No project files were removed; no original asset files were generated.
+
+Validation: exact Godot 4.7.2 Stable editor import; 48 baseline plus 41 new Jolt/synthetic-animation assertions passed; 14 Python tests passed, 9 private-input checks skipped. The ZIP regressions use 217-file fixtures and strict extraction with byte verification. Callback timings are reported in the current JSON reports; no speedup is claimed.
+
+Remaining gaps: private asset-inclusive ZIP unavailable, so new original-model animation/door contacts and visual alignment are unverified; separate weapon IFP blocks required for original gun actions; browser import/export and target-GPU tests not run; source-calibrated impact/door/handling parity, visible driver, passengers/jacking/locks/ragdoll remain open. See REVISION_SOURCE_REVIEW.md and VALIDATION.md.

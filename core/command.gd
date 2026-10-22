@@ -11,3 +11,7 @@ var sprint := false
 var walk := false
 var brake := false
 var look := Vector2.ZERO
+var weapon_step := 0
+var weapon_slot := -1
+var respawn := false
+

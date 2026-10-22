@@ -139,23 +139,24 @@ func _draw() -> void:
  text_at("HEALTH",status.position+Vector2(16,24),14,PINK)
  text_at("%03d"%health,status.position+Vector2(status.size.x-68,28),24,PINK)
  draw_rect(Rect2(status.position+Vector2(16,40),Vector2(status.size.x-32,7)),Color("3b354b"))
- draw_rect(Rect2(status.position+Vector2(16,40),Vector2((status.size.x-32)*clampf(health/100.0,0,1),7)),PINK)
+ draw_rect(Rect2(status.position+Vector2(16,40),Vector2((status.size.x-32)*clampf(health/maxf(1,arena.actor.health.max_health),0,1),7)),PINK)
  var driving: bool = arena.transition.state=="driving"
- text_at(String(arena.transition.state).to_upper().replace("_"," "),status.position+Vector2(16,76),16,AQUA,status.size.x-32)
+ var state: String = arena.actor.actions.life if arena.actor.actions.life!="alive" else arena.transition.state
+ text_at(state.to_upper().replace("_"," "),status.position+Vector2(16,76),16,AQUA,status.size.x-32)
  text_at("%03d km/h"%absf(arena.vehicle.speed*3.6) if driving else "TEST YARD",status.position+Vector2(16,99),16,INK)
  var weapon: WeaponController = arena.weapon
- if icons.weapon_icon!=null: draw_texture_rect(icons.weapon_icon,Rect2(ammo.position+Vector2(14,14),Vector2(34,34)),false)
+ text_at("%d/%d"%[weapon.active_slot+1,weapon.inventory.size()],ammo.position+Vector2(14,28),14,PINK)
  text_at(weapon.profile.display_name,ammo.position+Vector2(58,26),14,AQUA,ammo.size.x-70)
  text_at("%02d / %03d"%[weapon.magazine,weapon.reserve],ammo.position+Vector2(58,61),26,INK,ammo.size.x-70)
  if weapon.reload_left>0: draw_rect(Rect2(ammo.position+Vector2(16,77),Vector2((ammo.size.x-32)*(1.0-weapon.reload_left/maxf(0.001,weapon.profile.reload_seconds)),4)),PINK)
  draw_radar(layout.radar)
- var message: String = arena.transition.message
+ var message: String = "[Backspace] Respawn" if health<=0 else arena.transition.message
  var nearest: DriveVehicle = arena.nearest_vehicle()
  if message.is_empty() and not driving and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
  if not message.is_empty():
   var width := minf(420,screen.x-36)
   text_at(message,Vector2((screen.x-width)*0.5,screen.y-196 if screen.x<1000 else screen.y-54),17,AQUA,width)
- if health>0 and arena.transition.state=="on_foot":
+ if health>0 and arena.actor.control_enabled and arena.actor.actions.aim_weight>0.05 and arena.transition.state=="on_foot":
   var center: Vector2 = layout.center
   if icons.crosshair!=null: draw_texture_rect(icons.crosshair,Rect2(center-Vector2.ONE*23,Vector2.ONE*46),false)
   else:
@@ -193,10 +194,11 @@ func draw_world_markers() -> void:
 func draw_help(screen: Vector2) -> void:
  var rect := Rect2(Vector2(18,116),Vector2(minf(430,screen.x-36),minf(280,screen.y-300)))
  draw_rect(rect,BACK)
- var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire","R Reload / E Enter or exit","Esc Release cursor"]
+ var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire","R Reload / E Enter or exit","Wheel / Q / Z / 1–3 Switch weapon","Backspace Respawn after death / Esc Cursor"]
  if diagnostics:
   var motor: CharacterMotor = arena.actor
   lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]
  for i in range(lines.size()):
   if 28+i*28>rect.size.y: break
   text_at(lines[i],rect.position+Vector2(16,28+i*28),16 if i==0 else 14,AQUA if i==0 else INK,rect.size.x-32)
+

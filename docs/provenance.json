@@ -395,5 +395,20 @@
       "python": 18
     }
   },
-  "repository_update_base": "4b6b7bf69e6c298ef554ca2d148386e5898d1559"
+  "repository_update_base": "4b6b7bf69e6c298ef554ca2d148386e5898d1559",
+  "action_revision": {
+    "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
+    "repository_base": "5dc3eb87d9269e7150ea860aec57639464880d26",
+    "source_review": "docs/REVISION_SOURCE_REVIEW.md",
+    "baseline_assertions": 48,
+    "revision_assertions": 41,
+    "python_passed": 14,
+    "python_skipped_private_inputs": 9,
+    "private_assets_available": false,
+    "asset_conversion_performed": false,
+    "original_runtime_tested": false,
+    "browser_import_tested": false,
+    "zip_extraction_test": "strict parent-directory extractor, 217-file fixture with byte checks",
+    "official_engine_archive_sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4"
+  }
 }

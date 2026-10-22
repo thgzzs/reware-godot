@@ -60,3 +60,12 @@ CharacterMotor now owns an instance PedHealth and WeaponController, shared by th
 ## Presentation and display boundary
 
 PlaceholderAssets owns semantic model/texture bindings and artwork offsets/colors. ModelPlaceholderSetup installs imported native scenes without moving gameplay ownership into meshes. SkinnedMotionVisual samples shared clip timing on each actor’s independent Skeleton3D/Skin; planar root movement remains motor-owned. ShotPresentation reuses visual effect sprites and never performs damage queries. DisplayController owns window/UI/3D scale settings and optional frame-time adaptation; it cannot change physics timestep or handling data. GameplayHud renders actual state and blocks input through the arena boundary while a modal menu is open. No presentation asset is required to retain the authored primitive fallback.
+
+
+## Action and impact revision
+
+Each CharacterMotor owns ActorActionState, PedHealth and WeaponController. Player and pedestrian command sources remain interchangeable. ReferenceMotion owns movement phase and root integration; SkinnedMotionVisual composes phase-matched locomotion, full-body action crossfades, masked gun actions and arm IK. Presentation never moves the collision body. ActionProfile stores blend/reaction policy separately from movement and weapon Resources. WeaponLoadout in tuning/arsenal.tres defines the test arsenal and reference DAT selections.
+
+DriveVehicle composes a PedestrianImpactProbe and two VehicleDoor bodies. VehicleDoorProfile owns hinge, mass, panel, seat and approach tuning; each vehicle duplicates its profile before model markers adjust it. A latched door has no active joint so freezing it cannot pin the chassis to the world. VehicleTransition reserves and commits occupancy around separate opening/get-in/inside-close and get-out/outside-close stages. Exit volume and route are checked again on the same selected exit index.
+
+EquippedWeaponVisual maps firearm families to replaceable scenes; missing long guns use explicit primitive shapes. Unknown original gun animation blocks use procedural action fallbacks and are listed as discrepancies.
