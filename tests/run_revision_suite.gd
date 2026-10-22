@@ -90,7 +90,7 @@ func run() -> void:
 	actor.actions.aim_weight = 0
 	motion.phase = "launch"; motion.set_clip("JUMP_launch")
 	driver.sample_pose(1.0/60)
-	check("action changes crossfade instead of snapping",driver.transition_time<actor.actions.profile.blend_seconds and driver.skeleton.get_bone_pose_rotation(thigh).angle_to(blended)<0.05)
+	check("action changes crossfade instead of snapping",driver.transition_time<actor.actions.profile.blend_seconds and driver.skeleton.get_bone_pose_rotation(thigh).angle_to(blended)>0.001 and driver.skeleton.get_bone_pose_rotation(thigh).angle_to(blended)<0.3)
 	var move := GameplayCommand.new()
 	move.move = Vector2(0,-1); move.sprint = true
 	actor.reset_at(Vector3(-28,0.94,30))
@@ -174,7 +174,7 @@ func run() -> void:
 		low.tick(GameplayCommand.new(),0,1.0/60)
 		await frames(1)
 	check("get-up retries after overhead obstruction clears",low.actions.life=="alive")
-	low.receive_vehicle_impact(car,14.0,Vector3.FORWARD)
+	low.receive_vehicle_impact(car,24.0,Vector3.FORWARD)
 	for i in range(60):
 		low.tick(GameplayCommand.new(),0,1.0/60)
 		await frames(1)

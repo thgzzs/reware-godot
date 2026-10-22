@@ -48,10 +48,15 @@ func pose_layers() -> Array[Dictionary]:
   return [{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":1.0-blend},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":blend}]
  return [{"clip":clip,"time":time,"weight":1.0}]
 func force_action(name: String, dt: float) -> void:
+ # Exclusive actions must never sample stale walk/run layers.
+ phase = "seated" if name=="CAR_sit" else "action"
  if clip!=name: set_clip(name)
  else: time = minf(time+dt,duration(name))
 func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  heading_locked = false
+ if phase=="action" or phase=="seated":
+  phase = "idle"
+  was_sprinting = false
  if not preview_clip.is_empty():
   if preview_playing: preview_time = fposmod(preview_time+dt,maxf(0.001,duration(preview_clip)))
   return Vector3.ZERO

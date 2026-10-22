@@ -10,3 +10,7 @@ docs/*preview.png
 __pycache__/
 
 docs/*preview.png.import
+
+# Local native motion captures may contain private placeholder artwork.
+docs/motion-*.png
+docs/motion-*.png.import

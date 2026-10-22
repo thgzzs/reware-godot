@@ -1,12 +1,12 @@
-# Current revision status
+# Current discrepancies
 
-See [REVISION_SOURCE_REVIEW.md](REVISION_SOURCE_REVIEW.md) for the current changes and source evidence. The asset-inclusive revision has now been verified against the supplied archive: all original 91 private asset/support files are retained byte for byte; 177 Godot/Jolt assertions and 23 Python tests pass. Native aiming, death, physical doors and staged entry/exit have targeted checks. Eleven selected software-OpenGL captures were reviewed. Full reference-runtime parity and browser playback remain unverified.
+The [motion revision](MOTION_REVISION.md) adds actual temporal pose checks, visible pelvis-anchored seating, independently spinning wheel hubs, shared world-space aim and solid Jolt knockdown bodies. All 198 Godot/Jolt assertions pass. Public source retains primitive fallbacks; the private ZIP preserves all 91 original asset/support files.
 
-Delivered in this revision: explicit ZIP directories and byte-preserving rebuild tool; arena indentation; phase-matched walk/run and action crossfades; upper-body aim/fire/reload plus IK fallbacks; one-shot death and safe knockdown recovery; three weapon slots with separate ammo; all-gun sprint option; physical front door hinges and distinct entry/exit stages; predicted chassis/pedestrian impacts; HUD life/slot/reticle fixes; plain arena surfaces.
+Remaining: original weapon-specific IFP blocks; full per-bone ragdoll/contact geometry; additional collision damage for a second car striking an already active torso; wheel inertia/tire calibration; directional aim/foot contact calibration; hand-to-door and steering-wheel IK; passengers/jacking/locks/damaged doors; full handling/crowd/world behavior; original-runtime parity and target-device/browser/GPU validation. Fire/reload use tuned procedural fallbacks where source blocks are absent.
 
-Remaining: original weapon IFP blocks, full action/contact calibration beyond the selected checks, directional aim clips, source-calibrated impact/door coefficients, visible seated driver, passengers/jacking/locks/broken doors/ragdoll, full handling/crowd/world parity, target-device/browser/GPU tests. No original-game runtime parity is claimed.
+## Historical prototype register
 
-The table below records the prior milestone's scope; entries about single-clip playback, absent switching and absent doors are superseded by this revision.
+The older register below records earlier scope. The motion revision supersedes its seat/door/action status; broader parity gaps remain.
 
 # Discrepancies and remaining scope
 
@@ -29,5 +29,5 @@ The prior asset-inclusive test build includes selected original placeholders, re
 | Performance parity | Headless per-module CPU samples with scope labels | Target hardware/GPU runs, reference measurements, crowds/streaming loads, memory and hitch budgets | P1 |
 
 
-The custom physics coefficients and behavior acceptance bounds remain prototype values. Actual meshes do not establish physical equivalence. The selected car uses original axle markers, an approximate body hull and procedural textured wheels; full wheel geometry, door action and seated driver presentation remain open. The rendered checks use software OpenGL in a virtual window server, not a full physical-device usability review.
+The custom physics coefficients and behavior acceptance bounds remain prototype values. Actual meshes do not establish physical equivalence. The selected car uses original axle markers, an approximate body hull and procedural textured wheels; full wheel geometry, door action and full wheel/seat/contact calibration remains open. The rendered checks use software OpenGL in a virtual window server, not a full physical-device usability review.
 

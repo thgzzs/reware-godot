@@ -4,9 +4,9 @@
   "failures": 0,
   "metrics": {
     "player_pose_cpu": {
-      "max_us": 264.0,
-      "mean_us": 133.433333333333,
-      "p95_us": 189.0,
+      "max_us": 380.0,
+      "mean_us": 139.955555555556,
+      "p95_us": 225.0,
       "samples": 180,
       "scope": "one player's SkinnedMotionVisual.sample_pose CPU time only; excludes other actors, Jolt and rendering"
     },
@@ -16,7 +16,7 @@
     {
       "measured": {
         "position": "(1.0, 0.648313, -0.00001)",
-        "velocity": "(0.0, -0.012146, 0.000014)"
+        "velocity": "(-0.0, -0.012146, 0.000014)"
       },
       "name": "imported car settles at its spawn",
       "passed": true

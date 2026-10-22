@@ -1,5 +1,6 @@
 class_name WeaponProfile
 extends Resource
+@export var pose: WeaponPoseProfile = preload("res://tuning/weapon_pose.tres")
 @export var display_name := "LAB / 9"
 @export var interval := 0.20
 @export var reload_seconds := 1.20

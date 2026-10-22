@@ -54,6 +54,8 @@ func run() -> void:
  visual.sample_pose(0.2)
  check("native aim mask preserves the moving thigh pose",visual.skeleton.get_bone_pose_rotation(thigh).angle_to(before)<0.002)
  var hand := visual.skeleton.find_bone("R Hand")
+ actor.actions.has_aim_target = false
+ actor.actions.upper_allowed = true
  for pitch in [-0.4,0.0,0.35]:
   actor.actions.aim_pitch = pitch
   visual.sample_pose(0.2)

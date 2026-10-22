@@ -1,0 +1,169 @@
+{
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "impact": {
+      "car_contacts": 214,
+      "contact_ticks": 98,
+      "displacement": 17.476692199707,
+      "health": 78.824372753175,
+      "lift": 1.0079979300499,
+      "speed": 7.21770572662354
+    },
+    "orchestration": {
+      "max_us": 2062.0,
+      "mean_us": 239.483277591973,
+      "p95_us": 359.0,
+      "samples": 1794,
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    },
+    "wheel_forces": {
+      "max_us": 706.0,
+      "mean_us": 41.8051426275613,
+      "p95_us": 75.0,
+      "samples": 2489,
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    }
+  },
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": 1.13462674617767,
+      "name": "sprint thigh moves over time in slot 0",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 2.19361186027527,
+        "exclusive_layers": true,
+        "rise": 1.12130492925644
+      },
+      "name": "run jump owns visible pose and completes in slot 0",
+      "passed": true
+    },
+    {
+      "measured": 1.13462674617767,
+      "name": "sprint thigh moves over time in slot 1",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 2.19361186027527,
+        "exclusive_layers": true,
+        "rise": 1.12130492925644
+      },
+      "name": "run jump owns visible pose and completes in slot 1",
+      "passed": true
+    },
+    {
+      "measured": 1.13462674617767,
+      "name": "sprint thigh moves over time in slot 2",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 2.19361186027527,
+        "exclusive_layers": true,
+        "rise": 1.12130492925644
+      },
+      "name": "run jump owns visible pose and completes in slot 2",
+      "passed": true
+    },
+    {
+      "measured": 0.000000130296143652231,
+      "name": "world gun axis converges on camera-center target pitch -0.35",
+      "passed": true
+    },
+    {
+      "measured": 0.000000100153627613508,
+      "name": "world gun axis converges on camera-center target pitch 0.00",
+      "passed": true
+    },
+    {
+      "measured": 0.000000297743724786415,
+      "name": "world gun axis converges on camera-center target pitch 0.40",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "fire produces a recoil envelope",
+      "passed": true
+    },
+    {
+      "measured": 0.0629017800092697,
+      "name": "reload is a changing upper pose while legs still move",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "entry begins",
+      "passed": true
+    },
+    {
+      "measured": 0.0000000596046447753906,
+      "name": "driver remains visible with pelvis on seat anchor",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "seated limbs fit inside cabin and door finishes closing",
+      "passed": true
+    },
+    {
+      "measured": -1.57113855332136,
+      "name": "visible hub rotates with forward travel",
+      "passed": true
+    },
+    {
+      "measured": {
+        "delta": 0.126893520355225,
+        "speed": -2.4363112449646
+      },
+      "name": "wheel axle rolls backward during reverse",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "exit begins",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "exit restores controllable actor",
+      "passed": true
+    },
+    {
+      "measured": {
+        "car_contacts": 214,
+        "contact_ticks": 98,
+        "displacement": 17.476692199707,
+        "health": 78.824372753175,
+        "lift": 1.0079979300499,
+        "speed": 7.21770572662354
+      },
+      "name": "moderate impact survives and physically contacts car",
+      "passed": true
+    },
+    {
+      "measured": {
+        "car_contacts": 214,
+        "contact_ticks": 98,
+        "displacement": 17.476692199707,
+        "health": 78.824372753175,
+        "lift": 1.0079979300499,
+        "speed": 7.21770572662354
+      },
+      "name": "Jolt impact transfers momentum and lifts the torso",
+      "passed": true
+    },
+    {
+      "measured": {
+        "life": "alive",
+        "position": "(17.96, 0.900375, -3.849073)"
+      },
+      "name": "nonfatal proxy safely returns to standing control",
+      "passed": true
+    }
+  ]
+}

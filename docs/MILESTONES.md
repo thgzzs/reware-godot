@@ -142,3 +142,13 @@ Created: tests/run_native_action_suite.gd, tests/render_action_preview.gd, their
 Validated: 177 Godot/Jolt assertions and 23 Python tests, no skips; eleven selected native renders reviewed; final ZIP CRC/byte checks, strict extraction and fresh editor import/startup. Native checks found and corrected a 13 cm death-pose floor penetration. The final pose now rests 1 cm above the test floor.
 
 Remaining: original weapon animation blocks, full directional locomotion/foot/door-contact calibration, passengers/jacking/locks/visible seated driver/ragdoll and calibrated reference-runtime parity. An actual browser import and web export/playback were not tested.
+
+## Motion and Jolt impact correction
+
+Created: actors/impact_profile.gd, actors/ped_reaction_body.gd, combat/aim_solution.gd, presentation/weapon_pose_profile.gd; tuning/ped_impact.tres, tuning/weapon_pose.tres; tests/run_motion_suite.gd and motion_results.json; docs/MOTION_REVISION.md; current validation transcripts. Godot generates UID companions for new scripts.
+
+Modified: CharacterMotor, ActorActionState, ActionProfile, ReferenceMotion, FollowCameraRig, WeaponController, DriveVehicle, WheelForceSolver, VehicleDoor and its profile, VehicleTransition, ModelPlaceholderSetup, SkinnedMotionVisual, arena wiring, validation runner, native/synthetic test expectations, existing result reports, README and architecture/validation/discrepancy/source-review documentation. FILES.sha256 records the delivered files.
+
+Implemented: coherent pose ownership, shared axle spin, world-space reticle convergence, data-driven recoil/reload presentation, visible calibrated driver, a single pelvis path through entry/exit, faster physically motorized closure, reusable solid Jolt torso reactions with momentum exchange and nonfatal recovery.
+
+Validation: 198 exact-engine/Jolt assertions, 23 Python tests, temporal native renders, a separate corrected cabin render, strict ZIP extraction/byte checks and fresh import/startup. Limits: procedural gun action fallbacks, single torso instead of articulated ragdoll, prototype impact tuning, reference-runtime/browser/full-frame performance parity unverified. See MOTION_REVISION.md.

@@ -1,5 +1,7 @@
 # Animation, interaction and impact revision
 
+The current [motion revision](MOTION_REVISION.md) supersedes the initial impact proxy, pose sampling and seat behavior below.
+
 Reference: [mrxenginner/reVC at a26fff4af555a8a425ac9f17d1dd718d00d1f942](https://github.com/mrxenginner/reVC/tree/a26fff4af555a8a425ac9f17d1dd718d00d1f942). This revision reviews the relevant action paths in addition to the earlier system register in BEHAVIOR_SPEC.md. It does not establish complete source coverage or runtime parity.
 
 ## Source Confirmed
@@ -22,14 +24,14 @@ No reference source files are shipped in this project. Findings are requirements
 
 | Mechanic | Inputs → outputs | Update order and states | Timing / dependencies |
 | --- | --- | --- | --- |
-| Movement/action blend | Command, root curves, weapon action → motor displacement and composed pose | Motor owns planar root displacement; phase-synchronized walk/run poses crossfade to start/stop/jump/transition poses. Masked upper actions and aim IK follow; pelvis/legs retain locomotion. | Physics 60 Hz; pose sampled per rendered frame; actions.tres blend duration 0.16 s. |
+| Movement/action blend | Command, root curves, weapon action → motor displacement and composed pose | Motor owns planar root displacement; phase-synchronized walk/run poses crossfade to start/stop/jump/transition poses. Masked upper actions and aim IK follow; pelvis/legs retain locomotion. | Physics 60 Hz; controlled player pose sampled once per physics tick; actions.tres blend duration 0.16 s. |
 | Aim/fire/reload | Aim, pitch, shot events, reload clock → upper-body clip or procedural arm/recoil pose | Locomotion → action crossfade → upper-body crossfade → arm aiming. Reload target blends in/out separately. | Native weapon action used when available; missing blocks use explicit IK/recoil/reload fallbacks. |
 | Death/recovery | Damage or vehicle impact → dying/dead or down/getting_up/alive | Reaction preempts normal movement and weapon control. Death is clamped once; get-up requires a clear standing capsule. | Clip duration, knockdown hold and collision clearance; no ragdoll. |
 | Weapon selection | Slot/next/previous command → profile, magazine, reserve, presentation | Save outgoing ammo; select incoming slot; cancel reload; retain outstanding shot cooldown. | Three test slots; each slot owns ammo. Source Colt/M4/Shotgun when DAT is available, lab profiles otherwise. |
 | Entry | Interaction + clear approach + stopped upright car → reserved/committed seat | On foot → opening → get-in → inside close → driving. Actor collision disabled during transition; only a reservation can commit. | Imported clip durations are added for the total, rather than using get-in alone. Door motor starts at its contact time. |
 | Exit | Stopped car + supported clear volume/route → on-foot control | Driving → get-out → outside close → commit. Recheck the selected side at commit. Death releases ownership; invalid vehicle recovers. | Imported get-out plus outside-close duration. Blocked exits preserve driver ownership. |
 | Physical door | Desired open/latch + chassis acceleration/contact → door angle | Unlatched RigidBody3D with HingeJoint3D motor/limits; closed latch removes the joint and follows chassis. Reset also resets both doors. | Jolt hinge around vehicle Y; prototype mass, limits and motor values in doors.tres. No unsupported Jolt joint softness tuning. |
-| Run-over | Predicted chassis shape sweep + relative speed → bounded impulse, damage, knockdown/death | Probe before next physics solve; actor owns a low reaction shape and temporary vehicle collision exception. | Speed threshold, quadratic damage, impulse cap and cooldown are target tuning, not converted source units. |
+| Run-over | Predicted chassis shape sweep + relative speed → bounded impulse, damage, knockdown/death | Probe before next physics solve; standing capsule yields to a solid Jolt torso; no vehicle collision exception is added to the torso. | Speed threshold, quadratic damage, impulse cap and cooldown are target tuning, not converted source units. |
 | Presentation | Life, occupancy, equipped profile, health → HUD and mesh selection | HUD shows life state/slot/ammo and respawn prompt; reticle requires active upper action. Model roles are independent Resources. | Original world textures disabled by default; ground, road, steps and targets retain plain colors. Long-gun geometry is an explicit primitive fallback. |
 
 ## Runtime Confirmed
@@ -43,7 +45,7 @@ Godot/Jolt runtime tests validate the target contracts listed in tests/revision_
 - Lower-body aim locomotion currently retains the walk/run cycle and changes travel direction; complete directional strafe/backstep clip selection and foot sliding calibration remain open.
 - Source turn/root policy is retained from the previous milestone, but full tank-like feel requires original-runtime input/heading/displacement traces. No new air steering was introduced for imported movement.
 - Weapon-specific IFP blocks are needed for original firearm firing/reloading animation. Existing converted `ped_library.res` is reused; no assets were regenerated here.
-- No passengers, carjacking, locks, damaged/broken doors, door detachment, jumping from moving cars, seated visible driver, per-bone damage selection or ragdoll is implemented.
+- No passengers, carjacking, locks, damaged/broken doors, door detachment, jumping from moving cars, per-bone damage selection or ragdoll is implemented.
 - Car suspension, tire/impact calibration, crowd navigation and reference-runtime performance comparison remain open.
 
 ## ZIP repair

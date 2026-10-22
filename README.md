@@ -2,6 +2,8 @@
 
 An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The earlier asset-inclusive test build has a textured skinned character shared by the player and four pedestrians, an Idaho car, a Colt .45, yard props, 234 converted animations and data-driven tuning. It is a first playable framework; full reVC equivalence is unverified.
 
+The latest [motion and physics revision](docs/MOTION_REVISION.md) fixes shared wheel axle animation, jump pose ownership, camera-center aiming, visible seat alignment and solid Jolt pedestrian impacts. It adds temporal checks of actual bone movement, car contact and recovery.
+
 This source revision adds layered action animation, one-shot death/recovery, weapon switching, all-gun sprinting, physical doors, staged vehicle transitions and swept pedestrian impacts. Arena surfaces default to plain colors. See [revision source review](docs/REVISION_SOURCE_REVIEW.md) for evidence and limitations. The public repository uses primitive fallbacks. The revised private test ZIP retains the supplied converted assets without reconversion.
 
 ## Run
@@ -32,7 +34,7 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 
 The resizable window supports expanding aspect ratios, a height-preserving camera FOV and responsive HUD/radar/prompts. F2 offers window presets, fullscreen, interface scaling, independent 3D resolution scaling and optional adaptive resolution. Physics remains fixed at 60 Hz. Adaptation is based on sustained frame time and is disabled by default.
 
-Edit **tuning/arsenal.tres** for loadout profiles/reference weapon names and **tuning/actions.tres** for blend, reaction and all-gun sprint settings. Edit **tuning/placeholder_assets.tres** to replace model/texture roles, attachment offsets, paint and approximate hull sizing. Gameplay controllers do not own the artwork. Replacement character rigs must be compatible with the animation bindings or deliberately retargeted.
+Edit **tuning/ped_impact.tres** for impact mass, lift, survival and recovery, **tuning/weapon_pose.tres** for arm/recoil/reload presentation, and **tuning/doors.tres** for seat calibration and door motors. Edit **tuning/arsenal.tres** for loadout profiles/reference weapon names and **tuning/actions.tres** for blend, reaction and all-gun sprint settings. Edit **tuning/placeholder_assets.tres** to replace model/texture roles, attachment offsets, paint and approximate hull sizing. Gameplay controllers do not own the artwork. Replacement character rigs must be compatible with the animation bindings or deliberately retargeted.
 
 Only four selected model roots and 25 PNGs were exported from the uploaded files. The entire IMG is not included. See [the model/display milestone](docs/MODEL_AND_DISPLAY_MILESTONE.md) for selection evidence, native skin validation, setup, limitations and rebuilding.
 

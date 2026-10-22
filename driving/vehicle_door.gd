@@ -70,7 +70,7 @@ func _physics_process(_dt: float) -> void:
 	var relative := car.global_basis.inverse()*global_basis
 	angle = atan2(relative.z.x,relative.z.z)
 	var target := (-1.0 if side==0 else 1.0)*deg_to_rad(profile.opening_degrees) if opened else 0.0
-	joint.set_param(HingeJoint3D.PARAM_MOTOR_TARGET_VELOCITY,clampf((angle-target)*profile.motor_gain,-3,3))
+	joint.set_param(HingeJoint3D.PARAM_MOTOR_TARGET_VELOCITY,clampf((angle-target)*profile.motor_gain,-profile.maximum_motor_speed,profile.maximum_motor_speed))
 	if not opened and absf(angle)<profile.latch_radians and (angular_velocity-car.angular_velocity).length()<0.5:
 		latched = true
 		joint.node_a = NodePath("")

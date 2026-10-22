@@ -16,6 +16,3 @@ extends Resource
 @export var allow_sprint_all_guns := true
 @export var aim_movement_multiplier := 0.55
 @export var knockdown_seconds := 1.2
-@export var impact_damage_coefficient := 2.0
-@export var impact_min_speed := 2.0
-@export var impact_cooldown_seconds := 0.65

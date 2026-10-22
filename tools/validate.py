@@ -18,6 +18,7 @@ if (root/'assets/converted/ped_library.res').exists():
 if (root/'assets/converted/models/player.scn').exists():
  checks.append(['--headless','--fixed-fps','60','--script','res://tests/run_presentation_suite.gd'])
  checks.append(['--headless','--fixed-fps','60','--script','res://tests/run_native_action_suite.gd'])
+ checks.append(['--headless','--fixed-fps','60','--script','res://tests/run_motion_suite.gd'])
 for options in checks:
  result=subprocess.run([args.godot,'--path',str(root),*options],capture_output=True,text=True)
  print(result.stdout,end='')
@@ -45,3 +46,8 @@ if (root/'assets/converted/models/player.scn').exists():
  if native['failures']:raise SystemExit(1)
  print(f"Verified {native['assertions']} native action assertions")
 
+
+if (root/'assets/converted/models/player.scn').exists():
+ motion=json.loads((root/'tests/motion_results.json').read_text())
+ if motion['failures']:raise SystemExit(1)
+ print(f"Verified {len(motion['results'])} temporal motion/seat/impact assertions")

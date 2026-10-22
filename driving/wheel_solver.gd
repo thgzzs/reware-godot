@@ -6,6 +6,7 @@ var normal_load := 0.0
 var slip := 0.0
 var point := Vector3.ZERO
 var touching := false
+var rolling_speed := 0.0
 var ray: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
 func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mount: Vector3, steer: float, drive: float, brake: float, cfg: HandlingProfile, body_rid: RID) -> void:
  var origin := state.transform*mount
@@ -33,6 +34,7 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  var forward := (-state.transform.basis.z).rotated(up,steer).slide(normal).normalized()
  var side := forward.cross(normal).normalized()
  var longitudinal_speed := velocity.dot(forward)
+ rolling_speed = longitudinal_speed
  var lateral_speed := velocity.dot(side)
  var longitudinal := drive
  var stop_force := minf(absf(longitudinal_speed)*cfg.mass/(4.0*state.step),brake+cfg.rolling_drag)

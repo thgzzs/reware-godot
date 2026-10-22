@@ -43,10 +43,22 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
  hull.shape = hull.shape.duplicate()
  (hull.shape as BoxShape3D).size = assets.vehicle_hull_size
  car.impact_probe.shape = hull.shape
+ var hood := CollisionShape3D.new()
+ hood.name = "BonnetSupport"
+ var ramp := ConvexPolygonShape3D.new()
+ var points := PackedVector3Array()
+ for x in [-assets.vehicle_hull_size.x*0.48,assets.vehicle_hull_size.x*0.48]:
+  for pair in [[-assets.vehicle_hull_size.z*0.48,0.18],[-0.65,0.62]]:
+   points.append(Vector3(x,0.05,pair[0]))
+   points.append(Vector3(x,pair[1],pair[0]))
+ ramp.points = points
+ hood.shape = ramp
+ car.add_child(hood)
  var seat := model.find_child("ped_frontseat",true,false) as Node3D
  if seat!=null:
   car.door_profile.seat_offset = car.to_local(seat.global_position)
   car.door_profile.seat_offset.x = -absf(car.door_profile.seat_offset.x)
+  car.door_profile.seat_offset += car.door_profile.seat_marker_adjustment
  for mesh in car.find_children("*","MeshInstance3D",true,false):
   for surface in range(mesh.mesh.get_surface_count()):
    var material: StandardMaterial3D = mesh.mesh.surface_get_material(surface)
@@ -69,7 +81,8 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
  # remains independent until measured against source traces.
  var tire := assets.texture("tyre")
  for wheel in car.wheel_visuals:
-  var mesh := wheel.get_child(0) as MeshInstance3D
+  var spin := wheel.get_node("AxleSpin") as Node3D
+  var mesh := spin.get_node("Tire") as MeshInstance3D
   var material := StandardMaterial3D.new()
   material.albedo_texture = tire
   material.roughness = 1
@@ -81,7 +94,8 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
   var hub_material := StandardMaterial3D.new()
   hub_material.albedo_texture = assets.texture("wheel")
   hub.material_override = hub_material
-  wheel.add_child(hub)
+  hub.name = "Hub"
+  spin.add_child(hub)
   hub.position.x = -0.12 if wheel.position.x<0 else 0.12
   hub.rotation.y = -PI*0.5 if wheel.position.x<0 else PI*0.5
  car.set_meta("placeholder_model","idaho")

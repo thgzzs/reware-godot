@@ -14,6 +14,8 @@ var speed := 0.0
 var wheels: Array[WheelForceSolver] = []
 var mounts := [Vector3(-0.82,0.10,-1.25),Vector3(0.82,0.10,-1.25),Vector3(-0.82,0.10,1.25),Vector3(0.82,0.10,1.25)]
 var wheel_visuals: Array[Node3D] = []
+var wheel_spinners: Array[Node3D] = []
+var wheel_angles := PackedFloat32Array([0,0,0,0])
 var force_telemetry := GameplayTelemetry.new()
 var reset_pending := false
 var reset_transform := Transform3D.IDENTITY
@@ -28,7 +30,14 @@ func _ready() -> void:
  angular_damp = 0.25
  for i in range(4):
   wheels.append(WheelForceSolver.new())
-  wheel_visuals.append(get_node("Wheel%d" % i))
+  var wheel := get_node("Wheel%d" % i) as Node3D
+  wheel_visuals.append(wheel)
+  var spin := Node3D.new()
+  spin.name = "AxleSpin"
+  wheel.add_child(spin)
+  for child in wheel.get_children():
+   if child!=spin: child.reparent(spin,false)
+  wheel_spinners.append(spin)
  for i in range(2):
   var door := VehicleDoor.new()
   door.configure(self,i)
@@ -37,6 +46,7 @@ func _ready() -> void:
  impact_probe.configure(self)
 func _physics_process(dt: float) -> void:
  impact_probe.sweep(dt)
+ update_visuals(dt)
 func set_door_open(side: int, value: bool) -> void:
  if side>=0 and side<doors.size(): doors[side].request_open(value)
 func seat_position() -> Vector3:
@@ -80,7 +90,9 @@ func update_visuals(dt: float) -> void:
  for i in range(4):
   wheel_visuals[i].position = mounts[i]-Vector3.UP*(profile.suspension_length-wheels[i].compression)
   wheel_visuals[i].rotation.y = steering if i<2 else 0
-  wheel_visuals[i].get_child(0).rotate_x(-speed*dt/profile.wheel_radius)
+  var rolling_speed := wheels[i].rolling_speed if wheels[i].touching else speed
+  wheel_angles[i] = wrapf(wheel_angles[i]-rolling_speed*dt/profile.wheel_radius,-PI,PI)
+  wheel_spinners[i].rotation.x = wheel_angles[i]
 func reserve_seat(actor: Node) -> bool:
  if is_instance_valid(driver) or is_instance_valid(reservation): return false
  reservation = actor

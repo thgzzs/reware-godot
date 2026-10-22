@@ -1,15 +1,20 @@
 class_name ActorActionState
 extends RefCounted
 ## Per-actor action clocks; no gameplay ownership in the rendered skeleton.
+var weapon_pose: WeaponPoseProfile = preload("res://tuning/weapon_pose.tres")
 var profile: ActionProfile = preload("res://tuning/actions.tres")
 var motion: ReferenceMotion
 var aim_weight := 0.0
 var aim_pitch := 0.0
+var aim_target := Vector3.ZERO
+var has_aim_target := false
+var upper_allowed := true
 var firing_left := 0.0
 var firing_duration := 0.16
 var reloading := false
 var reload_weight := 0.0
 var reload_time := 0.0
+var reload_duration := 1.0
 var life := "alive"
 var life_time := 0.0
 var life_clip := ""
@@ -51,11 +56,16 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
   return
  reloading = gun.reload_left>0
  reload_weight = move_toward(reload_weight,1.0 if reloading else 0.0,profile.upper_blend_rate*dt)
- reload_time = gun.profile.reload_seconds-gun.reload_left
+ reload_duration = gun.profile.reload_seconds
+ reload_time = reload_duration-gun.reload_left
  weapon_group = gun.profile.animation_group
- var target := 1.0 if cmd.aim or firing_left>0 or reloading else 0.0
+ weapon_pose = gun.profile.pose
+ upper_allowed = motion==null or motion.phase in ["idle","start","move","stop"]
+ if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
+ var target := 1.0 if upper_allowed and (cmd.aim or firing_left>0 or reloading) else 0.0
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)
 func upper_clip() -> String:
+ if not upper_allowed: return ""
  var group_candidate := weapon_group+("_reload" if reloading else "_fire")
  var candidates := PackedStringArray([group_candidate])
  if weapon_group in ["colt45","pistol"]: candidates.append_array(profile.reload_clips if reloading else profile.fire_clips)

@@ -23,6 +23,6 @@ func sweep(dt: float) -> void:
 		direction.y = 0
 		if direction.length_squared()<0.001: direction = relative
 		var closing := maxf(0,relative.dot(direction.normalized()))
-		if closing<ped.actions.profile.impact_min_speed: continue
+		if closing<ped.reaction_body.profile.minimum_speed: continue
 		ped.receive_vehicle_impact(car,closing,direction)
 		impacts += 1

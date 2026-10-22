@@ -66,6 +66,7 @@ func _ready() -> void:
 	if enable_reference_assets and ImportedAssetSetup.available():
 		ImportedAssetSetup.apply(self)
 		if enable_model_placeholders: ModelPlaceholderSetup.apply(self,placeholder_assets)
+		if actor.reference_pose is SkinnedMotionVisual: actor.reference_pose.set_process(false)
 		animation_browser = ImportedAnimationBrowser.new()
 		animation_browser.actor = actor
 		animation_browser.database = reference_database
@@ -107,8 +108,11 @@ func _physics_process(dt: float) -> void:
 		elif transition.state == "driving": transition.request_exit()
 	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
 		actor.respawn(Vector3(-3,0.94,4))
+	rig.read_look(cmd)
 	transition.tick(dt)
 	var driving := transition.state == "driving"
+	var armed := transition.state=="on_foot" and actor.control_enabled and actor.health.health>0
+	weapon.advance(cmd,armed,dt)
 	actor.actions.aim_pitch = rig.pitch
 	actor.tick(cmd,rig.yaw,dt)
 	if driving: vehicle.command(cmd)
@@ -117,10 +121,14 @@ func _physics_process(dt: float) -> void:
 	var exclude: Array[RID] = [actor.get_rid()]
 	if transition.state!="on_foot": exclude.append(vehicle.get_rid())
 	rig.tick(pivot,cmd,driving,exclude,dt)
+	actor.actions.aim_target = AimSolution.camera_target(get_world_3d().direct_space_state,rig.camera,weapon.profile.range_meters,exclude)
+	actor.actions.has_aim_target = true
+	if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:
+		actor.reference_pose.sample_pose(dt)
+		actor.reference_pose.skeleton.force_update_all_bone_transforms()
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
 	if is_instance_valid(actor.weapon_muzzle): muzzle = actor.weapon_muzzle.global_position
-	weapon.tick(cmd,transition.state=="on_foot" and actor.control_enabled and actor.health.health>0,get_world_3d().direct_space_state,rig.camera,muzzle,exclude,dt)
-	vehicle.update_visuals(dt)
+	if armed: weapon.try_fire(cmd,get_world_3d().direct_space_state,rig.camera,muzzle,exclude)
 	if actor.global_position.y < -15 and transition.state == "on_foot": actor.reset_at(Vector3(-3,1,4))
 	last_tick_us = Time.get_ticks_usec()-start_us
 	telemetry.record(last_tick_us)

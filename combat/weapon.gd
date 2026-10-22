@@ -48,6 +48,9 @@ func start_reload() -> void:
  if reload_left>0 or magazine>=profile.magazine_size or reserve<=0: return
  reload_left = profile.reload_seconds
 func tick(cmd: GameplayCommand, active: bool, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID], dt: float) -> void:
+ advance(cmd,active,dt)
+ if active: try_fire(cmd,space,camera,muzzle,exclude)
+func advance(cmd: GameplayCommand, active: bool, dt: float) -> void:
  cooldown = maxf(0,cooldown-dt)
  if not active:
   reload_left = 0
@@ -60,6 +63,7 @@ func tick(cmd: GameplayCommand, active: bool, space: PhysicsDirectSpaceState3D, 
    magazine += transferred
    reserve -= transferred
  if cmd.reload: start_reload()
+func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID]) -> void:
  if not cmd.fire or reload_left>0 or cooldown>0.000001: return
  if magazine<=0:
   start_reload()
@@ -85,8 +89,8 @@ func fire_ray(space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector
  if last_hit:
   aim_end = hit.position
   if hit.collider.has_method("receive_damage"):
-   hit.collider.receive_damage(profile.damage,hit.position,direction)
+   hit.collider.receive_damage(profile.damage,hit.position,(aim_end-muzzle).normalized())
   if hit.collider is RigidBody3D:
-   hit.collider.apply_impulse(direction*15.0,hit.position-hit.collider.global_position)
+   hit.collider.apply_impulse((aim_end-muzzle).normalized()*15.0,hit.position-hit.collider.global_position)
  shot_fired.emit(muzzle,aim_end,last_hit)
 

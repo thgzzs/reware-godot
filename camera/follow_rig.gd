@@ -15,9 +15,10 @@ func _ready() -> void:
  sphere.radius = profile.collision_radius
  query.shape = sphere
  query.collision_mask = 13
-func tick(target: Vector3, cmd: GameplayCommand, driving: bool, exclude: Array[RID], dt: float) -> void:
+func read_look(cmd: GameplayCommand) -> void:
  yaw -= cmd.look.x*profile.mouse_sensitivity
  pitch = clampf(pitch+cmd.look.y*profile.mouse_sensitivity,profile.min_pitch,profile.max_pitch)
+func tick(target: Vector3, cmd: GameplayCommand, driving: bool, exclude: Array[RID], dt: float) -> void:
  var weight := 1.0-exp(-profile.follow_rate*dt)
  if not initialized:
   anchor = target

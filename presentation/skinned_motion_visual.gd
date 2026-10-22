@@ -15,6 +15,8 @@ var upper_mask: Array[int] = []
 var upper_signature := ""
 var upper_transition := 0.0
 var upper_from: Array[Quaternion] = []
+var base_rotations: Array[Quaternion] = []
+var upper_rotations: Array[Quaternion] = []
 var sample_us := 0.0
 var rest_position := Vector3.ZERO
 var ground_offset := 0.0
@@ -28,6 +30,8 @@ func _ready() -> void:
    from_rotations.append(skeleton.get_bone_pose_rotation(i))
    from_scales.append(skeleton.get_bone_pose_scale(i))
    upper_from.append(skeleton.get_bone_pose_rotation(i))
+   base_rotations.append(skeleton.get_bone_pose_rotation(i))
+   upper_rotations.append(skeleton.get_bone_pose_rotation(i))
    if actions!=null and actions.profile.upper_bones.has(skeleton.get_bone_name(i)): upper_mask.append(i)
 func binding(name: String) -> Array:
  if tracks.has(name): return tracks[name]
@@ -58,12 +62,13 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
  if next!=signature:
   for i in range(skeleton.get_bone_count()):
    from_positions[i] = skeleton.get_bone_pose_position(i)
-   from_rotations[i] = skeleton.get_bone_pose_rotation(i)
+   from_rotations[i] = base_rotations[i]
    from_scales[i] = skeleton.get_bone_pose_scale(i)
   signature = next
   transition_time = 0
  transition_time += dt
  var duration := actions.profile.blend_seconds if actions!=null else 0.16
+ if motion.clip=="JUMP_launch": duration = minf(duration,0.04)
  var alpha := smoothstep(0,1,clampf(transition_time/maxf(0.001,duration),0,1))
  if not motion.preview_clip.is_empty(): alpha = 1
  var started := Time.get_ticks_usec()
@@ -71,7 +76,7 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
  if upper!=upper_signature:
   upper_signature = upper
   upper_transition = 0
-  for i in range(skeleton.get_bone_count()): upper_from[i] = skeleton.get_bone_pose_rotation(i)
+  for i in range(skeleton.get_bone_count()): upper_from[i] = upper_rotations[i]
  upper_transition += dt
  var upper_alpha := smoothstep(0,1,clampf(upper_transition/maxf(0.001,duration),0,1))
  var upper_at := 0.0
@@ -92,13 +97,15 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   p = from_positions[i].lerp(p,alpha)
   q = from_rotations[i].slerp(q,alpha)
   s = from_scales[i].lerp(s,alpha)
+  base_rotations[i] = q
   if not upper.is_empty() and i in upper_mask and motion.preview_clip.is_empty():
    q = q.slerp(upper_from[i].slerp(rotation_at(upper,upper_at,i),upper_alpha),actions.aim_weight)
+  upper_rotations[i] = q
   skeleton.set_bone_pose_position(i,p)
   skeleton.set_bone_pose_rotation(i,q)
   skeleton.set_bone_pose_scale(i,s)
  skeleton.force_update_all_bone_transforms()
- if actions!=null and actions.life=="alive" and motion.preview_clip.is_empty() and actions.aim_weight>0:
+ if actions!=null and actions.life=="alive" and motion.preview_clip.is_empty() and actions.aim_weight>0 and actions.upper_allowed:
   aim_arms()
  settle_reaction_pose(dt)
  sample_us = Time.get_ticks_usec()-started
@@ -127,6 +134,10 @@ func settle_reaction_pose(dt: float) -> void:
   return
  var target := 0.0
  var actor := get_parent().get_parent() as CharacterMotor
+ if actor!=null and actor.reaction_body.active:
+  ground_offset = 0
+  position = rest_position
+  return
  if actor!=null and actor.grounded and actions.life in ["dead","down"] and motion.time>=motion.duration(motion.clip)-0.001:
   if not floor_minimum.has(motion.clip): floor_minimum[motion.clip] = skin_minimum_y()
   var minimum: float = floor_minimum[motion.clip]
@@ -154,14 +165,20 @@ func aim_arms() -> void:
  var hand := skeleton.find_bone("R Hand")
  if mini(upper,mini(forearm,hand))<0: return
  var direction := Vector3(0,-sin(actions.aim_pitch),-cos(actions.aim_pitch))
- var recoil := actions.firing_left/maxf(0.001,actions.firing_duration)*0.055
- var target := skeleton.get_bone_global_pose(upper).origin+direction*0.53+Vector3(0.02,recoil,0)
- target = target.lerp(Vector3(0.10,0.05,-0.30),actions.reload_weight)
- for iteration in range(3):
+ if actions.has_aim_target:
+  direction = (skeleton.to_local(actions.aim_target)-skeleton.get_bone_global_pose(hand).origin).normalized()
+ var cfg := actions.weapon_pose
+ var recoil := actions.firing_left/maxf(0.001,actions.firing_duration)*cfg.recoil_lift
+ var target := skeleton.get_bone_global_pose(upper).origin+direction*cfg.reach+cfg.grip_offset+Vector3.UP*recoil
+ var reload_phase := clampf(actions.reload_time/maxf(0.01,actions.reload_duration),0,1)
+ var reload_target := cfg.reload_grip+Vector3(0,-sin(reload_phase*PI)*cfg.reload_drop,0.05*sin(reload_phase*TAU))
+ target = target.lerp(reload_target,actions.reload_weight)
+ for iteration in range(cfg.solver_passes):
   turn_joint(forearm,hand,target,actions.aim_weight)
   turn_joint(upper,hand,target,actions.aim_weight)
  if actions.reload_weight<0.99:
   var pose := skeleton.get_bone_global_pose(hand)
+  if actions.has_aim_target: direction = (skeleton.to_local(actions.aim_target)-pose.origin).normalized()
   var delta := Quaternion(pose.basis.x.normalized(),direction)
   var parent := skeleton.get_bone_parent(hand)
   var local := skeleton.get_bone_global_pose(parent).basis.get_rotation_quaternion().inverse()*delta*pose.basis.get_rotation_quaternion()
@@ -171,8 +188,11 @@ func aim_arms() -> void:
  var left_forearm := skeleton.find_bone("L Forearm")
  var left_upper := skeleton.find_bone("L UpperArm")
  if (actions.reloading or actions.weapon_group in ["rifle","riflebad","shotgun","m4","ruger"]) and mini(left_hand,mini(left_forearm,left_upper))>=0:
-  var support := skeleton.get_bone_global_pose(hand).origin+(Vector3(-0.03,-0.04,0) if actions.reloading else direction*0.20+Vector3(0,-0.035,0))
+  var support := skeleton.get_bone_global_pose(hand).origin+(cfg.magazine_offset+Vector3.DOWN*sin(reload_phase*PI)*cfg.magazine_travel if actions.reloading else direction*cfg.support_reach+Vector3.DOWN*cfg.support_drop)
   for iteration in range(2):
    turn_joint(left_forearm,left_hand,support,actions.aim_weight)
    turn_joint(left_upper,left_hand,support,actions.aim_weight)
-func _process(dt: float) -> void: sample_pose(dt)
+func _process(dt: float) -> void:
+ var actor := get_parent().get_parent() as CharacterMotor
+ if actor!=null and actor.reaction_body.active: return
+ sample_pose(dt)

@@ -20,14 +20,14 @@ This design uses scene composition and small components rather than an engine hi
 At 60 physics ticks per second:
 
 1. Sample or inject one command. A jump/interact/reload edge exists for one tick.
-2. Validate interaction; advance the transition transaction.
-3. Advance the on-foot motor when it owns control.
-4. Latch vehicle command only for the committed driver; otherwise park it.
-5. Update follow camera and its obstruction query; resolve aim for this tick.
-6. Advance weapon cooldown/reload; fire only when on foot.
-7. Refresh wheel presentation and record orchestration CPU time.
+2. Read camera look, validate interaction and advance the transition transaction.
+3. Advance weapon selection, cooldown and reload once, then actor action clocks and motor.
+4. Latch the committed driver's command; otherwise park the car.
+5. Update follow camera/obstruction and solve the camera-center aim target.
+6. Sample the controlled actor pose once, update bone attachments, then resolve muzzle-occluded firing.
+7. Record orchestration CPU time. Each vehicle owns its own wheel presentation callback.
 
-Jolt invokes vehicle `_integrate_forces` with its direct body state. It consumes the last latched command; no assumption is made that this callback runs after the scene's gameplay callback. Control-to-force latency can be up to one physics tick. Tire forces use `state.step`. Render-time HUD reads snapshots and never mutates simulation. Camera yaw used for movement is the previously resolved yaw; mouse rotation affects camera/aim in the current tick and movement on the next tick. This latency is explicit and requires reference feel validation.
+Jolt invokes vehicle `_integrate_forces` independently with the last latched command. Force input can have one physics tick of latency. Movement uses the current look yaw; the camera-center target and the muzzle query belong to the same gameplay tick. The player pose is sampled at the fixed tick so render frame rate cannot advance action clocks or crossfades twice. NPC normal presentation samples during rendering; reaction bodies own their pose synchronization while active. Render-time HUD reads simulation state.
 
 ## Vehicle transaction
 
@@ -37,15 +37,15 @@ Entry requires grounded actor, reach, line of sight, upright slow vehicle and an
 
 Driving enables one vehicle input consumer while the foot motor is disabled. Exit requires low linear speed and a supported, clear capsule volume. The prototype tests left, right, then rear candidate positions. Ownership remains committed throughout exiting. On commit it queries again, so a new blocker cancels exit and keeps the driver. A successful commit places the actor, restores control/collision, releases the driver and parks the car.
 
-A collision exception between the actor and the occupied vehicle persists during transfer and for 0.1 s after restoration. This prevents cached Jolt overlap contacts from imparting a spurious impulse as the hidden occupant is moved outside. The acceptance suite checks post-exit vehicle stability. Collision with that one vehicle is suppressed during this short grace interval; it is a documented prototype compromise. The capsule exit test still includes the vehicle before committing.
+A collision exception between the actor and the occupied vehicle persists during transfer and for 0.1 s after restoration. This prevents cached Jolt overlap contacts from imparting a spurious impulse as the collision-disabled occupant is moved outside. The acceptance suite checks post-exit vehicle stability. Collision with that one vehicle is suppressed during this short grace interval; it is a documented prototype compromise. The capsule exit test still includes the vehicle before committing.
 
-Entry and exit presently use configured time gates, not skeletal animation markers. `state_changed` is the integration boundary for presentation. Before production animation, drive authoritative completion from validated markers with a timeout and cancellation token; preserve seat reservation until commit. No synchronized door or seated character animations are supplied.
+Entry and exit presently use configured time gates, not skeletal animation markers. `state_changed` is the integration boundary for presentation. Before production animation, drive authoritative completion from validated markers with a timeout and cancellation token; preserve seat reservation until commit. Imported clip times drive door motor contact gates. The visible driver is pelvis-anchored to the model seat; get-in/get-out use one pelvis path so capsule translation and animated vertical root motion cannot both shift the seat. Independent animation event markers and cancellation tokens remain future work.
 
 ## Extending
 
 - Add a vehicle: duplicate `scenes/vehicle.tscn`, change visuals/shape, inject a HandlingProfile. The four-wheel layout currently lives in DriveVehicle and must be generalized for bikes/boats/aircraft.
 - Add a character archetype: reuse CharacterMotor and a MovementProfile with another command producer and presentation scene. No protagonist name is embedded in gameplay modules.
-- Add a weapon: reuse WeaponController with another WeaponProfile for hitscan types. A loadout/switching component and projectile strategy are future work, not working features.
+- Add a weapon: reuse WeaponController with another WeaponProfile for hitscan types. WeaponLoadout provides switching and per-slot ammo; a projectile strategy remains future work.
 - Add a camera mode: supply another presentation strategy through the rig boundary; current follow/aim/driving modes are parameters of one rig.
 - Scale the world: replace the arena's direct-child vehicle discovery with a spatial registry and stream content through a world scene owner. No streaming implementation is claimed.
 - Multiplayer: commands, explicit seat ownership and signals are useful boundaries, but this is not network-ready. Authentication, authority, serialization, prediction, reconciliation and replication are absent. Jolt is not treated as deterministic rollback simulation.
@@ -69,3 +69,13 @@ Each CharacterMotor owns ActorActionState, PedHealth and WeaponController. Playe
 DriveVehicle composes a PedestrianImpactProbe and two VehicleDoor bodies. VehicleDoorProfile owns hinge, mass, panel, seat and approach tuning; each vehicle duplicates its profile before model markers adjust it. A latched door has no active joint so freezing it cannot pin the chassis to the world. VehicleTransition reserves and commits occupancy around separate opening/get-in/inside-close and get-out/outside-close stages. Exit volume and route are checked again on the same selected exit index.
 
 EquippedWeaponVisual maps firearm families to replaceable scenes; missing long guns use explicit primitive shapes. Unknown original gun animation blocks use procedural action fallbacks and are listed as discrepancies.
+
+## Motion ownership revision
+
+Full-body actions explicitly replace locomotion layers. Jump launch has a short 40 ms crossfade because its supplied clip lasts only 133 ms. Upper actions are suppressed during jumping, seating, life reactions and sprinting; aim/fire/reload take precedence over a sprint request. Base pose and upper pose snapshots are cached before IK, preventing a solved arm pose from feeding back into the next locomotion crossfade.
+
+AimSolution provides the camera-center target to the actor's world-space hand solver. WeaponController advances state before pose evaluation and resolves firing after pose evaluation. The muzzle-to-target ray still blocks cover between gun and reticle. WeaponPoseProfile contains reach, recoil, magazine-hand trajectory and solver tuning independently from ballistics.
+
+Each actor composes one dormant top-level PedReactionBody. On impact, the standing collider yields collision/motion ownership to this 75 kg Jolt torso. The body uses CCD, world/vehicle/door/actor contacts, bounded lift and opposite car impulse. The skeleton follows the physical pelvis; it does not also drive the body transform. Recovery requires slow motion, a supported clear standing volume and a get-up action. Death retains the physical body; respawn deactivates and reuses it. It is a single rigid torso approximation, not a per-bone ragdoll.
+
+Each wheel has a steer/suspension parent and an axle spin pivot carrying both tire and visible hub. Rates use the wheel solver's relative longitudinal contact velocity; airborne wheels use chassis speed as a presentation fallback. Physical wheel inertia is still unimplemented.

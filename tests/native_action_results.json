@@ -19,22 +19,22 @@
       "passed": true
     },
     {
-      "measured": 0.000000164967687510398,
+      "measured": 0.0000000875443006975729,
       "name": "native gun hand follows aim pitch -0.40",
       "passed": true
     },
     {
-      "measured": 0.0000000421468442368678,
+      "measured": 0.000000231328172617395,
       "name": "native gun hand follows aim pitch 0.00",
       "passed": true
     },
     {
-      "measured": 0.000000240274005136598,
+      "measured": 0.000000216964153310073,
       "name": "native gun hand follows aim pitch 0.35",
       "passed": true
     },
     {
-      "measured": "(0.72147, 1.841556, 1.037468)",
+      "measured": "(0.714922, 1.841556, 1.05088)",
       "name": "native aimed skin stays finite and within human scale",
       "passed": true
     },
@@ -94,7 +94,7 @@
       "passed": true
     },
     {
-      "measured": -1.18425801340535,
+      "measured": -1.18683013484238,
       "name": "native door moves with its physical body 0",
       "passed": true
     },
@@ -109,7 +109,7 @@
       "passed": true
     },
     {
-      "measured": 1.18425755441289,
+      "measured": 1.18682984680012,
       "name": "native door moves with its physical body 1",
       "passed": true
     },
