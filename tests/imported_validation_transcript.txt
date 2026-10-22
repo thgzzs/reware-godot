@@ -1,0 +1,38 @@
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS all ANPK clips present in native library 234
+PASS every native key and timestamp matches decoded source { "channels": 5422, "channel_keys": 95427, "mismatches": 0, "max_position_or_scale_error": 0.0, "max_quaternion_dot_error": 0.00000017881393 }
+PASS all source data tables loaded <null>
+PASS sprint motion integrates across loop without reset spike <null>
+PASS reference assets activated <null>
+PASS player and four pedestrians use identical motor script <null>
+PASS health and weapon components shared by actor types <null>
+PASS player heading source unit converted explicitly 13.0899693899575
+PASS weapon DAT fields applied Colt45 / DAT
+PASS dimensionally mapped vehicle fields applied <null>
+PASS walk start uses source clip WALK_start
+PASS walk movement follows imported stride scale 1.15887343883514
+PASS walk loop selected WALK_player
+PASS travel follows body heading while turning (-0.002994, 0.0, -0.588365)
+PASS sprint source clip active sprint_civi
+PASS sprint release enters committed stop Run_stop
+PASS stop animation locks heading <null>
+PASS stop root motion still moves the colliding body 1.2169588804245
+PASS stop commitment completes <null>
+PASS jump starts source launch clip JUMP_launch
+PASS jump waits for clip duration <null>
+PASS jump launches after imported timing gate <null>
+PASS jump and landing recover grounded
+PASS all 234 clips sampled on procedural preview without nonfinite poses <null>
+PASS browser exposes all imported clip names <null>
+PASS entry request accepted in imported mode <null>
+PASS entry commits after imported get-in clip duration ["driving", 0.68333333333333]
+PASS driving still accelerates with mapped data 5.95763969421387
+PASS exit request accepted <null>
+PASS exit returns to shared on-foot actor on_foot
+PASS weapon works after imported enter drive exit loop <null>
+PASS NPC gun reaction consumes ped DAT relationships 4
+PASS player defense multiplier from pedstats applied <null>
+RESULT imported 33 assertions / 0 failures

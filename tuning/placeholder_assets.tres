@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="PlaceholderAssets" load_steps=2 format=3]
+[ext_resource type="Script" path="res://presentation/placeholder_assets.gd" id="1"]
+[resource]
+script = ExtResource("1")
+texture_paths = Dictionary[String,String]({
+"crosshair": "res://assets/converted/models/textures/sitem16.png",
+"compass_north": "res://assets/converted/models/textures/radar_north.png",
+"player_marker": "res://assets/converted/models/textures/radar_centre.png",
+"radar_disc": "res://assets/converted/models/textures/radardisc.png",
+"weapon_icon": "res://assets/converted/models/textures/gun.png",
+"ground": "res://assets/converted/models/textures/dockpave_256.png",
+"road": "res://assets/converted/models/textures/road2_256.png",
+"steps": "res://assets/converted/models/textures/step_64hv.png",
+"wheel": "res://assets/converted/models/textures/wheel_saloon64.png",
+"tyre": "res://assets/converted/models/textures/tyre64a.png",
+"muzzle_flash": "res://assets/converted/models/textures/gunflash1.png",
+"impact": "res://assets/converted/models/textures/bullethitsmoke.png",
+"target": "res://assets/converted/models/textures/target256.png"
+})

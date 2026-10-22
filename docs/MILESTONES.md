@@ -92,3 +92,31 @@ Add animation markers and door/seat presentation, multiple vehicle/weapon strate
 - `world/arena.gd.uid`
 - `world/primitives.gd`
 - `world/primitives.gd.uid`
+
+## M1.1 — Supplied animation/data integration: complete within available-file scope
+
+Created: animation/imported_database.gd, imported_asset_setup.gd, reference_motion.gd, reference_pose.gd; actors/ped_health.gd and ped_brain.gd; debug/animation_browser.gd; tools/convert_reference_assets.py, build_animation_library.gd and import_local_assets.py; tests/run_imported_suite.gd and test_asset_conversion.py; docs/IMPORTED_ASSETS.md; source/converted asset folders and reports.
+
+Modified: shared character motor, input command/source, arena composition, vehicle transition presentation/timing, HUD, validation entry point, gitignore, README, asset manifest and architecture/status documentation. No uploaded source file was changed.
+
+Implemented: conversion of all 234 supplied clips to native Godot animation; full source table preservation; explicit subset of DAT fields applied; shared player/NPC components; original-clip locomotion timing/root curves; committed sprint stopping; animation browser and four route/flee NPCs.
+
+Validation: independent decoding comparison, exhaustive native key comparison, 33 imported-mode assertions, 48 baseline regression assertions and 7 parser tests passed. Original skeleton/skin retargeting is unverified.
+
+Remaining: gta3.img did not arrive; original character/vehicle/texture/rig conversion is blocked. Other IFP blocks, actual model binding, complete action/AI systems, reference captures, vehicle coefficient calibration and full parity remain open. This milestone does not claim otherwise.
+
+## M1.2 — Selective model preparation and fistfight data
+
+Created: tools/extract_selected_img.py, tests/test_selected_img.py, docs/SELECTIVE_MODEL_IMPORT.md.
+
+Modified: animation/imported_database.gd, tools/convert_reference_assets.py, tools/build_animation_library.gd, tools/import_local_assets.py, debug/animation_browser.gd, world/arena.gd, tests/test_asset_conversion.py, tests/run_imported_suite.gd, README and asset/status documentation. Added unmodified assets/local_source/fistfite.dat and rebuilt converted Resources/reports.
+
+Implemented: optional 32-row melee configuration import, explicit 30-fps timing conversion and sentinel handling; clip-inspector timings; original selective PC VC IMG v1 + DIR extractor with dry-run selection and per-output hashes.
+
+Validation: see docs/VALIDATION.md for the current run. Synthetic archive tests cover selection and invalid inputs; no real IMG conversion test was possible.
+
+Remaining: gta3.img upload failed again; matching gta3.dir and model/texture bytes are unavailable. Actual selective extraction, DFF/TXD conversion, skin/rig binding, shared material dependency resolution, melee combat and desktop visual validation remain unfinished.
+
+## M1.3 — Selected models, native skin and responsive display
+
+See MODEL_AND_DISPLAY_MILESTONE.md for the created/modified file register, implemented systems, selection evidence, validation and remaining gaps. The archive arrived this milestone, superseding the M1.1/M1.2 upload blockers. Four model roots and 25 textures are included in the private build; no full IMG extraction occurred.

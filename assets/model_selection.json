@@ -1,0 +1,125 @@
+{
+  "models": [
+    {
+      "role": "player",
+      "offset": 7761920,
+      "bytes": 86217,
+      "textures": [
+        "player"
+      ],
+      "sha256": "79eb4f7b15d48d95c08329dbf3febb697cef338c76a5605da517e4d0fcd34302"
+    },
+    {
+      "role": "colt45",
+      "offset": 17182720,
+      "bytes": 14574,
+      "textures": [
+        "colt_all"
+      ],
+      "sha256": "ea0aeb3fd1db2716e0de47c561e02fc10f4ad39471ea5134b1e34017f67555dd"
+    },
+    {
+      "role": "idaho",
+      "offset": 52273152,
+      "bytes": 149495,
+      "textures": [
+        "enginetopb4bit64",
+        "idaho868bit128",
+        "idaho86body8bit128",
+        "idaho86body8bit64",
+        "white128a",
+        "white64a"
+      ],
+      "sha256": "12dae6337c3d1341930fe67b27e13bc378027e1a3f19928b57201a9b6d9ddc91"
+    },
+    {
+      "role": "trashcan",
+      "offset": 65701888,
+      "bytes": 9838,
+      "textures": [
+        "binend",
+        "binhandle",
+        "binside",
+        "trash"
+      ],
+      "sha256": "ae4a4526307470975505a89e81d90fcfff2ff21f8f4af75a7013ba4c05775644"
+    }
+  ],
+  "dictionaries": [
+    {
+      "label": "player",
+      "offset": 15347712,
+      "bytes": 43904,
+      "wanted": [
+        "player"
+      ]
+    },
+    {
+      "label": "colt45",
+      "offset": 17758208,
+      "bytes": 6440,
+      "wanted": [
+        "colt_all"
+      ]
+    },
+    {
+      "label": "idaho",
+      "offset": 42246144,
+      "bytes": 43944,
+      "wanted": [
+        "enginetopb4bit64",
+        "idaho868bit128",
+        "idaho86body8bit128",
+        "idaho86body8bit64",
+        "white128a",
+        "white64a"
+      ]
+    },
+    {
+      "label": "street_bin",
+      "offset": 67053568,
+      "bytes": 14888,
+      "wanted": [
+        "binend",
+        "binhandle",
+        "binside",
+        "trash"
+      ]
+    }
+  ],
+  "loose_dictionaries": [
+    {
+      "file": "hud.txd",
+      "wanted": [
+        "siteM16",
+        "radar_north",
+        "radar_centre",
+        "radardisc",
+        "gun"
+      ]
+    },
+    {
+      "file": "MISC.TXD",
+      "wanted": [
+        "wheel_saloon64",
+        "tyre64a"
+      ]
+    },
+    {
+      "file": "particle.txd",
+      "wanted": [
+        "gunflash1",
+        "bullethitsmoke",
+        "target256"
+      ]
+    },
+    {
+      "file": "generic.txd",
+      "wanted": [
+        "dockpave_256",
+        "road2_256",
+        "step_64HV"
+      ]
+    }
+  ]
+}

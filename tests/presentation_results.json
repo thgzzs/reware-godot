@@ -1,0 +1,195 @@
+{
+  "assertions": 28,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "player_pose_cpu": {
+      "max_us": 156.0,
+      "mean_us": 23.7611111111111,
+      "p95_us": 42.0,
+      "samples": 180,
+      "scope": "one player's SkinnedMotionVisual.sample_pose CPU time only; excludes other actors, Jolt and rendering"
+    },
+    "scope": "Headless Jolt plus CPU native skin evaluation and layout/viewport API tests. No desktop or GPU timing equivalence."
+  },
+  "results": [
+    {
+      "measured": {
+        "position": "(1.0, 0.648313, -0.00001)",
+        "velocity": "(0.0, -0.012146, 0.000014)"
+      },
+      "name": "imported car settles at its spawn",
+      "passed": true
+    },
+    {
+      "measured": [
+        25,
+        24
+      ],
+      "name": "native character uses real hierarchy and skin",
+      "passed": true
+    },
+    {
+      "measured": 0.000000119557995503783,
+      "name": "all source inverse binds cancel rest transforms",
+      "passed": true
+    },
+    {
+      "measured": 1153,
+      "name": "all native skin weights and palette indices valid",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum": "(0.309934, 0.820493, 0.215398)",
+        "minimum": "(-0.331645, -1.014735, -0.171255)"
+      },
+      "name": "idle skin stands upright at original scale",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "root locomotion translation is not applied twice",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "player and NPCs share skinned presentation and actor components",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "pistol is bound to the actual right hand",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "Idaho retains wheel door and seat markers",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "damaged and low-detail variants are hidden",
+      "passed": true
+    },
+    {
+      "measured": [
+        "(-0.875, 0.1, -1.692)",
+        "(0.875, 0.1, -1.692)",
+        "(-0.875, 0.1, 1.693)",
+        "(0.875, 0.1, 1.693)"
+      ],
+      "name": "axle spacing derives from original wheel markers",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "vehicle hull covers placeholder body length",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1280.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 640x360",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(960.0, 720.0)",
+        "ray_error": 0.0000000894069671630859
+      },
+      "name": "HUD and center ray adapt to 1024x768",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1280.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 1280x720",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1280.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 1920x1080",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1706.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 2560x1080",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1720.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 3440x1440",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(1280.0, 720.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 3840x2160",
+      "passed": true
+    },
+    {
+      "measured": {
+        "logical": "(720.0, 1280.0)",
+        "ray_error": 0.0
+      },
+      "name": "HUD and center ray adapt to 1080x1920",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "camera preserves vertical FOV on resize",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "3D scale and UI scale are independent",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "display menu blocks firing and movement commands",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "closing display menu resumes weapon input",
+      "passed": true
+    },
+    {
+      "measured": 0.95,
+      "name": "adaptive scale falls after sustained slow frames",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "adaptive cooldown prevents immediate oscillation",
+      "passed": true
+    },
+    {
+      "measured": 1.0,
+      "name": "adaptive scale recovers and remains bounded",
+      "passed": true
+    },
+    {
+      "measured": 0.5,
+      "name": "adaptive scale respects minimum",
+      "passed": true
+    }
+  ]
+}

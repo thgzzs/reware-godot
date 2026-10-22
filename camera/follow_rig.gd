@@ -10,6 +10,7 @@ var arm_length := 5.5
 var query := PhysicsShapeQueryParameters3D.new()
 var obstruction_fraction := 1.0
 func _ready() -> void:
+ camera.keep_aspect = Camera3D.KEEP_HEIGHT
  var sphere := SphereShape3D.new()
  sphere.radius = profile.collision_radius
  query.shape = sphere

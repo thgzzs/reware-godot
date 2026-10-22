@@ -1,3 +1,12 @@
 .godot/
 *.tmp
 *.log
+
+# User-supplied game data and converted derivatives stay in the private package.
+assets/local_source/
+assets/converted/
+assets/local_models/
+docs/*preview.png
+__pycache__/
+
+docs/*preview.png.import

@@ -4,6 +4,13 @@ extends CharacterBody3D
 ## sliding, launch and landing policy belong to this component.
 @export var profile: MovementProfile
 @onready var visual: Node3D = $Visual
+var reference_motion: ReferenceMotion
+var weapon: WeaponController
+var health: PedHealth
+var archetype := "STAT_PLAYER"
+var reference_enabled := false
+var attack_multiplier := 1.0
+var reference_pose: Node3D
 var grounded := false
 var support_normal := Vector3.UP
 var phase := "airborne"
@@ -20,8 +27,45 @@ var jump_count := 0
 var landing_count := 0
 var ignored_vehicle: PhysicsBody3D
 var collision_grace := 0.0
+func _ready() -> void:
+ weapon = WeaponController.new()
+ weapon.profile = preload("res://tuning/weapon.tres")
+ add_child(weapon)
+ health = PedHealth.new()
+ add_child(health)
+ health.depleted.connect(func(): control_enabled = false)
+func configure_reference(db: ImportedGameplayDatabase, stat: String, library: AnimationLibrary) -> void:
+ archetype = stat
+ var record := db.find_record("ped_stats",stat)
+ profile = profile.duplicate()
+ if not record.is_empty():
+  # Source heading rates use normalized ticks (50/s), not degrees/second.
+  profile.turn_rate = deg_to_rad(record.heading_rate_per_normalized_tick*50.0)
+  health.defense_multiplier = record.defense_multiplier
+  attack_multiplier = record.attack_multiplier
+ reference_motion = ReferenceMotion.new(library)
+ if stat!="STAT_PLAYER":
+  reference_motion.walk_clip = "WOMAN_walknorm" if "GIRL" in stat else "WALK_civi"
+  reference_motion.run_clip = "woman_run" if "GIRL" in stat else "run_civi"
+ profile.launch_delay = reference_motion.duration("JUMP_launch")
+ profile.landing_delay = reference_motion.duration("JUMP_land")
+ profile.jump_buffer = 0.001
+ profile.coyote_time = 0.001
+ profile.air_acceleration = 0.0
+ collision_layer = 10
+ collision_mask = 15
+ reference_enabled = true
+ for child in visual.get_children(): child.visible = false
+ reference_pose = ReferencePose.new()
+ reference_pose.motion = reference_motion
+ visual.add_child(reference_pose)
+func receive_damage(amount: float, _point: Vector3, _direction: Vector3) -> void:
+ health.receive(amount)
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  if not control_enabled:
+  if reference_enabled:
+   if health.health<=0: reference_motion.force_action("FALL_front",dt)
+   elif reference_motion.phase=="seated": reference_motion.force_action("CAR_sit",dt)
   velocity = Vector3.ZERO
   return
  if is_instance_valid(ignored_vehicle):
@@ -46,25 +90,51 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   phase = "airborne"
   jump_count += 1
  var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
- var speed := profile.sprint_speed if cmd.sprint else profile.speed
- if cmd.aim: speed *= profile.aim_multiplier
- if phase == "launch" or phase == "landing": speed = 0
- var target := direction * speed
- var horizontal := drive_velocity
- var rate := profile.acceleration if direction.length_squared()>0 else profile.deceleration
- if not grounded: rate = profile.air_acceleration
- horizontal = horizontal.move_toward(target,rate*dt)
- drive_velocity = horizontal
- if grounded:
-  horizontal = horizontal.slide(support_normal)
- velocity.x = horizontal.x
- velocity.z = horizontal.z
- if grounded and velocity.y <= 0: velocity.y = horizontal.y
- else: velocity.y -= profile.gravity*dt
- if direction.length_squared()>0.01 or cmd.aim:
-  var angle := camera_yaw if cmd.aim else atan2(-direction.x,-direction.z)
-  facing = rotate_toward(facing,angle,profile.turn_rate*dt)
+ var horizontal := Vector3.ZERO
+ if reference_enabled:
+  var local_delta := Vector3.ZERO
+  if not reference_motion.preview_clip.is_empty():
+   local_delta = reference_motion.step(0,false,false,dt)
+  elif phase=="launch": reference_motion.force_action("JUMP_launch",dt)
+  elif phase=="landing": reference_motion.force_action("JUMP_land",dt)
+  elif not grounded: reference_motion.force_action("JUMP_glide",dt)
+  elif cmd.aim:
+   reference_motion.force_action("IDLE_armed",dt)
+   reference_motion.phase = "idle"
+   reference_motion.was_sprinting = false
+  else:
+   local_delta = reference_motion.step(direction.length(),cmd.sprint,cmd.walk,dt)
+  if not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim):
+   var angle := camera_yaw if cmd.aim else atan2(-direction.x,-direction.z)
+   facing = rotate_toward(facing,angle,profile.turn_rate*dt)
   visual.rotation.y = facing
+  if grounded and phase!="launch": drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
+  horizontal = drive_velocity
+  if grounded: horizontal = horizontal.slide(support_normal)
+  velocity.x = horizontal.x
+  velocity.z = horizontal.z
+  if grounded and velocity.y<=0: velocity.y = horizontal.y
+  else: velocity.y -= profile.gravity*dt
+ else:
+  var speed := profile.sprint_speed if cmd.sprint else profile.speed
+  if cmd.aim: speed *= profile.aim_multiplier
+  if phase == "launch" or phase == "landing": speed = 0
+  var target := direction * speed
+  horizontal = drive_velocity
+  var rate := profile.acceleration if direction.length_squared()>0 else profile.deceleration
+  if not grounded: rate = profile.air_acceleration
+  horizontal = horizontal.move_toward(target,rate*dt)
+  drive_velocity = horizontal
+  if grounded:
+   horizontal = horizontal.slide(support_normal)
+  velocity.x = horizontal.x
+  velocity.z = horizontal.z
+  if grounded and velocity.y <= 0: velocity.y = horizontal.y
+  else: velocity.y -= profile.gravity*dt
+  if direction.length_squared()>0.01 or cmd.aim:
+   var angle := camera_yaw if cmd.aim else atan2(-direction.x,-direction.z)
+   facing = rotate_toward(facing,angle,profile.turn_rate*dt)
+   visual.rotation.y = facing
  var was_grounded := grounded
  var impact := velocity.y
  var motion := velocity*dt
@@ -143,8 +213,8 @@ func ignore_vehicle_until_restored(body: PhysicsBody3D) -> void:
  collision_grace = 0.1
 func set_embarked(value: bool) -> void:
  control_enabled = not value
- collision_layer = 0 if value else 2
- collision_mask = 0 if value else 13
+ collision_layer = 0 if value else (10 if reference_enabled else 2)
+ collision_mask = 0 if value else (15 if reference_enabled else 13)
  visible = not value
  velocity = Vector3.ZERO
 func reset_at(where: Vector3) -> void:
@@ -154,6 +224,10 @@ func reset_at(where: Vector3) -> void:
  velocity = Vector3.ZERO
  drive_velocity = Vector3.ZERO
  grounded = false
+ if reference_enabled:
+  reference_motion.phase = "idle"
+  reference_motion.was_sprinting = false
+  reference_motion.set_clip("IDLE_stance")
  jump_left = 0
  grace_left = 0
  phase_left = 0

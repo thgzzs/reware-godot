@@ -1,0 +1,8 @@
+{
+  "decoder": "Psycrow101/io_scene_gta_ifp",
+  "reference": "e54ad39ee2711399ff1c6596f8d572e7f4e8027b",
+  "clips": 234,
+  "source_keys_compared": 87546,
+  "mismatches": 0,
+  "dependency_note": "mathutils value stub only; parser unmodified; oracle not distributed"
+}

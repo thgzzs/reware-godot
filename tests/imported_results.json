@@ -1,0 +1,215 @@
+{
+  "assertions": 36,
+  "backend": "Jolt Physics",
+  "claim": "native conversion and functional integration; original mesh/bind pose and reference-runtime parity unverified",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "gameplay_cpu": {
+      "max_us": 1418.0,
+      "mean_us": 55.8963029756537,
+      "p95_us": 105.0,
+      "samples": 1109,
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    },
+    "model_binding_verified": false,
+    "native_roundtrip": {
+      "channel_keys": 95427,
+      "channels": 5422,
+      "max_position_or_scale_error": 0.0,
+      "max_quaternion_dot_error": 0.000000178813934326172,
+      "mismatches": 0
+    }
+  },
+  "results": [
+    {
+      "measured": 234,
+      "name": "all ANPK clips present in native library",
+      "passed": true
+    },
+    {
+      "measured": {
+        "channel_keys": 95427,
+        "channels": 5422,
+        "max_position_or_scale_error": 0.0,
+        "max_quaternion_dot_error": 0.000000178813934326172,
+        "mismatches": 0
+      },
+      "name": "every native key and timestamp matches decoded source",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "all source data tables loaded",
+      "passed": true
+    },
+    {
+      "measured": 32,
+      "name": "fistfight rows and frame-to-second mapping preserved",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "fistfight clips resolve without inventing sentinel animations",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint motion integrates across loop without reset spike",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "reference assets activated",
+      "passed": true
+    },
+    {
+      "measured": "\nJab: 0.200–0.333 s / source damage 2",
+      "name": "fight configuration visible in clip inspector",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "player and four pedestrians use identical motor script",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "health and weapon components shared by actor types",
+      "passed": true
+    },
+    {
+      "measured": 13.0899693899575,
+      "name": "player heading source unit converted explicitly",
+      "passed": true
+    },
+    {
+      "measured": "Colt45",
+      "name": "weapon DAT fields applied",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "dimensionally mapped vehicle fields applied",
+      "passed": true
+    },
+    {
+      "measured": "WALK_start",
+      "name": "walk start uses source clip",
+      "passed": true
+    },
+    {
+      "measured": 1.15887343883514,
+      "name": "walk movement follows imported stride scale",
+      "passed": true
+    },
+    {
+      "measured": "WALK_player",
+      "name": "walk loop selected",
+      "passed": true
+    },
+    {
+      "measured": "(-0.002994, 0.0, -0.588365)",
+      "name": "travel follows body heading while turning",
+      "passed": true
+    },
+    {
+      "measured": "sprint_civi",
+      "name": "sprint source clip active",
+      "passed": true
+    },
+    {
+      "measured": "Run_stop",
+      "name": "sprint release enters committed stop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stop animation locks heading",
+      "passed": true
+    },
+    {
+      "measured": 1.2169588804245,
+      "name": "stop root motion still moves the colliding body",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stop commitment completes",
+      "passed": true
+    },
+    {
+      "measured": "JUMP_launch",
+      "name": "jump starts source launch clip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "jump waits for clip duration",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "jump launches after imported timing gate",
+      "passed": true
+    },
+    {
+      "measured": "grounded",
+      "name": "jump and landing recover",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "all 234 clips sampled on active character skeleton without nonfinite poses",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "browser exposes all imported clip names",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "entry request accepted in imported mode",
+      "passed": true
+    },
+    {
+      "measured": [
+        "driving",
+        0.683333333333334
+      ],
+      "name": "entry commits after imported get-in clip duration",
+      "passed": true
+    },
+    {
+      "measured": 5.95820045471191,
+      "name": "driving still accelerates with mapped data",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "exit request accepted",
+      "passed": true
+    },
+    {
+      "measured": "on_foot",
+      "name": "exit returns to shared on-foot actor",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon works after imported enter drive exit loop",
+      "passed": true
+    },
+    {
+      "measured": 4,
+      "name": "NPC gun reaction consumes ped DAT relationships",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "player defense multiplier from pedstats applied",
+      "passed": true
+    }
+  ]
+}

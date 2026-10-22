@@ -1,51 +1,54 @@
 # Harbor / Behavior Lab
 
-An original Godot gameplay framework and executable first-playable prototype informed by source-observable reVC behavior. This is an early milestone, not a completed reVC-equivalent game. It contains no reference source, original game assets, maps, branding, or converted code.
+An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The current asset-inclusive test build has a textured skinned character shared by the player and four pedestrians, an Idaho car, a Colt .45, yard props, 234 converted animations and data-driven tuning. It is a first playable framework; full reVC equivalence is unverified.
 
 ## Run
 
-1. Install **Godot 4.7.2 Stable** from https://godotengine.org/download/archive/4.7.2-stable/ . No other version is accepted by the application.
-2. Import `project.godot` with that editor and press F6 on `scenes/arena.tscn`, or F5 to run the project.
-3. Confirm **Project Settings > Physics > 3D > Physics Engine = Jolt Physics**. The setting is committed; no extension is required.
-4. Approach the orange coupe and press E. Stop with Space before exiting with E. The same character can continue moving and shooting afterward.
+1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.
+2. Import `project.godot`, wait for imports, then press F5.
+3. Move, jump, aim and shoot the resetting targets. Approach the car, press E, drive/brake/reverse, stop and exit with E, then resume on foot.
+4. F2 opens resolution and interface settings. F4 previews all supplied clips.
 
-The supplied project uses the Compatibility renderer and built-in Jolt. Desktop keyboard/mouse is the implemented input path. No external assets, plugins, engine compilation, network services, or reference-game installation are needed to run this prototype. The editor executable is not bundled.
+The Compatibility renderer and Jolt are configured. The engine executable is not bundled. The private download includes the selected converted assets; no conversion tool is needed to run it. The public source repository uses primitive fallbacks until local game data is imported. Original game uploads and derivatives are excluded from public git.
 
 | Control | On foot | Driving |
 | --- | --- | --- |
-| W / S | Forward / backward relative to camera | Accelerate / brake then reverse |
-| A / D | Strafe relative to camera | Steer |
-| Space | Buffered jump with windup | Brake |
-| Shift | Sprint | — |
-| Right mouse | Aim / slower movement | — |
-| Left mouse | Fire | — |
+| WASD | Camera-relative movement, heading-coupled travel | Accelerate/brake/reverse and steer |
+| Alt / Shift | Walk / sprint | — |
+| Space | Jump with animation windup | Brake |
+| Right / left mouse | Aim / fire | — |
 | R | Reload | — |
-| E | Enter nearby vehicle | Exit when stopped and a safe exit is clear |
+| E | Enter nearby car | Exit when stopped and clear |
 | Mouse | Orbit camera | Orbit camera |
-| F3 | Diagnostics | Diagnostics |
+| F1 / F2 | Controls / display settings | Same |
+| F3 / F4 | Diagnostics / animation browser | Same; leave the car to preview the actor |
 | Escape | Release cursor; click to recapture | Same |
+
+## Resolution and replacement assets
+
+The resizable window supports expanding aspect ratios, a height-preserving camera FOV and responsive HUD/radar/prompts. F2 offers window presets, fullscreen, interface scaling, independent 3D resolution scaling and optional adaptive resolution. Physics remains fixed at 60 Hz. Adaptation is based on sustained frame time and is disabled by default.
+
+Edit **tuning/placeholder_assets.tres** to replace model/texture roles, attachment offsets, paint and approximate hull sizing. Gameplay controllers do not own the artwork. Replacement character rigs must be compatible with the animation bindings or deliberately retargeted.
+
+Only four selected model roots and 25 PNGs were exported from the uploaded files. The entire IMG is not included. See [the model/display milestone](docs/MODEL_AND_DISPLAY_MILESTONE.md) for selection evidence, native skin validation, setup, limitations and rebuilding.
 
 ## Validate
 
 ```bash
-python3 tools/validate.py --godot /absolute/path/to/Godot_v4.7.2-stable_linux.x86_64
+python3 tools/validate.py --godot /absolute/path/to/Godot_4.7.2_stable
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-On Windows, use the console executable for useful logs. The validator imports the project, rejects mismatched engines, runs the real Jolt integration suite at 60 Hz, and writes `tests/latest_results.json`. It does not download or substitute an engine. Tests run much faster than real time in headless mode.
+The validator checks the exact engine, imports the project and runs appropriate real-Jolt suites. Imported suites run when their private assets are available. Python conversion tests require Pillow; private-file tests skip if their inputs are absent. See [VALIDATION.md](docs/VALIDATION.md) for the latest counts, measured scope and rendered checks.
 
-## Tune
+## Documentation
 
-Edit the five `.tres` files under `tuning/` in the Inspector. Serialized movement, handling, weapon, camera, and interaction values are intentionally provisional. They have prototype acceptance tests, not reference-runtime calibration. New actor/vehicle scenes can reuse the same components with different Resources. Use separate Resources or `duplicate()` for per-instance tuning; do not mutate shared tuning during gameplay.
+- [IMPORTED_ASSETS.md](docs/IMPORTED_ASSETS.md): animation conversion, DAT mappings, shared character behavior and limitations.
+- [MODEL_AND_DISPLAY_MILESTONE.md](docs/MODEL_AND_DISPLAY_MILESTONE.md): models, materials, skin binding, responsive UI, rebuilding and replacement workflow.
+- [SELECTIVE_MODEL_IMPORT.md](docs/SELECTIVE_MODEL_IMPORT.md): archive selection and minimal asset scope.
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md): ownership and extension boundaries.
+- [BEHAVIOR_SPEC.md](docs/BEHAVIOR_SPEC.md) and [PHYSICS_MIGRATION.md](docs/PHYSICS_MIGRATION.md): source findings and calibration requirements.
+- [DISCREPANCIES.md](docs/DISCREPANCIES.md): remaining gaps and parity status.
+- [MILESTONES.md](docs/MILESTONES.md): created/modified files and validation by milestone.
 
-## Read
-
-- `docs/BEHAVIOR_SPEC.md`: source findings, evidence classification, inputs, outputs, ordering, states and dependencies.
-- `docs/ARCHITECTURE.md`: ownership, phases, extension boundaries and transition guarantees.
-- `docs/PHYSICS_MIGRATION.md`: units, custom solver decisions and calibration requirements.
-- `docs/VALIDATION.md`: automated and manual checks, measured prototype results and profiling scope.
-- `docs/DISCREPANCIES.md`: unimplemented systems and unverified parity.
-- `docs/MILESTONES.md`: delivered files, validation, remaining work and next milestones.
-- `docs/provenance.json`: exact engine metadata, checksum, reference commit and reviewed files.
-- `assets/manifest.json`: authored primitive assets and dependencies.
-
-Source review and implementation were performed in one workflow. The deliverable follows the requested behavioral-spec separation and uses an unrelated implementation structure; it is not an independently staffed clean-room audit. No source correspondence or gameplay equivalence is asserted.
+Source review and implementation occurred in one workflow; this is not an independently staffed clean-room audit. No source code translation, gameplay equivalence or performance superiority is claimed. Framework licensing does not relicense supplied game assets.

@@ -2,7 +2,7 @@ class_name LocalInputSource
 extends RefCounted
 var mouse_delta := Vector2.ZERO
 func install() -> void:
- var bindings := {"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"jump":KEY_SPACE,"interact":KEY_E,"reload":KEY_R,"sprint":KEY_SHIFT,"brake":KEY_SPACE,"debug":KEY_F3}
+ var bindings := {"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"jump":KEY_SPACE,"interact":KEY_E,"reload":KEY_R,"sprint":KEY_SHIFT,"walk":KEY_ALT,"brake":KEY_SPACE,"debug":KEY_F3}
  for action in bindings:
   if not InputMap.has_action(action):
    InputMap.add_action(action)
@@ -23,6 +23,7 @@ func sample() -> GameplayCommand:
  cmd.reload = Input.is_action_just_pressed("reload")
  cmd.aim = Input.is_action_pressed("aim")
  cmd.fire = Input.is_action_pressed("fire")
+ cmd.walk = Input.is_action_pressed("walk")
  cmd.sprint = Input.is_action_pressed("sprint")
  cmd.brake = Input.is_action_pressed("brake")
  cmd.look = mouse_delta

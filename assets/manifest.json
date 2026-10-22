@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_assets_included": false,
+  "source_assets_included": "selected payloads and gameplay data in private build; omitted from public git",
   "assets": [
     {
       "id": "lab-character",
@@ -35,6 +35,60 @@
       ]
     }
   ],
-  "pipeline": "Scenes and Resources are editable in Godot. Import original glTF art into presentation children; keep collision shapes and gameplay tuning separate. No reference game extraction/conversion pipeline is provided.",
-  "audio": "No audio assets or audio playback implemented."
+  "pipeline": "ANPK/DAT -> native animation/gameplay Resources; reviewed IMG root ranges + external DragonFF -> portable model data/selected PNGs -> native model scenes",
+  "audio": "No audio assets or audio playback implemented.",
+  "imported_source_files": [
+    "ped.ifp",
+    "weapon.dat",
+    "pedgrp.dat",
+    "pedstats.dat",
+    "handling.cfg",
+    "ped.dat",
+    "fistfite.dat"
+  ],
+  "missing_source_files": [],
+  "imported_assets": [
+    {
+      "id": "ped-animation-library",
+      "path": "assets/converted/ped_library.res",
+      "clips": 234,
+      "binding_verified": false
+    },
+    {
+      "id": "gameplay-data",
+      "path": "assets/converted/gameplay_database.tres",
+      "runtime_fields": "See docs/IMPORTED_ASSETS.md"
+    },
+    {
+      "id": "selected-models",
+      "path": "assets/converted/models",
+      "models": [
+        "player",
+        "idaho",
+        "colt45",
+        "trashcan"
+      ],
+      "skeleton_frames": 25,
+      "skin_binds": 24,
+      "material_pngs": 25,
+      "source_geometry": true,
+      "complete_visual_or_gameplay_parity": false
+    },
+    {
+      "id": "presentation-bindings",
+      "path": "tuning/placeholder_assets.tres",
+      "purpose": "replaceable scene/texture roles, offsets, paint and hull sizing"
+    }
+  ],
+  "procedural_preview": "fallback only; selected character now uses native original hierarchy and Skin",
+  "selective_model_export": {
+    "tool": "tools/convert_model_placeholders.py",
+    "inspector": "tools/inspect_rw_archive.py",
+    "actual_model_exports": 4,
+    "png_exports": 25,
+    "img_payload_bytes": 369300,
+    "full_archive_unpacked": false
+  },
+  "original_archive_included": false,
+  "original_archive_index_supplied": false
 }

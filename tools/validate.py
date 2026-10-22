@@ -12,7 +12,12 @@ root=Path(__file__).resolve().parents[1]
 version=subprocess.run([args.godot,'--version'],capture_output=True,text=True,check=True).stdout.strip()
 if not re.match(r'^4\.7\.2\.stable(?:\.|$)',version):
  raise SystemExit(f'Requires exactly 4.7.2 Stable; found {version!r}. No fallback allowed.')
-for options in [ ['--headless','--editor','--import','--quit'], ['--headless','--fixed-fps','60','--script','res://tests/run_suite.gd'] ]:
+checks=[ ['--headless','--editor','--import','--quit'], ['--headless','--fixed-fps','60','--script','res://tests/run_suite.gd'] ]
+if (root/'assets/converted/ped_library.res').exists():
+ checks.append(['--headless','--fixed-fps','60','--script','res://tests/run_imported_suite.gd'])
+if (root/'assets/converted/models/player.scn').exists():
+ checks.append(['--headless','--fixed-fps','60','--script','res://tests/run_presentation_suite.gd'])
+for options in checks:
  result=subprocess.run([args.godot,'--path',str(root),*options],capture_output=True,text=True)
  print(result.stdout,end='')
  print(result.stderr,end='')
@@ -22,3 +27,13 @@ report=json.loads((root/'tests/latest_results.json').read_text())
 if report['failures']:
  raise SystemExit(1)
 print(f"Verified {report['assertions']} assertions with {version}")
+
+if (root/'tests/imported_results.json').exists() and (root/'assets/converted/ped_library.res').exists():
+ imported=json.loads((root/'tests/imported_results.json').read_text())
+ if imported['failures']:raise SystemExit(1)
+ print(f"Verified {imported['assertions']} imported-asset assertions")
+
+if (root/'assets/converted/models/player.scn').exists():
+ presentation=json.loads((root/'tests/presentation_results.json').read_text())
+ if presentation['failures']:raise SystemExit(1)
+ print(f"Verified {presentation['assertions']} model/presentation assertions")

@@ -35,5 +35,365 @@
     "src/vehicles/Transmission.cpp",
     "src/entities/Physical.cpp",
     "src/animation/AnimBlendAssociation.cpp"
-  ]
+  ],
+  "asset_import": {
+    "source_files": [
+      "weapon.dat",
+      "fistfite.dat",
+      "pedstats.dat",
+      "handling.cfg",
+      "ped.dat",
+      "ped.ifp",
+      "pedgrp.dat"
+    ],
+    "missing_files": [],
+    "source_sha256": {
+      "weapon.dat": "a96fe002cbaa80324f5f40fd1de465e40364c027136e1c3270fee4b63d918514",
+      "fistfite.dat": "5e75d5701fa19590d4368c1dc6f629675865c0f5356d0b971186c0e7a7251185",
+      "pedstats.dat": "429678a44fb2dbeb9c8a981889db9271b19f44ec4f8cb541f79a46190b6cc9ae",
+      "handling.cfg": "d0a97810c0ef35ba14d8e5fd0ddaabd1515f177da793157a9753bda0dbd25728",
+      "ped.dat": "b11b8fe3f062b6cf317b9e08fd8ff3978f08f45e92e7720e897dbeec34167f25",
+      "ped.ifp": "a200cf5085f1549434f7459bdaeb526b883425457f38c402456d60c3c129cfe4",
+      "pedgrp.dat": "80d9adc1296382559dc8e18a56026e819d751c859c137feded48c815f6be5049"
+    },
+    "native_clips": 234,
+    "native_channel_keys": 95427,
+    "independent_source_key_comparisons": 87546,
+    "binding_validated": "selected original character: 25 frames/24 inverse binds and upright CPU skin evaluation; full action/visual parity unverified",
+    "external_decoder_reference": "Psycrow101/io_scene_gta_ifp@e54ad39ee2711399ff1c6596f8d572e7f4e8027b",
+    "dragonff_inspected_reference": "54baca8ea2ed95fe5a86917f44399ce677379c59",
+    "third_party_tool_code_bundled": false
+  },
+  "selective_model_update": {
+    "fistfight_records": 32,
+    "concrete_animation_matches": 28,
+    "source_sentinels": 4,
+    "source_reference": "mrxenginner/reVC@a26fff4af555a8a425ac9f17d1dd718d00d1f942/src/peds/PedFight.cpp",
+    "archive_format_reference": "https://github.com/connorhaigh/gta-img",
+    "archive_payload_exports": 0,
+    "real_archive_validation": false,
+    "python_tests": 14,
+    "baseline_assertions": 48,
+    "imported_assertions": 36
+  },
+  "model_import": {
+    "archive_zip_sha256": "e61c4855f8aa86cfa09e631936590ed64e35d3868d22986b1e959a5715a83e8e",
+    "decoder": "Parik27/DragonFF@54baca8ea2ed95fe5a86917f44399ce677379c59",
+    "models": [
+      {
+        "role": "player",
+        "offset": 7761920,
+        "bytes": 86217,
+        "textures": [
+          "player"
+        ],
+        "sha256": "79eb4f7b15d48d95c08329dbf3febb697cef338c76a5605da517e4d0fcd34302"
+      },
+      {
+        "role": "colt45",
+        "offset": 17182720,
+        "bytes": 14574,
+        "textures": [
+          "colt_all"
+        ],
+        "sha256": "ea0aeb3fd1db2716e0de47c561e02fc10f4ad39471ea5134b1e34017f67555dd"
+      },
+      {
+        "role": "idaho",
+        "offset": 52273152,
+        "bytes": 149495,
+        "textures": [
+          "enginetopb4bit64",
+          "idaho868bit128",
+          "idaho86body8bit128",
+          "idaho86body8bit64",
+          "white128a",
+          "white64a"
+        ],
+        "sha256": "12dae6337c3d1341930fe67b27e13bc378027e1a3f19928b57201a9b6d9ddc91"
+      },
+      {
+        "role": "trashcan",
+        "offset": 65701888,
+        "bytes": 9838,
+        "textures": [
+          "binend",
+          "binhandle",
+          "binside",
+          "trash"
+        ],
+        "sha256": "ae4a4526307470975505a89e81d90fcfff2ff21f8f4af75a7013ba4c05775644"
+      }
+    ],
+    "texture_exports": [
+      {
+        "name": "player",
+        "dictionary_label": "player",
+        "source_dictionary_sha256": "b5802cf844bb2b540ad92b2c708fadf9802f90e69b4f98d3b8f634b0c4578185",
+        "path": "textures/player.png",
+        "width": 256,
+        "height": 256,
+        "rgba_sha256": "a5255d8f9a94b05dccda5ff0b5876edbcfc0006610ab53da8be398924c8cd8ff",
+        "png_sha256": "279080130b048dd633c291c28b7b49f2920c11fc73ac72c1f5a854355ad80c68"
+      },
+      {
+        "name": "colt_all",
+        "dictionary_label": "colt45",
+        "source_dictionary_sha256": "eb71a589f2f75fe1f32974015a7462e2d58a6606b1bc364da56cef0690d088b9",
+        "path": "textures/colt_all.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "fb3080f8eac3a1141b2f5198e7c3b070a32b31905185959265a242f7fdc079f5",
+        "png_sha256": "35f6e7727db2519ece9be9b2510d579d832baec4cfcf23bcb1e51ec265f90d60"
+      },
+      {
+        "name": "enginetopb4bit64",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/enginetopb4bit64.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "c7cfb4b896ef44e10d44610525fe15406c65a7beaaba16bdacaed6afa6149832",
+        "png_sha256": "62c74c3f5558922d5aea3f98454de48fb17e94f7b9071a818e9ca2f939c92c12"
+      },
+      {
+        "name": "idaho868bit128",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/idaho868bit128.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "28ae9330e3e53ca2378081128b6c071ccb99b559b4c421e42d25f7af324e9528",
+        "png_sha256": "77ce94fb257f5e0381aba99a72bd3303aab46cc6e0721e612ab2044e75f4b0b6"
+      },
+      {
+        "name": "idaho86body8bit128",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/idaho86body8bit128.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "bd4ba5d0494f2a9324318ce24493ad4c84b514309f2744fab7125ddbb52d55ee",
+        "png_sha256": "3b4213a814a62be11658332f9cdcd942d8415f4a5d815aaa25c1704ac59215d3"
+      },
+      {
+        "name": "idaho86body8bit64",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/idaho86body8bit64.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "fd92b7b29631dccff93a8445379f904e7ca295f37333e3d945fe83b7da5256e2",
+        "png_sha256": "0280dd905019a8e26ce8b34b647f716c668c3dc608fdbd7a35294595dcb0185b"
+      },
+      {
+        "name": "white128a",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/white128a.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "cdfe5613d8692c49d30212ca04c42c4178cedbce76c221cdd21b8ec1edff3eed",
+        "png_sha256": "7e0f68c0b3101239980c908012c2ca5ae554ca746822cf65906bcc0c1b887372"
+      },
+      {
+        "name": "white64a",
+        "dictionary_label": "idaho",
+        "source_dictionary_sha256": "44c2965c9ab82e46bac232be94cef98daced50b9a71b7952ce38906b5e12ff1f",
+        "path": "textures/white64a.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "d022238845e9a097f99eea9292af94ba6e6cf14c126c34a3be11f29209bd1597",
+        "png_sha256": "ee17002165cb512c1c75e39ae1943e386f253e5f17b1323671285f0861ec757f"
+      },
+      {
+        "name": "binend",
+        "dictionary_label": "street_bin",
+        "source_dictionary_sha256": "272c408852f8d9aeae27a45c02a72d3d92e228847a690d7a42210e20645d9241",
+        "path": "textures/binend.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "7ddf30b83cfd14b8798e49e1348fbba582fa85d1fa451b2738ab3c6a5cdbbcf4",
+        "png_sha256": "f4d51d0300b3a4412c4ef5798b0acd66629928746c827b5fd3689c3ae464173f"
+      },
+      {
+        "name": "binhandle",
+        "dictionary_label": "street_bin",
+        "source_dictionary_sha256": "272c408852f8d9aeae27a45c02a72d3d92e228847a690d7a42210e20645d9241",
+        "path": "textures/binhandle.png",
+        "width": 64,
+        "height": 32,
+        "rgba_sha256": "9e2972ae332b3a2e370434b4067765fc50b0553adf8e9cd2fed10243a7f67acd",
+        "png_sha256": "8870705932b6356d5a5195a202f24f4acdce8fe0344147b3996e5fff4f277ebb"
+      },
+      {
+        "name": "binside",
+        "dictionary_label": "street_bin",
+        "source_dictionary_sha256": "272c408852f8d9aeae27a45c02a72d3d92e228847a690d7a42210e20645d9241",
+        "path": "textures/binside.png",
+        "width": 32,
+        "height": 128,
+        "rgba_sha256": "b5d4c2107bf5897b0b558e6da078395dabe4ed7dc8c2000ab948f2aa4dd6971d",
+        "png_sha256": "74cc09b847e6738dc384e028309f403d9f7235c0bfacb1e956880c10a7d1741b"
+      },
+      {
+        "name": "trash",
+        "dictionary_label": "street_bin",
+        "source_dictionary_sha256": "272c408852f8d9aeae27a45c02a72d3d92e228847a690d7a42210e20645d9241",
+        "path": "textures/trash.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "714de4c7b7212369d1490f226d1ba72eab7c518e4d5b506e5a62c6ce5b72b102",
+        "png_sha256": "31ab3ad69c41cc56a2d7fc0cd1195837dc3784d1a94ba75763fff56019cc8fae"
+      },
+      {
+        "name": "siteM16",
+        "dictionary_label": "hud.txd",
+        "source_dictionary_sha256": "51a73732cb6e57ead9beceaaa39db06676c69394505d0aa7c00ade7a2910518d",
+        "path": "textures/sitem16.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "da8b06ae46e27f6a61889cfbb1a36df55605bb1a1126b08c3a1335dd1e45d2cd",
+        "png_sha256": "c05312ceb0629808475a75e67b453a761c9f8aed22120d71f0489400da83fdd8"
+      },
+      {
+        "name": "radar_north",
+        "dictionary_label": "hud.txd",
+        "source_dictionary_sha256": "51a73732cb6e57ead9beceaaa39db06676c69394505d0aa7c00ade7a2910518d",
+        "path": "textures/radar_north.png",
+        "width": 16,
+        "height": 16,
+        "rgba_sha256": "8a0751cc047278cdfb37005df0a9d29874aefe7cc909501837d720e3b66e1f37",
+        "png_sha256": "f75fb8f4bbd1a98ff62bdbf204868d78fa663901ee5c98812545968f931b7809"
+      },
+      {
+        "name": "radar_centre",
+        "dictionary_label": "hud.txd",
+        "source_dictionary_sha256": "51a73732cb6e57ead9beceaaa39db06676c69394505d0aa7c00ade7a2910518d",
+        "path": "textures/radar_centre.png",
+        "width": 16,
+        "height": 16,
+        "rgba_sha256": "fd1dbd3b5c6a9854e9327cdc28406656c04ce6151c4dacf7ae8d8dc05dc58555",
+        "png_sha256": "52f535df1f8ca2d2f9168e33bf36a5e7af05b94884674d27535314552635adb9"
+      },
+      {
+        "name": "radardisc",
+        "dictionary_label": "hud.txd",
+        "source_dictionary_sha256": "51a73732cb6e57ead9beceaaa39db06676c69394505d0aa7c00ade7a2910518d",
+        "path": "textures/radardisc.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "9822a1eb10ac3df26e153fb16232ed678d33cd783d4bca2a03900861d7f354d8",
+        "png_sha256": "bf13ea361eebe0bb254adcf7daddd4b9b9e80bb412f1d42fb2468ae9a6ff138e"
+      },
+      {
+        "name": "gun",
+        "dictionary_label": "hud.txd",
+        "source_dictionary_sha256": "51a73732cb6e57ead9beceaaa39db06676c69394505d0aa7c00ade7a2910518d",
+        "path": "textures/gun.png",
+        "width": 16,
+        "height": 16,
+        "rgba_sha256": "c06c6fc4224e832565b7a6b53327ce20c696ed60c0d4b8eb21d364e072281fdd",
+        "png_sha256": "d459263725660f7cb9639b2700282ca5738b2daead8770f6e8c3858abb0ce677"
+      },
+      {
+        "name": "wheel_saloon64",
+        "dictionary_label": "MISC.TXD",
+        "source_dictionary_sha256": "964b3f91c47f47449a3d441f8379de4504fe4590a5f2c3a7304abc7837fe947f",
+        "path": "textures/wheel_saloon64.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "195d7a6a867219279c98cc943adbe98a1f01ea5238a78222680bd8484bd0b0f5",
+        "png_sha256": "3b5ef0136a163578494b9e795ca176a5d002b616620d3074f024a1abb990b358"
+      },
+      {
+        "name": "tyre64a",
+        "dictionary_label": "MISC.TXD",
+        "source_dictionary_sha256": "964b3f91c47f47449a3d441f8379de4504fe4590a5f2c3a7304abc7837fe947f",
+        "path": "textures/tyre64a.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "3e04fa248a78d49251cbb72f99e3fdb023e83495bab8e0e78771351df40f04fe",
+        "png_sha256": "2e5367ac2d0ec06c5e00a88155a87f58f723ee633a45ac8bde4e1d761fc3f860"
+      },
+      {
+        "name": "gunflash1",
+        "dictionary_label": "particle.txd",
+        "source_dictionary_sha256": "a66a90c1dbcddfcfcf68e26d0c3e87c8b8f1e6b720a7ff21b971eaceee0b4870",
+        "path": "textures/gunflash1.png",
+        "width": 32,
+        "height": 32,
+        "rgba_sha256": "ab738a84351547237d64311a229c38b8e7c1a6c23d608abed94af085239c27d8",
+        "png_sha256": "3513ada3507cbd9d78eb35444e2741e4aaf65410fbdd8e098c2595d940af298b"
+      },
+      {
+        "name": "bullethitsmoke",
+        "dictionary_label": "particle.txd",
+        "source_dictionary_sha256": "a66a90c1dbcddfcfcf68e26d0c3e87c8b8f1e6b720a7ff21b971eaceee0b4870",
+        "path": "textures/bullethitsmoke.png",
+        "width": 64,
+        "height": 64,
+        "rgba_sha256": "7ebcafff55e9244159461a22d1e9767d511adb80efa910eb9d279480cf414c3e",
+        "png_sha256": "2161579dfbcad4eb7ce3e3cfc2d7e396aa924403b27aff52d743dde9a2af6571"
+      },
+      {
+        "name": "target256",
+        "dictionary_label": "particle.txd",
+        "source_dictionary_sha256": "a66a90c1dbcddfcfcf68e26d0c3e87c8b8f1e6b720a7ff21b971eaceee0b4870",
+        "path": "textures/target256.png",
+        "width": 256,
+        "height": 256,
+        "rgba_sha256": "c4c480bb4fec81fa0a4f2789f748a0a7cce42ab3bdcef0d831ceeefc3df0e31f",
+        "png_sha256": "0ea675e55f86d44d80818230b17125b6b74a3422e204cd9e6852941443b25d18"
+      },
+      {
+        "name": "dockpave_256",
+        "dictionary_label": "generic.txd",
+        "source_dictionary_sha256": "8f28f214bdc9f103f86ee7bf8a29ed5829ee26a64cce2c0eeb7b1906a37983c2",
+        "path": "textures/dockpave_256.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "7fe421afd15e4e1072a401e3dcdce07515fdef8ff81e9abd2b5ed7cc462d2827",
+        "png_sha256": "e955adf99fde176fc899e690e9c01ae5f35aba1f6a47ea2da9d9aa854b5bb9e6"
+      },
+      {
+        "name": "road2_256",
+        "dictionary_label": "generic.txd",
+        "source_dictionary_sha256": "8f28f214bdc9f103f86ee7bf8a29ed5829ee26a64cce2c0eeb7b1906a37983c2",
+        "path": "textures/road2_256.png",
+        "width": 128,
+        "height": 128,
+        "rgba_sha256": "65408ade7d439f15e51d477e6b39b45d8b001a64bbb5227d55d29a51c3e78f31",
+        "png_sha256": "f324be5590b20fec5dc6115bb592af153ba84d707da45822ae364782a833e0a9"
+      },
+      {
+        "name": "step_64HV",
+        "dictionary_label": "generic.txd",
+        "source_dictionary_sha256": "8f28f214bdc9f103f86ee7bf8a29ed5829ee26a64cce2c0eeb7b1906a37983c2",
+        "path": "textures/step_64hv.png",
+        "width": 32,
+        "height": 32,
+        "rgba_sha256": "0409dab4e42049ae97ad4e61112be69e498498b4398e0a6a91d2877d05bb6c5e",
+        "png_sha256": "50a3cd85741128296b4b514d5ea2f007f67b94c2cd9675ceb9a0fc700f961f1f"
+      }
+    ],
+    "selected_img_payload_bytes": 369300,
+    "unpacked_entire_archive": false,
+    "directory_supplied": false,
+    "filename_recovery_claimed": false,
+    "native_model_report": {
+      "engine": "4.7.2-stable (official)",
+      "models": 4,
+      "surfaces": 79,
+      "triangles_including_hidden_variants": 3793
+    },
+    "native_render_checks": "Godot 4.7.2 Compatibility, Mesa llvmpipe software OpenGL; six automated captures",
+    "assertions": {
+      "baseline": 48,
+      "imported": 36,
+      "model_presentation": 28,
+      "python": 18
+    }
+  },
+  "repository_update_base": "4b6b7bf69e6c298ef554ca2d148386e5898d1559"
 }

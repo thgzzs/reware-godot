@@ -1,5 +1,14 @@
 extends Node3D
 ## Composition root; owns wiring and explicit gameplay phase order only.
+var enable_reference_assets := true
+var enable_model_placeholders := true
+var placeholder_assets: PlaceholderAssets = preload("res://tuning/placeholder_assets.tres")
+var display_controller: DisplayController
+var reference_library: AnimationLibrary
+var reference_database: ImportedGameplayDatabase
+var pedestrians: Array[CharacterMotor] = []
+var ped_brains: Array[PedBrain] = []
+var animation_browser: ImportedAnimationBrowser
 var actor: CharacterMotor
 var vehicle: DriveVehicle
 var rig: FollowCameraRig
@@ -24,16 +33,17 @@ func _ready() -> void:
 		get_tree().quit(2)
 		return
 	input_source.install()
+	display_controller = DisplayController.new()
+	display_controller.persist_settings = not test_mode
+	add_child(display_controller)
 	build_world()
 	actor = preload("res://scenes/character.tscn").instantiate()
-	add_child(actor)
 	actor.position = Vector3(-3,0.94,4)
+	add_child(actor)
 	vehicle = preload("res://scenes/vehicle.tscn").instantiate()
-	add_child(vehicle)
 	vehicle.position = Vector3(1,0.90,0)
-	weapon = WeaponController.new()
-	weapon.profile = preload("res://tuning/weapon.tres")
-	add_child(weapon)
+	add_child(vehicle)
+	weapon = actor.weapon
 	transition = VehicleTransition.new()
 	transition.profile = preload("res://tuning/interaction.tres")
 	transition.actor = actor
@@ -53,18 +63,45 @@ func _ready() -> void:
 	overlay.arena = self
 	canvas.add_child(overlay)
 	weapon.shot_fired.connect(overlay.on_shot)
+	if enable_reference_assets and ImportedAssetSetup.available():
+		ImportedAssetSetup.apply(self)
+		if enable_model_placeholders: ModelPlaceholderSetup.apply(self,placeholder_assets)
+		animation_browser = ImportedAnimationBrowser.new()
+		animation_browser.actor = actor
+		animation_browser.database = reference_database
+		canvas.add_child(animation_browser)
 	if DisplayServer.get_name()!="headless": Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_F1:
+			overlay.controls_visible = not overlay.controls_visible
+			overlay.diagnostics = false
+			get_viewport().set_input_as_handled()
+			return
+		if event.keycode == KEY_F2:
+			overlay.toggle_settings()
+			get_viewport().set_input_as_handled()
+			return
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F4 and is_instance_valid(animation_browser):
+		if overlay.settings.visible: overlay.toggle_settings()
+		animation_browser.toggle()
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		input_source.mouse_delta += event.relative
-	if event.is_action_pressed("debug"): overlay.diagnostics = not overlay.diagnostics
+	if event.is_action_pressed("debug"):
+		overlay.diagnostics = not overlay.diagnostics
+		overlay.controls_visible = false
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if event is InputEventMouseButton and event.pressed and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+	if event is InputEventMouseButton and event.pressed and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and not overlay.settings.visible and (not is_instance_valid(animation_browser) or not animation_browser.visible):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _physics_process(dt: float) -> void:
 	if not is_instance_valid(actor): return
 	var start_us := Time.get_ticks_usec()
 	var cmd := injected_command if test_mode else input_source.sample()
+	if overlay.settings.visible or (is_instance_valid(animation_browser) and animation_browser.visible) or (not test_mode and Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED):
+		cmd = GameplayCommand.new()
+		input_source.mouse_delta = Vector2.ZERO
 	if cmd.interact:
 		if transition.state == "on_foot": transition.request_enter(nearest_vehicle())
 		elif transition.state == "driving": transition.request_exit()
@@ -78,7 +115,7 @@ func _physics_process(dt: float) -> void:
 	if transition.state!="on_foot": exclude.append(vehicle.get_rid())
 	rig.tick(pivot,cmd,driving,exclude,dt)
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
-	weapon.tick(cmd,transition.state=="on_foot",get_world_3d().direct_space_state,rig.camera,muzzle,exclude,dt)
+	weapon.tick(cmd,transition.state=="on_foot" and actor.health.health>0,get_world_3d().direct_space_state,rig.camera,muzzle,exclude,dt)
 	vehicle.update_visuals(dt)
 	if actor.global_position.y < -15 and transition.state == "on_foot": actor.reset_at(Vector3(-3,1,4))
 	last_tick_us = Time.get_ticks_usec()-start_us
@@ -115,7 +152,7 @@ func build_world() -> void:
 	sun.directional_shadow_max_distance = 120
 	add_child(sun)
 	LabGeometry.box(self,Vector3(150,1,150),Vector3(0,-0.5,0),Color("687b7d"),true).name = "Ground"
-	LabGeometry.box(self,Vector3(22,0.025,100),Vector3(18,0.015,0),Color("314550"))
+	LabGeometry.box(self,Vector3(22,0.025,100),Vector3(18,0.015,0),Color("314550")).name = "Road"
 	for z in range(-45,49,6):
 		LabGeometry.box(self,Vector3(0.15,0.02,2.5),Vector3(18,0.04,z),Color("ded3af"))
 	for x in [7.4,28.6]:
@@ -138,7 +175,7 @@ func build_world() -> void:
 		LabGeometry.box(self,Vector3(0.15,5.5,0.15),Vector3(32,2.75,z),Color("344a55"))
 		LabGeometry.box(self,Vector3(1.7,0.12,0.65),Vector3(31.25,5.5,z),Color("e9d7ad"))
 	LabGeometry.label(self,"03 / DRIVE",Vector3(18,1.5,-22),40)
- # Measurement fixtures: low steps, passable ramp, steep ramp, wall, ceiling.
+	# Measurement fixtures: low steps, passable ramp, steep ramp, wall, ceiling.
 	for i in range(4):
 		LabGeometry.box(self,Vector3(3,(i+1)*0.20,1),Vector3(-10,(i+1)*0.10,-i),Color("afbaad"),true).name = "Step%d"%i
 	LabGeometry.label(self,"01 / TRAVERSE",Vector3(-10,2.7,-3),32)

@@ -1,0 +1,8 @@
+Godot render exit 0
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.2 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+CAPTURE res://docs/model-preview.png (1440, 900)
+CAPTURE res://docs/display-preview.png (1440, 900)
+CAPTURE res://docs/aspect-4-3-preview.png (1024, 768)
+CAPTURE res://docs/aspect-wide-preview.png (1600, 720)
+CAPTURE res://docs/aspect-portrait-preview.png (600, 900)
+CAPTURE res://docs/animation-browser-preview.png (600, 900)

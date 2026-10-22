@@ -26,6 +26,10 @@ func request_enter(candidate: DriveVehicle) -> bool:
  start_position = actor.global_position
  actor.ignore_vehicle_until_restored(vehicle)
  actor.set_embarked(true)
+ if actor.reference_enabled:
+  actor.visible = true
+  actor.reference_motion.phase = "enter"
+  actor.reference_motion.set_clip("CAR_getin_LHS")
  remaining = profile.enter_seconds
  elapsed = 0
  change_state("entering")
@@ -40,6 +44,10 @@ func request_exit() -> bool:
   message = "Exit blocked / clear a door"
   return false
  exit_position = destination.position
+ if actor.reference_enabled:
+  actor.visible = true
+  actor.reference_motion.phase = "exit"
+  actor.reference_motion.set_clip("CAR_getout_LHS")
  remaining = profile.exit_seconds
  elapsed = 0
  vehicle.park()
@@ -51,11 +59,15 @@ func tick(dt: float) -> void:
   recover()
   return
  if state == "driving":
+  if actor.reference_enabled:
+   actor.visible = false
+   actor.reference_motion.phase = "seated"
   actor.global_position = vehicle.global_position
   return
  remaining = maxf(0,remaining-dt)
  elapsed += dt
  if state == "entering":
+  if actor.reference_enabled: actor.reference_motion.force_action("CAR_getin_LHS",dt)
   if vehicle.linear_velocity.length()>profile.max_transition_speed*2:
    recover()
    return
@@ -65,14 +77,22 @@ func tick(dt: float) -> void:
     last_duration = elapsed
     change_state("driving")
    else: recover()
- elif state == "exiting" and remaining<=0:
+ elif state == "exiting":
+  if actor.reference_enabled:
+   actor.reference_motion.force_action("CAR_getout_LHS",dt)
+   actor.global_position = vehicle.global_position.lerp(exit_position,1.0-remaining/profile.exit_seconds)
+  if remaining>0: return
   # Re-evaluate the whole volume when committing: blockers may have moved.
   var destination := find_exit()
   if destination.is_empty():
    message = "Exit became blocked"
+   if actor.reference_enabled: actor.visible = false
    change_state("driving")
    return
   actor.collision_grace = 0.1
+  if actor.reference_enabled:
+   actor.reference_motion.phase = "idle"
+   actor.reference_motion.set_clip("IDLE_stance")
   actor.reset_at(destination.position)
   actor.set_embarked(false)
   vehicle.release_seat(actor)

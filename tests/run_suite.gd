@@ -24,6 +24,7 @@ func place_actor(p: Vector3) -> void:
 func run() -> void:
  arena = preload("res://scenes/arena.tscn").instantiate()
  arena.test_mode = true
+ arena.enable_reference_assets = false
  root.add_child(arena)
  await frames(120)
  var actor: CharacterMotor = arena.actor

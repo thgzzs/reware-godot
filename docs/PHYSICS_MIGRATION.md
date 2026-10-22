@@ -33,3 +33,7 @@ The versioned 4.7 documentation confirms built-in Jolt and the `Jolt Physics` se
 Capture reference and target traces for identical inputs on flat ground, grades, stairs, curbs, impacts and surface changes. Store raw input timestamp, build/config identity, position, rotation, velocity, support normals, animation phase, wheel contacts and state transitions. Fit tuning against speed-time curves, jump launch/apex/airtime, yaw response, stopping distance, suspension compression/overshoot and entry/exit event times. Agree tolerances per mechanic before calling a match.
 
 Separate gameplay traces from visual capture and performance capture. A numerically close endpoint alone is insufficient: compare trajectories and transition timing. Preserve intentional modernization changes in the discrepancy register instead of tuning them away silently. No reference runtime or original data assets were available in this run, so this calibration gate remains open.
+
+## Imported motion update
+
+The private asset build now has a second, explicitly selected movement policy: body-heading-coupled root displacement and animation commitments. Existing collision/step/gravity machinery is shared. ImportedAssetSetup overrides source-supported data fields; original coefficient/COM mappings remain incomplete. Read IMPORTED_ASSETS.md for the exact policy, heading-rate normalization, unsupported fields and remaining parity gaps.

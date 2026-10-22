@@ -8,5 +8,6 @@ var fire := false
 var reload := false
 var interact := false
 var sprint := false
+var walk := false
 var brake := false
 var look := Vector2.ZERO

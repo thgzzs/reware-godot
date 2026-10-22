@@ -52,3 +52,11 @@ Entry and exit presently use configured time gates, not skeletal animation marke
 - Mods: Resources and scenes are content boundaries, not a mod loader or security boundary. Versioned manifests, schema migration and an explicit package loader remain work.
 
 Shared Resources are configuration only. Runtime state lives on component instances. Tests inject the same commands that local input produces and run the production scenes/physics backend.
+
+## Imported-asset extension
+
+CharacterMotor now owns an instance PedHealth and WeaponController, shared by the player and NPC scenes. ImportedAssetSetup selects validated source data fields and creates NPC intent producers. ReferenceMotion samples the immutable native library; ReferencePose is a procedural diagnostic presentation. ImportedAnimationBrowser inspects all clips. Their exact responsibilities and limits are documented in IMPORTED_ASSETS.md. No global player-only movement implementation is used by NPCs.
+
+## Presentation and display boundary
+
+PlaceholderAssets owns semantic model/texture bindings and artwork offsets/colors. ModelPlaceholderSetup installs imported native scenes without moving gameplay ownership into meshes. SkinnedMotionVisual samples shared clip timing on each actor’s independent Skeleton3D/Skin; planar root movement remains motor-owned. ShotPresentation reuses visual effect sprites and never performs damage queries. DisplayController owns window/UI/3D scale settings and optional frame-time adaptation; it cannot change physics timestep or handling data. GameplayHud renders actual state and blocks input through the arena boundary while a modal menu is open. No presentation asset is required to retain the authored primitive fallback.
