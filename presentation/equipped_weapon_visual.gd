@@ -34,3 +34,5 @@ func update_model(profile: WeaponProfile) -> void:
 	elif profile.heavy or profile.animation_group in ["rifle","riflebad","m4","ruger"]: group = "rifle"
 	for key in models: models[key].visible = key==group
 	if is_instance_valid(actor.weapon_muzzle): actor.weapon_muzzle.position.x = 0.20 if group=="colt45" else 0.48
+func _process(_dt: float) -> void:
+	visible = actor.health.health>0 and actor.control_enabled

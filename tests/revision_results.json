@@ -6,9 +6,9 @@
   "failures": 0,
   "metrics": {
     "synthetic_pose_cpu": {
-      "max_us": 84.0,
-      "mean_us": 23.0722222222222,
-      "p95_us": 48.0,
+      "max_us": 241.0,
+      "mean_us": 23.3833333333333,
+      "p95_us": 23.0,
       "samples": 180,
       "scope": "seven-bone synthetic skeleton; sample_pose CPU only; excludes rendering, real skin and Jolt"
     }

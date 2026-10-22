@@ -125,11 +125,6 @@ static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  for target in arena.targets:
   var face := target.get_node_or_null("Mesh/Bullseye") as MeshInstance3D
   if face!=null: apply_surface(face,assets.texture("target"),Vector3.ONE)
- # The existing graybox light was tuned for flat colors. Use a moderate shared
- # light level with the imported albedo textures; this is placeholder lighting.
- for child in arena.get_children():
-  if child is DirectionalLight3D: child.light_energy = 0.8
-  elif child is WorldEnvironment: child.environment.ambient_light_energy = 0.4
 static func apply_surface(mesh: MeshInstance3D, texture: Texture2D, tiling: Vector3) -> void:
  if mesh==null or texture==null: return
  var material := StandardMaterial3D.new()

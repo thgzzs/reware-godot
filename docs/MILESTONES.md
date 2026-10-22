@@ -132,3 +132,13 @@ Modified actor health/motor, motion sampling, weapon/command/input, imported dat
 Validation: exact Godot 4.7.2 Stable editor import; 48 baseline plus 41 new Jolt/synthetic-animation assertions passed; 14 Python tests passed, 9 private-input checks skipped. The ZIP regressions use 217-file fixtures and strict extraction with byte verification. Callback timings are reported in the current JSON reports; no speedup is claimed.
 
 Remaining gaps: private asset-inclusive ZIP unavailable, so new original-model animation/door contacts and visual alignment are unverified; separate weapon IFP blocks required for original gun actions; browser import/export and target-GPU tests not run; source-calibrated impact/door/handling parity, visible driver, passengers/jacking/locks/ragdoll remain open. See REVISION_SOURCE_REVIEW.md and VALIDATION.md.
+
+## Asset-inclusive follow-up
+
+Reused the supplied 217-file test ZIP and preserved all 91 private asset/support files byte for byte. No model, animation or texture reconversion occurred. The revised ZIP includes explicit folders before descendants.
+
+Created: tests/run_native_action_suite.gd, tests/render_action_preview.gd, their Godot UIDs, native_action_results.json, asset_validation_transcript.txt, asset_python_transcript.txt and docs/asset_followup_files.json. Modified: native test scope, validator, skinned presentation floor settling, reaction support, weapon holstering, transition HUD prompts, Resource-based light/floor tuning and current validation/source-review documentation. Exact public created/modified paths are listed in asset_followup_files.json. Assets remain outside public git.
+
+Validated: 177 Godot/Jolt assertions and 23 Python tests, no skips; eleven selected native renders reviewed; final ZIP CRC/byte checks, strict extraction and fresh editor import/startup. Native checks found and corrected a 13 cm death-pose floor penetration. The final pose now rests 1 cm above the test floor.
+
+Remaining: original weapon animation blocks, full directional locomotion/foot/door-contact calibration, passengers/jacking/locks/visible seated driver/ragdoll and calibrated reference-runtime parity. An actual browser import and web export/playback were not tested.

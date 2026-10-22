@@ -14,6 +14,8 @@ extends Resource
 @export var vehicle_hull_size := Vector3(2.1,0.6,5.5)
 @export var vehicle_offset := Vector3(0,0.15,0)
 @export var decorate_arena := false
+@export_range(0,4,0.05) var directional_light_energy := 0.8
+@export_range(0,2,0.05) var ambient_light_energy := 0.4
 @export var weapon_scenes: Dictionary[String,String] = {}
 @export var texture_paths: Dictionary[String,String] = {}
 func scene(path: String) -> PackedScene:

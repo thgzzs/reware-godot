@@ -1,0 +1,39 @@
+{
+  "base_commit": "3cc2d514936968b8998126c199019affa07e23fe",
+  "created": [
+    "docs/asset_followup_files.json",
+    "tests/asset_python_transcript.txt",
+    "tests/asset_validation_transcript.txt",
+    "tests/native_action_results.json",
+    "tests/render_action_preview.gd",
+    "tests/render_action_preview.gd.uid",
+    "tests/run_native_action_suite.gd",
+    "tests/run_native_action_suite.gd.uid"
+  ],
+  "modified": [
+    "FILES.sha256",
+    "README.md",
+    "actors/character_motor.gd",
+    "animation/action_profile.gd",
+    "docs/DISCREPANCIES.md",
+    "docs/MILESTONES.md",
+    "docs/REVISION_SOURCE_REVIEW.md",
+    "docs/VALIDATION.md",
+    "docs/provenance.json",
+    "presentation/equipped_weapon_visual.gd",
+    "presentation/gameplay_hud.gd",
+    "presentation/model_placeholder_setup.gd",
+    "presentation/placeholder_assets.gd",
+    "presentation/skinned_motion_visual.gd",
+    "tests/imported_results.json",
+    "tests/latest_results.json",
+    "tests/presentation_results.json",
+    "tests/revision_results.json",
+    "tests/run_imported_suite.gd",
+    "tools/validate.py",
+    "world/arena.gd"
+  ],
+  "removed": [],
+  "assets_reconverted": false,
+  "private_asset_support_files_preserved": 91
+}

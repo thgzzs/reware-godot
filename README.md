@@ -2,7 +2,7 @@
 
 An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The earlier asset-inclusive test build has a textured skinned character shared by the player and four pedestrians, an Idaho car, a Colt .45, yard props, 234 converted animations and data-driven tuning. It is a first playable framework; full reVC equivalence is unverified.
 
-This source revision adds layered action animation, one-shot death/recovery, weapon switching, all-gun sprinting, physical doors, staged vehicle transitions and swept pedestrian impacts. Arena surfaces default to plain colors. See [revision source review](docs/REVISION_SOURCE_REVIEW.md) for evidence and limitations. The previous private assets must be reused; they are not present in this source ZIP.
+This source revision adds layered action animation, one-shot death/recovery, weapon switching, all-gun sprinting, physical doors, staged vehicle transitions and swept pedestrian impacts. Arena surfaces default to plain colors. See [revision source review](docs/REVISION_SOURCE_REVIEW.md) for evidence and limitations. The public repository uses primitive fallbacks. The revised private test ZIP retains the supplied converted assets without reconversion.
 
 ## Run
 

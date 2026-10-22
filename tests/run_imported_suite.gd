@@ -93,7 +93,7 @@ func run() -> void:
  check("player and four pedestrians use identical motor script",arena.pedestrians.size()==4 and arena.pedestrians.all(func(p: CharacterMotor): return p.get_script()==actor.get_script() and p.reference_enabled))
  check("health and weapon components shared by actor types",arena.pedestrians.all(func(p: CharacterMotor): return p.health is PedHealth and p.weapon is WeaponController))
  check("player heading source unit converted explicitly",absf(actor.profile.turn_rate-deg_to_rad(15*50))<0.00001,actor.profile.turn_rate)
- var source_weapon := db.find_record("weapons","Colt45")
+ var source_weapon: Dictionary = arena.reference_database.find_record("weapons","Colt45")
  var expected_interval := (float(source_weapon.animation_frames[1])-float(source_weapon.animation_frames[0]))*0.03
  check("weapon DAT fields and derived animation cadence applied",arena.weapon.magazine==17 and absf(arena.weapon.profile.interval-expected_interval)<0.00001 and absf(arena.weapon.profile.reload_seconds-0.45)<0.00001,arena.weapon.profile.display_name)
  check("dimensionally mapped vehicle fields applied",car.mass==1600 and absf(car.profile.max_speed-160.0/3.6)<0.001 and absf(car.profile.steering_angle-deg_to_rad(30))<0.001)

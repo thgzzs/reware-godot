@@ -1,0 +1,148 @@
+{
+  "assertions": 24,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "death_skin": {
+      "body_y": 0.900204837322235,
+      "clip": "KO_shot_front",
+      "minimum": "(-28.53752, 0.01, 39.04418)",
+      "size": "(0.957376, 0.41264, 1.969254)"
+    }
+  },
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "native aim mask preserves the moving thigh pose",
+      "passed": true
+    },
+    {
+      "measured": 0.000000164967687510398,
+      "name": "native gun hand follows aim pitch -0.40",
+      "passed": true
+    },
+    {
+      "measured": 0.0000000421468442368678,
+      "name": "native gun hand follows aim pitch 0.00",
+      "passed": true
+    },
+    {
+      "measured": 0.000000240274005136598,
+      "name": "native gun hand follows aim pitch 0.35",
+      "passed": true
+    },
+    {
+      "measured": "(0.72147, 1.841556, 1.037468)",
+      "name": "native aimed skin stays finite and within human scale",
+      "passed": true
+    },
+    {
+      "measured": "sprint_civi",
+      "name": "native sprint works with Colt45",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon visual selection remains unique in slot 0",
+      "passed": true
+    },
+    {
+      "measured": "sprint_civi",
+      "name": "native sprint works with m4",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon visual selection remains unique in slot 1",
+      "passed": true
+    },
+    {
+      "measured": "sprint_civi",
+      "name": "native sprint works with Shotgun",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon visual selection remains unique in slot 2",
+      "passed": true
+    },
+    {
+      "measured": {
+        "body_y": 0.900204837322235,
+        "clip": "KO_shot_front",
+        "minimum": "(-28.53752, 0.01, 39.04418)",
+        "size": "(0.957376, 0.41264, 1.969254)"
+      },
+      "name": "native death reaches its terminal pose once",
+      "passed": true
+    },
+    {
+      "measured": {
+        "body_y": 0.900204837322235,
+        "clip": "KO_shot_front",
+        "minimum": "(-28.53752, 0.01, 39.04418)",
+        "size": "(0.957376, 0.41264, 1.969254)"
+      },
+      "name": "native death mesh rests above the arena floor",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native door frame belongs to physical hinge 0",
+      "passed": true
+    },
+    {
+      "measured": -1.18425801340535,
+      "name": "native door moves with its physical body 0",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native door returns to latch 0",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native door frame belongs to physical hinge 1",
+      "passed": true
+    },
+    {
+      "measured": 1.18425755441289,
+      "name": "native door moves with its physical body 1",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native door returns to latch 1",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native model entry can reserve the seat",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "vehicle entry holsters the equipped weapon",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native model entry commits after all stages",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native model exit can begin safely",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native model exit restores standing actor and gun",
+      "passed": true
+    }
+  ],
+  "source_assets_reconverted": false
+}

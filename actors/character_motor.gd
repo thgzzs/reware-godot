@@ -97,6 +97,7 @@ func tick_reaction(dt: float) -> void:
  reaction_velocity.x = move_toward(reaction_velocity.x,0,4.0*dt)
  reaction_velocity.z = move_toward(reaction_velocity.z,0,4.0*dt)
  reaction_velocity.y -= profile.gravity*dt
+ grounded = false
  var hit := move_and_collide(reaction_velocity*dt,false,0.002)
  if hit!=null:
   reaction_velocity = reaction_velocity.slide(hit.get_normal())

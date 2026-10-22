@@ -34,11 +34,11 @@ No reference source files are shipped in this project. Findings are requirements
 
 ## Runtime Confirmed
 
-Godot/Jolt runtime tests validate the target contracts listed in tests/revision_results.json and latest_results.json. These are target-runtime observations. No original-game executable was run during this revision. Do not label them reVC runtime confirmation.
+Godot/Jolt runtime tests validate the target contracts listed in tests/revision_results.json, latest_results.json, imported_results.json, presentation_results.json and native_action_results.json. Native tests use the uploaded converted skin and clip library. Selected software-OpenGL captures cover the HUD and five action/door states. These are target-runtime observations. No original-game executable was run during this revision. Do not label them reVC runtime confirmation.
 
 ## Inferred / still to validate
 
-- Exact native bone masks, foot contacts, hand-to-door contact, seat/root offsets, death floor placement and all action blends need visual inspection with the private build. The public source checkout has none of the uploaded/converted assets.
+- Native bone masks preserve leg motion under aim; gun-hand orientation is checked at three pitches. The terminal death skin is measured at 1 cm above the test floor after a cached per-mesh correction. Selected aim/reload/death/door/entry poses were rendered and reviewed. Full foot-contact, hand-to-door and seat/root calibration across every clip remain open. Uploaded assets remain outside public git.
 - IK reach, recoil, blend rates, aim movement multiplier, shotgun pellet count/spread and physical door coefficients remain target tuning. They are not measured reVC equivalents.
 - Lower-body aim locomotion currently retains the walk/run cycle and changes travel direction; complete directional strafe/backstep clip selection and foot sliding calibration remain open.
 - Source turn/root policy is retained from the previous milestone, but full tank-like feel requires original-runtime input/heading/displacement traces. No new air steering was introduced for imported movement.
@@ -58,4 +58,12 @@ python3 tools/rebuild_test_build.py --input old-build.zip --output repaired-buil
 python3 tools/rebuild_test_build.py --input old-build.zip --project . --output revised-build.zip
 ```
 
-The input ZIP must be supplied locally. This revision's source-only ZIP is not a replacement for the asset-inclusive build. Web-editor ZIP extraction has been simulated; an actual browser import and an exported HTML runtime have not been validated. The ZIP directory fix alone makes no claim about web-export backend support.
+The supplied 217-file ZIP has been reused for the revised asset-inclusive build, without converting any assets. The packager verifies the preserved bytes. Web-editor ZIP extraction has been simulated; an actual browser import and an exported HTML runtime have not been validated. The ZIP directory fix alone makes no claim about web-export backend support.
+
+## Asset-inclusive follow-up
+
+The original archive contains 217 files and zero directory entries. All 91 private asset/support files are retained byte for byte, including converted models, textures, clips, source inputs and prior images. The revised archive overlays the updated public source and writes explicit parent directories.
+
+Targeted native checks exposed a terminal death skin 13 cm below the floor. SkinnedMotionVisual now computes and caches the terminal skinned minimum once per reaction clip, uses a floor ray and blends a capped visual correction. Actor collision ownership remains in CharacterMotor. Clearance, maximum lift and settle rate are ActionProfile fields; standing/preview poses reset the offset. Reaction support is recalculated per physics tick.
+
+The follow-up also holsters equipped geometry during seat transitions, restores it on foot, removes the false enter prompt while entering/exiting and makes shared light energy configurable to retain readable plain arena colors. Original weapon-specific fire/reload blocks are still absent; procedural fallback actions are explicitly retained.

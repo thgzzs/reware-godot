@@ -2,6 +2,9 @@ class_name ActionProfile
 extends Resource
 ## Roles are resolved against the supplied library; missing gun blocks use IK.
 @export var blend_seconds := 0.16
+@export var reaction_floor_clearance := 0.01
+@export var reaction_max_lift := 0.35
+@export var reaction_settle_speed := 1.0
 @export var upper_blend_rate := 12.0
 @export var death_clips := PackedStringArray(["KO_shot_front","FALL_front","HIT_FLOOR"])
 @export var knockdown_clips := PackedStringArray(["KO_skid_front","FALL_front"])

@@ -6,10 +6,10 @@
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 1418.0,
-      "mean_us": 55.8963029756537,
-      "p95_us": 105.0,
-      "samples": 1109,
+      "max_us": 364.0,
+      "mean_us": 62.2867768595041,
+      "p95_us": 120.0,
+      "samples": 1210,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "model_binding_verified": false,
@@ -85,7 +85,7 @@
     },
     {
       "measured": "Colt45",
-      "name": "weapon DAT fields applied",
+      "name": "weapon DAT fields and derived animation cadence applied",
       "passed": true
     },
     {
@@ -176,13 +176,13 @@
     {
       "measured": [
         "driving",
-        0.683333333333334
+        1.88333333333333
       ],
-      "name": "entry commits after imported get-in clip duration",
+      "name": "entry commits after open get-in and close clips",
       "passed": true
     },
     {
-      "measured": 5.95820045471191,
+      "measured": 5.92953395843506,
       "name": "driving still accelerates with mapped data",
       "passed": true
     },

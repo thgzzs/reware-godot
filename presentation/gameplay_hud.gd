@@ -152,7 +152,9 @@ func _draw() -> void:
  draw_radar(layout.radar)
  var message: String = "[Backspace] Respawn" if health<=0 else arena.transition.message
  var nearest: DriveVehicle = arena.nearest_vehicle()
- if message.is_empty() and not driving and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
+ if message.is_empty() and arena.transition.state=="on_foot" and arena.actor.control_enabled and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
+ if message.is_empty() and arena.transition.state=="entering": message = "Entering vehicle…"
+ elif message.is_empty() and arena.transition.state=="exiting": message = "Leaving vehicle…"
  if not message.is_empty():
   var width := minf(420,screen.x-36)
   text_at(message,Vector2((screen.x-width)*0.5,screen.y-196 if screen.x<1000 else screen.y-54),17,AQUA,width)

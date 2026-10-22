@@ -1,10 +1,10 @@
 # Current revision status
 
-See [REVISION_SOURCE_REVIEW.md](REVISION_SOURCE_REVIEW.md) for the current changes and source evidence. This revision has source-only and synthetic animation validation; the earlier private assets and screenshots are unavailable in this workspace. Original-model visual checks and a repaired asset-inclusive ZIP remain blocked until the previous build ZIP is attached.
+See [REVISION_SOURCE_REVIEW.md](REVISION_SOURCE_REVIEW.md) for the current changes and source evidence. The asset-inclusive revision has now been verified against the supplied archive: all original 91 private asset/support files are retained byte for byte; 177 Godot/Jolt assertions and 23 Python tests pass. Native aiming, death, physical doors and staged entry/exit have targeted checks. Eleven selected software-OpenGL captures were reviewed. Full reference-runtime parity and browser playback remain unverified.
 
 Delivered in this revision: explicit ZIP directories and byte-preserving rebuild tool; arena indentation; phase-matched walk/run and action crossfades; upper-body aim/fire/reload plus IK fallbacks; one-shot death and safe knockdown recovery; three weapon slots with separate ammo; all-gun sprint option; physical front door hinges and distinct entry/exit stages; predicted chassis/pedestrian impacts; HUD life/slot/reticle fixes; plain arena surfaces.
 
-Remaining: original weapon IFP blocks, visual blend/contact/death alignment checks, directional aim clips, source-calibrated impact/door coefficients, visible seated driver, passengers/jacking/locks/broken doors/ragdoll, full handling/crowd/world parity, target-device/browser/GPU tests. No original-game runtime parity is claimed.
+Remaining: original weapon IFP blocks, full action/contact calibration beyond the selected checks, directional aim clips, source-calibrated impact/door coefficients, visible seated driver, passengers/jacking/locks/broken doors/ragdoll, full handling/crowd/world parity, target-device/browser/GPU tests. No original-game runtime parity is claimed.
 
 The table below records the prior milestone's scope; entries about single-clip playback, absent switching and absent doors are superseded by this revision.
 

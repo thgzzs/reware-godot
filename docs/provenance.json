@@ -410,5 +410,23 @@
     "browser_import_tested": false,
     "zip_extraction_test": "strict parent-directory extractor, 217-file fixture with byte checks",
     "official_engine_archive_sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4"
+  },
+  "asset_inclusive_followup": {
+    "input_zip_sha256": "79abde3b474e771feb943860f9ab28f16a597a73a567fbde0625f983e0b9eb20",
+    "input_files": 217,
+    "input_directories": 0,
+    "private_asset_support_files_preserved": 91,
+    "assets_reconverted": false,
+    "baseline_assertions": 48,
+    "revision_assertions": 41,
+    "imported_assertions": 36,
+    "presentation_assertions": 28,
+    "native_action_assertions": 24,
+    "python_passed": 23,
+    "python_skipped": 0,
+    "native_action_captures": 5,
+    "layout_captures": 6,
+    "reference_runtime_tested": false,
+    "browser_runtime_tested": false
   }
 }

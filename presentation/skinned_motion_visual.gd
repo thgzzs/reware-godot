@@ -16,7 +16,11 @@ var upper_signature := ""
 var upper_transition := 0.0
 var upper_from: Array[Quaternion] = []
 var sample_us := 0.0
+var rest_position := Vector3.ZERO
+var ground_offset := 0.0
+var floor_minimum := {}
 func _ready() -> void:
+ rest_position = position
  skeleton = find_child("Skeleton3D",true,false) as Skeleton3D
  if skeleton!=null:
   for i in range(skeleton.get_bone_count()):
@@ -96,7 +100,42 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
  skeleton.force_update_all_bone_transforms()
  if actions!=null and actions.life=="alive" and motion.preview_clip.is_empty() and actions.aim_weight>0:
   aim_arms()
+ settle_reaction_pose(dt)
  sample_us = Time.get_ticks_usec()-started
+func skin_minimum_y() -> float:
+ var minimum := INF
+ for mesh in find_children("*","MeshInstance3D",true,false):
+  if mesh.skin==null: continue
+  for surface in range(mesh.mesh.get_surface_count()):
+   var arrays: Array = mesh.mesh.surface_get_arrays(surface)
+   var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+   var bones: PackedInt32Array = arrays[Mesh.ARRAY_BONES]
+   var weights: PackedFloat32Array = arrays[Mesh.ARRAY_WEIGHTS]
+   if weights.size()!=vertices.size()*4: continue
+   for i in range(vertices.size()):
+    var vertex := Vector3.ZERO
+    for j in range(4):
+     if weights[i*4+j]<=0: continue
+     var bind: int = bones[i*4+j]
+     vertex += skeleton.get_bone_global_pose(mesh.skin.get_bind_bone(bind))*mesh.skin.get_bind_pose(bind)*vertices[i]*weights[i*4+j]
+    minimum = minf(minimum,vertex.y)
+ return minimum
+func settle_reaction_pose(dt: float) -> void:
+ if actions==null or actions.life=="alive" or not motion.preview_clip.is_empty():
+  ground_offset = 0
+  position = rest_position
+  return
+ var target := 0.0
+ var actor := get_parent().get_parent() as CharacterMotor
+ if actor!=null and actor.grounded and actions.life in ["dead","down"] and motion.time>=motion.duration(motion.clip)-0.001:
+  if not floor_minimum.has(motion.clip): floor_minimum[motion.clip] = skin_minimum_y()
+  var minimum: float = floor_minimum[motion.clip]
+  var ray := PhysicsRayQueryParameters3D.create(actor.global_position,actor.global_position-Vector3.UP*2,1,[actor.get_rid()])
+  var floor_hit := get_world_3d().direct_space_state.intersect_ray(ray)
+  if is_finite(minimum) and not floor_hit.is_empty():
+   target = clampf(floor_hit.position.y+actions.profile.reaction_floor_clearance-(actor.global_position.y+rest_position.y+minimum),0,actions.profile.reaction_max_lift)
+ ground_offset = move_toward(ground_offset,target,actions.profile.reaction_settle_speed*dt)
+ position = rest_position+Vector3.UP*ground_offset
 func turn_joint(joint: int, end: int, target: Vector3, weight: float) -> void:
  var origin := skeleton.get_bone_global_pose(joint).origin
  var direction := skeleton.get_bone_global_pose(end).origin-origin
