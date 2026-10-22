@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3]
+[ext_resource type="Script" path="res://combat/health.gd" id="1"]
+[sub_resource type="BoxShape3D" id="Shape"]
+size = Vector3(1.1,1.8,0.45)
+[sub_resource type="BoxMesh" id="Mesh"]
+size = Vector3(1.1,1.8,0.45)
+[sub_resource type="StandardMaterial3D" id="Material"]
+albedo_color = Color(0.96,0.66,0.28,1)
+[sub_resource type="CylinderMesh" id="Circle"]
+top_radius = 0.32
+bottom_radius = 0.32
+height = 0.02
+[node name="Target" type="StaticBody3D"]
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Shape")
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("Mesh")
+material_override = SubResource("Material")
+[node name="Bullseye" type="MeshInstance3D" parent="Mesh"]
+position = Vector3(0,0.25,0.235)
+rotation = Vector3(1.5707963,0,0)
+mesh = SubResource("Circle")

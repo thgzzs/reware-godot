@@ -1,0 +1,23 @@
+class_name HandlingProfile
+extends Resource
+@export var mass := 1200.0
+@export var center_of_mass := Vector3(0,-0.20,0)
+@export var engine_force := 7800.0
+@export var reverse_force := 4600.0
+@export var brake_force := 14000.0
+@export var rolling_drag := 180.0
+@export var aero_drag := 0.40
+@export var max_speed := 38.0
+@export var max_reverse_speed := 10.0
+@export var steering_angle := 0.50
+@export var steering_rate := 2.4
+@export var high_speed_steering := 0.018
+@export var spring_rate := 32000.0
+@export var damper := 4200.0
+@export var suspension_length := 0.55
+@export var wheel_radius := 0.32
+@export var friction := 1.25
+@export var lateral_stiffness := 6500.0
+@export var max_spring_force := 18000.0
+@export var driven_front := false
+@export var driven_rear := true

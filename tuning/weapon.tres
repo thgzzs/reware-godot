@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://tuning/weapon_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+display_name = "LAB / 9"
+interval = 0.20
+reload_seconds = 1.20
+magazine_size = 12
+reserve_ammo = 240
+damage = 25.0
+range_meters = 100.0
+spread_radians = 0.008
+recoil_radians = 0.012

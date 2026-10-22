@@ -1,0 +1,39 @@
+{
+  "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
+  "reference_repository": "https://github.com/mrxenginner/reVC",
+  "reference_branch": "miami",
+  "engine_tag": "4.7.2-stable",
+  "engine_prerelease": false,
+  "engine_published_at": "2026-08-18T15:56:46Z",
+  "engine_release_url": "https://github.com/godotengine/godot-builds/releases/tag/4.7.2-stable",
+  "engine_asset": {
+    "name": "Godot_v4.7.2-stable_linux.x86_64.zip",
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip",
+    "digest": "sha256:cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4"
+  },
+  "documentation_series": "4.7",
+  "documentation_urls": [
+    "https://docs.godotengine.org/en/4.7/about/release_policy.html",
+    "https://docs.godotengine.org/en/4.7/tutorials/physics/using_jolt_physics.html",
+    "https://docs.godotengine.org/en/4.7/classes/class_physicsdirectbodystate3d.html",
+    "https://docs.godotengine.org/en/4.7/classes/class_physicsbody3d.html",
+    "https://docs.godotengine.org/en/4.7/classes/class_physicsdirectspacestate3d.html"
+  ],
+  "verified_at": "2026-10-22",
+  "source_files_reviewed": [
+    "src/peds/PlayerPed.cpp",
+    "src/peds/Ped.cpp",
+    "src/peds/PedAI.cpp",
+    "src/core/Cam.cpp",
+    "src/core/Camera.cpp",
+    "src/core/World.cpp",
+    "src/weapons/Weapon.cpp",
+    "src/weapons/WeaponInfo.cpp",
+    "src/vehicles/Vehicle.cpp",
+    "src/vehicles/Automobile.cpp",
+    "src/vehicles/HandlingMgr.cpp",
+    "src/vehicles/Transmission.cpp",
+    "src/entities/Physical.cpp",
+    "src/animation/AnimBlendAssociation.cpp"
+  ]
+}

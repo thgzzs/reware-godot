@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "source_assets_included": false,
+  "assets": [
+    {
+      "id": "lab-character",
+      "source": "scenes/character.tscn",
+      "kind": "authored Godot capsule and box meshes",
+      "external_dependencies": []
+    },
+    {
+      "id": "lab-coupe",
+      "source": "scenes/vehicle.tscn",
+      "kind": "authored Godot chassis/cabin boxes and cylinder wheels",
+      "external_dependencies": []
+    },
+    {
+      "id": "damage-target",
+      "source": "scenes/target.tscn",
+      "kind": "authored Godot box and bullseye cylinder",
+      "external_dependencies": []
+    },
+    {
+      "id": "test-yard",
+      "source": "world/arena.gd",
+      "kind": "procedural primitive geometry, solid materials, labels and directional light",
+      "external_dependencies": []
+    },
+    {
+      "id": "interface-font",
+      "source": "Godot ThemeDB fallback font",
+      "kind": "engine-provided; distributed with engine, not embedded here",
+      "external_dependencies": [
+        "Godot 4.7.2 Stable"
+      ]
+    }
+  ],
+  "pipeline": "Scenes and Resources are editable in Godot. Import original glTF art into presentation children; keep collision shapes and gameplay tuning separate. No reference game extraction/conversion pipeline is provided.",
+  "audio": "No audio assets or audio playback implemented."
+}

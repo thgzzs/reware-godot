@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="InteractionProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://tuning/interaction_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+reach = 3.0
+enter_seconds = 0.65
+exit_seconds = 0.55
+max_transition_speed = 1.25
+floor_max_drop = 2.0
+exit_offsets = PackedVector3Array(-1.65, 0, 0, 1.65, 0, 0, 0, 0, 2.8)

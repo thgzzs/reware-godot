@@ -1,0 +1,8 @@
+{
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "architecture": "x86_64",
+  "python": "3.12.14",
+  "display": "headless",
+  "graphics_validated": false,
+  "reference_runtime_available": false
+}

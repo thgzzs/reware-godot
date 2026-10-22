@@ -1,0 +1,30 @@
+[gd_scene load_steps=8 format=3]
+[ext_resource type="Script" path="res://actors/character_motor.gd" id="1"]
+[ext_resource type="Resource" path="res://tuning/movement.tres" id="2"]
+[sub_resource type="CapsuleShape3D" id="Capsule"]
+radius = 0.32
+height = 1.8
+[sub_resource type="CapsuleMesh" id="Body"]
+radius = 0.28
+height = 1.65
+[sub_resource type="StandardMaterial3D" id="Jacket"]
+albedo_color = Color(0.14,0.75,0.67,1)
+[sub_resource type="BoxMesh" id="Visor"]
+size = Vector3(0.42,0.18,0.14)
+[sub_resource type="StandardMaterial3D" id="Dark"]
+albedo_color = Color(0.025,0.06,0.10,1)
+[node name="Character" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("1")
+profile = ExtResource("2")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Capsule")
+[node name="Visual" type="Node3D" parent="."]
+[node name="Body" type="MeshInstance3D" parent="Visual"]
+mesh = SubResource("Body")
+material_override = SubResource("Jacket")
+[node name="Visor" type="MeshInstance3D" parent="Visual"]
+position = Vector3(0,0.56,-0.25)
+mesh = SubResource("Visor")
+material_override = SubResource("Dark")

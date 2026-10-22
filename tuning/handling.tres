@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="HandlingProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://tuning/handling_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+mass = 1200.0
+center_of_mass = Vector3(0,-0.20,0)
+engine_force = 7800.0
+reverse_force = 4600.0
+brake_force = 14000.0
+rolling_drag = 180.0
+aero_drag = 0.40
+max_speed = 38.0
+max_reverse_speed = 10.0
+steering_angle = 0.50
+steering_rate = 2.4
+high_speed_steering = 0.018
+spring_rate = 32000.0
+damper = 4200.0
+suspension_length = 0.55
+wheel_radius = 0.32
+friction = 1.25
+lateral_stiffness = 6500.0
+max_spring_force = 18000.0
+driven_front = false
+driven_rear = true

@@ -1,0 +1,327 @@
+{
+  "assertions": 48,
+  "backend": "Jolt Physics",
+  "engine": {
+    "build": "official",
+    "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "hex": 263938,
+    "major": 4,
+    "minor": 7,
+    "patch": 2,
+    "status": "stable",
+    "string": "4.7.2-stable (official)",
+    "timestamp": 0
+  },
+  "failures": 0,
+  "fixed_hz": 60,
+  "metrics": {
+    "acceleration": {
+      "distance_m": 16.3979969024658,
+      "speed_mps": 12.5660028457642,
+      "time_s": 2.5
+    },
+    "braking": {
+      "distance_m": 8.85752391815186,
+      "initial_speed_mps": 13.1566362380981,
+      "time_s": 1.3
+    },
+    "gameplay_cpu": {
+      "max_us": 417.0,
+      "mean_us": 44.7055619266055,
+      "p95_us": 110.0,
+      "samples": 3488,
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    },
+    "jump": {
+      "airborne_s": 0.666666666666667,
+      "apex_m": 1.12139159440994,
+      "launch_delay_s": 0.15
+    },
+    "node_count": 136.0,
+    "physics_process_seconds_last": 0.003256,
+    "suspension": {
+      "height_m": 0.678031206130981,
+      "load_N": 11772.0000370226,
+      "vertical_speed": 0.000000150384167341144
+    },
+    "vehicle_force_cpu": {
+      "max_us": 277.0,
+      "mean_us": 35.4658830275229,
+      "p95_us": 64.0,
+      "samples": 3488,
+      "scope": "four wheel queries and forces; excludes Jolt contact solve"
+    }
+  },
+  "parity_claim": "none; prototype acceptance only",
+  "reference_runtime_tested": false,
+  "results": [
+    {
+      "measured": "4.7.2-stable (official)",
+      "name": "exact engine",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "Jolt selected",
+      "passed": true
+    },
+    {
+      "measured": 0.900012075901031,
+      "name": "ground support",
+      "passed": true
+    },
+    {
+      "measured": 5.0,
+      "name": "movement accelerates to configured speed",
+      "passed": true
+    },
+    {
+      "measured": 4.41669654846191,
+      "name": "movement distance in one second",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "release decelerates to rest",
+      "passed": true
+    },
+    {
+      "measured": "(-4.416687, 0.0, 0.0)",
+      "name": "camera relative forward rotates movement",
+      "passed": true
+    },
+    {
+      "measured": 2.5,
+      "name": "aim movement modifier",
+      "passed": true
+    },
+    {
+      "measured": 54.0022201538086,
+      "name": "aim FOV converges",
+      "passed": true
+    },
+    {
+      "measured": {
+        "airborne_s": 0.666666666666667,
+        "apex_m": 1.12139159440994,
+        "launch_delay_s": 0.15
+      },
+      "name": "jump launches after windup",
+      "passed": true
+    },
+    {
+      "measured": 1.12139159440994,
+      "name": "jump apex within ballistic tolerance",
+      "passed": true
+    },
+    {
+      "measured": 434,
+      "name": "jump lands and recovers",
+      "passed": true
+    },
+    {
+      "measured": "grounded",
+      "name": "landing state clears",
+      "passed": true
+    },
+    {
+      "measured": 1,
+      "name": "buffered press launches on landing",
+      "passed": true
+    },
+    {
+      "measured": 13.4794960021973,
+      "name": "wall collision prevents tunneling",
+      "passed": true
+    },
+    {
+      "measured": 1.32416331768036,
+      "name": "jump ceiling collision",
+      "passed": true
+    },
+    {
+      "measured": "(-10.0, 1.700375, -2.890611)",
+      "name": "step traversal climbs configured low steps",
+      "passed": true
+    },
+    {
+      "measured": "(-16.0, 1.689436, 4.380012)",
+      "name": "walkable slope gains height",
+      "passed": true
+    },
+    {
+      "measured": "(-21.0, 0.900375, 5.648016)",
+      "name": "steep slope does not become walkable",
+      "passed": true
+    },
+    {
+      "measured": 0.6591796875,
+      "name": "camera obstruction sweep retracts",
+      "passed": true
+    },
+    {
+      "measured": true,
+      "name": "camera aim resolves hits",
+      "passed": true
+    },
+    {
+      "measured": 50.0,
+      "name": "damage applied to target",
+      "passed": true
+    },
+    {
+      "measured": [
+        1061,
+        1073,
+        1085,
+        1097,
+        1109
+      ],
+      "name": "firing cadence every 12 ticks at 60 Hz",
+      "passed": true
+    },
+    {
+      "measured": 4,
+      "name": "ammo decreases per shot",
+      "passed": true
+    },
+    {
+      "measured": [
+        12,
+        228
+      ],
+      "name": "reload transfers reserve without duplication",
+      "passed": true
+    },
+    {
+      "measured": 4,
+      "name": "suspension supports four wheel contacts",
+      "passed": true
+    },
+    {
+      "measured": {
+        "height_m": 0.678031206130981,
+        "load_N": 11772.0000370226,
+        "vertical_speed": 0.000000150384167341144
+      },
+      "name": "suspension settles near static weight",
+      "passed": true
+    },
+    {
+      "measured": 0.000000150384167341144,
+      "name": "suspension vertical oscillation settles",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "valid approach reserves seat",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "duplicate occupancy rejected",
+      "passed": true
+    },
+    {
+      "measured": "driving",
+      "name": "entry commits control once",
+      "passed": true
+    },
+    {
+      "measured": 0.65,
+      "name": "entry duration bounded by one tick",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance_m": 16.3979969024658,
+        "speed_mps": 12.5660028457642,
+        "time_s": 2.5
+      },
+      "name": "vehicle accelerates forward",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "moving exit rejected",
+      "passed": true
+    },
+    {
+      "measured": 0.499758303165436,
+      "name": "steering changes heading",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance_m": 8.85752391815186,
+        "initial_speed_mps": 13.1566362380981,
+        "time_s": 1.3
+      },
+      "name": "brakes bring vehicle to rest",
+      "passed": true
+    },
+    {
+      "measured": -4.36752319335938,
+      "name": "reverse engages after stop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "blocked exits preserve ownership",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "clear exit begins transition",
+      "passed": true
+    },
+    {
+      "measured": "on_foot",
+      "name": "exit restores on foot ownership and collision",
+      "passed": true
+    },
+    {
+      "measured": 0.566666666666667,
+      "name": "exit timing bounded by one tick",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "movement resumes without restarting",
+      "passed": true
+    },
+    {
+      "measured": 3,
+      "name": "three additional enter exit cycles",
+      "passed": true
+    },
+    {
+      "measured": "driving",
+      "name": "late exit blockers cancel commit safely",
+      "passed": true
+    },
+    {
+      "measured": [
+        5.38962984085083,
+        5.38962984085083
+      ],
+      "name": "vehicle dynamics invariant under world translation",
+      "passed": true
+    },
+    {
+      "measured": 0.0000102369458545581,
+      "name": "vehicle remains stable after control restoration",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon control resumes after driving",
+      "passed": true
+    },
+    {
+      "measured": "(17.9991, 0.667273, 27.13922)",
+      "name": "vehicle body collides without crossing wall",
+      "passed": true
+    }
+  ]
+}
