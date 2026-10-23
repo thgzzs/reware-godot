@@ -377,6 +377,7 @@ func recover() -> void:
  vehicle = null
  change_state("on_foot")
 func change_state(next: String) -> void:
+ actor.interaction_holstered = next!="on_foot"
  state = next
  state_changed.emit(state)
 func _exit_tree() -> void:

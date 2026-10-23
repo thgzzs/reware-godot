@@ -277,8 +277,8 @@
     },
     {
       "measured": {
-        "hitter": 906.77720054108,
-        "struck": 912.094816408918
+        "hitter": 906.778258212259,
+        "struck": 912.09480160049
       },
       "name": "vehicle-to-vehicle impacts damage both bodies",
       "passed": true

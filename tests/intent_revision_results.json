@@ -1,6 +1,6 @@
 {
   "assertions": 42,
-  "assets": "synthetic clips and primitive models; native converted assets unavailable after workspace maintenance",
+  "assets": "synthetic clips and primitive models, deliberately independent of private assets",
   "backend": "Jolt Physics",
   "engine": "4.7.2-stable (official)",
   "failures": 0,
@@ -192,7 +192,7 @@
     {
       "measured": {
         "angular": 0.0,
-        "clip": "FALL_front",
+        "clip": "KO_skid_back",
         "locked": true
       },
       "name": "landed quiet corpse chooses the matching face orientation (0.0, 0.0, -1.0)",
@@ -206,7 +206,7 @@
     {
       "measured": {
         "angular": 0.0,
-        "clip": "FALL_back",
+        "clip": "KO_skid_front",
         "locked": true
       },
       "name": "landed quiet corpse chooses the matching face orientation (0.0, 0.0, 1.0)",

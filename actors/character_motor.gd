@@ -30,6 +30,7 @@ var grounded := false
 var support_normal := Vector3.UP
 var phase := "airborne"
 var control_enabled := true
+var interaction_holstered := false
 var jump_left := 0.0
 var grace_left := 0.0
 var phase_left := 0.0
@@ -173,6 +174,7 @@ func tick_reaction(dt: float) -> void:
  if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
   restore_control()
 func restore_control() -> void:
+ interaction_holstered = false
  sprint.reset()
  fall.reset()
  if reference_pose!=null:reference_pose.scale=Vector3.ONE
@@ -406,7 +408,7 @@ func jump_has_clearance() -> bool:
   if not get_world_3d().direct_space_state.intersect_shape(query,1).is_empty(): return false
  return true
 func can_use_weapon() -> bool:
- return control_enabled and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy()
+ return control_enabled and not interaction_holstered and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy()
 func slope_cos() -> float:
  return cos(deg_to_rad(profile.max_slope_degrees))
 func try_step(horizontal: Vector3) -> bool:

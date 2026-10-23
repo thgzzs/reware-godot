@@ -95,3 +95,5 @@ ActorFallState tracks per-instance trajectory evidence; FallProfile owns thresho
 ## Intent, approach and reaction settling
 
 ActorSprintState owns capped tap history; SprintProfile owns gain/decay/grace. VehicleApproach supplies collision-driven walk intent before VehicleTransition suppresses the motor for mounting. ReactionRestState observes supported quiet motion and selects a presentation basis/pose, leaving Jolt trajectory ownership intact. VehicleVariant owns intentional rear-bike bailout clip/release policy. See SPRINT_ENTRY_SETTLING.md for current validation boundaries.
+
+Native follow-up keeps weapon holstering as actor state owned by the transition, independent of standing movement control. The approach resource has a separate start-gait rate so anticipation cannot be slowed into a false stall. Settled torso presentation uses rig-local cached terminal skin minima, supported floor probes and bounded visual offsets; it never changes the Jolt body transform or momentum.

@@ -3,6 +3,7 @@ extends Resource
 @export var reach := 3.0
 @export var approach_arrival_radius := 0.10
 @export var approach_slow_radius := 0.65
+@export var approach_start_scale := 1.0
 @export var approach_clearance := 0.62
 @export var approach_timeout := 8.0
 @export var approach_stall_timeout := 1.2

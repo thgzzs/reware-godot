@@ -6,7 +6,7 @@ The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian 
 
 The [falling and moving-melee revision](docs/FALL_AND_MOBILE_MELEE.md) adds impact-based fall damage, native descent/glide/landing recovery and walk/run/sprint attacks with blended striking limbs. Tune it through tuning/fall.tres and tuning/melee.tres.
 
-The current [sprint, walk-in entry and settling source revision](docs/SPRINT_ENTRY_SETTLING.md) adds capped Shift tapping, collision-driven approach before mounting, quiet grounded prone/supine settling, and bike-specific rear bailouts. Native asset regression for this source revision remains pending; keep your existing converted assets when applying the update.
+The current [sprint, walk-in entry and settling revision](docs/SPRINT_ENTRY_SETTLING.md) adds capped Shift tapping, collision-driven walking and alignment before mounting, quiet grounded prone/supine settling, and bike-specific rear bailouts. The complete test ZIP includes the supplied assets unchanged; native regression and selected software-rendered poses have been checked.
 
 ## Run
 
@@ -62,7 +62,7 @@ Every ZIP created with the packager includes explicit parent-directory entries f
 python3 tools/rebuild_test_build.py --input old-build.zip --output repaired-build.zip
 ```
 
-To overlay a project directory, add `--project .` to that command. This revision requires the new Stories assets as well as source; overlaying only scripts onto an old build is insufficient. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
+To overlay a project directory, add `--project .` to that command. This revision reuses the supplied Stories assets without reconversion. The complete revised ZIP already contains them. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
 
 ## Documentation
 

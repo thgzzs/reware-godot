@@ -8,8 +8,9 @@ var face_down := true
 var heading := 0.0
 var original_heading := 0.0
 var trajectory := Vector3.ZERO
+var floor_offset := 0.0
 func reset() -> void:
- locked=false;quiet_time=0;weight=0;trajectory=Vector3.ZERO
+ locked=false;quiet_time=0;weight=0;trajectory=Vector3.ZERO;floor_offset=0
 func begin(facing: float, velocity: Vector3) -> void:
  reset();original_heading=facing;heading=facing
  trajectory=Vector3(velocity.x,0,velocity.z)

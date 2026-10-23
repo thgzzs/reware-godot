@@ -6,15 +6,15 @@
   "metrics": {
     "high_drop": {
       "blocked_fire": true,
-      "damage": 64.2012749778405,
+      "damage": 67.0436309075012,
       "events": 1,
       "fell": true,
       "hard": true,
-      "health": 35.7987250221595,
+      "health": 32.9563690924988,
       "height": 7.0,
       "native_clip": true,
-      "phase": "landing",
-      "speed": 16.6666603088379
+      "phase": "falling",
+      "speed": 16.8235855102539
     },
     "medium_drop": {
       "blocked_fire": true,
@@ -110,15 +110,15 @@
     {
       "measured": {
         "blocked_fire": true,
-        "damage": 64.2012749778405,
+        "damage": 67.0436309075012,
         "events": 1,
         "fell": true,
         "hard": true,
-        "health": 35.7987250221595,
+        "health": 32.9563690924988,
         "height": 7.0,
         "native_clip": true,
-        "phase": "landing",
-        "speed": 16.6666603088379
+        "phase": "falling",
+        "speed": 16.8235855102539
       },
       "name": "larger drops cause more damage without automatic death",
       "passed": true
@@ -133,8 +133,8 @@
         "health": 0.0,
         "height": 18.0,
         "native_clip": true,
-        "phase": "landing",
-        "speed": 26.6666793823242
+        "phase": "falling",
+        "speed": 24.7975177764893
       },
       "name": "severe falls deplete health once with a fall-specific death clip",
       "passed": true
@@ -151,8 +151,8 @@
     },
     {
       "measured": [
-        0.78353068033854,
-        0.183695475260415
+        0.433530680338542,
+        0.633530680338541
       ],
       "name": "long falls loop their glide animation instead of freezing",
       "passed": true
@@ -163,7 +163,7 @@
       "passed": true
     },
     {
-      "measured": 35.7987250221595,
+      "measured": 32.9563690924988,
       "name": "pedestrians use the same fall damage component with independent state",
       "passed": true
     },

@@ -49,6 +49,10 @@ func command() -> GameplayCommand:
  if delta.length()>profile.approach_arrival_radius:
   cmd.move=Vector2(delta.x,delta.z).normalized()
   cmd.locomotion_scale=clampf(delta.length()/profile.approach_slow_radius,0.08,1)
+  # Native start clips contain planted anticipation; slowing that clock can
+  # exhaust the stall timeout before the first physical step near a door.
+  if actor.reference_enabled and actor.reference_motion.phase in ["idle","start"]:
+   cmd.locomotion_scale=maxf(cmd.locomotion_scale,profile.approach_start_scale)
  return cmd
 func advance(dt: float, target: Vector3) -> bool:
  elapsed+=dt;goal=target;points[-1]=target

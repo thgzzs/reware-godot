@@ -14,9 +14,9 @@
       "speed": 28.5064582824707
     },
     "orchestration": {
-      "max_us": 5466.0,
-      "mean_us": 277.507777777778,
-      "p95_us": 442.0,
+      "max_us": 6498.0,
+      "mean_us": 271.753333333333,
+      "p95_us": 423.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -331,7 +331,7 @@
     {
       "measured": {
         "clip": "BIKEs_Ride",
-        "speed": 15.65576171875,
+        "speed": 15.6557588577271,
         "up": 0.999884247779846
       },
       "name": "bike accelerates with a balanced visible rider pcj600",
@@ -373,8 +373,8 @@
     {
       "measured": {
         "clip": "BIKEd_Ride",
-        "speed": 18.3459186553955,
-        "up": 0.91321873664856
+        "speed": 17.3406791687012,
+        "up": 0.888160467147827
       },
       "name": "bike accelerates with a balanced visible rider sanchez",
       "passed": true
@@ -411,7 +411,7 @@
       "measured": {
         "clip": "BIKEv_Ride",
         "speed": 16.9404449462891,
-        "up": 0.999658286571503
+        "up": 0.999658226966858
       },
       "name": "bike accelerates with a balanced visible rider faggio",
       "passed": true
@@ -469,8 +469,8 @@
       "passed": true
     },
     {
-      "measured": "BIKE_fall_off",
-      "name": "bike jump-off uses the bike fall clip and releases its seat",
+      "measured": "BIKEs_getoffBACK",
+      "name": "bike jump-off uses the model rear get-off clip and releases its seat",
       "passed": true
     },
     {

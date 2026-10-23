@@ -171,4 +171,10 @@ Created FallProfile, ActorFallState, tuning/fall.tres, a real-Jolt acceptance su
 
 ## Sprint, approach and settled reactions (current source revision)
 
-Created SprintProfile/ActorSprintState, VehicleApproach, ReactionRestProfile/ReactionRestState, tuning resources, synthetic/Jolt acceptance tests and an approach-time test helper. Modified shared motor/commands, vehicle transaction/variant policy, reaction body, HUD, composition and validation. Created/modified files are enumerated in intent_files.json. Source-only validation and remaining native-asset gaps are documented in SPRINT_ENTRY_SETTLING.md and VALIDATION.md.
+Created SprintProfile/ActorSprintState, VehicleApproach, ReactionRestProfile/ReactionRestState, tuning resources, synthetic/Jolt acceptance tests and an approach-time test helper. Modified shared motor/commands, vehicle transaction/variant policy, reaction body, HUD, composition and validation. Created/modified files are enumerated in intent_files.json. Implementation, current native validation and remaining gaps are documented in SPRINT_ENTRY_SETTLING.md and VALIDATION.md.
+
+## Asset-inclusive sprint/entry/settling follow-up
+
+Reused all 315 private asset/support payloads from the supplied complete ZIP byte for byte; no reconversion. Created native intent acceptance and seven-pose render fixtures, native results and updated transcripts. Modified holstering, native near-marker start timing, terminal clip selection and floor-clearance presentation. The file register is intent_files.json.
+
+Validation: exact Godot 4.7.2 Stable/Jolt, 569 assertions across 13 suites, 23 Python tests without skips, five render-rate comparisons, seven selected native software renders, explicit-directory ZIP/CRC/SHA checks and fresh extraction/import/startup. No original-executable, browser or hardware-GPU parity claim.

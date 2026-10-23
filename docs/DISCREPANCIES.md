@@ -1,6 +1,6 @@
 # Current discrepancies
 
-Latest source revision: SPRINT_ENTRY_SETTLING.md. Native asset regression is pending because converted artwork is absent from the restored source checkout. The earlier asset-inclusive measurements remain historical.
+Latest revision: SPRINT_ENTRY_SETTLING.md. Native regression now runs against the restored supplied models/animations. Selected sprint, settled fall and four bike rear-exit poses were rendered locally. The counts in VALIDATION.md describe this build; older milestones remain historical.
 
 Falling and moving melee are documented in [FALL_AND_MOBILE_MELEE.md](FALL_AND_MOBILE_MELEE.md). The asset/vehicle delivery is documented in [STORIES_REVISION.md](STORIES_REVISION.md); older milestones are historical. Gameplay, visual and performance parity remain unverified against a running original build.
 

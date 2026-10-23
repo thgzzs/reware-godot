@@ -157,6 +157,18 @@ func follow_pose(dt: float) -> void:
   var hip := pose.skeleton.find_bone("Pelvis")
   if hip>=0:
    actor.global_position += global_position-(pose.skeleton.global_transform*pose.skeleton.get_bone_global_pose(hip).origin)
+  if rest.locked and rest.weight>=0.99 and pose.transition_time>=actor.actions.profile.blend_seconds:
+   # Terminal skin clearance is presentation-only. Cache the expensive vertex
+   # minimum once per clip; keep the physical torso and impact response intact.
+   var clip:=actor.actions.life_clip
+   if not pose.floor_minimum.has(clip):pose.floor_minimum[clip]=pose.skin_minimum_y()
+   var minimum:float=pose.floor_minimum[clip]
+   var ray:=PhysicsRayQueryParameters3D.create(global_position+support_normal*0.5,global_position-support_normal*1.5,5,[get_rid(),actor.get_rid()])
+   var hit:=actor.get_world_3d().direct_space_state.intersect_ray(ray)
+   if is_finite(minimum) and not hit.is_empty():
+    var target:=clampf((hit.position-pose.to_global(Vector3(0,minimum,0))).dot(support_normal)+actor.actions.profile.reaction_floor_clearance,-actor.actions.profile.reaction_max_lift,actor.actions.profile.reaction_max_lift)
+    rest.floor_offset=move_toward(rest.floor_offset,target,actor.actions.profile.reaction_settle_speed*dt)
+   actor.global_position+=support_normal*rest.floor_offset
 func can_recover() -> bool:
  if age<minimum_recovery_age or not rest.locked or rest.weight<0.99:return false
  if age<profile.recovery_delay or linear_velocity.length()>profile.recovery_speed: return false

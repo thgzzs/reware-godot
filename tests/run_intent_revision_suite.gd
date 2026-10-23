@@ -160,7 +160,7 @@ func run() -> void:
  for prefix in ["BIKEs","BIKEd","BIKEv","BIKEh"]:
   var variant:=VehicleVariant.new()
   check("intentional bike bailout selects rear get-off for "+prefix,variant.bailout_clip(prefix,actor.actions)==prefix+"_getoffBACK")
- var report:={"engine":Engine.get_version_info().string,"backend":"Jolt Physics","assertions":results.size(),"failures":failures,"results":results,"metrics":metrics,"assets":"synthetic clips and primitive models; native converted assets unavailable after workspace maintenance","native_visual_validation":false}
+ var report:={"engine":Engine.get_version_info().string,"backend":"Jolt Physics","assertions":results.size(),"failures":failures,"results":results,"metrics":metrics,"assets":"synthetic clips and primitive models, deliberately independent of private assets","native_visual_validation":false}
  var file:=FileAccess.open("res://tests/intent_revision_results.json",FileAccess.WRITE);file.store_string(JSON.stringify(report,"  "));file.close()
  print("RESULT intent revision ",results.size()," / failures ",failures)
  arena.queue_free();await process_frame;quit(1 if failures else 0)

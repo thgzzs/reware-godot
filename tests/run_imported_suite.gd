@@ -135,9 +135,11 @@ func run() -> void:
  await frames(1)
  check("sprint release enters committed stop",actor.reference_motion.phase=="stop" and actor.reference_motion.heading_locked,actor.reference_motion.clip)
  var stopped_facing := actor.facing
- await frames(15,right)
+ await frames(15)
  check("stop animation locks heading",absf(actor.facing-stopped_facing)<0.000001)
  check("stop root motion still moves the colliding body",actor.global_position.distance_to(stop_start)>0.1,actor.global_position.distance_to(stop_start))
+ await frames(1,right)
+ check("renewed movement interrupts native stop without restarting walk-start",actor.reference_motion.phase=="move" and not actor.reference_motion.heading_locked)
  await frames(ceili(actor.reference_motion.duration(actor.reference_motion.clip)*60)+2)
  check("stop commitment completes",actor.reference_motion.phase!="stop")
  await place(Vector3(-30,0.94,40))

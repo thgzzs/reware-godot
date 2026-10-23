@@ -32,7 +32,7 @@ def main():
         suites.append(('imported_suite', 'imported'))
     if (root/'assets/converted/models/player.scn').exists():
         suites.extend((name+'_suite', name) for name in
-                      ('presentation', 'native_action', 'motion', 'systems', 'foundation'))
+                      ('presentation', 'native_action', 'motion', 'systems', 'foundation', 'native_intent'))
     if (root/'assets/converted/stories_animation_source.json').exists():
         suites.extend([('stories_assets', 'stories_assets'), ('stories_suite', 'stories'), ('fall_melee_suite', 'fall_melee')])
     total = 0

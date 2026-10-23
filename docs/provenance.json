@@ -474,11 +474,11 @@
     "engine": "4.7.2-stable",
     "source_runtime_assertions": 130,
     "new_assertions": 42,
-    "python_passed": 14,
-    "python_skipped_private_inputs": 9,
-    "project_scripts_parsed": 106,
-    "native_assets_available": false,
-    "native_visual_validation": false,
+    "python_passed": 23,
+    "python_skipped_private_inputs": 0,
+    "project_scripts_parsed": 108,
+    "native_assets_available": true,
+    "native_visual_validation": "seven selected software-rendered snapshots; temporal parity unverified",
     "asset_conversion_performed": false,
     "reference_source_review": [
       "src/peds/PedAI.cpp: intentional bike rear exit",
@@ -487,6 +487,22 @@
       "src/peds/PlayerPed.cpp: sprint/stop phases"
     ],
     "tapping_curve": "explicit new tuning, 1.20 multiplier cap; not source-equivalence claim",
+    "documentation": "docs/SPRINT_ENTRY_SETTLING.md"
+  },
+  "intent_native_followup": {
+    "engine": "4.7.2-stable.official.ed1daf0bf",
+    "runtime_assertions": 569,
+    "suites": 13,
+    "native_intent_assertions": 43,
+    "python_passed": 23,
+    "python_skipped": 0,
+    "render_rate_comparisons": 5,
+    "selected_rendered_poses": 7,
+    "private_payloads_preserved": 315,
+    "source_zip_sha256": "de9923b3f733b52bb620b73925fa1a34efe8fd033e7260d277b8f0c06524f6a6",
+    "asset_conversion_performed": false,
+    "reference_runtime_tested": false,
+    "browser_runtime_tested": false,
     "documentation": "docs/SPRINT_ENTRY_SETTLING.md"
   }
 }

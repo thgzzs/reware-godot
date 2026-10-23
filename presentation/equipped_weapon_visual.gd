@@ -25,4 +25,4 @@ func update_model(profile: WeaponProfile) -> void:
  for id in models: models[id].visible = id==profile.id
  if is_instance_valid(actor.weapon_muzzle): actor.weapon_muzzle.position = profile.muzzle_local
 func _process(_dt: float) -> void:
- visible = actor.health.health>0 and actor.control_enabled and actor.weapon.profile.id!="unarmed"
+ visible = actor.health.health>0 and actor.control_enabled and not actor.interaction_holstered and actor.weapon.profile.id!="unarmed"
