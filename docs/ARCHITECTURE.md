@@ -15,6 +15,10 @@ This design uses scene composition and small components rather than an engine hi
 | LabOverlay | Presentation of state, telemetry, wheel contacts and shot feedback | Read-only composition-root references; no gameplay decisions |
 | GameplayTelemetry | Bounded rolling CPU samples | Summarize on demand; no per-tick file I/O |
 
+## Added composition boundaries
+
+DamageEvent and BallisticTrace connect weapons to actor, prop and vehicle receivers. PhysicalProp owns its Jolt body and PropProfile. VehicleDamage owns health, tire/glass state and terminal fire/explosion; presentation modules observe state. ActorStance owns capsule/headroom changes; MeleeController owns strike windows. VehicleSeatMap owns unique reservations/occupants; VehicleTransition commits transfers. HandlingDataMapper and VehicleVariant create distinct physics fixtures without putting mesh-specific branches in controllers. See SYSTEMS_REVISION.md.
+
 ## Update contract
 
 At 60 physics ticks per second:
@@ -22,7 +26,7 @@ At 60 physics ticks per second:
 1. Sample or inject one command. A jump/interact/reload edge exists for one tick.
 2. Read camera look, validate interaction and advance the transition transaction.
 3. Advance weapon selection, cooldown and reload once, then actor action clocks and motor.
-4. Latch the committed driver's command; otherwise park the car.
+4. Latch the committed driver's command; otherwise park locally owned cars while respecting explicit external control.
 5. Update follow camera/obstruction and solve the camera-center aim target.
 6. Sample the controlled actor pose once, update bone attachments, then resolve muzzle-occluded firing.
 7. Record orchestration CPU time. Each vehicle owns its own wheel presentation callback.

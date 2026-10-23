@@ -78,6 +78,7 @@ func run() -> void:
   check("weapon visual selection remains unique in slot %d"%slot,visible_models==1)
  actor.reset_at(Vector3(-28,0.94,40))
  await frames(30)
+ gun.equip_slot(0)
  actor.health.receive(1000)
  await frames(ceili(motion.duration(actor.actions.life_clip)*60)+20)
  visual.sample_pose(0.2)

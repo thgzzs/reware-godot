@@ -1,0 +1,316 @@
+run_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS exact engine 4.7.2-stable (official)
+PASS Jolt selected <null>
+PASS ground support 0.90001207590103
+PASS movement accelerates to configured speed 5.0
+PASS movement distance in one second 4.41669654846191
+PASS release decelerates to rest 0.0
+PASS camera relative forward rotates movement (-4.416687, 0.0, 0.0)
+PASS aim movement modifier 2.5
+PASS aim FOV converges 54.0022201538086
+PASS jump launches after windup { "launch_delay_s": 0.15, "apex_m": 1.12139159440994, "airborne_s": 0.66666666666667 }
+PASS jump apex within ballistic tolerance 1.12139159440994
+PASS jump lands and recovers 434
+PASS landing state clears grounded
+PASS buffered press launches on landing 1
+PASS wall collision prevents tunneling 13.4799947738647
+PASS jump ceiling collision 1.32416331768036
+PASS step traversal climbs configured low steps (-10.0, 1.700375, -3.057828)
+PASS walkable slope gains height (-16.0, 1.689436, 4.380012)
+PASS steep slope does not become walkable (-21.0, 0.900375, 5.648082)
+PASS camera obstruction sweep retracts 0.739990234375
+PASS camera aim resolves hits true
+PASS damage applied to target 25.0
+PASS firing cadence every 12 ticks at 60 Hz [1061, 1073, 1085, 1097, 1109]
+PASS ammo decreases per shot 4
+PASS reload transfers reserve without duplication [12, 228]
+PASS suspension supports four wheel contacts 4
+PASS suspension settles near static weight { "load_N": 23999.9991864669, "height_m": 0.58249998092651, "vertical_speed": 0.00000001209414 }
+PASS suspension vertical oscillation settles 0.00000001209414
+PASS valid approach reserves seat <null>
+PASS duplicate occupancy rejected <null>
+PASS entry commits control once driving
+PASS entry duration bounded by one tick 0.65
+PASS vehicle accelerates forward { "time_s": 2.5, "speed_mps": 12.5326585769653, "distance_m": 16.3013401031494 }
+PASS moving exit rejected <null>
+PASS steering changes heading 1.0155565738678
+PASS brakes bring vehicle to rest { "initial_speed_mps": 12.5289859771729, "distance_m": 6.41722345352173, "time_s": 1.0 }
+PASS reverse engages after stop -4.37292289733887
+PASS blocked exits preserve ownership <null>
+PASS clear exit begins transition <null>
+PASS exit restores on foot ownership and collision on_foot
+PASS exit timing bounded by one tick 0.56666666666667
+PASS movement resumes without restarting <null>
+PASS three additional enter exit cycles 3
+PASS late exit blockers cancel commit safely driving
+PASS vehicle dynamics invariant under world translation [5.39537715911865, 5.39537715911865]
+PASS vehicle remains stable after control restoration 0.01749244332314
+PASS weapon control resumes after driving { "phase": "grounded", "grounded": true, "control": true, "life": "alive", "cooldown": 0.2, "ammo": 11, "shots": 1, "facing": 6.28318530717959, "yaw": 0.0 }
+PASS vehicle body collides without crossing wall (17.99924, 0.573032, 27.13881)
+RESULT 48 assertions / 0 failures
+
+run_revision_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS all arena blocks retain plain colors by default <null>
+PASS nearest vehicle returns the actual registered body <null>
+PASS input installation is idempotent <null>
+PASS switch to rifle succeeds <null>
+PASS weapon switch cancels reload and preserves shot lock <null>
+PASS weapon ammo belongs to its slot <null>
+PASS second weapon retains its own magazine <null>
+PASS cadence follows source 30 Hz animation conversion 0.24
+PASS walk and run blend at matching normalized phase <null>
+PASS aim preserves leg locomotion <null>
+PASS upper action actually moves the gun arm <null>
+PASS action changes crossfade instead of snapping <null>
+PASS heavy gun permits source sprint clip ["sprint_civi", 3.60000348091125]
+PASS aiming and walking coexist <null>
+PASS walking aiming and firing advance together <null>
+PASS reload blends its own upper action while legs remain available <null>
+PASS every equipped weapon supports sprint <null>
+PASS death plays once and holds its terminal frame ["dead", 0.5]
+PASS death blocks movement and leaves a low world collision shape <null>
+PASS respawn restores health and standing shape <null>
+PASS Jolt door hinge opens under motor force -1.1868338813644
+PASS open hinge stays attached to chassis <null>
+PASS door closes and latches without pinning chassis to world 0.0
+PASS chassis sweep finds and reacts to pedestrian [1, 99.6625334334143, "down"]
+PASS run-over reaction stays bounded 0.4347351193428
+PASS low speed impact knocks down instead of instantly killing <null>
+PASS nonfatal pedestrian gets up with standing volume clearance ["alive", (-28.00002, 0.900012, 34.25638)]
+PASS blocked standing volume prevents unsafe get-up <null>
+PASS get-up retries after overhead obstruction clears <null>
+PASS fatal impact reaches death and repeated corpse hits do not restart it <null>
+PASS right door opens in the opposite direction 1.1868338813644
+PASS right door also closes and latches <null>
+PASS animated entry reserves a single owner <null>
+PASS door action respects opening contact delay <null>
+PASS entry advances from opening to get-in <null>
+PASS inside close uses its own distinct source clip <null>
+PASS animated stages commit after total clip duration <null>
+PASS animated exit starts its get-out clip <null>
+PASS outside close uses the outside source clip <null>
+PASS animated exit restores control exactly once <null>
+PASS death during entry releases reservation and controller <null>
+RESULT 41 assertions / 0 failures
+
+run_imported_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS all ANPK clips present in native library 234
+PASS every native key and timestamp matches decoded source { "channels": 5422, "channel_keys": 95427, "mismatches": 0, "max_position_or_scale_error": 0.0, "max_quaternion_dot_error": 0.00000017881393 }
+PASS all source data tables loaded <null>
+PASS fistfight rows and frame-to-second mapping preserved 32
+PASS fistfight clips resolve without inventing sentinel animations <null>
+PASS sprint motion integrates across loop without reset spike <null>
+PASS reference assets activated <null>
+PASS fight configuration visible in clip inspector 
+Jab: 0.200–0.333 s / source damage 2
+PASS player and four pedestrians use identical motor script <null>
+PASS health and weapon components shared by actor types <null>
+PASS player heading source unit converted explicitly 13.0899693899575
+PASS weapon DAT fields and derived animation cadence applied Colt45
+PASS dimensionally mapped vehicle fields applied <null>
+PASS walk start uses source clip WALK_start
+PASS walk movement follows imported stride scale 1.15887343883514
+PASS walk loop selected WALK_player
+PASS travel follows body heading while turning (-0.002994, 0.0, -0.588365)
+PASS sprint source clip active sprint_civi
+PASS sprint release enters committed stop Run_stop
+PASS stop animation locks heading <null>
+PASS stop root motion still moves the colliding body 1.2169588804245
+PASS stop commitment completes <null>
+PASS jump starts source launch clip JUMP_launch
+PASS jump waits for clip duration <null>
+PASS jump launches after imported timing gate <null>
+PASS jump and landing recover grounded
+PASS all 234 clips sampled on active character skeleton without nonfinite poses <null>
+PASS browser exposes all imported clip names <null>
+PASS entry request accepted in imported mode <null>
+PASS entry commits after open get-in and close clips ["driving", 1.88333333333333]
+PASS driving still accelerates with mapped data 8.00606441497803
+PASS exit request accepted <null>
+PASS exit returns to shared on-foot actor on_foot
+PASS weapon works after imported enter drive exit loop <null>
+PASS NPC gun reaction consumes ped DAT relationships 4
+PASS source player damage scales by 0.33 rather than NPC weakness <null>
+RESULT imported 36 assertions / 0 failures
+
+run_presentation_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS imported car settles at its spawn { "position": (1.0, 0.649975, -0.000008), "velocity": (0.0, 0.001612, 0.000004) }
+PASS native character uses real hierarchy and skin [25, 24]
+PASS all source inverse binds cancel rest transforms 0.000000119558
+PASS all native skin weights and palette indices valid 1153
+PASS idle skin stands upright at original scale { "minimum": (-0.331645, -1.014735, -0.171255), "maximum": (0.309934, 0.820493, 0.215398) }
+PASS root locomotion translation is not applied twice <null>
+PASS player and NPCs share skinned presentation and actor components <null>
+PASS pistol is bound to the actual right hand <null>
+PASS Idaho retains wheel door and seat markers <null>
+PASS damaged and low-detail variants are hidden <null>
+PASS axle spacing derives from original wheel markers [(-0.875, 0.1, -1.692), (0.875, 0.1, -1.692), (-0.875, 0.1, 1.693), (0.875, 0.1, 1.693)]
+PASS vehicle hull covers placeholder body length <null>
+PASS HUD and center ray adapt to 640x360 { "logical": (1280.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 1024x768 { "logical": (960.0, 720.0), "ray_error": 0.00000008940697 }
+PASS HUD and center ray adapt to 1280x720 { "logical": (1280.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 1920x1080 { "logical": (1280.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 2560x1080 { "logical": (1706.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 3440x1440 { "logical": (1720.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 3840x2160 { "logical": (1280.0, 720.0), "ray_error": 0.0 }
+PASS HUD and center ray adapt to 1080x1920 { "logical": (720.0, 1280.0), "ray_error": 0.0 }
+PASS camera preserves vertical FOV on resize <null>
+PASS 3D scale and UI scale are independent <null>
+PASS display menu blocks firing and movement commands <null>
+PASS closing display menu resumes weapon input <null>
+PASS adaptive scale falls after sustained slow frames 0.95
+PASS adaptive cooldown prevents immediate oscillation <null>
+PASS adaptive scale recovers and remains bounded 1.0
+PASS adaptive scale respects minimum 0.5
+RESULT presentation 28 assertions / 0 failures
+
+run_native_action_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS native aim mask preserves the moving thigh pose <null>
+PASS native gun hand follows aim pitch -0.40 0.0000000875443
+PASS native gun hand follows aim pitch 0.00 0.00000023132817
+PASS native gun hand follows aim pitch 0.35 0.00000021696415
+PASS native aimed skin stays finite and within human scale (0.687401, 1.841556, 1.05088)
+PASS native sprint works with Colt45 sprint_civi
+PASS weapon visual selection remains unique in slot 0 <null>
+PASS native sprint works with Unarmed sprint_civi
+PASS weapon visual selection remains unique in slot 1 <null>
+PASS native death reaches its terminal pose once { "minimum": (-28.53752, 0.01, 39.04418), "size": (0.957376, 0.41264, 1.969254), "clip": "KO_shot_front", "body_y": 0.90000534057617 }
+PASS native death mesh rests above the arena floor { "minimum": (-28.53752, 0.01, 39.04418), "size": (0.957376, 0.41264, 1.969254), "clip": "KO_shot_front", "body_y": 0.90000534057617 }
+PASS native door frame belongs to physical hinge 0 <null>
+PASS native door moves with its physical body 0 -1.18682879566224
+PASS native door returns to latch 0 <null>
+PASS native door frame belongs to physical hinge 1 <null>
+PASS native door moves with its physical body 1 1.18682874570193
+PASS native door returns to latch 1 <null>
+PASS native model entry can reserve the seat <null>
+PASS vehicle entry holsters the equipped weapon <null>
+PASS native model entry commits after all stages <null>
+PASS native model exit can begin safely <null>
+PASS native model exit restores standing actor and gun <null>
+RESULT native actions 22 assertions / 0 failures
+
+run_motion_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS sprint thigh moves over time in slot 0 1.13462674617767
+PASS run jump owns visible pose and completes in slot 0 { "rise": 0.87301248311996, "bone_delta": 2.19361186027527, "exclusive_layers": true }
+PASS sprint thigh moves over time in slot 1 1.13462674617767
+PASS run jump owns visible pose and completes in slot 1 { "rise": 0.87301248311996, "bone_delta": 2.19361186027527, "exclusive_layers": true }
+PASS world gun axis converges on camera-center target pitch -0.35 0.00000011540979
+PASS world gun axis converges on camera-center target pitch 0.00 0.0000001585494
+PASS world gun axis converges on camera-center target pitch 0.40 0.00000029774372
+PASS fire produces a recoil envelope <null>
+PASS reload is a changing upper pose while legs still move 0.03611489012837
+PASS entry begins <null>
+PASS driver remains visible with pelvis on seat anchor 0.00000005960464
+PASS seated limbs fit inside cabin and door finishes closing <null>
+PASS visible hub rotates with forward travel 4.17172086238861
+PASS wheel axle rolls backward during reverse { "speed": -2.43627572059631, "delta": 0.12689304351807 }
+PASS exit begins <null>
+PASS exit restores controllable actor <null>
+PASS moderate impact survives and physically contacts car { "health": 60.6738351130392, "displacement": 18.3470726013184, "lift": 0.5514275431633, "car_contacts": 271, "contact_ticks": 120, "speed": 6.90781211853027 }
+PASS Jolt impact transfers momentum and lifts the torso { "health": 60.6738351130392, "displacement": 18.3470726013184, "lift": 0.5514275431633, "car_contacts": 271, "contact_ticks": 120, "speed": 6.90781211853027 }
+PASS nonfatal proxy safely returns to standing control { "life": "alive", "position": (18.26559, 0.900375, -3.162501) }
+RESULT motion 19 / failures 0
+
+run_systems_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS exact engine and fixed Jolt timestep <null>
+PASS reference gravity uses normalized 50 Hz units <null>
+PASS jump impulse derives from 8.5/70 normalized momentum 6.07142857142857
+PASS trash cans are independent solid rigid bodies <null>
+PASS bullet impulse translates and rotates a trash can { "distance": 3.46205353736877, "rotation": (-0.003389, -0.004898, -0.837458) }
+PASS independent RWD FWD AWD physics vehicles exist <null>
+PASS vehicle masses and dimensions are distinct <null>
+PASS native two-door car retains four marker-defined seats <null>
+PASS four-door physics fixture owns four physical hinges <null>
+PASS native inventory exposes exact available models and unarmed <null>
+PASS weapons never substitute another firearm's mesh <null>
+PASS on-foot camera cycles near medium far with finite framing [2, 0, 1]
+PASS launch and airborne firing never spend ammunition { "phase": "airborne", "shots": 0 }
+PASS grounded weapon control resumes after landing <null>
+PASS crouch preserves feet with a shorter collider <null>
+PASS source crouch holds position instead of generic crouch running 0.0
+PASS crouch shooting works without leaving crouch <null>
+PASS blocked standing volume keeps crouch collision <null>
+PASS standing restores after headroom clears <null>
+PASS pistol aiming leaves the left arm on its base pose 0.0
+PASS backward hip fire waits for body turn instead of twisting arms <null>
+PASS firing resumes once body can face the camera target <null>
+PASS bullet ray identifies the actual tire component (16.985, 0.32, 3.307997)
+PASS tire hit persists and lowers the visual rolling radius (1.0, 0.65, 0.65)
+PASS windshield ray resolves its own native glass region (17.95784, 1.142519, 4.24892)
+PASS first glass hit selects cracked mesh <null>
+PASS second glass hit removes glass and its bullet volume <null>
+PASS passenger-side approach reserves the right seat <null>
+PASS passenger occupancy never grants driving control <null>
+PASS passenger can reserve a free driver seat for shuffle <null>
+PASS shuffle atomically transfers unique driver ownership <null>
+PASS vehicle camera cycles follow distances and bonnet view [2, 3, 0, 1]
+PASS driver exit can begin <null>
+PASS exit releases every occupancy and reservation <null>
+PASS right-side normal entry begins <null>
+PASS normal right entry uses source shuffle to reach driver <null>
+PASS melee windup does not apply early damage <null>
+PASS melee strike window damages a nearby actor { "before": 100.0, "after": 76.0 }
+PASS one swing cannot repeatedly damage its target <null>
+PASS directional death chooses KO_shot_front KO_shot_front
+PASS directional death chooses KO_skid_back KO_skid_back
+PASS directional death chooses KO_spin_L KO_spin_L
+PASS directional death chooses KO_spin_R KO_spin_R
+PASS crouched head hits resolve against the posed head KO_shot_face
+PASS world collision removes meaningful vehicle health 719.077517250343
+PASS resting wall contact does not repeatedly deal damage { "before": 719.077517250343, "after": 719.077517250343 }
+PASS collision damage uses world normals under vehicle rotation [280.922482749657, 280.922482749657]
+PASS a car transfers physical momentum to a trash can 8.28990268707275
+PASS vehicle-to-vehicle impacts damage both bodies { "hitter": 911.491422122334, "struck": 912.099688313839 }
+PASS low vehicle health enters a timed burning state <null>
+PASS burning detonates once and disables drivetrain 1
+PASS destroyed car cannot be reserved or explode twice <null>
+PASS lab repair restores a nearby stopped wreck for continuous testing <null>
+RESULT systems 53 assertions / 0 failures
+
+run_foundation_suite
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS stationary jump has source-dependent forward momentum { "phase": "airborne", "speed": 5.0 }
+PASS walk-start jump has source-dependent forward momentum { "phase": "airborne", "speed": 5.0 }
+PASS walk jump has source-dependent forward momentum { "phase": "airborne", "speed": 5.0 }
+PASS run jump has source-dependent forward momentum { "phase": "airborne", "speed": 8.5 }
+PASS sprint jump has source-dependent forward momentum { "phase": "airborne", "speed": 15.5963640213013 }
+PASS run and sprint jumps are not forced to the same velocity [5.0, 5.0, 5.0, 8.5, 15.5963640213013]
+PASS walkable uphill slope gains only terrain height 2.56774377822876
+PASS downhill running/jumping leaves the slope without sticking { "at": (-27.96074, 0.900012, -24.67376), "max_y": 3.24697685241699 }
+PASS steep wedge cannot accumulate upward launch energy { "max_y": 1.77242076396942, "speed": 7.61089611053467, "at": (-27.90677, 0.912906, -10.74059) }
+PASS ordinary movement does not shove a heavy parked vehicle { "movement": (0.0, 0.0, 0.0), "speed": 0.00000430271484 }
+PASS fresh collision damages an already active knockdown { "before": 99.99285, "after": 43.9792414594247, "fresh_hits": 1, "contacts": 138, "closing": 10.0062913894653, "normal": (0.024889, -0.634354, 0.772642), "age": 2.83333333333333 }
+PASS sustained resting contact does not drain pedestrian health { "before": 43.9792414594247, "after": 43.9792414594247 }
+PASS subsequent severe impact can kill a downed pedestrian { "health": 0.0, "life": "dead", "fresh_hits": 2 }
+RESULT foundation 13 assertions / 0 failures

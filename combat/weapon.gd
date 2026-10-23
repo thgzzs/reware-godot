@@ -5,6 +5,9 @@ signal recoil(amount: float)
 signal equipped(profile: WeaponProfile)
 @export var profile: WeaponProfile
 @export var loadout: WeaponLoadout = preload("res://tuning/arsenal.tres")
+var actor: CharacterMotor
+var melee := MeleeController.new()
+var trigger_allowed := true
 var magazine := 0
 var reserve := 0
 var cooldown := 0.0
@@ -15,6 +18,7 @@ var rng := RandomNumberGenerator.new()
 var inventory: Array[Dictionary] = []
 var active_slot := 0
 func _ready() -> void:
+ melee.configure(actor)
  magazine = profile.magazine_size
  reserve = profile.reserve_ammo
  rng.seed = 47821
@@ -33,6 +37,7 @@ func equip_slot(index: int) -> bool:
  if active_slot>=0:
   inventory[active_slot].magazine = magazine
   inventory[active_slot].reserve = reserve
+ melee.cancel()
  active_slot = index
  profile = inventory[index].profile
  magazine = inventory[index].magazine
@@ -45,6 +50,7 @@ func select(cmd: GameplayCommand) -> void:
  if cmd.weapon_slot>=0: equip_slot(cmd.weapon_slot)
  elif cmd.weapon_step!=0 and not inventory.is_empty(): equip_slot(posmod(active_slot+cmd.weapon_step,inventory.size()))
 func start_reload() -> void:
+ if profile.kind=="melee": return
  if reload_left>0 or magazine>=profile.magazine_size or reserve<=0: return
  reload_left = profile.reload_seconds
 func tick(cmd: GameplayCommand, active: bool, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID], dt: float) -> void:
@@ -52,19 +58,34 @@ func tick(cmd: GameplayCommand, active: bool, space: PhysicsDirectSpaceState3D, 
  if active: try_fire(cmd,space,camera,muzzle,exclude)
 func advance(cmd: GameplayCommand, active: bool, dt: float) -> void:
  cooldown = maxf(0,cooldown-dt)
+ if actor!=null:
+  if not active: melee.cancel()
+  else: melee.tick(cmd,dt)
  if not active:
   reload_left = 0
   return
  select(cmd)
+ if actor!=null and (not actor.grounded or actor.phase!="grounded" or cmd.jump): reload_left = 0
  if reload_left>0:
   reload_left = maxf(0,reload_left-dt)
   if reload_left <= 0:
    var transferred := mini(profile.magazine_size-magazine,reserve)
    magazine += transferred
    reserve -= transferred
- if cmd.reload: start_reload()
+ if cmd.reload and (actor==null or actor.can_use_weapon()): start_reload()
 func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID]) -> void:
- if not cmd.fire or reload_left>0 or cooldown>0.000001: return
+ if not cmd.fire or not trigger_allowed: return
+ if actor!=null and not actor.can_use_weapon(): return
+ if profile.kind=="melee":
+  melee.damage = profile.damage
+  if melee.request(): cooldown=profile.interval
+  return
+ if reload_left>0 or cooldown>0.000001: return
+ if actor!=null:
+  var target := AimSolution.camera_target(space,camera,profile.range_meters,exclude)
+  var toward := -camera.global_basis.z
+  var forward := Basis(Vector3.UP,actor.facing)*Vector3.FORWARD
+  if forward.dot(Vector3(toward.x,0,toward.z).normalized())<cos(1.1): return
  if magazine<=0:
   start_reload()
   return
@@ -79,18 +100,22 @@ func fire_ray(space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector
  direction = direction.rotated(camera.global_basis.y,rng.randf_range(-profile.spread_radians,profile.spread_radians))
  direction = direction.rotated(camera.global_basis.x,rng.randf_range(-profile.spread_radians,profile.spread_radians))
  var aim_end := camera.global_position+direction*profile.range_meters
- var aim_query := PhysicsRayQueryParameters3D.create(camera.global_position,aim_end,13,exclude)
- var aim_hit := space.intersect_ray(aim_query)
+ var from := camera.global_position+direction*maxf(0,(muzzle-camera.global_position).dot(direction))
+ var aim_hit := BallisticTrace.cast(space,from,aim_end,exclude)
  if not aim_hit.is_empty(): aim_end = aim_hit.position
+ if actor!=null:
+  var shoulder := actor.global_position+Vector3.UP*(-0.15 if actor.stance.crouched else 0.35)
+  var cover := BallisticTrace.cast(space,shoulder,muzzle,exclude)
+  if not cover.is_empty(): muzzle = cover.position-(muzzle-shoulder).normalized()*0.01
  # Second ray prevents shooting through a wall between muzzle and crosshair.
- var query := PhysicsRayQueryParameters3D.create(muzzle,aim_end,13,exclude)
- var hit := space.intersect_ray(query)
+ var hit := BallisticTrace.cast(space,muzzle,aim_end,exclude)
  last_hit = not hit.is_empty()
  if last_hit:
   aim_end = hit.position
-  if hit.collider.has_method("receive_damage"):
-   hit.collider.receive_damage(profile.damage,hit.position,(aim_end-muzzle).normalized())
-  if hit.collider is RigidBody3D:
+  var event := DamageEvent.make(profile.damage,hit.position,(aim_end-muzzle).normalized(),"bullet",actor)
+  event.normal = hit.normal
+  DamageEvent.deliver(hit.collider,event)
+  if hit.collider is RigidBody3D and not hit.collider.has_method("receive_hit"):
    hit.collider.apply_impulse((aim_end-muzzle).normalized()*15.0,hit.position-hit.collider.global_position)
  shot_fired.emit(muzzle,aim_end,last_hit)
 

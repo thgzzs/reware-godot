@@ -141,24 +141,29 @@ func _draw() -> void:
  draw_rect(Rect2(status.position+Vector2(16,40),Vector2(status.size.x-32,7)),Color("3b354b"))
  draw_rect(Rect2(status.position+Vector2(16,40),Vector2((status.size.x-32)*clampf(health/maxf(1,arena.actor.health.max_health),0,1),7)),PINK)
  var driving: bool = arena.transition.state=="driving"
+ var seated: bool = arena.transition.state in ["driving","passenger","shuffling"]
+ var car: DriveVehicle = arena.transition.vehicle if is_instance_valid(arena.transition.vehicle) else arena.vehicle
  var state: String = arena.actor.actions.life if arena.actor.actions.life!="alive" else arena.transition.state
  text_at(state.to_upper().replace("_"," "),status.position+Vector2(16,76),16,AQUA,status.size.x-32)
- text_at("%03d km/h"%absf(arena.vehicle.speed*3.6) if driving else "TEST YARD",status.position+Vector2(16,99),16,INK)
+ text_at("%03d km/h"%absf(car.speed*3.6) if driving else "TEST YARD",status.position+Vector2(16,99),16,INK)
  var weapon: WeaponController = arena.weapon
  text_at("%d/%d"%[weapon.active_slot+1,weapon.inventory.size()],ammo.position+Vector2(14,28),14,PINK)
  text_at(weapon.profile.display_name,ammo.position+Vector2(58,26),14,AQUA,ammo.size.x-70)
- text_at("%02d / %03d"%[weapon.magazine,weapon.reserve],ammo.position+Vector2(58,61),26,INK,ammo.size.x-70)
+ text_at("MELEE" if weapon.profile.kind=="melee" else "%02d / %03d"%[weapon.magazine,weapon.reserve],ammo.position+Vector2(58,61),26,INK,ammo.size.x-70)
  if weapon.reload_left>0: draw_rect(Rect2(ammo.position+Vector2(16,77),Vector2((ammo.size.x-32)*(1.0-weapon.reload_left/maxf(0.001,weapon.profile.reload_seconds)),4)),PINK)
  draw_radar(layout.radar)
  var message: String = "[Backspace] Respawn" if health<=0 else arena.transition.message
  var nearest: DriveVehicle = arena.nearest_vehicle()
  if message.is_empty() and arena.transition.state=="on_foot" and arena.actor.control_enabled and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
+ if message.is_empty() and arena.transition.state=="passenger": message = "[X] Move to driver / [E] Exit"
+ if message.is_empty() and arena.actor.stance.crouched and arena.transition.state=="on_foot": message = "CROUCHED / [C] Stand"
+ if message.is_empty() and arena.transition.state=="shuffling": message = "Moving to driver seat…"
  if message.is_empty() and arena.transition.state=="entering": message = "Entering vehicle…"
  elif message.is_empty() and arena.transition.state=="exiting": message = "Leaving vehicle…"
  if not message.is_empty():
   var width := minf(420,screen.x-36)
   text_at(message,Vector2((screen.x-width)*0.5,screen.y-196 if screen.x<1000 else screen.y-54),17,AQUA,width)
- if health>0 and arena.actor.control_enabled and arena.actor.actions.aim_weight>0.05 and arena.transition.state=="on_foot":
+ if health>0 and weapon.profile.kind!="melee" and arena.actor.can_use_weapon() and arena.actor.actions.aim_weight>0.05 and arena.transition.state=="on_foot":
   var center: Vector2 = layout.center
   if icons.crosshair!=null: draw_texture_rect(icons.crosshair,Rect2(center-Vector2.ONE*23,Vector2.ONE*46),false)
   else:
@@ -196,7 +201,7 @@ func draw_world_markers() -> void:
 func draw_help(screen: Vector2) -> void:
  var rect := Rect2(Vector2(18,116),Vector2(minf(430,screen.x-36),minf(280,screen.y-300)))
  draw_rect(rect,BACK)
- var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire","R Reload / E Enter or exit","Wheel / Q / Z / 1–3 Switch weapon","Backspace Respawn after death / Esc Cursor"]
+ var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire","R Reload / E Enter or exit", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
  if diagnostics:
   var motor: CharacterMotor = arena.actor
   lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]

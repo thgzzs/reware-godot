@@ -1,6 +1,11 @@
 class_name WeaponProfile
 extends Resource
 @export var pose: WeaponPoseProfile = preload("res://tuning/weapon_pose.tres")
+@export var id := "colt45"
+@export_enum("hitscan","melee") var kind := "hitscan"
+@export var model_scene := "res://assets/converted/models/colt45.scn"
+@export var source_model_id := -1
+@export var two_handed := false
 @export var display_name := "LAB / 9"
 @export var interval := 0.20
 @export var reload_seconds := 1.20

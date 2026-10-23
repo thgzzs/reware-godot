@@ -1,6 +1,7 @@
 extends Node3D
 ## Composition root; owns wiring and explicit gameplay phase order only.
 var enable_reference_assets := true
+var enable_vehicle_fixtures := true
 var enable_model_placeholders := true
 var placeholder_assets: PlaceholderAssets = preload("res://tuning/placeholder_assets.tres")
 var display_controller: DisplayController
@@ -103,11 +104,17 @@ func _physics_process(dt: float) -> void:
 	if overlay.settings.visible or (is_instance_valid(animation_browser) and animation_browser.visible) or (not test_mode and Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED):
 		cmd = GameplayCommand.new()
 		input_source.mouse_delta = Vector2.ZERO
+	if cmd.repair_vehicle and transition.state=="on_foot" and actor.control_enabled:
+		var nearest := nearest_vehicle()
+		if nearest!=null and nearest.global_position.distance_to(actor.global_position)<4.5 and nearest.linear_velocity.length()<0.5:
+			nearest.damage.repair()
+			if nearest.global_basis.y.dot(Vector3.UP)<0.7: nearest.reset_at(Vector3(nearest.global_position.x,0.9,nearest.global_position.z))
 	if cmd.interact:
-		if transition.state == "on_foot": transition.request_enter(nearest_vehicle())
-		elif transition.state == "driving": transition.request_exit()
+		if transition.state == "on_foot": transition.request_enter(nearest_vehicle(),cmd.walk)
+		elif transition.state in ["driving","passenger"]: transition.request_exit()
 	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
 		actor.respawn(Vector3(-3,0.94,4))
+	if cmd.switch_seat: transition.request_switch_driver()
 	rig.read_look(cmd)
 	transition.tick(dt)
 	var driving := transition.state == "driving"
@@ -115,20 +122,25 @@ func _physics_process(dt: float) -> void:
 	weapon.advance(cmd,armed,dt)
 	actor.actions.aim_pitch = rig.pitch
 	actor.tick(cmd,rig.yaw,dt)
-	if driving: vehicle.command(cmd)
-	else: vehicle.park()
-	var pivot := vehicle.global_position+Vector3.UP*0.8 if transition.state!="on_foot" else actor.global_position+Vector3.UP*0.55
+	var active_car: DriveVehicle = transition.vehicle if is_instance_valid(transition.vehicle) else vehicle
+	for child in get_children():
+		if child is DriveVehicle:
+			if driving and child==active_car: child.command(cmd,"player")
+			elif not is_instance_valid(child.driver) and child.control_owner!="external": child.park()
+	rig.vehicle_basis = active_car.global_basis
+	rig.vehicle_origin = active_car.global_position
+	var pivot := active_car.global_position+Vector3.UP*0.8 if transition.state!="on_foot" else actor.global_position+Vector3.UP*(0.55-actor.stance.profile.camera_drop if actor.stance.crouched else 0.55)
 	var exclude: Array[RID] = [actor.get_rid()]
-	if transition.state!="on_foot": exclude.append(vehicle.get_rid())
-	rig.tick(pivot,cmd,driving,exclude,dt)
-	actor.actions.aim_target = AimSolution.camera_target(get_world_3d().direct_space_state,rig.camera,weapon.profile.range_meters,exclude)
+	if transition.state!="on_foot": exclude.append(active_car.get_rid())
+	rig.tick(pivot,cmd,transition.state!="on_foot",exclude,dt)
+	actor.actions.aim_target = AimSolution.camera_target(get_world_3d().direct_space_state,rig.camera,weapon.profile.range_meters,exclude,actor.global_position+Vector3.UP*0.35)
 	actor.actions.has_aim_target = true
 	if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:
 		actor.reference_pose.sample_pose(dt)
 		actor.reference_pose.skeleton.force_update_all_bone_transforms()
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
 	if is_instance_valid(actor.weapon_muzzle): muzzle = actor.weapon_muzzle.global_position
-	if armed: weapon.try_fire(cmd,get_world_3d().direct_space_state,rig.camera,muzzle,exclude)
+	if armed and actor.can_use_weapon(): weapon.try_fire(cmd,get_world_3d().direct_space_state,rig.camera,muzzle,exclude)
 	if actor.global_position.y < -15 and transition.state == "on_foot": actor.reset_at(Vector3(-3,1,4))
 	last_tick_us = Time.get_ticks_usec()-start_us
 	telemetry.record(last_tick_us)

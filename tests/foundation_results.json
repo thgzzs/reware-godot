@@ -1,0 +1,119 @@
+{
+  "assertions": 13,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": {
+        "phase": "airborne",
+        "speed": 5.0
+      },
+      "name": "stationary jump has source-dependent forward momentum",
+      "passed": true
+    },
+    {
+      "measured": {
+        "phase": "airborne",
+        "speed": 5.0
+      },
+      "name": "walk-start jump has source-dependent forward momentum",
+      "passed": true
+    },
+    {
+      "measured": {
+        "phase": "airborne",
+        "speed": 5.0
+      },
+      "name": "walk jump has source-dependent forward momentum",
+      "passed": true
+    },
+    {
+      "measured": {
+        "phase": "airborne",
+        "speed": 8.5
+      },
+      "name": "run jump has source-dependent forward momentum",
+      "passed": true
+    },
+    {
+      "measured": {
+        "phase": "airborne",
+        "speed": 15.5963640213013
+      },
+      "name": "sprint jump has source-dependent forward momentum",
+      "passed": true
+    },
+    {
+      "measured": [
+        5.0,
+        5.0,
+        5.0,
+        8.5,
+        15.5963640213013
+      ],
+      "name": "run and sprint jumps are not forced to the same velocity",
+      "passed": true
+    },
+    {
+      "measured": 2.56774377822876,
+      "name": "walkable uphill slope gains only terrain height",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-27.96074, 0.900012, -24.67376)",
+        "max_y": 3.24697685241699
+      },
+      "name": "downhill running/jumping leaves the slope without sticking",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-27.90677, 0.912906, -10.74059)",
+        "max_y": 1.77242076396942,
+        "speed": 7.61089611053467
+      },
+      "name": "steep wedge cannot accumulate upward launch energy",
+      "passed": true
+    },
+    {
+      "measured": {
+        "movement": "(0.0, 0.0, 0.0)",
+        "speed": 0.00000430271484219702
+      },
+      "name": "ordinary movement does not shove a heavy parked vehicle",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 43.9792414594247,
+        "age": 2.83333333333333,
+        "before": 99.99285,
+        "closing": 10.0062913894653,
+        "contacts": 138,
+        "fresh_hits": 1,
+        "normal": "(0.024889, -0.634354, 0.772642)"
+      },
+      "name": "fresh collision damages an already active knockdown",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 43.9792414594247,
+        "before": 43.9792414594247
+      },
+      "name": "sustained resting contact does not drain pedestrian health",
+      "passed": true
+    },
+    {
+      "measured": {
+        "fresh_hits": 2,
+        "health": 0.0,
+        "life": "dead"
+      },
+      "name": "subsequent severe impact can kill a downed pedestrian",
+      "passed": true
+    }
+  ]
+}

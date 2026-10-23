@@ -14,4 +14,8 @@ var look := Vector2.ZERO
 var weapon_step := 0
 var weapon_slot := -1
 var respawn := false
+var crouch := false
+var camera_cycle := false
+var switch_seat := false
+var repair_vehicle := false
 

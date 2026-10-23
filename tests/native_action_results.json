@@ -1,11 +1,11 @@
 {
-  "assertions": 24,
+  "assertions": 22,
   "backend": "Jolt Physics",
   "engine": "4.7.2-stable (official)",
   "failures": 0,
   "metrics": {
     "death_skin": {
-      "body_y": 0.900204837322235,
+      "body_y": 0.900005340576172,
       "clip": "KO_shot_front",
       "minimum": "(-28.53752, 0.01, 39.04418)",
       "size": "(0.957376, 0.41264, 1.969254)"
@@ -34,7 +34,7 @@
       "passed": true
     },
     {
-      "measured": "(0.714922, 1.841556, 1.05088)",
+      "measured": "(0.687401, 1.841556, 1.05088)",
       "name": "native aimed skin stays finite and within human scale",
       "passed": true
     },
@@ -50,7 +50,7 @@
     },
     {
       "measured": "sprint_civi",
-      "name": "native sprint works with m4",
+      "name": "native sprint works with Unarmed",
       "passed": true
     },
     {
@@ -59,18 +59,8 @@
       "passed": true
     },
     {
-      "measured": "sprint_civi",
-      "name": "native sprint works with Shotgun",
-      "passed": true
-    },
-    {
-      "measured": null,
-      "name": "weapon visual selection remains unique in slot 2",
-      "passed": true
-    },
-    {
       "measured": {
-        "body_y": 0.900204837322235,
+        "body_y": 0.900005340576172,
         "clip": "KO_shot_front",
         "minimum": "(-28.53752, 0.01, 39.04418)",
         "size": "(0.957376, 0.41264, 1.969254)"
@@ -80,7 +70,7 @@
     },
     {
       "measured": {
-        "body_y": 0.900204837322235,
+        "body_y": 0.900005340576172,
         "clip": "KO_shot_front",
         "minimum": "(-28.53752, 0.01, 39.04418)",
         "size": "(0.957376, 0.41264, 1.969254)"
@@ -94,7 +84,7 @@
       "passed": true
     },
     {
-      "measured": -1.18683013484238,
+      "measured": -1.18682879566224,
       "name": "native door moves with its physical body 0",
       "passed": true
     },
@@ -109,7 +99,7 @@
       "passed": true
     },
     {
-      "measured": 1.18682984680012,
+      "measured": 1.18682874570193,
       "name": "native door moves with its physical body 1",
       "passed": true
     },

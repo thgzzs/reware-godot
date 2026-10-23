@@ -10,6 +10,12 @@ var vehicle_contacts := 0
 var contact_ticks := 0
 var supported := false
 var stand_position := Vector3.ZERO
+var impact_contacts := {}
+var previous_velocity := Vector3.ZERO
+var previous_angular := Vector3.ZERO
+var repeated_hits := 0
+var maximum_contact_speed := 0.0
+var last_contact_normal := Vector3.ZERO
 func configure(owner_actor: CharacterMotor) -> void:
  actor = owner_actor
  name = "ImpactBody"
@@ -35,6 +41,8 @@ func configure(owner_actor: CharacterMotor) -> void:
  add_child(collider)
 func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  if active: return
+ impact_contacts.clear()
+ impact_contacts[car.get_instance_id()] = {"seen":0.0,"hit":0.0,"armed":false}
  active = true
  age = 0
  vehicle_contacts = 0
@@ -54,16 +62,42 @@ func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  linear_velocity = actor.velocity
  angular_velocity = direction.cross(Vector3.UP)*minf(2.4,closing*0.16)
  apply_central_impulse(impulse)
- car.apply_impulse(-impulse,global_position-car.global_position)
+ var bounds: Vector3 = (car.get_node("Hull").shape as BoxShape3D).size*0.5
+ var contact := car.to_local(global_position).clamp(-bounds,bounds)
+ car.apply_impulse(-impulse,car.global_basis*contact)
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  if not active: return
  supported = false
  for i in range(state.get_contact_count()):
-  var normal := state.transform.basis*state.get_contact_local_normal(i)
+  var normal := state.get_contact_local_normal(i) # Jolt contact normal is already world-space.
   if normal.dot(Vector3.UP)>0.45: supported = true
-  if state.get_contact_collider_object(i) is DriveVehicle:
+  var other := state.get_contact_collider_object(i) as DriveVehicle
+  if other!=null:
    vehicle_contacts += 1
+   var id := other.get_instance_id()
+   var record: Dictionary = impact_contacts.get(id,{"seen":-100.0,"hit":-100.0,"armed":true})
+   var own_lever := state.get_contact_local_position(i)-state.transform.origin-state.center_of_mass
+   var other_lever := state.get_contact_collider_position(i)-other.global_position-other.global_basis*other.center_of_mass
+   var relative := other.damage.previous_velocity+other.damage.previous_angular.cross(other_lever)-(previous_velocity+previous_angular.cross(own_lever))
+   var closing := maxf(0,relative.dot(normal))
+   maximum_contact_speed = maxf(maximum_contact_speed,closing)
+   last_contact_normal = normal
+   if age-float(record.seen)>profile.contact_rearm_gap:
+    record.armed = age-float(record.hit)>profile.cooldown_seconds
+   if age>0.35 and record.armed and closing>profile.minimum_speed:
+    var normal_fraction := closing/maxf(0.001,relative.length())
+    var amount := pow(maxf(0,relative.length()-profile.damage_speed_threshold),2)*profile.damage_coefficient*normal_fraction
+    var event := DamageEvent.make(amount,global_position,relative,"vehicle",other)
+    event.relative_speed = closing
+    actor.call_deferred("receive_hit",event)
+    repeated_hits += 1
+    record.hit = age
+    record.armed = false
+   record.seen = age
+   impact_contacts[id] = record
  if state.get_contact_count()>0: contact_ticks += 1
+ previous_velocity = state.linear_velocity
+ previous_angular = state.angular_velocity
 func follow_pose(dt: float) -> void:
  age += dt
  actor.reaction_velocity = linear_velocity
@@ -99,5 +133,6 @@ func deactivate() -> void:
  linear_velocity = Vector3.ZERO
  angular_velocity = Vector3.ZERO
  actor.visual.basis = Basis(Vector3.UP,actor.facing)
+func receive_hit(event: DamageEvent) -> void: actor.receive_hit(event)
 func receive_damage(amount: float, point: Vector3, direction: Vector3) -> void:
  actor.receive_damage(amount,point,direction)

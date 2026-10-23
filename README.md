@@ -2,9 +2,7 @@
 
 An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The earlier asset-inclusive test build has a textured skinned character shared by the player and four pedestrians, an Idaho car, a Colt .45, yard props, 234 converted animations and data-driven tuning. It is a first playable framework; full reVC equivalence is unverified.
 
-The latest [motion and physics revision](docs/MOTION_REVISION.md) fixes shared wheel axle animation, jump pose ownership, camera-center aiming, visible seat alignment and solid Jolt pedestrian impacts. It adds temporal checks of actual bone movement, car contact and recovery.
-
-This source revision adds layered action animation, one-shot death/recovery, weapon switching, all-gun sprinting, physical doors, staged vehicle transitions and swept pedestrian impacts. Arena surfaces default to plain colors. See [revision source review](docs/REVISION_SOURCE_REVIEW.md) for evidence and limitations. The public repository uses primitive fallbacks. The revised private test ZIP retains the supplied converted assets without reconversion.
+The latest [physics, stance and damage revision](docs/SYSTEMS_REVISION.md) adds movable trash cans, shootable tires and glass, crouch shooting, airborne firing restrictions, melee, vehicle damage/fire/explosions and passenger seat transactions. It corrects slope/jump and Jolt contact handling. The native loadout uses Colt .45 and unarmed; additional authentic weapon/vehicle assets remain required. Public git uses primitive fallbacks; the private ZIP retains all selected supplied assets.
 
 ## Run
 
@@ -19,7 +17,11 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | --- | --- | --- |
 | WASD | Camera-relative movement, heading-coupled travel | Accelerate/brake/reverse and steer |
 | Alt / Shift | Walk / sprint | — |
-| Space | Jump with animation windup | Brake |
+| Space | Jump with animation windup; firing disabled in air | Brake |
+| C | Toggle crouch; crouched aim/fire | — |
+| V | Cycle follow distances | Follow/bonnet camera |
+| Alt+E / X | Passenger entry / — | Passenger-to-driver shuffle |
+| F6 | Repair nearby stopped lab car | Repair stopped lab car |
 | Right / left mouse | Aim / fire | — |
 | R | Reload | — |
 | Wheel / Q / Z / 1–3 | Switch weapon | — |
@@ -42,6 +44,7 @@ Only four selected model roots and 25 PNGs were exported from the uploaded files
 
 ```bash
 python3 tools/validate.py --godot /absolute/path/to/Godot_4.7.2_stable
+python3 tools/check_render_timing.py --godot /absolute/path/to/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 

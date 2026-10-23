@@ -16,4 +16,4 @@ extends Resource
 @export var snap_distance := 0.14
 @export var max_slope_degrees := 46.0
 @export var turn_rate := 12.0
-@export var push_mass := 75.0
+@export var push_mass := 70.0

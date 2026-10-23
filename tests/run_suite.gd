@@ -106,9 +106,11 @@ func run() -> void:
  await place_actor(Vector3(-21,0.94,9))
  await frames(120,walk)
  check("steep slope does not become walkable",actor.global_position.y<1.5,actor.global_position)
+ arena.rig.foot_mode = 2 # Put the wall inside the selected far-mode sweep.
  await place_actor(Vector3(-8,0.94,10))
  await frames(20)
  check("camera obstruction sweep retracts",arena.rig.obstruction_fraction<0.85 and arena.rig.camera.global_position.z<13.65,arena.rig.obstruction_fraction)
+ arena.rig.foot_mode = 1
  # Fixed seed and zero spread isolate cadence and damage from aiming variance.
  gun.profile = gun.profile.duplicate()
  gun.profile.spread_radians = 0
@@ -154,7 +156,7 @@ func run() -> void:
   if wheel.touching: contact_count += 1
  metrics.suspension = {"load_N":total_load,"height_m":car.global_position.y,"vertical_speed":car.linear_velocity.y}
  check("suspension supports four wheel contacts",contact_count==4,contact_count)
- check("suspension settles near static weight",absf(total_load-car.mass*9.81)<car.mass*9.81*0.12,metrics.suspension)
+ check("suspension settles near static weight",absf(total_load-car.mass*float(ProjectSettings.get_setting("physics/3d/default_gravity")))<car.mass*float(ProjectSettings.get_setting("physics/3d/default_gravity"))*0.12,metrics.suspension)
  check("suspension vertical oscillation settles",absf(car.linear_velocity.y)<0.05,car.linear_velocity.y)
  await place_actor(car.global_position+Vector3(-1.7,0.22,0))
  var began: bool = seat.request_enter(car)
@@ -253,7 +255,7 @@ func run() -> void:
  check("vehicle remains stable after control restoration",car.linear_velocity.length()<0.2,car.linear_velocity.length())
  var shots_before_resume := gun.shots
  await frames(1,shoot)
- check("weapon control resumes after driving",gun.shots==shots_before_resume+1)
+ check("weapon control resumes after driving",gun.shots==shots_before_resume+1,{"phase":actor.phase,"grounded":actor.grounded,"control":actor.control_enabled,"life":actor.actions.life,"cooldown":gun.cooldown,"ammo":gun.magazine,"shots":gun.shots-shots_before_resume,"facing":actor.facing,"yaw":arena.rig.yaw})
  var impact_car: DriveVehicle = preload("res://scenes/vehicle.tscn").instantiate()
  arena.add_child(impact_car)
  impact_car.position = Vector3(18,0.9,35)

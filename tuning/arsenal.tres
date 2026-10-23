@@ -4,6 +4,9 @@
 [ext_resource type="Script" path="res://tuning/weapon_profile.gd" id="3"]
 [sub_resource type="Resource" id="Rifle"]
 script = ExtResource("3")
+id = "m4"
+model_scene = "res://assets/converted/models/m4.scn"
+two_handed = true
 display_name = "LAB rifle"
 interval = 0.1
 magazine_size = 30
@@ -11,6 +14,9 @@ animation_group = "rifle"
 heavy = true
 [sub_resource type="Resource" id="Shotgun"]
 script = ExtResource("3")
+id = "shotgun"
+model_scene = "res://assets/converted/models/shotgun.scn"
+two_handed = true
 display_name = "LAB shotgun"
 interval = 0.8
 magazine_size = 8

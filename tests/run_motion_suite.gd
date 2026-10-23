@@ -70,6 +70,7 @@ func run() -> void:
    if phase=="landing": saw_land = true
    if i==16 and slot==0: await image_at("jump",actor.global_position+Vector3(-3,1.1,-2.5),actor.global_position)
   check("run jump owns visible pose and completes in slot %d"%slot,saw_launch and saw_glide and saw_land and selected_exclusively and motion_change>0.3 and maximum_y-base_y>0.5,{"rise":maximum_y-base_y,"bone_delta":motion_change,"exclusive_layers":selected_exclusively})
+ actor.weapon.equip_slot(0)
  actor.respawn(Vector3(-28,0.94,40));await frames(25)
  var aim := GameplayCommand.new(); aim.aim = true; aim.move = Vector2(0.4,-0.5)
  for pitch in [-0.35,0.0,0.4]:

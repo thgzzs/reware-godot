@@ -186,7 +186,7 @@ func run() -> void:
  check("NPC gun reaction consumes ped DAT relationships",fleeing>0,fleeing)
  var before_health := actor.health.health
  actor.receive_damage(25,actor.global_position,Vector3.ZERO)
- check("player defense multiplier from pedstats applied",absf(before_health-actor.health.health-10)<0.001)
+ check("source player damage scales by 0.33 rather than NPC weakness",absf(before_health-actor.health.health-25.0*0.33)<0.001)
  metrics.gameplay_cpu = arena.telemetry.summary()
  metrics.model_binding_verified = false
  var report := {"engine":Engine.get_version_info().string,"backend":"Jolt Physics","assertions":results.size(),"failures":failures,"results":results,"metrics":metrics,"claim":"native conversion and functional integration; original mesh/bind pose and reference-runtime parity unverified"}

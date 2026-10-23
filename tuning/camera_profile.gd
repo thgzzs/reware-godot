@@ -1,6 +1,9 @@
 class_name CameraProfile
 extends Resource
-@export var follow_distance := 5.5
+@export var follow_distance := 3.5
+@export var on_foot_distances := PackedFloat32Array([2.25,3.5,4.9])
+@export var vehicle_distances := PackedFloat32Array([4.8,6.5,8.5])
+@export var bonnet_camera_offset := Vector3(0,0.65,-1.3)
 @export var aim_distance := 3.0
 @export var driving_distance := 7.5
 @export var shoulder_offset := 0.60

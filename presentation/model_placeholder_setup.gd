@@ -59,6 +59,12 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
   car.door_profile.seat_offset = car.to_local(seat.global_position)
   car.door_profile.seat_offset.x = -absf(car.door_profile.seat_offset.x)
   car.door_profile.seat_offset += car.door_profile.seat_marker_adjustment
+ var rear := model.find_child("ped_backseat",true,false) as Node3D
+ car.seating.configure(car.door_profile.seat_offset,car.to_local(rear.global_position) if rear!=null else Vector3.INF)
+ car.damage.windshield_ok = model.find_child("windscreen_hi_ok",true,false) as Node3D
+ car.damage.windshield_damaged = model.find_child("windscreen_hi_dam",true,false) as Node3D
+ VehicleHitboxes.refresh(car,car.damage.windshield_ok)
+ car.damage.update_glass()
  for mesh in car.find_children("*","MeshInstance3D",true,false):
   for surface in range(mesh.mesh.get_surface_count()):
    var material: StandardMaterial3D = mesh.mesh.surface_get_material(surface)
@@ -77,6 +83,11 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
    var at := model.transform*marker.transform.origin
    car.mounts[pair[0]].x = at.x
    car.mounts[pair[0]].z = at.z
+   var sag: float = car.profile.suspension_length+at.y-float(car.mounts[pair[0]].y)
+   if sag>0.03:
+    car.profile.static_sag = sag
+    car.profile.spring_rate = car.mass*float(ProjectSettings.get_setting("physics/3d/default_gravity"))/(4.0*sag)
+    car.profile.damper = 2.0*sqrt(car.profile.spring_rate*car.mass/4.0)*car.profile.damping_ratio
  # Visual geometry uses original frame transforms. The established physics tuning
  # remains independent until measured against source traces.
  var tire := assets.texture("tyre")
@@ -110,16 +121,11 @@ static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  var prop := assets.scene(assets.prop_scene)
  if prop!=null:
   for at in [Vector3(4,0,7),Vector3(4,0,10)]:
-   var body := StaticBody3D.new()
+   var body := PhysicalProp.new()
    arena.add_child(body)
    body.position = at
    body.add_child(prop.instantiate())
-   var shape := CollisionShape3D.new()
-   var box := BoxShape3D.new()
-   box.size = Vector3(0.78,1.04,0.88)
-   shape.shape = box
-   shape.position.y = 0.52
-   body.add_child(shape)
+   body.add_to_group("physical_props")
  if not assets.decorate_arena: return
  for pair in [["Ground","ground"],["Road","road"]]:
   var geometry := arena.get_node_or_null(pair[0])

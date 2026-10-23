@@ -98,9 +98,12 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   q = from_rotations[i].slerp(q,alpha)
   s = from_scales[i].lerp(s,alpha)
   base_rotations[i] = q
-  if not upper.is_empty() and i in upper_mask and motion.preview_clip.is_empty():
+  if not upper.is_empty() and actions.includes_upper_bone(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
    q = q.slerp(upper_from[i].slerp(rotation_at(upper,upper_at,i),upper_alpha),actions.aim_weight)
   upper_rotations[i] = q
+  if actions!=null and actions.life=="alive" and not actions.melee_active and actions.reaction_left>0 and skeleton.get_bone_name(i) in ["Spine","Spine1","Neck","Head"] and motion.preview_clip.is_empty():
+   var at := actions.reaction_duration-actions.reaction_left
+   q = q.slerp(rotation_at(actions.reaction_clip,at,i),minf(1,actions.reaction_left/maxf(0.001,actions.reaction_duration))*0.45)
   skeleton.set_bone_pose_position(i,p)
   skeleton.set_bone_pose_rotation(i,q)
   skeleton.set_bone_pose_scale(i,s)
@@ -167,6 +170,8 @@ func aim_arms() -> void:
  var direction := Vector3(0,-sin(actions.aim_pitch),-cos(actions.aim_pitch))
  if actions.has_aim_target:
   direction = (skeleton.to_local(actions.aim_target)-skeleton.get_bone_global_pose(hand).origin).normalized()
+  var yaw := clampf(atan2(direction.x,-direction.z),-1.15,1.15)
+  direction = Vector3(sin(yaw)*Vector2(direction.x,direction.z).length(),direction.y,-cos(yaw)*Vector2(direction.x,direction.z).length()).normalized()
  var cfg := actions.weapon_pose
  var recoil := actions.firing_left/maxf(0.001,actions.firing_duration)*cfg.recoil_lift
  var target := skeleton.get_bone_global_pose(upper).origin+direction*cfg.reach+cfg.grip_offset+Vector3.UP*recoil
@@ -178,7 +183,10 @@ func aim_arms() -> void:
   turn_joint(upper,hand,target,actions.aim_weight)
  if actions.reload_weight<0.99:
   var pose := skeleton.get_bone_global_pose(hand)
-  if actions.has_aim_target: direction = (skeleton.to_local(actions.aim_target)-pose.origin).normalized()
+  if actions.has_aim_target:
+   direction = (skeleton.to_local(actions.aim_target)-pose.origin).normalized()
+   var yaw := clampf(atan2(direction.x,-direction.z),-1.15,1.15)
+   direction = Vector3(sin(yaw)*Vector2(direction.x,direction.z).length(),direction.y,-cos(yaw)*Vector2(direction.x,direction.z).length()).normalized()
   var delta := Quaternion(pose.basis.x.normalized(),direction)
   var parent := skeleton.get_bone_parent(hand)
   var local := skeleton.get_bone_global_pose(parent).basis.get_rotation_quaternion().inverse()*delta*pose.basis.get_rotation_quaternion()
@@ -187,7 +195,7 @@ func aim_arms() -> void:
  var left_hand := skeleton.find_bone("L Hand")
  var left_forearm := skeleton.find_bone("L Forearm")
  var left_upper := skeleton.find_bone("L UpperArm")
- if (actions.reloading or actions.weapon_group in ["rifle","riflebad","shotgun","m4","ruger"]) and mini(left_hand,mini(left_forearm,left_upper))>=0:
+ if (actions.reloading or actions.weapon_two_handed) and mini(left_hand,mini(left_forearm,left_upper))>=0:
   var support := skeleton.get_bone_global_pose(hand).origin+(cfg.magazine_offset+Vector3.DOWN*sin(reload_phase*PI)*cfg.magazine_travel if actions.reloading else direction*cfg.support_reach+Vector3.DOWN*cfg.support_drop)
   for iteration in range(2):
    turn_joint(left_forearm,left_hand,support,actions.aim_weight)

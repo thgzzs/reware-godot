@@ -6,9 +6,9 @@
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 1083.0,
-      "mean_us": 236.838842975207,
-      "p95_us": 355.0,
+      "max_us": 17187.0,
+      "mean_us": 1070.87438016529,
+      "p95_us": 3041.0,
       "samples": 1210,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
@@ -182,7 +182,7 @@
       "passed": true
     },
     {
-      "measured": 5.95746564865112,
+      "measured": 8.00606441497803,
       "name": "driving still accelerates with mapped data",
       "passed": true
     },
@@ -208,7 +208,7 @@
     },
     {
       "measured": null,
-      "name": "player defense multiplier from pedstats applied",
+      "name": "source player damage scales by 0.33 rather than NPC weakness",
       "passed": true
     }
   ]

@@ -1,0 +1,90 @@
+{
+  "scope": "Only selected original payloads are present; no full IMG or new gun clips in current attachment.",
+  "weapons": [
+    {
+      "name": "Unarmed",
+      "source_model_id": -1,
+      "animation_group": "unarmed",
+      "model_scene": "",
+      "status": "available"
+    },
+    {
+      "name": "Knife",
+      "source_model_id": 263,
+      "animation_group": "knife",
+      "model_scene": "res://assets/converted/models/knife.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "BaseballBat",
+      "source_model_id": 264,
+      "animation_group": "baseball",
+      "model_scene": "res://assets/converted/models/baseballbat.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "Colt45",
+      "source_model_id": 274,
+      "animation_group": "colt45",
+      "model_scene": "res://assets/converted/models/colt45.scn",
+      "status": "available"
+    },
+    {
+      "name": "Python",
+      "source_model_id": 275,
+      "animation_group": "python",
+      "model_scene": "res://assets/converted/models/python.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "Shotgun",
+      "source_model_id": 277,
+      "animation_group": "shotgun",
+      "model_scene": "res://assets/converted/models/shotgun.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "Tec9",
+      "source_model_id": 281,
+      "animation_group": "colt45",
+      "model_scene": "res://assets/converted/models/tec9.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "Uzi",
+      "source_model_id": 282,
+      "animation_group": "uzi",
+      "model_scene": "res://assets/converted/models/uzi.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    },
+    {
+      "name": "Ruger",
+      "source_model_id": 276,
+      "animation_group": "rifle",
+      "model_scene": "res://assets/converted/models/ruger.scn",
+      "status": "requires original DFF/TXD and weapon-specific IFP block"
+    }
+  ],
+  "vehicles": [
+    {
+      "handling": "IDAHO",
+      "model": "idaho",
+      "status": "available"
+    },
+    {
+      "handling": "STINGER",
+      "model": "stinger",
+      "status": "physics fixture; original model missing"
+    },
+    {
+      "handling": "LANDSTAL",
+      "model": "landstal",
+      "status": "physics fixture; original model missing"
+    }
+  ],
+  "required_inputs": [
+    "Original gta3.img archive with index or paired DIR if required by its format",
+    "Weapon-specific IFP animation blocks referenced by weapon.dat"
+  ],
+  "import_policy": "Inspect archive index, export only requested DFF/TXD roots and dependencies, retain exact source model ID, then bind role scenes; never unpack the full archive or alias another gun model."
+}

@@ -2,7 +2,7 @@ class_name LocalInputSource
 extends RefCounted
 var mouse_delta := Vector2.ZERO
 func install() -> void:
- var bindings := {"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"jump":KEY_SPACE,"interact":KEY_E,"reload":KEY_R,"sprint":KEY_SHIFT,"walk":KEY_ALT,"brake":KEY_SPACE,"debug":KEY_F3}
+ var bindings := {"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"jump":KEY_SPACE,"interact":KEY_E,"reload":KEY_R,"sprint":KEY_SHIFT,"walk":KEY_ALT,"brake":KEY_SPACE,"debug":KEY_F3,"crouch":KEY_C,"camera_cycle":KEY_V,"switch_seat":KEY_X,"repair_vehicle":KEY_F6}
  for action in bindings:
   if not InputMap.has_action(action):
    InputMap.add_action(action)
@@ -36,6 +36,10 @@ func sample() -> GameplayCommand:
  var cmd := GameplayCommand.new()
  cmd.move = Input.get_vector("left","right","forward","back")
  cmd.jump = Input.is_action_just_pressed("jump")
+ cmd.crouch = Input.is_action_just_pressed("crouch")
+ cmd.camera_cycle = Input.is_action_just_pressed("camera_cycle")
+ cmd.repair_vehicle = Input.is_action_just_pressed("repair_vehicle")
+ cmd.switch_seat = Input.is_action_just_pressed("switch_seat")
  cmd.interact = Input.is_action_just_pressed("interact")
  cmd.reload = Input.is_action_just_pressed("reload")
  cmd.aim = Input.is_action_pressed("aim")

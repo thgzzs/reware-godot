@@ -4,6 +4,7 @@ extends Resource
 @export var center_of_mass := Vector3(0,-0.20,0)
 @export var engine_force := 7800.0
 @export var reverse_force := 4600.0
+@export var brake_bias := 0.5
 @export var brake_force := 14000.0
 @export var rolling_drag := 180.0
 @export var aero_drag := 0.40
@@ -12,6 +13,8 @@ extends Resource
 @export var steering_angle := 0.50
 @export var steering_rate := 2.4
 @export var high_speed_steering := 0.018
+@export var static_sag := 0.12
+@export var damping_ratio := 0.55
 @export var spring_rate := 32000.0
 @export var damper := 4200.0
 @export var suspension_length := 0.55

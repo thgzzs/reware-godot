@@ -130,6 +130,7 @@ func run() -> void:
 	await frames(1,respawn)
 	await frames(10)
 	check("respawn restores health and standing shape",actor.health.health==actor.health.max_health and actor.control_enabled and actor.get_node("CollisionShape3D").shape is CapsuleShape3D)
+	car.damage.repair() # Independent fixture starts with an intact car.
 	car.reset_at(Vector3(18,0.9,25))
 	await frames(90)
 	car.set_door_open(0,true)
@@ -181,6 +182,7 @@ func run() -> void:
 	var old_reaction := low.reaction_velocity
 	low.receive_vehicle_impact(car,25.0,Vector3.RIGHT)
 	check("fatal impact reaches death and repeated corpse hits do not restart it",low.actions.life=="dead" and low.health.health==0 and low.reaction_velocity==old_reaction)
+	car.damage.repair() # Independent fixture starts with an intact car.
 	car.reset_at(Vector3(18,0.9,25))
 	await frames(90)
 	car.set_door_open(1,true)

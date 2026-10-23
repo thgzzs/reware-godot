@@ -6,6 +6,11 @@ static func available() -> bool:
  return FileAccess.file_exists(LIBRARY_PATH) and FileAccess.file_exists(DATABASE_PATH)
 static func weapon_profile(record: Dictionary, prototype: WeaponProfile) -> WeaponProfile:
  var result: WeaponProfile = prototype.duplicate()
+ result.id = String(record.name).to_lower()
+ result.kind = "melee" if record.get("fire_type","INSTANT_HIT")=="MELEE" else "hitscan"
+ result.source_model_id = int(record.get("model_ids",[-1,-1])[0])
+ result.model_scene = "" if result.id=="unarmed" else "res://assets/converted/models/"+result.id+".scn"
+ result.two_handed = result.id in ["m4","ruger","m60","shotgun","spas12","stubby"]
  result.display_name = record.name
  result.interval = record.firing_rate_ms/1000.0
  var frames: Array = record.get("animation_frames",[])
@@ -32,18 +37,16 @@ static func apply(arena: Node3D) -> void:
  for selected in arena.weapon.loadout.reference_weapons:
   for record in db.weapons:
    if String(record.name).nocasecmp_to(selected)==0:
-    loadout.append(weapon_profile(record,arena.weapon.profile))
+    var item := weapon_profile(record,arena.weapon.profile)
+    if item.id=="unarmed" or ResourceLoader.exists(item.model_scene): loadout.append(item)
  if not loadout.is_empty(): arena.weapon.configure_loadout(loadout)
+ for name in ["StdPunch","Jab","PunchHook","LongKick"]:
+  for move in db.fight_moves:
+   if move.name==name: arena.weapon.melee.moves.append(move)
  # Only dimensionally understood fields are applied. Legacy spring/friction
  # multipliers and the COM origin cannot be mapped without vehicle geometry.
  var handling := db.find_record("handling","IDAHO")
- arena.vehicle.profile = arena.vehicle.profile.duplicate()
- arena.vehicle.profile.mass = handling.mass
- arena.vehicle.mass = handling.mass
- arena.vehicle.profile.max_speed = handling.max_speed_kmh/3.6
- arena.vehicle.profile.steering_angle = deg_to_rad(handling.steering_degrees)
- arena.vehicle.profile.driven_front = handling.drive in ["F","4"]
- arena.vehicle.profile.driven_rear = handling.drive in ["R","4"]
+ HandlingDataMapper.apply(arena.vehicle,handling)
  arena.transition.profile = arena.transition.profile.duplicate()
  arena.transition.profile.enter_open_seconds = lib.get_animation("CAR_open_LHS").length if lib.has_animation("CAR_open_LHS") else 0.35
  arena.transition.profile.enter_close_seconds = lib.get_animation("CAR_closedoor_LHS").length if lib.has_animation("CAR_closedoor_LHS") else 0.25
@@ -57,6 +60,8 @@ static func apply(arena: Node3D) -> void:
   arena.add_child(ped)
   var stat: String = ["STAT_STREET_GUY","STAT_SENSIBLE_GIRL","STAT_OLD_GUY","STAT_TOUGH_GUY"][i]
   ped.configure_reference(db,stat,lib)
+  var unarmed := db.find_record("weapons","Unarmed")
+  if not unarmed.is_empty(): ped.weapon.configure_loadout([weapon_profile(unarmed,ped.weapon.profile)])
   var brain := PedBrain.new()
   brain.actor = ped
   brain.player = arena.actor
@@ -71,6 +76,9 @@ static func apply(arena: Node3D) -> void:
   arena.ped_brains.append(brain)
   var label := LabGeometry.label(ped,"Pedestrian %02d"%(i+1),Vector3(0,1.15,0),14)
   label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+ if arena.enable_vehicle_fixtures:
+  VehicleFactory.spawn(arena,preload("res://tuning/front_drive_fixture.tres"),db,Vector3(18,0.9,32))
+  VehicleFactory.spawn(arena,preload("res://tuning/all_drive_fixture.tres"),db,Vector3(25,0.9,32))
  arena.weapon.shot_fired.connect(func(origin: Vector3,_end: Vector3,_hit: bool):
   for brain in arena.ped_brains: brain.hear_shot(origin))
 

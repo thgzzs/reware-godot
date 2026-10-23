@@ -152,3 +152,9 @@ Modified: CharacterMotor, ActorActionState, ActionProfile, ReferenceMotion, Foll
 Implemented: coherent pose ownership, shared axle spin, world-space reticle convergence, data-driven recoil/reload presentation, visible calibrated driver, a single pelvis path through entry/exit, faster physically motorized closure, reusable solid Jolt torso reactions with momentum exchange and nonfatal recovery.
 
 Validation: 198 exact-engine/Jolt assertions, 23 Python tests, temporal native renders, a separate corrected cabin render, strict ZIP extraction/byte checks and fresh import/startup. Limits: procedural gun action fallbacks, single torso instead of articulated ragdoll, prototype impact tuning, reference-runtime/browser/full-frame performance parity unverified. See MOTION_REVISION.md.
+
+## Physics, stance and damage revision
+
+Created: reusable damage/ballistic/explosion/melee, stance/occupant hitbox, physical prop, normalized-unit, vehicle damage/hit-region/seat/variant modules and their Resource configurations; systems/foundation/timing suites, comparison runner and source report. Modified shared actor/action/weapon/camera/vehicle/transition/presentation/HUD wiring, baseline expectations and documentation. Exact created/modified public paths are in systems_files.json; FILES.sha256 records the delivered source.
+
+Implemented behaviors and source evidence are in SYSTEMS_REVISION.md. Validation: 260 Godot/Jolt assertions, 23 Python tests and five local render-rate comparisons; selected software-rendered states; byte-preserving ZIP checks and fresh extraction/import. Remaining gaps: authentic additional weapon/car assets and gun IFPs, full ragdoll/transmission/world/camera modes, original-runtime/browser/GPU parity. No original assets were reconverted.

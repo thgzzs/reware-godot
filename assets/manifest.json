@@ -90,5 +90,7 @@
     "full_archive_unpacked": false
   },
   "original_archive_included": false,
-  "original_archive_index_supplied": false
+  "original_archive_index_supplied": false,
+  "missing_for_requested_expansion": "See assets/expansion_requests.json; missing additional authentic weapon/vehicle models and gun animation blocks.",
+  "physics_props": "PhysicalProp + tuning/trashcan.tres, Jolt rigid bodies"
 }

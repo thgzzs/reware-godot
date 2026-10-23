@@ -19,7 +19,38 @@ var life := "alive"
 var life_time := 0.0
 var life_clip := ""
 var weapon_group := "colt45"
+var weapon_two_handed := false
 var procedural_fire := true
+var crouched := false
+var next_death := ""
+var reaction_clip := ""
+var reaction_left := 0.0
+var reaction_duration := 0.0
+var melee_clip := ""
+var melee_time := 0.0
+var melee_active := false
+func full_body_busy() -> bool: return melee_active
+func choose_reaction(event: DamageEvent, facing: float, origin: Vector3) -> void:
+ var local := Basis(Vector3.UP,facing).inverse()*(-event.direction)
+ if Vector2(local.x,local.z).length_squared()<0.0001: local = Vector3.FORWARD
+ var angle := atan2(local.x,-local.z)
+ var side := "front"
+ if absf(angle)>PI*0.75: side = "back"
+ elif angle< -PI*0.25: side = "L"
+ elif angle>PI*0.25: side = "R"
+ var deaths := {"front":"KO_shot_front","back":"KO_skid_back","L":"KO_spin_L","R":"KO_spin_R"}
+ next_death = resolve(PackedStringArray([deaths[side]]))
+ if event.kind=="bullet" and (event.part=="head" or (not crouched and event.point.y-origin.y>0.55)):
+  next_death = resolve(PackedStringArray(["KO_shot_face",deaths[side]]))
+ reaction_clip = resolve(PackedStringArray(["HIT_"+side,"HIT_front"]))
+func react(event: DamageEvent) -> void:
+ if life!="alive" or event.kind=="vehicle" or motion==null: return
+ reaction_duration = minf(0.45,motion.duration(reaction_clip))
+ reaction_left = reaction_duration
+func includes_upper_bone(name: String) -> bool:
+ if not profile.upper_bones.has(name): return false
+ if (name.begins_with("L ") or " L Clavicle" in name) and not weapon_two_handed and not reloading: return false
+ return true
 func resolve(candidates: PackedStringArray) -> String:
  if motion==null: return ""
  for candidate in candidates:
@@ -36,14 +67,16 @@ func begin_life(next: String) -> void:
  aim_weight = 0
  firing_left = 0
  reloading = false
- life_clip = resolve(profile.death_clips if next=="dying" else profile.knockdown_clips)
+ life_clip = next_death if next=="dying" and not next_death.is_empty() else resolve(profile.death_clips if next=="dying" else profile.knockdown_clips)
  if motion!=null and not life_clip.is_empty():
   motion.phase = next
   motion.set_clip(life_clip)
   motion.time = 0
 func reset() -> void:
+ next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""
  life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
+ reaction_left = maxf(0,reaction_left-dt)
  firing_left = maxf(0,firing_left-dt)
  if life!="alive":
   life_time += dt
@@ -59,8 +92,9 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  reload_duration = gun.profile.reload_seconds
  reload_time = reload_duration-gun.reload_left
  weapon_group = gun.profile.animation_group
+ weapon_two_handed = gun.profile.two_handed
  weapon_pose = gun.profile.pose
- upper_allowed = motion==null or motion.phase in ["idle","start","move","stop"]
+ upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
  var target := 1.0 if upper_allowed and (cmd.aim or firing_left>0 or reloading) else 0.0
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)

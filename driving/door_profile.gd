@@ -1,6 +1,6 @@
 class_name VehicleDoorProfile
 extends Resource
-@export var hinge_offsets := PackedVector3Array([Vector3(-0.91,0.1,-0.70),Vector3(0.91,0.1,-0.70)])
+@export var hinge_offsets := PackedVector3Array([Vector3(-0.91,0.1,-0.70),Vector3(0.91,0.1,-0.70),Vector3(-0.91,0.1,0.65),Vector3(0.91,0.1,0.65)])
 @export var panel_size := Vector3(0.06,0.65,1.25)
 @export var panel_mass := 18.0
 @export_range(20,85) var opening_degrees := 68.0

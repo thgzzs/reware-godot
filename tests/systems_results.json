@@ -1,0 +1,302 @@
+{
+  "assertions": 53,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {},
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "exact engine and fixed Jolt timestep",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "reference gravity uses normalized 50 Hz units",
+      "passed": true
+    },
+    {
+      "measured": 6.07142857142857,
+      "name": "jump impulse derives from 8.5/70 normalized momentum",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "trash cans are independent solid rigid bodies",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 3.46205353736877,
+        "rotation": "(-0.003389, -0.004898, -0.837458)"
+      },
+      "name": "bullet impulse translates and rotates a trash can",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "independent RWD FWD AWD physics vehicles exist",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "vehicle masses and dimensions are distinct",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native two-door car retains four marker-defined seats",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "four-door physics fixture owns four physical hinges",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native inventory exposes exact available models and unarmed",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapons never substitute another firearm's mesh",
+      "passed": true
+    },
+    {
+      "measured": [
+        2,
+        0,
+        1
+      ],
+      "name": "on-foot camera cycles near medium far with finite framing",
+      "passed": true
+    },
+    {
+      "measured": {
+        "phase": "airborne",
+        "shots": 0
+      },
+      "name": "launch and airborne firing never spend ammunition",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "grounded weapon control resumes after landing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "crouch preserves feet with a shorter collider",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "source crouch holds position instead of generic crouch running",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "crouch shooting works without leaving crouch",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "blocked standing volume keeps crouch collision",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "standing restores after headroom clears",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "pistol aiming leaves the left arm on its base pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "backward hip fire waits for body turn instead of twisting arms",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "firing resumes once body can face the camera target",
+      "passed": true
+    },
+    {
+      "measured": "(16.985, 0.32, 3.307997)",
+      "name": "bullet ray identifies the actual tire component",
+      "passed": true
+    },
+    {
+      "measured": "(1.0, 0.65, 0.65)",
+      "name": "tire hit persists and lowers the visual rolling radius",
+      "passed": true
+    },
+    {
+      "measured": "(17.95784, 1.142519, 4.24892)",
+      "name": "windshield ray resolves its own native glass region",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "first glass hit selects cracked mesh",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "second glass hit removes glass and its bullet volume",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "passenger-side approach reserves the right seat",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "passenger occupancy never grants driving control",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "passenger can reserve a free driver seat for shuffle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shuffle atomically transfers unique driver ownership",
+      "passed": true
+    },
+    {
+      "measured": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "name": "vehicle camera cycles follow distances and bonnet view",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "driver exit can begin",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "exit releases every occupancy and reservation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "right-side normal entry begins",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "normal right entry uses source shuffle to reach driver",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "melee windup does not apply early damage",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 76.0,
+        "before": 100.0
+      },
+      "name": "melee strike window damages a nearby actor",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "one swing cannot repeatedly damage its target",
+      "passed": true
+    },
+    {
+      "measured": "KO_shot_front",
+      "name": "directional death chooses KO_shot_front",
+      "passed": true
+    },
+    {
+      "measured": "KO_skid_back",
+      "name": "directional death chooses KO_skid_back",
+      "passed": true
+    },
+    {
+      "measured": "KO_spin_L",
+      "name": "directional death chooses KO_spin_L",
+      "passed": true
+    },
+    {
+      "measured": "KO_spin_R",
+      "name": "directional death chooses KO_spin_R",
+      "passed": true
+    },
+    {
+      "measured": "KO_shot_face",
+      "name": "crouched head hits resolve against the posed head",
+      "passed": true
+    },
+    {
+      "measured": 719.077517250343,
+      "name": "world collision removes meaningful vehicle health",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 719.077517250343,
+        "before": 719.077517250343
+      },
+      "name": "resting wall contact does not repeatedly deal damage",
+      "passed": true
+    },
+    {
+      "measured": [
+        280.922482749657,
+        280.922482749657
+      ],
+      "name": "collision damage uses world normals under vehicle rotation",
+      "passed": true
+    },
+    {
+      "measured": 8.28990268707275,
+      "name": "a car transfers physical momentum to a trash can",
+      "passed": true
+    },
+    {
+      "measured": {
+        "hitter": 911.491422122334,
+        "struck": 912.099688313839
+      },
+      "name": "vehicle-to-vehicle impacts damage both bodies",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "low vehicle health enters a timed burning state",
+      "passed": true
+    },
+    {
+      "measured": 1,
+      "name": "burning detonates once and disables drivetrain",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "destroyed car cannot be reserved or explode twice",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "lab repair restores a nearby stopped wreck for continuous testing",
+      "passed": true
+    }
+  ]
+}

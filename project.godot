@@ -18,11 +18,12 @@ environment/defaults/default_clear_color=Color(0.035, 0.06, 0.09, 1)
 [physics]
 3d/physics_engine="Jolt Physics"
 common/physics_ticks_per_second=60
-3d/default_gravity=9.81
+3d/default_gravity=20.0
 [layer_names]
 3d_physics/layer_1="World"
 3d_physics/layer_2="Characters"
 3d_physics/layer_3="Vehicles"
 3d_physics/layer_4="Damageable"
 3d_physics/layer_5="Vehicle doors"
+3d_physics/layer_6="Ballistic components"
 

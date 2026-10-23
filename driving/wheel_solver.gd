@@ -8,11 +8,12 @@ var point := Vector3.ZERO
 var touching := false
 var rolling_speed := 0.0
 var ray: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.new()
-func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mount: Vector3, steer: float, drive: float, brake: float, cfg: HandlingProfile, body_rid: RID) -> void:
+func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mount: Vector3, steer: float, drive: float, brake: float, cfg: HandlingProfile, body_rid: RID, flat := false, damage_profile: VehicleDamageProfile = null) -> void:
+ var radius := cfg.wheel_radius*(damage_profile.flat_radius_ratio if flat and damage_profile!=null else 1.0)
  var origin := state.transform*mount
  var up := state.transform.basis.y
  ray.from = origin
- ray.to = origin-up*(cfg.suspension_length+cfg.wheel_radius)
+ ray.to = origin-up*(cfg.suspension_length+radius)
  ray.collision_mask = 13
  ray.exclude = [body_rid]
  var hit := space.intersect_ray(ray)
@@ -29,7 +30,7 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  var velocity := state.linear_velocity+state.angular_velocity.cross(lever-state.center_of_mass)
  if hit.collider is RigidBody3D:
   velocity -= hit.collider.linear_velocity+hit.collider.angular_velocity.cross(point-hit.collider.global_position)
- compression = clampf(cfg.suspension_length-(origin.distance_to(point)-cfg.wheel_radius),0,cfg.suspension_length)
+ compression = clampf(cfg.suspension_length-(origin.distance_to(point)-radius),0,cfg.suspension_length)
  normal_load = clampf(compression*cfg.spring_rate-velocity.dot(normal)*cfg.damper,0,cfg.max_spring_force)
  var forward := (-state.transform.basis.z).rotated(up,steer).slide(normal).normalized()
  var side := forward.cross(normal).normalized()
@@ -41,7 +42,9 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  longitudinal -= signf(longitudinal_speed)*stop_force
  var lateral := -lateral_speed*cfg.lateral_stiffness
  var desired := Vector2(longitudinal,lateral)
- var limit := cfg.friction*normal_load
+ if flat and damage_profile!=null: longitudinal -= signf(longitudinal_speed)*damage_profile.flat_drag_newtons
+ desired = Vector2(longitudinal,lateral)
+ var limit := cfg.friction*normal_load*(damage_profile.flat_grip_ratio if flat and damage_profile!=null else 1.0)
  slip = maxf(0,desired.length()-limit)
  desired = desired.limit_length(limit)
  var force := normal*normal_load+forward*desired.x+side*desired.y

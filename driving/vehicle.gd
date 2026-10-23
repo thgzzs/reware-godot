@@ -4,8 +4,13 @@ extends RigidBody3D
 @export var door_profile: VehicleDoorProfile = preload("res://tuning/doors.tres")
 var doors: Array[VehicleDoor] = []
 var impact_probe: PedestrianImpactProbe
-var driver: Node = null
-var reservation: Node = null
+var seating := VehicleSeatMap.new()
+var damage := VehicleDamage.new()
+var driver: Node:
+ get: return seating.occupants.get(0)
+var reservation: Node:
+ get: return seating.reservations.get(0)
+var control_owner := "parked"
 var throttle := 0.0
 var brake := 1.0
 var steering_input := 0.0
@@ -21,6 +26,11 @@ var reset_pending := false
 var reset_transform := Transform3D.IDENTITY
 func _ready() -> void:
  door_profile = door_profile.duplicate()
+ seating.configure(door_profile.seat_offset)
+ damage.configure(self)
+ add_child(damage)
+ max_contacts_reported = 12
+ contact_monitor = true
  mass = profile.mass
  center_of_mass_mode = RigidBody3D.CENTER_OF_MASS_MODE_CUSTOM
  center_of_mass = profile.center_of_mass
@@ -44,20 +54,29 @@ func _ready() -> void:
   doors.append(door)
  impact_probe = PedestrianImpactProbe.new()
  impact_probe.configure(self)
+ VehicleHitboxes.install(self)
+ var presentation := VehicleDamageVisual.new()
+ add_child(presentation)
+ presentation.configure(self)
 func _physics_process(dt: float) -> void:
- impact_probe.sweep(dt)
+ damage.tick(dt)
+ if damage.state!="destroyed": impact_probe.sweep(dt)
  update_visuals(dt)
 func set_door_open(side: int, value: bool) -> void:
  if side>=0 and side<doors.size(): doors[side].request_open(value)
-func seat_position() -> Vector3:
- return global_transform*door_profile.seat_offset
-func approach_position() -> Vector3:
- var p := global_transform*door_profile.stand_offset
+func seat_position(index := 0) -> Vector3:
+ return global_transform*seating.definitions[index].anchor
+func approach_position(index := 0) -> Vector3:
+ var p := global_transform*seating.definitions[index].approach
  var query := PhysicsRayQueryParameters3D.create(p+Vector3.UP*2,p-Vector3.UP*3,1,[get_rid()])
  var floor_hit := get_world_3d().direct_space_state.intersect_ray(query)
  if not floor_hit.is_empty() and floor_hit.normal.y>0.65: p.y = floor_hit.position.y+0.93
  return p
-func command(cmd: GameplayCommand) -> void:
+func command(cmd: GameplayCommand, owner_id := "external") -> void:
+ control_owner = owner_id
+ if damage.state=="destroyed":
+  park()
+  return
  var pedal := -cmd.move.y
  throttle = pedal
  brake = 1.0 if cmd.brake else 0.0
@@ -67,48 +86,51 @@ func command(cmd: GameplayCommand) -> void:
  steering_input = -cmd.move.x
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  var started_us := Time.get_ticks_usec()
+ var was_reset := reset_pending
  if reset_pending:
   state.transform = reset_transform
   state.linear_velocity = Vector3.ZERO
   state.angular_velocity = Vector3.ZERO
   for door in doors: door.reset_with_chassis(state.transform)
+  damage.previous_velocity = Vector3.ZERO
+  damage.previous_angular = Vector3.ZERO
+  damage.contacts.clear()
   reset_pending = false
+ if not was_reset: damage.sample_contacts(state)
  var forward := -state.transform.basis.z
  speed = state.linear_velocity.dot(forward)
  var limit := profile.steering_angle/(1.0+absf(speed)*profile.high_speed_steering)
  steering = move_toward(steering,steering_input*limit,profile.steering_rate*state.step)
- var drive_force := throttle*(profile.engine_force if throttle>=0 else profile.reverse_force)
+ var drive_force := (0.0 if damage.state=="destroyed" else throttle)*(profile.engine_force if throttle>=0 else profile.reverse_force)
  if (speed>profile.max_speed and drive_force>0) or (speed < -profile.max_reverse_speed and drive_force<0): drive_force = 0
  var driven_count := (2 if profile.driven_front else 0)+(2 if profile.driven_rear else 0)
  var space := get_world_3d().direct_space_state
  for i in range(4):
   var driven := profile.driven_front if i<2 else profile.driven_rear
-  wheels[i].solve(state,space,mounts[i],steering if i<2 else 0.0,drive_force/maxi(1,driven_count) if driven else 0.0,brake*profile.brake_force/4.0,profile,get_rid())
+  wheels[i].solve(state,space,mounts[i],steering if i<2 else 0.0,drive_force/maxi(1,driven_count) if driven else 0.0,brake*profile.brake_force*(profile.brake_bias if i<2 else 1.0-profile.brake_bias)/2.0,profile,get_rid(),damage.wheel_flat[i],damage.profile)
  state.apply_central_force(-state.linear_velocity*state.linear_velocity.length()*profile.aero_drag)
  force_telemetry.record(Time.get_ticks_usec()-started_us)
 func update_visuals(dt: float) -> void:
  for i in range(4):
   wheel_visuals[i].position = mounts[i]-Vector3.UP*(profile.suspension_length-wheels[i].compression)
   wheel_visuals[i].rotation.y = steering if i<2 else 0
+  var radius := profile.wheel_radius*(damage.profile.flat_radius_ratio if damage.wheel_flat[i] else 1.0)
+  wheel_spinners[i].scale = Vector3(1,damage.profile.flat_radius_ratio,damage.profile.flat_radius_ratio) if damage.wheel_flat[i] else Vector3.ONE
   var rolling_speed := wheels[i].rolling_speed if wheels[i].touching else speed
-  wheel_angles[i] = wrapf(wheel_angles[i]-rolling_speed*dt/profile.wheel_radius,-PI,PI)
+  wheel_angles[i] = wrapf(wheel_angles[i]-rolling_speed*dt/radius,-PI,PI)
   wheel_spinners[i].rotation.x = wheel_angles[i]
-func reserve_seat(actor: Node) -> bool:
- if is_instance_valid(driver) or is_instance_valid(reservation): return false
- reservation = actor
- return true
-func commit_seat(actor: Node) -> bool:
- if reservation != actor or is_instance_valid(driver): return false
- driver = actor
- reservation = null
- return true
+func reserve_seat(actor: Node, index := 0) -> bool:
+ return damage.state!="destroyed" and seating.reserve(actor,index)
+func commit_seat(actor: Node, index := 0) -> bool:
+ return damage.state!="destroyed" and seating.commit(actor,index)
 func release_seat(actor: Node) -> void:
- if reservation == actor: reservation = null
- if driver == actor: driver = null
- throttle = 0
- steering_input = 0
- brake = 1
+ seating.release(actor)
+ if not is_instance_valid(driver): park()
+func receive_hit(event: DamageEvent) -> void: damage.receive_hit(event)
+func receive_damage(amount: float, point: Vector3, direction: Vector3) -> void:
+ receive_hit(DamageEvent.make(amount,point,direction))
 func park() -> void:
+ control_owner = "parked"
  throttle = 0
  steering_input = 0
  brake = 1

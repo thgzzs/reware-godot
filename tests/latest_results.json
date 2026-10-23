@@ -16,20 +16,20 @@
   "fixed_hz": 60,
   "metrics": {
     "acceleration": {
-      "distance_m": 16.2861366271973,
-      "speed_mps": 12.5269584655762,
+      "distance_m": 16.3013401031494,
+      "speed_mps": 12.5326585769653,
       "time_s": 2.5
     },
     "braking": {
-      "distance_m": 8.81760120391846,
-      "initial_speed_mps": 13.1245698928833,
-      "time_s": 1.3
+      "distance_m": 6.41722345352173,
+      "initial_speed_mps": 12.5289859771729,
+      "time_s": 1.0
     },
     "gameplay_cpu": {
-      "max_us": 1289.0,
-      "mean_us": 59.6846330275229,
-      "p95_us": 142.0,
-      "samples": 3488,
+      "max_us": 6898.0,
+      "mean_us": 246.034293948127,
+      "p95_us": 660.0,
+      "samples": 3470,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "jump": {
@@ -37,18 +37,18 @@
       "apex_m": 1.12139159440994,
       "launch_delay_s": 0.15
     },
-    "node_count": 181.0,
-    "physics_process_seconds_last": 0.002575,
+    "node_count": 201.0,
+    "physics_process_seconds_last": 0.011794,
     "suspension": {
-      "height_m": 0.678031206130981,
-      "load_N": 11772.0000370226,
-      "vertical_speed": 0.000000150384167341144
+      "height_m": 0.582499980926514,
+      "load_N": 23999.9991864669,
+      "vertical_speed": 0.0000000120941390235885
     },
     "vehicle_force_cpu": {
-      "max_us": 1917.0,
-      "mean_us": 39.6003440366973,
-      "p95_us": 75.0,
-      "samples": 3488,
+      "max_us": 13195.0,
+      "mean_us": 142.646397694524,
+      "p95_us": 390.0,
+      "samples": 3470,
       "scope": "four wheel queries and forces; excludes Jolt contact solve"
     }
   },
@@ -130,7 +130,7 @@
       "passed": true
     },
     {
-      "measured": 13.4794960021973,
+      "measured": 13.4799947738647,
       "name": "wall collision prevents tunneling",
       "passed": true
     },
@@ -140,7 +140,7 @@
       "passed": true
     },
     {
-      "measured": "(-10.0, 1.700375, -2.890611)",
+      "measured": "(-10.0, 1.700375, -3.057828)",
       "name": "step traversal climbs configured low steps",
       "passed": true
     },
@@ -150,12 +150,12 @@
       "passed": true
     },
     {
-      "measured": "(-21.0, 0.900375, 5.648016)",
+      "measured": "(-21.0, 0.900375, 5.648082)",
       "name": "steep slope does not become walkable",
       "passed": true
     },
     {
-      "measured": 0.6591796875,
+      "measured": 0.739990234375,
       "name": "camera obstruction sweep retracts",
       "passed": true
     },
@@ -165,7 +165,7 @@
       "passed": true
     },
     {
-      "measured": 50.0,
+      "measured": 25.0,
       "name": "damage applied to target",
       "passed": true
     },
@@ -200,15 +200,15 @@
     },
     {
       "measured": {
-        "height_m": 0.678031206130981,
-        "load_N": 11772.0000370226,
-        "vertical_speed": 0.000000150384167341144
+        "height_m": 0.582499980926514,
+        "load_N": 23999.9991864669,
+        "vertical_speed": 0.0000000120941390235885
       },
       "name": "suspension settles near static weight",
       "passed": true
     },
     {
-      "measured": 0.000000150384167341144,
+      "measured": 0.0000000120941390235885,
       "name": "suspension vertical oscillation settles",
       "passed": true
     },
@@ -234,8 +234,8 @@
     },
     {
       "measured": {
-        "distance_m": 16.2861366271973,
-        "speed_mps": 12.5269584655762,
+        "distance_m": 16.3013401031494,
+        "speed_mps": 12.5326585769653,
         "time_s": 2.5
       },
       "name": "vehicle accelerates forward",
@@ -247,21 +247,21 @@
       "passed": true
     },
     {
-      "measured": 0.500524520874023,
+      "measured": 1.0155565738678,
       "name": "steering changes heading",
       "passed": true
     },
     {
       "measured": {
-        "distance_m": 8.81760120391846,
-        "initial_speed_mps": 13.1245698928833,
-        "time_s": 1.3
+        "distance_m": 6.41722345352173,
+        "initial_speed_mps": 12.5289859771729,
+        "time_s": 1.0
       },
       "name": "brakes bring vehicle to rest",
       "passed": true
     },
     {
-      "measured": -4.36997032165527,
+      "measured": -4.37292289733887,
       "name": "reverse engages after stop",
       "passed": true
     },
@@ -302,24 +302,34 @@
     },
     {
       "measured": [
-        5.38962984085083,
-        5.38962984085083
+        5.39537715911865,
+        5.39537715911865
       ],
       "name": "vehicle dynamics invariant under world translation",
       "passed": true
     },
     {
-      "measured": 0.0190700627863407,
+      "measured": 0.0174924433231354,
       "name": "vehicle remains stable after control restoration",
       "passed": true
     },
     {
-      "measured": null,
+      "measured": {
+        "ammo": 11,
+        "control": true,
+        "cooldown": 0.2,
+        "facing": 6.28318530717959,
+        "grounded": true,
+        "life": "alive",
+        "phase": "grounded",
+        "shots": 1,
+        "yaw": 0.0
+      },
       "name": "weapon control resumes after driving",
       "passed": true
     },
     {
-      "measured": "(17.9991, 0.667273, 27.13922)",
+      "measured": "(17.99924, 0.573032, 27.13881)",
       "name": "vehicle body collides without crossing wall",
       "passed": true
     }

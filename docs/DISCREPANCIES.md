@@ -1,33 +1,17 @@
 # Current discrepancies
 
-The [motion revision](MOTION_REVISION.md) adds actual temporal pose checks, visible pelvis-anchored seating, independently spinning wheel hubs, shared world-space aim and solid Jolt knockdown bodies. All 198 Godot/Jolt assertions pass. Public source retains primitive fallbacks; the private ZIP preserves all 91 original asset/support files.
+See [SYSTEMS_REVISION.md](SYSTEMS_REVISION.md) for delivered behavior and [VALIDATION.md](VALIDATION.md) for evidence. Gameplay, visual and performance parity remain unverified against a running original build.
 
-Remaining: original weapon-specific IFP blocks; full per-bone ragdoll/contact geometry; additional collision damage for a second car striking an already active torso; wheel inertia/tire calibration; directional aim/foot contact calibration; hand-to-door and steering-wheel IK; passengers/jacking/locks/damaged doors; full handling/crowd/world behavior; original-runtime parity and target-device/browser/GPU validation. Fire/reload use tuned procedural fallbacks where source blocks are absent.
+| Area | Remaining gap |
+| --- | --- |
+| Authentic expansion assets | Current attachment has player, Idaho, Colt45 and trashcan only. Extra firearms, STINGER/LANDSTAL meshes and weapon-specific IFP blocks are required. Native loadout is Colt45 plus unarmed; extra cars are labeled physics fixtures. |
+| Weapon behavior | Procedural fire/reload/crouch layers where clips are absent; no complete projectile/explosive arsenal, per-weapon support-grip calibration, audio or original cadence validation. |
+| Characters | Single solid torso reaction proxy, not articulated ragdoll; foot/hand IK and full contact calibration remain. Original clip/root-speed fidelity needs runtime traces. |
+| Vehicles | Ray suspension/traction model; no exact transmission, wheel angular inertia, tire relaxation or wheel-volume contact. Damage thresholds have source evidence; response coefficients remain tunable approximations. |
+| Seats/doors | Passenger/shuffle transactions work; no jacking, lock policy, jump-outs, breakaway door simulation or complete hand-to-door/steering-wheel IK. |
+| Camera | Follow distances, aim, obstruction and bonnet view exist; cinematic and top-down modes and embedded-pivot recovery remain. |
+| World/AI | Small test yard and shared route/flee actors; no full traffic, navigation/crowd policies, streaming, save/load, missions or population. |
+| Validation | No original executable traces, exported web runtime test, physical-device usability review or GPU/frame-budget parity. Fixed-command local timing checks do not prove network or cross-platform determinism. |
+| Extensibility | Resource and command boundaries exist; multiplayer replication and mod loading are not implemented. |
 
-## Historical prototype register
-
-The older register below records earlier scope. The motion revision supersedes its seat/door/action status; broader parity gaps remain.
-
-# Discrepancies and remaining scope
-
-The prior asset-inclusive test build includes selected original placeholders, real skin/bind data, shared pedestrians, 234 animations, responsive HUD/UI and independent render/interface scaling. Model and basic layout checks pass; full reference gameplay, visual and performance parity remain unverified. See MODEL_AND_DISPLAY_MILESTONE.md for the completed import/display scope.
-
-| Area | Delivered | Gap / evidence needed | Priority |
-| --- | --- | --- | --- |
-| Reference baseline | Immutable commit and bounded source register | Reference executable/config, game data, runtime traces and agreed acceptance tolerances | P0 |
-| Locomotion | Custom acceleration, turning, aim/sprint modifiers, buffered windup jump, landing, sweeps, low steps and slope rejection | Match animation/root motion, ledge policy, friction, sprint stamina, air steering and exact timings | P0 |
-| Animation | 234 native clips, original selected character skin/rig, absolute bone playback | Full locomotion/action blends, aim IK, root policy calibration, doors and seated driver presentation | P0 |
-| Camera | Follow/aim/driving presets, orbit, lag, FOV, sphere obstruction | Reference mode coverage, embedded-pivot recovery, vehicle auto-centering and artistic validation | P1 |
-| Weapons | One hitscan type, ammo, reload, spread, recoil, damage and resettable targets | Switching/loadout, melee/projectiles, per-type logic, recoil calibration, penetration, audio and IK | P1 |
-| Vehicle physics | Four contacts, spring/damper, combined traction limit, steering, braking/reverse, body collision and COM | Reference transmission, wheel inertia, tire relaxation, wheel-volume casts, surface handling, anti-roll/anti-dive and calibrated impact response | P0 |
-| Vehicle transitions | Reserved driver seat, timers, control/collision transfer, supported exit alternatives, commit-time revalidation | Only one driver seat; no passengers, jacking, doors/locks, jump-outs, model-specific animations or ragdolls; 0.1 s vehicle collision grace | P0 |
-| AI/pedestrians | Four route/flee NPCs sharing motor/health/weapon/presentation with the player | Full archetype decisions, state policies, crowd avoidance, navigation and traffic | P1 |
-| Open world | Self-contained collision test yard and vehicle discovery boundary | Streaming, persistence/save-load, missions, districts, traffic, population, spatial indexing and floating origin | P1 |
-| Mod/multiplayer | Resource configs, instance state and command boundaries | No loader, protocol, authority, replication, prediction or sandboxing | P2 |
-| Debugging | State, motion, timings, loads/contact markers; Godot collision visibility | Persistent trace recorder, replay UI, force-vector overlays and automated capture comparison | P1 |
-| Visual parity | Four original model roots, 25 textures, real skin binding and six rendered software-OpenGL captures | Reference visual comparisons, physical-device usability/accessibility and full blend/vehicle art behavior | P1 |
-| Performance parity | Headless per-module CPU samples with scope labels | Target hardware/GPU runs, reference measurements, crowds/streaming loads, memory and hitch budgets | P1 |
-
-
-The custom physics coefficients and behavior acceptance bounds remain prototype values. Actual meshes do not establish physical equivalence. The selected car uses original axle markers, an approximate body hull and procedural textured wheels; full wheel geometry, door action and full wheel/seat/contact calibration remains open. The rendered checks use software OpenGL in a virtual window server, not a full physical-device usability review.
-
+All 91 supplied private asset/support files remain byte-identical in the rebuilt ZIP. Earlier milestone counts describe historical builds.

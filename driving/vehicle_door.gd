@@ -14,7 +14,7 @@ func configure(owner_car: DriveVehicle, index: int) -> void:
 	car = owner_car
 	profile = car.door_profile
 	side = index
-	hinge_offset = profile.hinge_offsets[index]
+	hinge_offset = profile.hinge_offsets[mini(index,profile.hinge_offsets.size()-1)]
 	mass = profile.panel_mass
 	freeze = true
 	can_sleep = false
@@ -47,8 +47,8 @@ func configure(owner_car: DriveVehicle, index: int) -> void:
 	joint.rotation.x = -PI*0.5
 	joint.set_flag(HingeJoint3D.FLAG_USE_LIMIT,true)
 	# The joint measures body A relative to B; our displayed angle is B in A.
-	joint.set_param(HingeJoint3D.PARAM_LIMIT_LOWER,0.0 if side==0 else -deg_to_rad(profile.opening_degrees))
-	joint.set_param(HingeJoint3D.PARAM_LIMIT_UPPER,deg_to_rad(profile.opening_degrees) if side==0 else 0.0)
+	joint.set_param(HingeJoint3D.PARAM_LIMIT_LOWER,0.0 if side%2==0 else -deg_to_rad(profile.opening_degrees))
+	joint.set_param(HingeJoint3D.PARAM_LIMIT_UPPER,deg_to_rad(profile.opening_degrees) if side%2==0 else 0.0)
 	joint.set_param(HingeJoint3D.PARAM_MOTOR_MAX_IMPULSE,profile.motor_impulse)
 	joint.set_flag(HingeJoint3D.FLAG_ENABLE_MOTOR,true)
 func request_open(value: bool) -> void:
@@ -69,7 +69,7 @@ func _physics_process(_dt: float) -> void:
 		return
 	var relative := car.global_basis.inverse()*global_basis
 	angle = atan2(relative.z.x,relative.z.z)
-	var target := (-1.0 if side==0 else 1.0)*deg_to_rad(profile.opening_degrees) if opened else 0.0
+	var target := (-1.0 if side%2==0 else 1.0)*deg_to_rad(profile.opening_degrees) if opened else 0.0
 	joint.set_param(HingeJoint3D.PARAM_MOTOR_TARGET_VELOCITY,clampf((angle-target)*profile.motor_gain,-profile.maximum_motor_speed,profile.maximum_motor_speed))
 	if not opened and absf(angle)<profile.latch_radians and (angular_velocity-car.angular_velocity).length()<0.5:
 		latched = true
