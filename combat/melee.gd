@@ -30,7 +30,7 @@ func configure(owner_actor: CharacterMotor) -> void:
  query.shape = sphere
  query.collision_mask = 15|32
  query.collide_with_areas = true
-func request() -> bool:
+func request(cmd: GameplayCommand = null) -> bool:
  if actor==null or not actor.can_use_weapon() or recovery>0: return false
  if actor.stance.crouched and not actor.stance.set_crouched(false): return false
  var gun := actor.weapon.profile
@@ -67,19 +67,31 @@ func request() -> bool:
  actor.actions.melee_active = true
  actor.actions.melee_clip = clip
  actor.actions.melee_time = 0
+ actor.actions.melee_is_kick = strike_bone.ends_with("Foot")
+ read_locomotion(cmd)
  return true
 func cancel() -> void:
  if active: recovery = profile.minimum_recovery
  active = false;queued=false;tip_ready=false
- if actor!=null: actor.actions.melee_active=false
+ if actor!=null: actor.actions.melee_active=false;actor.actions.melee_mobile=false
 func tick(cmd: GameplayCommand, dt: float) -> void:
  recovery = maxf(0,recovery-dt)
  if not active: return
  if not actor.control_enabled or actor.health.health<=0 or not actor.grounded: cancel();return
+ read_locomotion(cmd)
  previous_time = time
  time = minf(duration,time+dt)
  actor.actions.melee_time = time
  if time>=duration: cancel()
+func read_locomotion(cmd: GameplayCommand) -> void:
+ # The moving pose retains locomotion except the configured striking limbs.
+ actor.actions.melee_mobile=profile.allow_mobile_attacks and cmd!=null and cmd.move.length_squared()>0.01
+func posed_tip() -> Vector3:
+ var visual:=actor.reference_pose as SkinnedMotionVisual
+ var bone:=visual.skeleton.find_bone(strike_bone)
+ if bone<0:return strike_tip(time)
+ var hand:=visual.skeleton.global_transform*visual.skeleton.get_bone_global_pose(bone)
+ return hand*actor.weapon.profile.melee_tip if actor.weapon.profile.id not in ["unarmed","brassknuckle"] else hand.origin+Basis(Vector3.UP,actor.facing)*Vector3.FORWARD*reach
 func root_delta() -> Vector3:
  if not active or not actor.reference_enabled: return Vector3.ZERO
  var delta := actor.reference_motion.segment(clip,previous_time,time)*profile.root_motion_scale
@@ -104,11 +116,16 @@ func strike_tip(at: float) -> Vector3:
  return actor.global_position+Vector3.UP*0.2+Basis(Vector3.UP,actor.facing)*Vector3.FORWARD*(0.65+reach)
 func resolve_spatial_hits() -> void:
  if not active: return
- var tip := strike_tip(time)
- if not tip_ready: previous_tip = strike_tip(previous_time);tip_ready=true
+ var mobile:=actor.actions.melee_mobile and actor.reference_pose is SkinnedMotionVisual
+ var tip := posed_tip() if mobile else strike_tip(time)
+ if not tip_ready: previous_tip = tip if mobile else strike_tip(previous_time);tip_ready=true
  if time>=strike_start and previous_time<=strike_end:
   var first := strike_tip(maxf(previous_time,strike_start))
   var last := strike_tip(minf(time,strike_end))
+  if mobile:
+   var span:=maxf(0.00001,time-previous_time)
+   first=previous_tip.lerp(tip,clampf((strike_start-previous_time)/span,0,1))
+   last=previous_tip.lerp(tip,clampf((strike_end-previous_time)/span,0,1))
   var count := clampi(ceili(first.distance_to(last)/maxf(0.04,radius*0.65)),1,8)
   for i in range(count+1): strike_at(first.lerp(last,float(i)/count))
  previous_tip=tip

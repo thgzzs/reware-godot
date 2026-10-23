@@ -14,9 +14,9 @@
       "speed": 28.5064582824707
     },
     "orchestration": {
-      "max_us": 21141.0,
-      "mean_us": 747.021944444444,
-      "p95_us": 2565.0,
+      "max_us": 5466.0,
+      "mean_us": 277.507777777778,
+      "p95_us": 442.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -138,7 +138,7 @@
       "passed": true
     },
     {
-      "measured": 0.584418177604675,
+      "measured": 1.52263450622559,
       "name": "zero-root weapon clips permit collision-swept attack shuffling",
       "passed": true
     },

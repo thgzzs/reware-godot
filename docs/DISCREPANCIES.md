@@ -1,6 +1,6 @@
 # Current discrepancies
 
-The current delivery is documented in [STORIES_REVISION.md](STORIES_REVISION.md); older milestones are historical. Gameplay, visual and performance parity remain unverified against a running original build.
+Falling and moving melee are documented in [FALL_AND_MOBILE_MELEE.md](FALL_AND_MOBILE_MELEE.md). The asset/vehicle delivery is documented in [STORIES_REVISION.md](STORIES_REVISION.md); older milestones are historical. Gameplay, visual and performance parity remain unverified against a running original build.
 
 | Area | Remaining gap |
 | --- | --- |

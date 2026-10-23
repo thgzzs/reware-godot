@@ -79,7 +79,7 @@ func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Ca
  if profile.kind=="melee":
   if cooldown>0.000001: return
   melee.damage = profile.damage
-  if melee.request(): cooldown=profile.interval
+  if melee.request(cmd): cooldown=profile.interval
   return
  if reload_left>0 or cooldown>0.000001: return
  if actor!=null:

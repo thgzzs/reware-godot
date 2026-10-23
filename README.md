@@ -4,6 +4,8 @@ An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.
 
 The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian retaliation, native hip-fire/reload refinement, individual panel damage and physical fragments, full-size flat tires, stronger acceleration, safer cornering, tilted-car crawl exits and moving bailouts. VCS core/weapon animations and LCS bike animations are active; all clips remain accessible in F4. Public git supplies source and import tools; the private ZIP includes selected supplied assets.
 
+The [falling and moving-melee revision](docs/FALL_AND_MOBILE_MELEE.md) adds impact-based fall damage, native descent/glide/landing recovery and walk/run/sprint attacks with blended striking limbs. Tune it through tuning/fall.tres and tuning/melee.tres.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.

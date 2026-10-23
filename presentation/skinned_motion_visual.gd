@@ -13,6 +13,8 @@ var from_positions: Array[Vector3] = []
 var from_rotations: Array[Quaternion] = []
 var from_scales: Array[Vector3] = []
 var upper_mask: Array[int] = []
+var melee_mask: Array[int] = []
+var melee_kick_mask: Array[int] = []
 var upper_signature := ""
 var upper_transition := 0.0
 var upper_from: Array[Quaternion] = []
@@ -34,6 +36,8 @@ func _ready() -> void:
    base_rotations.append(skeleton.get_bone_pose_rotation(i))
    upper_rotations.append(skeleton.get_bone_pose_rotation(i))
    if actions!=null and actions.profile.upper_bones.has(skeleton.get_bone_name(i)): upper_mask.append(i)
+   if i in upper_mask or skeleton.get_bone_name(i)=="Spine":melee_mask.append(i)
+   if actions!=null and actions.profile.mobile_kick_bones.has(skeleton.get_bone_name(i)):melee_kick_mask.append(i)
 func binding(name: String) -> Array:
  if tracks.has(name): return tracks[name]
  var animation := motion.library.get_animation(name)
@@ -100,6 +104,8 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   base_rotations[i] = q
   if not upper.is_empty() and actions.includes_upper_bone(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
    q = q.slerp(upper_from[i].slerp(rotation_at(upper,upper_at,i),upper_alpha),actions.aim_weight)
+  if actions!=null and actions.life=="alive" and actions.melee_weight>0 and motion.preview_clip.is_empty() and (i in melee_mask or (actions.melee_is_kick and i in melee_kick_mask)) and not actions.melee_clip.is_empty():
+   q=q.slerp(rotation_at(actions.melee_clip,minf(actions.melee_time,motion.duration(actions.melee_clip)),i),actions.melee_weight)
   upper_rotations[i] = q
   if actions!=null and actions.life=="alive" and not actions.melee_active and actions.reaction_left>0 and skeleton.get_bone_name(i) in ["Spine","Spine1","Neck","Head"] and motion.preview_clip.is_empty():
    var at := actions.reaction_duration-actions.reaction_left

@@ -87,3 +87,7 @@ Each wheel has a steer/suspension parent and an axle spin pivot carrying both ti
 ## Current Stories modules
 
 RigBinding resolves original source bone IDs and caches channel-index mappings for each rig/clip, including duplicate display names. MeleeController passes planar clip displacement through the motor and sweeps animated attack tips. PedBrain only supplies intent; damage and strikes use the shared actor components. VehicleParts owns localized health/variants/fragment lifetime; VehicleStability owns contact-limited steering/anti-roll; BikeDynamics owns two-contact balance and lean. VehicleExitSolver owns clearance, while VehicleTransition retains occupancy until an exit or bailout commit. See STORIES_REVISION.md for configuration and extension paths.
+
+## Falling and mobile strikes
+
+ActorFallState tracks per-instance trajectory evidence; FallProfile owns thresholds/clip choices; CharacterMotor supplies relative support-normal landing speed and commits damage through PedHealth once. Mobile melee retains the locomotion base, overlays configured striking bones and sweeps the displayed tip after fixed-tick pose evaluation. Player and pedestrian roots use that same order. See FALL_AND_MOBILE_MELEE.md.

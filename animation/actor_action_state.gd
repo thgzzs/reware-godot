@@ -33,6 +33,9 @@ var reaction_duration := 0.0
 var melee_clip := ""
 var melee_time := 0.0
 var melee_active := false
+var melee_mobile := false
+var melee_is_kick := false
+var melee_weight := 0.0
 func full_body_busy() -> bool: return melee_active
 func choose_reaction(event: DamageEvent, facing: float, origin: Vector3) -> void:
  var local := Basis(Vector3.UP,facing).inverse()*(-event.direction)
@@ -77,9 +80,10 @@ func begin_life(next: String) -> void:
   motion.set_clip(life_clip)
   motion.time = 0
 func reset() -> void:
- next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""
+ next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
  life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
+ melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
  reaction_left = maxf(0,reaction_left-dt)
  firing_left = maxf(0,firing_left-dt)
  if life!="alive":

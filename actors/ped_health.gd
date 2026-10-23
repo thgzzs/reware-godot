@@ -9,9 +9,9 @@ var defense_multiplier := 1.0
 func reset() -> void:
  health = max_health
  restored.emit()
-func receive(amount: float) -> void:
+func receive(amount: float, use_combat_defense := true) -> void:
  if health<=0: return
- var actual := amount*defense_multiplier
+ var actual := maxf(0,amount)*(defense_multiplier if use_combat_defense else 1.0)
  health = maxf(0,health-actual)
  damaged.emit(actual)
  if health<=0: depleted.emit()

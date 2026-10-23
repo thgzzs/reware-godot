@@ -13,6 +13,7 @@ extends Resource
 @export var fire_clips := PackedStringArray(["colt45_fire","pistol_fire"])
 @export var reload_clips := PackedStringArray(["colt45_reload","pistol_reload"])
 @export var upper_bones := PackedStringArray(["Spine1","Neck","Head","Bip01 L Clavicle","Bip01 R Clavicle","L UpperArm","L Forearm","L Hand","L Finger","R UpperArm","R Forearm","R Hand","R Finger"])
+@export var mobile_kick_bones := PackedStringArray(["R Thigh","R Calf","R Foot"])
 @export var allow_sprint_all_guns := true
 @export var aim_movement_multiplier := 0.55
 @export var knockdown_seconds := 1.2

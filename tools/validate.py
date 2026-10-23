@@ -34,7 +34,7 @@ def main():
         suites.extend((name+'_suite', name) for name in
                       ('presentation', 'native_action', 'motion', 'systems', 'foundation'))
     if (root/'assets/converted/stories_animation_source.json').exists():
-        suites.extend([('stories_assets', 'stories_assets'), ('stories_suite', 'stories')])
+        suites.extend([('stories_assets', 'stories_assets'), ('stories_suite', 'stories'), ('fall_melee_suite', 'fall_melee')])
     total = 0
     for script, report_name in suites:
         report_path = root/'tests'/(report_name+'_results.json')

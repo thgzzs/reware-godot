@@ -122,7 +122,6 @@ func _physics_process(dt: float) -> void:
 	weapon.advance(cmd,armed,dt)
 	actor.actions.aim_pitch = rig.pitch
 	actor.tick(cmd,rig.yaw,dt)
-	weapon.melee.resolve_spatial_hits()
 	var active_car: DriveVehicle = transition.vehicle if is_instance_valid(transition.vehicle) else vehicle
 	for child in get_children():
 		if child is DriveVehicle:
@@ -139,6 +138,7 @@ func _physics_process(dt: float) -> void:
 	if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:
 		actor.reference_pose.sample_pose(dt)
 		actor.reference_pose.skeleton.force_update_all_bone_transforms()
+	weapon.melee.resolve_spatial_hits()
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
 	if is_instance_valid(actor.weapon_muzzle): muzzle = actor.weapon_muzzle.global_position
 	if armed and actor.can_use_weapon(): weapon.try_fire(cmd,get_world_3d().direct_space_state,rig.camera,muzzle,exclude)

@@ -1,0 +1,359 @@
+{
+  "assertions": 48,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "high_drop": {
+      "blocked_fire": true,
+      "damage": 64.2012749778405,
+      "events": 1,
+      "fell": true,
+      "hard": true,
+      "health": 35.7987250221595,
+      "height": 7.0,
+      "native_clip": true,
+      "phase": "landing",
+      "speed": 16.6666603088379
+    },
+    "medium_drop": {
+      "blocked_fire": true,
+      "damage": 10.0346997049246,
+      "events": 1,
+      "fell": true,
+      "hard": true,
+      "health": 89.9653002950754,
+      "height": 4.0,
+      "native_clip": true,
+      "phase": "landing",
+      "speed": 12.3333301544189
+    }
+  },
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "exact engine and Jolt remain pinned",
+      "passed": true
+    },
+    {
+      "measured": {
+        "damage": 0.0,
+        "health": 100.0
+      },
+      "name": "normal jumps remain safe and return to grounded control",
+      "passed": true
+    },
+    {
+      "measured": {
+        "blocked_fire": true,
+        "damage": 0.0,
+        "events": 1,
+        "fell": true,
+        "hard": false,
+        "health": 100.0,
+        "height": 2.0,
+        "native_clip": true,
+        "phase": "landing",
+        "speed": 8.66666698455811
+      },
+      "name": "short drops do not apply fall damage",
+      "passed": true
+    },
+    {
+      "measured": {
+        "blocked_fire": true,
+        "damage": 10.0346997049246,
+        "events": 1,
+        "fell": true,
+        "hard": true,
+        "health": 89.9653002950754,
+        "height": 4.0,
+        "native_clip": true,
+        "phase": "landing",
+        "speed": 12.3333301544189
+      },
+      "name": "walking off a high ledge enters an explicit falling state",
+      "passed": true
+    },
+    {
+      "measured": {
+        "blocked_fire": true,
+        "damage": 10.0346997049246,
+        "events": 1,
+        "fell": true,
+        "hard": true,
+        "health": 89.9653002950754,
+        "height": 4.0,
+        "native_clip": true,
+        "phase": "landing",
+        "speed": 12.3333301544189
+      },
+      "name": "moderate landing applies measured environmental damage",
+      "passed": true
+    },
+    {
+      "measured": 0.33,
+      "name": "landing damage bypasses player combat-defense reduction",
+      "passed": true
+    },
+    {
+      "measured": "FALL_land",
+      "name": "hard landings play the native landing recovery",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "one landing cannot repeatedly damage a resting player",
+      "passed": true
+    },
+    {
+      "measured": {
+        "blocked_fire": true,
+        "damage": 64.2012749778405,
+        "events": 1,
+        "fell": true,
+        "hard": true,
+        "health": 35.7987250221595,
+        "height": 7.0,
+        "native_clip": true,
+        "phase": "landing",
+        "speed": 16.6666603088379
+      },
+      "name": "larger drops cause more damage without automatic death",
+      "passed": true
+    },
+    {
+      "measured": {
+        "blocked_fire": true,
+        "damage": 200.0,
+        "events": 1,
+        "fell": true,
+        "hard": true,
+        "health": 0.0,
+        "height": 18.0,
+        "native_clip": true,
+        "phase": "landing",
+        "speed": 26.6666793823242
+      },
+      "name": "severe falls deplete health once with a fall-specific death clip",
+      "passed": true
+    },
+    {
+      "measured": "FALL_fall",
+      "name": "a long descent uses native falling presentation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "teleports reset accumulated fall evidence",
+      "passed": true
+    },
+    {
+      "measured": [
+        0.78353068033854,
+        0.183695475260415
+      ],
+      "name": "long falls loop their glide animation instead of freezing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "fall damage can be disabled independently of fall animation",
+      "passed": true
+    },
+    {
+      "measured": 35.7987250221595,
+      "name": "pedestrians use the same fall damage component with independent state",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "descending supports reduce relative landing impact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "upward supports contribute relative landing impact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sliding along a slope is not counted as a fall impact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "raised platform has stable support without damage",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-28.02883, 0.901509, 25.12969)",
+        "health": 86.43618019325
+      },
+      "name": "running off geometry produces a real falling and damaged landing loop",
+      "passed": true
+    },
+    {
+      "measured": {
+        "attack_m": 0.756106078624725,
+        "base_m": 0.777029037475586,
+        "mobile_ticks": 36
+      },
+      "name": "walk melee retains normal stride speed without adding attack-root velocity",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "walk melee blends weapon swings over moving legs",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "walk attack layer fades out without stopping locomotion",
+      "passed": true
+    },
+    {
+      "measured": {
+        "attack_m": 3.15943813323975,
+        "base_m": 3.14559578895569,
+        "mobile_ticks": 36
+      },
+      "name": "run melee retains normal stride speed without adding attack-root velocity",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "run melee blends weapon swings over moving legs",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "run attack layer fades out without stopping locomotion",
+      "passed": true
+    },
+    {
+      "measured": {
+        "attack_m": 5.73793888092041,
+        "base_m": 5.65409278869629,
+        "mobile_ticks": 36
+      },
+      "name": "sprint melee retains normal stride speed without adding attack-root velocity",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint melee blends weapon swings over moving legs",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint attack layer fades out without stopping locomotion",
+      "passed": true
+    },
+    {
+      "measured": "FIGHTlngkck",
+      "name": "mobile melee is configured for brassknuckle",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_h",
+      "name": "mobile melee is configured for baseballbat",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_knife_1",
+      "name": "mobile melee is configured for knife",
+      "passed": true
+    },
+    {
+      "measured": "sword_1",
+      "name": "mobile melee is configured for katana",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_h",
+      "name": "mobile melee is configured for golfclub",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_h",
+      "name": "mobile melee is configured for nightstick",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_h",
+      "name": "mobile melee is configured for hammer",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_knife_1",
+      "name": "mobile melee is configured for cleaver",
+      "passed": true
+    },
+    {
+      "measured": "sword_3",
+      "name": "mobile melee is configured for machete",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_knife_in",
+      "name": "mobile melee is configured for screwdriver",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_csawlo",
+      "name": "mobile melee is configured for chainsaw",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "running strikes can steer with bounded heading response",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance_m": 0.218352809548378,
+        "phase": "start"
+      },
+      "name": "stationary strikes can transition into walking or running",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stopping a moving strike restores its full-body action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon switching clears the mobile strike and fades its layer",
+      "passed": true
+    },
+    {
+      "measured": {
+        "health": 83.2,
+        "hits": 1
+      },
+      "name": "a moving native weapon sweep can damage a target",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-28.03666, 0.900012, 34.52035)"
+      },
+      "name": "running attacks remain collision swept against world walls",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "losing ground cancels moving melee and its upper layer",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "falling and melee resume normally after respawn",
+      "passed": true
+    }
+  ]
+}

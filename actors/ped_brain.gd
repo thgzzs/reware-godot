@@ -16,6 +16,7 @@ var relationships := {}
 var attack_delay := 0.0
 var pursuit_left := 0.0
 func _ready() -> void:
+ if actor.reference_pose is SkinnedMotionVisual:actor.reference_pose.set_process(false)
  actor.attacked.connect(on_attacked)
 func on_attacked(event: DamageEvent) -> void:
  if not event.source is CharacterMotor or event.source==actor: return
@@ -35,6 +36,7 @@ func _physics_process(dt: float) -> void:
  if actor.health.health<=0 or not actor.control_enabled:
   actor.weapon.advance(cmd,false,dt)
   actor.tick(cmd,actor.facing,dt)
+  if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:actor.reference_pose.sample_pose(dt)
   return
  var target := waypoints[destination] if not waypoints.is_empty() else actor.global_position
  if state=="fight":
@@ -70,7 +72,8 @@ func _physics_process(dt: float) -> void:
  actor.weapon.advance(cmd,true,dt)
  actor.tick(cmd,0,dt)
  if cmd.fire and actor.weapon.cooldown<=0 and actor.can_use_weapon():
-  if actor.weapon.melee.request():actor.weapon.cooldown=actor.weapon.profile.interval
+  if actor.weapon.melee.request(cmd):actor.weapon.cooldown=actor.weapon.profile.interval
+ if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:actor.reference_pose.sample_pose(dt)
  actor.weapon.melee.resolve_spatial_hits()
 func hear_shot(position: Vector3) -> void:
  if relationships.get("threat",[]).has("GUN") and actor.global_position.distance_to(position)<flee_distance:

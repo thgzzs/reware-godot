@@ -21,6 +21,7 @@ var down_time := 0.0
 var occupant_hitbox: OccupantHitbox
 var normal_shape: Shape3D
 var stance := CharacterStance.new()
+var fall := ActorFallState.new()
 var jump_forward := Vector3.ZERO
 var blocked_jump := false
 var low_shape := SphereShape3D.new()
@@ -169,6 +170,7 @@ func tick_reaction(dt: float) -> void:
  if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
   restore_control()
 func restore_control() -> void:
+ fall.reset()
  if reference_pose!=null:reference_pose.scale=Vector3.ONE
  if is_instance_valid(occupant_hitbox): occupant_hitbox.collision_layer = 0
  stance.reset()
@@ -213,6 +215,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  if phase == "landing" and phase_left <= 0:
   phase = "grounded"
   blocked_jump = false
+  fall.hard_landing = false
  if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not (reference_enabled and reference_motion.heading_locked):
   if reference_enabled:
    var desired := LegacyPhysicsUnits.jump_forward(reference_motion.intensity,reference_motion.was_sprinting)
@@ -233,27 +236,33 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   grace_left = 0
   phase = "airborne"
   jump_count += 1
+ if not grounded: fall.observe_air(global_position.y,velocity.y,dt)
  var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
  var horizontal := Vector3.ZERO
  if reference_enabled:
   var local_delta := Vector3.ZERO
   if not reference_motion.preview_clip.is_empty():
    local_delta = reference_motion.step(0,false,false,dt)
-  elif actions.melee_active:
+  elif actions.melee_active and not actions.melee_mobile:
    reference_motion.force_action(actions.melee_clip,0)
    reference_motion.time = actions.melee_time
    drive_velocity = Basis(Vector3.UP,facing)*weapon.melee.root_delta()/maxf(0.00001,dt)+direction*weapon.melee.profile.shuffle_speed
   elif stance.crouched: reference_motion.force_action(stance.profile.crouch_clip,dt)
   elif phase=="launch": reference_motion.force_action("JUMP_launch",dt)
-  elif phase=="landing": reference_motion.force_action("HIT_wall" if blocked_jump else "JUMP_land",dt)
-  elif not grounded: reference_motion.force_action("JUMP_glide",dt)
+  elif phase=="landing": reference_motion.force_action("HIT_wall" if blocked_jump else (actions.resolve(fall.profile.landing_clips) if fall.hard_landing else "JUMP_land"),dt)
+  elif not grounded:
+   reference_motion.force_action(fall.air_clip(actions) if fall.falling else "JUMP_glide",dt)
+   if fall.falling:reference_motion.time=fall.pose_time(actions)
   else:
-   local_delta = reference_motion.step(direction.length(),cmd.sprint and not (cmd.aim or cmd.fire or weapon.reload_left>0) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy),cmd.walk,dt)
-  if not actions.melee_active and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed)):
-   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed) else atan2(-direction.x,-direction.z)
-   facing = rotate_toward(facing,angle,profile.turn_rate*dt)
+   if actions.melee_mobile and reference_motion.phase=="action":
+    reference_motion.phase="move"
+    reference_motion.intensity=1.0 if cmd.walk else 2.0
+   local_delta = reference_motion.step(direction.length(),cmd.sprint and not (cmd.aim or (cmd.fire and weapon.profile.kind!="melee") or weapon.reload_left>0) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy),cmd.walk,dt)
+  if (not actions.melee_active or actions.melee_mobile) and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed)):
+   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active) else atan2(-direction.x,-direction.z)
+   facing = rotate_toward(facing,angle,(weapon.melee.profile.steering_rate if actions.melee_mobile else profile.turn_rate)*dt)
   visual.rotation.y = facing
-  if grounded and phase!="launch" and not actions.melee_active: drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
+  if grounded and phase!="launch" and (not actions.melee_active or actions.melee_mobile): drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
   if stance.crouched:
    drive_velocity = direction*profile.speed*stance.profile.move_multiplier if stance.profile.allow_crouch_walk else Vector3.ZERO
   if grounded and cmd.aim and not stance.crouched:
@@ -288,6 +297,8 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  actions.upper_allowed = actions.upper_allowed and phase=="grounded" and control_enabled
  var was_grounded := grounded
  var impact := velocity.y
+ var incoming := velocity
+ var landing_speed := 0.0
  var motion := velocity*dt
  var obstruction := KinematicCollision3D.new()
  if was_grounded and phase != "launch" and Vector2(motion.x,motion.z).length()>0.0001 and test_move(global_transform,Vector3(motion.x,0,motion.z),obstruction):
@@ -305,6 +316,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if normal.y >= slope_cos() and velocity.y <= 0:
    grounded = true
    support_normal = normal
+   landing_speed = maxf(landing_speed,ActorFallState.closing_speed(incoming,normal,hit.get_collider(),hit.get_position()))
   var collider := hit.get_collider()
   if collider is RigidBody3D and not collider is DriveVehicle:
    var point_velocity: Vector3 = collider.linear_velocity+collider.angular_velocity.cross(hit.get_position()-collider.global_position)
@@ -329,6 +341,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    move_and_collide(Vector3.DOWN*profile.snap_distance,false,0.002)
    grounded = true
    support_normal = floor_hit.get_normal()
+   landing_speed = maxf(landing_speed,ActorFallState.closing_speed(incoming,support_normal,floor_hit.get_collider(),floor_hit.get_position()))
    velocity.y = 0
  # The capsule may hit a stair riser before its bottom reaches the floor.
  # A center support ray preserves support in that case without accepting
@@ -339,6 +352,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if not support.is_empty() and support.normal.y >= slope_cos():
    grounded = true
    support_normal = support.normal
+   landing_speed = maxf(landing_speed,ActorFallState.closing_speed(incoming,support_normal,support.collider,support.position))
    velocity.y = 0
  if grounded:
   if not was_grounded and impact < -1:
@@ -346,8 +360,18 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    landing_count += 1
    phase = "landing"
    phase_left = profile.landing_delay
-  elif phase != "launch" and phase != "landing": phase = "grounded"
- elif phase != "launch": phase = "airborne"
+   var amount := fall.land(landing_speed)
+   if fall.hard_landing:
+    weapon.melee.cancel()
+    drive_velocity = Vector3.ZERO
+    if reference_enabled:phase_left=maxf(phase_left,reference_motion.duration(actions.resolve(fall.profile.landing_clips)))
+   if amount>0:
+    actions.next_death = actions.resolve(fall.profile.death_clips)
+    health.receive(amount,false)
+  elif phase != "launch" and phase != "landing":
+   if fall.tracked:fall.land(landing_speed)
+   phase = "grounded"
+ elif phase != "launch": phase = "falling" if fall.falling else "airborne"
 func jump_has_clearance() -> bool:
  var shape := SphereShape3D.new()
  shape.radius = 0.25
@@ -400,6 +424,8 @@ func ignore_vehicle_until_restored(body: PhysicsBody3D) -> void:
  add_collision_exception_with(body)
  collision_grace = 0.1
 func set_embarked(value: bool) -> void:
+ fall.reset()
+ weapon.melee.cancel()
  if not value:
   visual.rotation = Vector3(0,facing,0)
   if reference_pose!=null:reference_pose.scale=Vector3.ONE
@@ -410,6 +436,8 @@ func set_embarked(value: bool) -> void:
  visible = not value
  velocity = Vector3.ZERO
 func reset_at(where: Vector3) -> void:
+ fall.reset()
+ weapon.melee.cancel()
  global_position = where
  force_update_transform()
  PhysicsServer3D.body_set_state(get_rid(),PhysicsServer3D.BODY_STATE_TRANSFORM,global_transform)
