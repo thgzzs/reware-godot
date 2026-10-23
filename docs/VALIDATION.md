@@ -1,54 +1,50 @@
 # Current validation
 
-Godot **4.7.2 Stable**, official `ed1daf0bf`, built-in **Jolt Physics**, fixed 60 Hz. The official engine archive digest is pinned in provenance.json.
+Godot **4.7.2 Stable**, official `ed1daf0bf`, built-in **Jolt**, fixed 60 Hz. See provenance.json for the exact engine archive digest. Historical reports and milestone counts describe earlier revisions.
 
-| Suite | Current result | Scope |
-| --- | --- | --- |
-| Editor import / script parsing | Passed | Exact 4.7.2 editor |
-| Baseline gameplay | 48 passed | Real Jolt, primitive fallback |
-| Action/door/impact contracts | 41 passed | Real Jolt and synthetic animation fixtures |
-| Imported animation/data | 36 passed | Retained source clips/data, 234 clips, complete native key round trip |
-| Native model/display | 28 passed | Real skin, model markers, responsive HUD, display/input/adaptive controls |
-| Native actions | 22 passed | Aim masks, supported model inventory, death, doors, transition and holstering |
-| Temporal native motion | 19 passed | Moving poses, aiming, reload, seat, wheels, physical impact and recovery |
-| Systems | 53 passed | Props, tire/glass rays, stance/fire restrictions, cameras, seats, melee, rotated collision damage, fire/explosion/repair |
-| Foundations | 13 passed | State-specific jump speed, slopes, heavy-car pushes, fresh/resting/severe subsequent ped impacts |
-| Python | 23 passed, none skipped | Parser, conversion, selected archive and packaging fixtures |
-| Render timing | Five comparisons | Fixed render deltas 30/60/120/144 plus real-clock varying render cap; fixed physics60 |
-| Rendered review | Eight systems states plus previous motion sequence | Software OpenGL; selected appearance checks |
-| Strict ZIP extraction | Passed | Explicit parent entries, CRC/SHA verification, preserved private bytes and fresh import/startup |
-| Original-game runtime / browser playback | Not tested | No gameplay equivalence or exported HTML runtime claim |
+| Suite | Passed | Scope |
+| --- | ---: | --- |
+| Baseline gameplay | 47 | Movement, jump, targeting, suspension and first playable loop |
+| Action contracts | 41 | Synthetic fixtures: masks, reactions, doors and transitions |
+| Imported animation/data | 36 | Native 294,062-key round trip and data integration |
+| Native presentation | 28 | Skin, model markers, layout/display and pose sampling |
+| Native actions | 66 | 24-entry loadout, masked actions, death and doors |
+| Temporal motion | 63 | 24-entry action timing, movement, seats, wheel spin and physical impacts |
+| Systems | 54 | Props, tires/glass, stance, firing, melee, seats and damage |
+| Foundations | 13 | Jump/slope response, heavy pushes and impact lifecycle |
+| Stories assets | 10 | 44 blocks, all originals/aliases, rig-ID mapping and exact assets |
+| Stories gameplay | 77 | Retaliation, spatial strikes, localized collisions, fragments, bikes and bailouts |
 
-Total: **260 Godot/Jolt assertions**, **23 Python tests** and **five local render-rate comparisons**. Native assertion counts changed because absent rifle/shotgun meshes are now correctly excluded rather than represented by another model. All 91 original private asset/support files are retained byte for byte. The original input had 217 files and zero directory entries.
+Total: **435 Godot/Jolt assertions**, **23 Python tests with none skipped**, and **five local render-rate comparisons**. Nine selected software-OpenGL states were reviewed: pistol hip fire, M4 aim, katana strike, PCJ600 rider, Faggio rider, bike collection, panel damage, detached bonnet and overturned crawl. This is selected visual review, not exhaustive contact verification.
 
-The native death check originally measured a minimum 13 cm below the floor. The visual now caches a terminal skin minimum and blends a capped correction to 1 cm above the test floor. Collision ownership stays with the actor. Native aim checks preserve leg rotation and verify hand orientation at three pitch values. Door tests confirm attachment, opposite opening directions and latching. The final exit restores both standing collision/control and the equipped visual.
-
-Reports are tests/latest_results.json, revision_results.json, imported_results.json, presentation_results.json, native_action_results.json and motion_results.json. Current full transcripts are systems_validation_transcript.txt and systems_python_transcript.txt. Additional reports: systems_results.json, foundation_results.json and render_timing_results.json. Older revision-only transcripts record the earlier source-only run and are historical. Prior screenshots in the supplied ZIP are retained unchanged; current captures were inspected separately.
+Reports are tests/*_results.json. The current structured transcript is tests/stories_validation_transcript.txt. The independent legacy decoder report applies to the original ped.ifp only; current Stories validation compares native curves against the portable source representation after deterministic duplicate-time coalescing. The Stories import CLI was reproduced in isolation: five portable outputs and all 46 new PNGs exactly matched.
 
 ## Reproduce
 
 ```bash
-python3 tools/validate.py --godot /absolute/path/to/Godot_4.7.2_stable
-python3 tools/check_render_timing.py --godot /absolute/path/to/Godot_4.7.2_stable
+python3 tools/validate.py --godot /absolute/path/Godot_4.7.2_stable
+python3 tools/check_render_timing.py --godot /absolute/path/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-The validator rejects other engines, imports before testing and fails on script errors. Asset-dependent suites run only when private assets are available. On a desktop with a working display, use tests/render_model_preview.gd for layout captures and tests/render_action_preview.gd for selected native action captures. Run tests/run_motion_suite.gd with a graphical display to capture the temporal regression sequence; it also runs headlessly without image output.
+The validator checks the exact version, imports first, removes stale result files, enforces process timeouts and fails on script errors or failed assertions. Asset-dependent suites only run when their private inputs exist. Python private-input tests skip if those inputs are absent. Rendering fixtures in tests/render_stories_preview.gd require a graphical display.
 
-## Profiling
+## Target measurements
+
+The native Idaho acceptance fixture reaches 10 m/s in 1.267 s. Its 2.5 s high-speed corner test begins at 22 m/s, ends near 28.51 m/s and retains a minimum upright dot of 0.99980. Source-derived behavior and intentional balance changes are distinguished in STORIES_REVISION.md. These targets have not been compared to original-runtime traces.
 
 | Callback | Samples | Mean, us | p95, us |
 | --- | ---: | ---: | ---: |
-| Native orchestration including player pose | 1558 | 916.4 | 2237.0 |
-| Four-wheel query/force calculation | 2253 | 142.5 | 469.0 |
-| Native player pose sampler | 180 | 498.6 | 1104.0 |
+| Stories native orchestration | 3600 | 747.0 | 2565.0 |
+| Four-wheel force/query | 3600 | 56.5 | 133.0 |
+| Native player pose sample | 180 | 236.4 | 499.0 |
 
-These shared-environment samples cover only the named callbacks. The current orchestration includes the fixed player pose; it is not directly comparable to the previous orchestration samples that excluded pose evaluation. Orchestration excludes independent NPC/probe/door callbacks, Jolt solving, HUD drawing and rendering. The pose sample excludes other actors and GPU skinning. The terminal skin minimum is computed once per settled reaction clip and cached; a cold computation is not represented by steady pose timing. No speedup, complete frame budget or performance superiority is claimed.
+These shared-environment CPU samples cover only the named callbacks. Orchestration includes the controlled player pose but excludes independent NPC/door/probe callbacks, Jolt solving, HUD drawing and rendering. Pose timing excludes other actors and GPU skinning. The Stories orchestration maximum was 21.1 ms; shared-environment scheduling pauses are included. Complete statistics remain in the JSON report. No complete frame budget, speedup or performance superiority is claimed. Caches avoid repeated rig resolution and contact-list allocations; no comparative benchmark isolates their savings.
 
-Software-OpenGL captures use Mesa llvmpipe rather than a physical GPU. Full foot/door contacts across every action, target-device usability, original-game traces, browser import/playback, gameplay parity, visual parity and performance parity remain separate validation goals.
+Five replays use render rates 30/60/120/144 and a variable-cap real-clock run, with physics fixed at 60 Hz. Sampled player position, velocity, pose, state and shot count agree; the maximum car-position difference is 4.173e-7 m. The variable case observes render deltas from 0.0001361 to 0.1456713 s. This controlled local fixture does not establish all-bike, cross-platform, alternate-physics-rate or network determinism.
 
-Current motion renders show different sprint frames, airborne jump, aim/reload, occupied seating and three stages of a bonnet impact. A later cabin correction render verifies closing/latching. The apparent object protruding at the front of the driver door is the original car mirror; an empty-car control capture confirms it. Bone positions also remain inside the cabin. These are selected target checks, not exhaustive mesh penetration or reference-runtime parity tests.
+## Packaging and limits
 
-The final five-case replay produced identical player positions/velocities, pose quaternions, shot counts and state names at sampled fixed ticks. Maximum car position difference was 4.24e-7 m. The variable render run observed delta times from 0.001824 to 0.143006 seconds. These measurements cover one controlled local scenario, with 60 Hz physics throughout; they do not validate alternative physics frequencies.
+The ZIP uses explicit parent-directory entries, CRC checks, SHA-256 manifests and strict extraction. The four original model scenes and 25 PNGs are preserved; the active animation library and weapon/fight tables are intentionally replaced. The original source ZIP had 217 files and zero directory entries. A fresh extracted-project import/startup is required by the delivery packager.
 
-The combined systems render was stopped at its three-minute software-rendering limit after six state captures; remaining fire review uses the isolated render_fire_preview.gd fixture. Earlier variant appearance captures remain valid because fixture geometry was unchanged. The timeout was a render-review harness limit, separate from the eight completed gameplay suites.
+Software-rendered captures use Mesa llvmpipe, not a physical GPU. Original executable behavior, browser import/playback, full visual parity, hardware GPU performance and target-device usability remain unverified. Gameplay parity, visual parity and performance parity are separate goals.

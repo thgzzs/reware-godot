@@ -22,5 +22,10 @@ extends Resource
 @export var friction := 1.25
 @export var lateral_stiffness := 6500.0
 @export var max_spring_force := 18000.0
+@export var launch_force_multiplier := 1.0
+@export var launch_boost_end_speed := 18.0
+@export var maximum_lateral_acceleration := 8.0
+@export var anti_roll_stiffness := 14000.0
+@export var roll_damping := 3.5
 @export var driven_front := false
 @export var driven_rear := true

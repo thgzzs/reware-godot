@@ -29,11 +29,11 @@ func run() -> void:
  check("bullet impulse translates and rotates a trash can",prop.global_position.distance_to(prop_before)>0.08 and prop.hits==1,{"distance":prop.global_position.distance_to(prop_before),"rotation":prop.rotation})
  var variants:Array[DriveVehicle]=[]
  for child in arena.get_children():
-  if child is DriveVehicle:variants.append(child)
+  if child is DriveVehicle and child.kind=="car":variants.append(child)
  check("independent RWD FWD AWD physics vehicles exist",variants.size()==3 and variants[0].profile.driven_rear and not variants[0].profile.driven_front and variants[1].profile.driven_front and not variants[1].profile.driven_rear and variants[2].profile.driven_front and variants[2].profile.driven_rear)
  check("vehicle masses and dimensions are distinct",variants[0].mass!=variants[1].mass and variants[1].mass!=variants[2].mass and (variants[1].get_node("Hull").shape as BoxShape3D).size!=(variants[2].get_node("Hull").shape as BoxShape3D).size)
  check("native two-door car retains four marker-defined seats",car.seating.definitions.size()==4 and car.doors.size()==2)
- check("four-door physics fixture owns four physical hinges",variants[2].doors.size()==4 and variants[2].seating.definitions[3].door==3)
+ check("four-door native car keeps four hinges and rear-door seat mappings",variants[2].doors.size()==4 and variants[2].seating.definitions[3].door==3)
  var unarmed:=-1
  for i in range(gun.inventory.size()):
   if gun.inventory[i].profile.id=="unarmed":unarmed=i
@@ -90,9 +90,12 @@ func run() -> void:
  shots=gun.shots
  var hipfire:=GameplayCommand.new();hipfire.fire=true
  await frames(1,hipfire)
- check("backward hip fire waits for body turn instead of twisting arms",gun.shots==shots)
+ check("hip fire outside arm range blocks an impossible backward shot",gun.shots==shots)
  await frames(30,hipfire)
- check("firing resumes once body can face the camera target",gun.shots>shots)
+ check("hip fire does not rotate the whole actor toward a backward target",gun.shots==shots and absf(actor.facing)<0.03)
+ actor.facing=PI;actor.visual.rotation.y=PI
+ await frames(20,hipfire)
+ check("firing resumes when movement or aim faces within the arm cone",gun.shots>shots)
  arena.rig.yaw=0
  car.reset_at(Vector3(18,0.9,5));car.damage.repair();await frames(100)
  actor.respawn(Vector3(-28,0.94,38));await frames(20)
@@ -102,7 +105,7 @@ func run() -> void:
  check("bullet ray identifies the actual tire component",not hit.is_empty() and hit.collider is VehicleHitRegion and hit.collider.kind=="tire",hit.get("position"))
  if not hit.is_empty():DamageEvent.deliver(hit.collider,DamageEvent.make(25,hit.position,Vector3.RIGHT))
  await frames(20)
- check("tire hit persists and lowers the visual rolling radius",car.damage.wheel_flat[0] and car.wheel_spinners[0].scale.y<0.8,car.wheel_spinners[0].scale)
+ check("tire hit persists without shrinking its visual mesh",car.damage.wheel_flat[0] and car.wheel_spinners[0].scale.is_equal_approx(Vector3.ONE),car.wheel_spinners[0].scale)
  var glass:VehicleHitRegion=car.damage.glass_region
  var mesh:MeshInstance3D=car.damage.windshield_ok.find_child("Geometry*",true,false)
  var glass_point:=mesh.global_transform*mesh.mesh.get_aabb().get_center()
@@ -175,9 +178,9 @@ func run() -> void:
  wall.queue_free();await frames(2)
  var losses:=[]
  for yaw in [0.0,PI*0.5]:
-  car.damage.repair();car.reset_transform=Transform3D(Basis(Vector3.UP,yaw),Vector3(18,0.9,20));car.reset_pending=true;car.park();await frames(80)
+  car.damage.repair();car.reset_transform=Transform3D(Basis(Vector3.UP,yaw),Vector3(0,0.9,38));car.reset_pending=true;car.park();await frames(80)
   var direction:=Basis(Vector3.UP,yaw)*Vector3.FORWARD
-  var fixture:=LabGeometry.box(arena,Vector3(7,4,0.4) if yaw==0 else Vector3(0.4,4,7),Vector3(18,2,20)+direction*8,Color.GRAY,true)
+  var fixture:=LabGeometry.box(arena,Vector3(7,4,0.4) if yaw==0 else Vector3(0.4,4,7),Vector3(0,2,38)+direction*8,Color.GRAY,true)
   await frames(2);car.brake=0;car.linear_velocity=direction*18
   await frames(80)
   losses.append(car.damage.profile.maximum_health-car.damage.health)

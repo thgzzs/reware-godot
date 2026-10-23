@@ -1,0 +1,313 @@
+{
+  "models": [
+    {
+      "role": "baseballbat",
+      "frame": "bat",
+      "offset": 17063936,
+      "bytes": 2783,
+      "sha256": "621b1e7a66b47fc49890f4d81f9ee721d818b89fd7f3286ad67f682d17812cf8",
+      "textures": [
+        "bat_all"
+      ]
+    },
+    {
+      "role": "brassknuckle",
+      "frame": "BrassKnuckle",
+      "offset": 17074176,
+      "bytes": 3656,
+      "sha256": "35a73e8a83d04666f0ebd8d8966ed1e522f2aa70bc023a6d1bc110da20830901",
+      "textures": [
+        "gun_brass_knuckle_texture"
+      ]
+    },
+    {
+      "role": "stubbyshotgun",
+      "frame": "buddyshot",
+      "offset": 17078272,
+      "bytes": 16581,
+      "sha256": "4796555d06bdb1acf5b43d2308b00de8b761c95f5dc17969fcc092d8786c2465",
+      "textures": [
+        "gun_tubbs_shotgun_b"
+      ]
+    },
+    {
+      "role": "chainsaw",
+      "frame": "chnsaw",
+      "offset": 17133568,
+      "bytes": 24554,
+      "sha256": "66ad8614fe7e32c13717a57a24ef8643a7e7428256b6e368c7576dd599df2b73",
+      "textures": [
+        "gun_chainsaw2"
+      ]
+    },
+    {
+      "role": "shotgun",
+      "frame": "chromegun",
+      "offset": 17158144,
+      "bytes": 17053,
+      "sha256": "c56939a23f2150b2777cb951cdc7149c3225a6662ef13353c2b766636a9e66b1",
+      "textures": [
+        "gun_chrome_shot2"
+      ]
+    },
+    {
+      "role": "cleaver",
+      "frame": "cleaver",
+      "offset": 17176576,
+      "bytes": 4847,
+      "sha256": "ea75ef200294d39c3c94a3ff7430c6e74288f229ca331f219b29f881e3eb8b46",
+      "textures": [
+        "gun_melee"
+      ]
+    },
+    {
+      "role": "golfclub",
+      "frame": "golfclub",
+      "offset": 17240064,
+      "bytes": 5028,
+      "sha256": "eaeb9aff2c04f02ead927df313e7289542d99516e21b04a85e4c9bde154ebeea",
+      "textures": [
+        "gun_melee"
+      ]
+    },
+    {
+      "role": "hammer",
+      "frame": "hammer",
+      "offset": 17256448,
+      "bytes": 7234,
+      "sha256": "68972edf2a3e79397bba5abe78fe393d02fa54b8f1effc62e04f80d4d82bf433",
+      "textures": [
+        "gun_melee"
+      ]
+    },
+    {
+      "role": "silencedingram",
+      "frame": "ingramsl",
+      "offset": 17264640,
+      "bytes": 17560,
+      "sha256": "d54b26e1aea5b1b5d318b3511f24f8b14d8f8bcf2ecad1816af78e2b8296a27d",
+      "textures": [
+        "gun_ingram3"
+      ]
+    },
+    {
+      "role": "katana",
+      "frame": "katana",
+      "offset": 17283072,
+      "bytes": 5974,
+      "sha256": "13cd1695460ebb5439f316cd16a1448da1c408e8aaccc4c2ec686a899f064a35",
+      "textures": [
+        "gun_katana"
+      ]
+    },
+    {
+      "role": "knife",
+      "frame": "knifecur",
+      "offset": 17289216,
+      "bytes": 5040,
+      "sha256": "1992bf3bb2a7f28842cd8ae1b7f816010311e9d87cab3fdb51c52b54e7893a69",
+      "textures": [
+        "gun_katana"
+      ]
+    },
+    {
+      "role": "m4",
+      "frame": "M4",
+      "offset": 17328128,
+      "bytes": 28286,
+      "sha256": "c2a7c8b75b1c784b36fa2ca448f6e289f2e1be73d95013a601d2a43ecde21e97",
+      "textures": [
+        "gun_m4"
+      ]
+    },
+    {
+      "role": "m60",
+      "frame": "M60",
+      "offset": 17356800,
+      "bytes": 36163,
+      "sha256": "9567ae664e29e81252f15cd6fec8cce6858fb7ea5dd5a5a52e4f02bfffd0d887",
+      "textures": [
+        "bulletbelt",
+        "gun_m60_test2",
+        "gun_trigs_16col"
+      ]
+    },
+    {
+      "role": "machete",
+      "frame": "machete",
+      "offset": 17393664,
+      "bytes": 5079,
+      "sha256": "ce8f0518a31ad8e9338d2b95960155217337907e21794382ba53abf6975bccf7",
+      "textures": [
+        "gun_melee"
+      ]
+    },
+    {
+      "role": "mp5",
+      "frame": "mp5lng",
+      "offset": 17463296,
+      "bytes": 29562,
+      "sha256": "7c3c6efcb93b2c1f193df9268d04d2664eba1c24911f5e137b0c0fa139e868a0",
+      "textures": [
+        "gun_mp5_long2"
+      ]
+    },
+    {
+      "role": "nightstick",
+      "frame": "nitestick",
+      "offset": 17494016,
+      "bytes": 3909,
+      "sha256": "cc7c88fb16ac006fbe24632790cb533a926169fdb53a927c97640fbb452e6157",
+      "textures": [
+        "nightstick"
+      ]
+    },
+    {
+      "role": "python",
+      "frame": "python",
+      "offset": 17498112,
+      "bytes": 21114,
+      "sha256": "cdb6846e5823f86bf5561c117c88aedabca9e8bcf57f70d8c913137fc8872ede",
+      "textures": [
+        "gun_python"
+      ]
+    },
+    {
+      "role": "ruger",
+      "frame": "ruger",
+      "offset": 17547264,
+      "bytes": 28849,
+      "sha256": "2ac1583fd0a69519c5a35c6d9ed932f06c425374fa24d49564c8e9c1015852ca",
+      "textures": [
+        "gun_ruger_c"
+      ]
+    },
+    {
+      "role": "screwdriver",
+      "frame": "ScrewDriver",
+      "offset": 17577984,
+      "bytes": 7655,
+      "sha256": "1ba24c62de6c87ee6089085069cc7bfffa094d8d0a78ec72bd15b5448f2d2ed0",
+      "textures": [
+        "screw"
+      ]
+    },
+    {
+      "role": "spas12shotgun",
+      "frame": "shotgspa",
+      "offset": 17586176,
+      "bytes": 21232,
+      "sha256": "db1ab6cbaec02abd16212afea1027e64ccd114bece5dcc07719f935c78826285",
+      "textures": [
+        "gun_spas12",
+        "gun_trigs_16col"
+      ]
+    },
+    {
+      "role": "tec9",
+      "frame": "tec9",
+      "offset": 17633280,
+      "bytes": 25036,
+      "sha256": "cdecea8638f378398e8b0760ef9bdede0ca3574a7b3e0a4338e3281200bb9ada",
+      "textures": [
+        "tec_9b"
+      ]
+    },
+    {
+      "role": "uzi",
+      "frame": "uzi",
+      "offset": 17659904,
+      "bytes": 21899,
+      "sha256": "888758da8e137154307a649777eaa75fa8462a8ecdd5f2b79e1709814f699f9a",
+      "textures": [
+        "gun_uzi2"
+      ]
+    },
+    {
+      "role": "faggio",
+      "frame": "faggio",
+      "offset": 49641472,
+      "bytes": 74231,
+      "sha256": "201eaeb4650a702db19e48b8e1d41475b7c80c070b97c877a6cf4a7210d5c467",
+      "textures": [
+        "faggio8bit128",
+        "faggio8bit64",
+        "faggiobodya8bit128",
+        "faggiobodyb8bit128"
+      ]
+    },
+    {
+      "role": "freeway",
+      "frame": "freeway",
+      "offset": 50743296,
+      "bytes": 95732,
+      "sha256": "a39e2e24e02caff31990f2e6292a4cbc54736029ab543a048cc86f9d05eac831",
+      "textures": [
+        "freeway8bit128",
+        "freeway8bit64",
+        "freewaybodya8bit128",
+        "freewaychrome8bit128"
+      ]
+    },
+    {
+      "role": "landstal",
+      "frame": "landstal",
+      "offset": 52828160,
+      "bytes": 195642,
+      "sha256": "64ad1ca1b2e7262f515ac90cc6b1b4b399f5645748f2a862d9f8c736d975086f",
+      "textures": [
+        "enginetopb4bit64",
+        "landstal868bit128",
+        "landstal86body8bit128",
+        "landstal86body8bit64",
+        "white128a",
+        "white64a"
+      ]
+    },
+    {
+      "role": "pcj600",
+      "frame": "pcj600",
+      "offset": 55001088,
+      "bytes": 90571,
+      "sha256": "302b8468dff9bb824e7baaf8238612d4c91a8b4d4e09756bc8234a3bbfc485dd",
+      "textures": [
+        "pcj6008bit128",
+        "pcj6008bit64",
+        "pcj600body8bit128",
+        "pcj600bodya8bit128",
+        "pcj600speca"
+      ]
+    },
+    {
+      "role": "sanchez",
+      "frame": "sanchez",
+      "offset": 57726976,
+      "bytes": 92565,
+      "sha256": "2fabaacd749c54a14b8d0efbcca3ecb87d90d203c2fa48fd0290130e5fd8ce27",
+      "textures": [
+        "sanchez8bit128",
+        "sanchez8bit64",
+        "sanchezbody8bit128a",
+        "sanchezbody8bit128b"
+      ]
+    },
+    {
+      "role": "stinger",
+      "frame": "stinger",
+      "offset": 59387904,
+      "bytes": 118357,
+      "sha256": "95f77192739ab01211c65ff6452a98e9d7e79f254640a12066b9328a3457f1e3",
+      "textures": [
+        "enginetopb4bit64",
+        "stinger868bit128",
+        "stinger86body128a",
+        "stinger86body64",
+        "stinger86body64b",
+        "white64",
+        "whitea128"
+      ]
+    }
+  ],
+  "archive_full_sha256": "e61c4855f8aa86cfa09e631936590ed64e35d3868d22986b1e959a5715a83e8e",
+  "full_archive_unpacked": false
+}

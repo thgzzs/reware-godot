@@ -6,6 +6,7 @@ var actor: CharacterMotor
 var profile: PedImpactProfile = preload("res://tuning/ped_impact.tres")
 var active := false
 var age := 0.0
+var minimum_recovery_age := 0.0
 var vehicle_contacts := 0
 var contact_ticks := 0
 var supported := false
@@ -39,6 +40,18 @@ func configure(owner_actor: CharacterMotor) -> void:
  collider.shape = shape
  collider.rotation.x = PI*0.5
  add_child(collider)
+func launch_velocity(at:Vector3, heading:float, initial:Vector3) -> void:
+ active=true;age=0;vehicle_contacts=0;contact_ticks=0
+ impact_contacts.clear()
+ actor.collision_layer=0;actor.collision_mask=0
+ global_transform=Transform3D(Basis(Vector3.UP,heading),at)
+ freeze=false;sleeping=false
+ collision_layer=8;collision_mask=31
+ add_collision_exception_with(actor)
+ linear_velocity=initial
+ angular_velocity=Vector3(1.2,0,0.3)
+ previous_velocity=initial
+ previous_angular=angular_velocity
 func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  if active: return
  impact_contacts.clear()
@@ -112,6 +125,7 @@ func follow_pose(dt: float) -> void:
   if hip>=0:
    actor.global_position += global_position-(pose.skeleton.global_transform*pose.skeleton.get_bone_global_pose(hip).origin)
 func can_recover() -> bool:
+ if age<minimum_recovery_age:return false
  if age<profile.recovery_delay or linear_velocity.length()>profile.recovery_speed: return false
  var space := actor.get_world_3d().direct_space_state
  var ray := PhysicsRayQueryParameters3D.create(global_position+Vector3.UP*0.2,global_position-Vector3.UP*1.2,5,[get_rid(),actor.get_rid()])
@@ -127,6 +141,7 @@ func can_recover() -> bool:
  return space.intersect_shape(query,1).is_empty()
 func deactivate() -> void:
  active = false
+ minimum_recovery_age=0
  freeze = true
  collision_layer = 0
  collision_mask = 0

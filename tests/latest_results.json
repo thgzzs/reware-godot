@@ -1,5 +1,5 @@
 {
-  "assertions": 48,
+  "assertions": 47,
   "backend": "Jolt Physics",
   "engine": {
     "build": "official",
@@ -16,20 +16,20 @@
   "fixed_hz": 60,
   "metrics": {
     "acceleration": {
-      "distance_m": 16.3013401031494,
-      "speed_mps": 12.5326585769653,
+      "distance_m": 16.3014011383057,
+      "speed_mps": 12.5326833724976,
       "time_s": 2.5
     },
     "braking": {
-      "distance_m": 6.41722345352173,
-      "initial_speed_mps": 12.5289859771729,
-      "time_s": 1.0
+      "distance_m": 9.39122581481934,
+      "initial_speed_mps": 15.4812574386597,
+      "time_s": 1.2
     },
     "gameplay_cpu": {
-      "max_us": 6898.0,
-      "mean_us": 246.034293948127,
-      "p95_us": 660.0,
-      "samples": 3470,
+      "max_us": 13541.0,
+      "mean_us": 171.385410683515,
+      "p95_us": 417.0,
+      "samples": 3482,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "jump": {
@@ -38,17 +38,17 @@
       "launch_delay_s": 0.15
     },
     "node_count": 201.0,
-    "physics_process_seconds_last": 0.011794,
+    "physics_process_seconds_last": 0.011825,
     "suspension": {
       "height_m": 0.582499980926514,
       "load_N": 23999.9991864669,
       "vertical_speed": 0.0000000120941390235885
     },
     "vehicle_force_cpu": {
-      "max_us": 13195.0,
-      "mean_us": 142.646397694524,
-      "p95_us": 390.0,
-      "samples": 3470,
+      "max_us": 3014.0,
+      "mean_us": 114.795807007467,
+      "p95_us": 281.0,
+      "samples": 3482,
       "scope": "four wheel queries and forces; excludes Jolt contact solve"
     }
   },
@@ -234,34 +234,29 @@
     },
     {
       "measured": {
-        "distance_m": 16.3013401031494,
-        "speed_mps": 12.5326585769653,
+        "distance_m": 16.3014011383057,
+        "speed_mps": 12.5326833724976,
         "time_s": 2.5
       },
       "name": "vehicle accelerates forward",
       "passed": true
     },
     {
-      "measured": null,
-      "name": "moving exit rejected",
-      "passed": true
-    },
-    {
-      "measured": 1.0155565738678,
+      "measured": 0.381670951843262,
       "name": "steering changes heading",
       "passed": true
     },
     {
       "measured": {
-        "distance_m": 6.41722345352173,
-        "initial_speed_mps": 12.5289859771729,
-        "time_s": 1.0
+        "distance_m": 9.39122581481934,
+        "initial_speed_mps": 15.4812574386597,
+        "time_s": 1.2
       },
       "name": "brakes bring vehicle to rest",
       "passed": true
     },
     {
-      "measured": -4.37292289733887,
+      "measured": -4.36901044845581,
       "name": "reverse engages after stop",
       "passed": true
     },
@@ -309,7 +304,7 @@
       "passed": true
     },
     {
-      "measured": 0.0174924433231354,
+      "measured": 0.0167099982500076,
       "name": "vehicle remains stable after control restoration",
       "passed": true
     },
@@ -329,7 +324,7 @@
       "passed": true
     },
     {
-      "measured": "(17.99924, 0.573032, 27.13881)",
+      "measured": "(17.99923, 0.573038, 27.13881)",
       "name": "vehicle body collides without crossing wall",
       "passed": true
     }

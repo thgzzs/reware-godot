@@ -6,9 +6,9 @@
   "failures": 0,
   "metrics": {
     "synthetic_pose_cpu": {
-      "max_us": 1239.0,
-      "mean_us": 51.4944444444444,
-      "p95_us": 143.0,
+      "max_us": 176.0,
+      "mean_us": 32.05,
+      "p95_us": 54.0,
       "samples": 180,
       "scope": "seven-bone synthetic skeleton; sample_pose CPU only; excludes rendering, real skin and Jolt"
     }
@@ -122,7 +122,7 @@
       "passed": true
     },
     {
-      "measured": -1.1868338813644,
+      "measured": -1.18683492189352,
       "name": "Jolt door hinge opens under motor force",
       "passed": true
     },
@@ -139,14 +139,14 @@
     {
       "measured": [
         1,
-        99.6625334334143,
+        99.6625343267236,
         "down"
       ],
       "name": "chassis sweep finds and reacts to pedestrian",
       "passed": true
     },
     {
-      "measured": 0.434735119342804,
+      "measured": 0.434727370738983,
       "name": "run-over reaction stays bounded",
       "passed": true
     },
@@ -179,7 +179,7 @@
       "passed": true
     },
     {
-      "measured": 1.1868338813644,
+      "measured": 1.18683492189352,
       "name": "right door opens in the opposite direction",
       "passed": true
     },

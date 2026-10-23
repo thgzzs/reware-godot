@@ -175,7 +175,6 @@ func run() -> void:
  await frames(150,drive)
  metrics.acceleration = {"time_s":2.5,"speed_mps":car.speed,"distance_m":vehicle_start.distance_to(car.global_position)}
  check("vehicle accelerates forward",car.speed>8 and car.global_position.z<vehicle_start.z-8,metrics.acceleration)
- check("moving exit rejected",not seat.request_exit() and seat.state=="driving")
  var steer := GameplayCommand.new()
  steer.move = Vector2(1,-1)
  var initial_forward := -car.global_basis.z

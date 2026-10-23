@@ -4,70 +4,378 @@
   "failures": 0,
   "metrics": {
     "impact": {
-      "car_contacts": 271,
-      "contact_ticks": 120,
-      "displacement": 18.3470726013184,
+      "car_contacts": 137,
+      "contact_ticks": 107,
+      "displacement": 12.6447458267212,
       "health": 60.6738351130392,
       "lift": 0.5514275431633,
-      "speed": 6.90781211853027
+      "speed": 2.46676063537598
     },
     "orchestration": {
-      "max_us": 27608.0,
-      "mean_us": 916.421052631579,
-      "p95_us": 2237.0,
-      "samples": 1558,
+      "max_us": 14991.0,
+      "mean_us": 438.679166666667,
+      "p95_us": 813.0,
+      "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "wheel_forces": {
-      "max_us": 8496.0,
-      "mean_us": 142.511318242344,
-      "p95_us": 469.0,
-      "samples": 2253,
+      "max_us": 7622.0,
+      "mean_us": 56.4719444444444,
+      "p95_us": 133.0,
+      "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
   },
   "reference_runtime_parity": false,
   "results": [
     {
-      "measured": 1.13462674617767,
+      "measured": 1.57782244682312,
       "name": "sprint thigh moves over time in slot 0",
       "passed": true
     },
     {
       "measured": {
-        "bone_delta": 2.19361186027527,
+        "bone_delta": 1.64016699790955,
         "exclusive_layers": true,
-        "rise": 0.873012483119965
+        "rise": 0.874399781227112
       },
       "name": "run jump owns visible pose and completes in slot 0",
       "passed": true
     },
     {
-      "measured": 1.13462674617767,
+      "measured": 1.57782244682312,
       "name": "sprint thigh moves over time in slot 1",
       "passed": true
     },
     {
       "measured": {
-        "bone_delta": 2.19361186027527,
+        "bone_delta": 1.64016699790955,
         "exclusive_layers": true,
-        "rise": 0.873012483119965
+        "rise": 0.874399781227112
       },
       "name": "run jump owns visible pose and completes in slot 1",
       "passed": true
     },
     {
-      "measured": 0.000000115409790168997,
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 2",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 2",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 3",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 3",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 4",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 4",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 5",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 5",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 6",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 6",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 7",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 7",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 8",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 8",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 9",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 9",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 10",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 10",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 11",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 11",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 12",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 12",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 13",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 13",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 14",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 14",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 15",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 15",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 16",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 16",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 17",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 17",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 18",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 18",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 19",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 19",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 20",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 20",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 21",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 21",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 22",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 22",
+      "passed": true
+    },
+    {
+      "measured": 1.57782244682312,
+      "name": "sprint thigh moves over time in slot 23",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bone_delta": 1.64016699790955,
+        "exclusive_layers": true,
+        "rise": 0.874399781227112
+      },
+      "name": "run jump owns visible pose and completes in slot 23",
+      "passed": true
+    },
+    {
+      "measured": 0.000000272212787422177,
       "name": "world gun axis converges on camera-center target pitch -0.35",
       "passed": true
     },
     {
-      "measured": 0.000000158549397610841,
+      "measured": 0.0000000926579630800006,
       "name": "world gun axis converges on camera-center target pitch 0.00",
       "passed": true
     },
     {
-      "measured": 0.000000297743724786415,
+      "measured": 0.000000448909077022108,
       "name": "world gun axis converges on camera-center target pitch 0.40",
       "passed": true
     },
@@ -77,7 +385,7 @@
       "passed": true
     },
     {
-      "measured": 0.0361148901283741,
+      "measured": 0.174053266644478,
       "name": "reload is a changing upper pose while legs still move",
       "passed": true
     },
@@ -87,7 +395,7 @@
       "passed": true
     },
     {
-      "measured": 0.0000000596046447753906,
+      "measured": 0.0000000298023223876953,
       "name": "driver remains visible with pelvis on seat anchor",
       "passed": true
     },
@@ -97,14 +405,14 @@
       "passed": true
     },
     {
-      "measured": 4.17172086238861,
+      "measured": 3.15681511163712,
       "name": "visible hub rotates with forward travel",
       "passed": true
     },
     {
       "measured": {
-        "delta": 0.126893043518066,
-        "speed": -2.43627572059631
+        "delta": 0.206507444381714,
+        "speed": -3.96505618095398
       },
       "name": "wheel axle rolls backward during reverse",
       "passed": true
@@ -121,24 +429,24 @@
     },
     {
       "measured": {
-        "car_contacts": 271,
-        "contact_ticks": 120,
-        "displacement": 18.3470726013184,
+        "car_contacts": 137,
+        "contact_ticks": 107,
+        "displacement": 12.6447458267212,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 6.90781211853027
+        "speed": 2.46676063537598
       },
       "name": "moderate impact survives and physically contacts car",
       "passed": true
     },
     {
       "measured": {
-        "car_contacts": 271,
-        "contact_ticks": 120,
-        "displacement": 18.3470726013184,
+        "car_contacts": 137,
+        "contact_ticks": 107,
+        "displacement": 12.6447458267212,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 6.90781211853027
+        "speed": 2.46676063537598
       },
       "name": "Jolt impact transfers momentum and lifts the torso",
       "passed": true
@@ -146,7 +454,7 @@
     {
       "measured": {
         "life": "alive",
-        "position": "(18.26559, 0.900375, -3.162501)"
+        "position": "(18.27085, 0.900375, 6.032589)"
       },
       "name": "nonfatal proxy safely returns to standing control",
       "passed": true

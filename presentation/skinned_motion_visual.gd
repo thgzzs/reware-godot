@@ -4,6 +4,7 @@ extends Node3D
 ## The collision motor alone consumes planar root motion.
 var motion: ReferenceMotion
 var actions: ActorActionState
+var rig_profile: AnimationRigProfile
 var skeleton: Skeleton3D
 var tracks := {}
 var signature := ""
@@ -35,11 +36,8 @@ func _ready() -> void:
    if actions!=null and actions.profile.upper_bones.has(skeleton.get_bone_name(i)): upper_mask.append(i)
 func binding(name: String) -> Array:
  if tracks.has(name): return tracks[name]
- var bindings := []
  var animation := motion.library.get_animation(name)
- for i in range(skeleton.get_bone_count()):
-  var path := NodePath("Skeleton3D:"+skeleton.get_bone_name(i))
-  bindings.append([animation.find_track(path,Animation.TYPE_ROTATION_3D),animation.find_track(path,Animation.TYPE_POSITION_3D),animation.find_track(path,Animation.TYPE_SCALE_3D)])
+ var bindings := AnimationRigBinding.build(animation,skeleton,rig_profile)
  tracks[name] = bindings
  return bindings
 func rotation_at(name: String, at: float, bone: int) -> Quaternion:
@@ -81,7 +79,9 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
  var upper_alpha := smoothstep(0,1,clampf(upper_transition/maxf(0.001,duration),0,1))
  var upper_at := 0.0
  if not upper.is_empty():
-  upper_at = minf(actions.upper_time(),motion.duration(upper)) if actions.reloading or actions.firing_left>0 else fposmod(motion.time,maxf(0.001,motion.duration(upper)))
+  if actions.reloading or actions.firing_left>0:upper_at=minf(actions.upper_time(),motion.duration(upper))
+  elif actions.native_aim_hold:upper_at=clampf(actions.fire_frame_seconds-0.03,0,motion.duration(upper))
+  else:upper_at=fposmod(motion.time,maxf(0.001,motion.duration(upper)))
  for i in range(skeleton.get_bone_count()):
   var p := skeleton.get_bone_rest(i).origin
   var q := skeleton.get_bone_rest(i).basis.get_rotation_quaternion()
@@ -163,6 +163,7 @@ func turn_joint(joint: int, end: int, target: Vector3, weight: float) -> void:
  skeleton.set_bone_pose_rotation(joint,skeleton.get_bone_pose_rotation(joint).slerp(next,weight))
  skeleton.force_update_all_bone_transforms()
 func aim_arms() -> void:
+ if (actions.reloading or actions.native_fire_owns_upper) and not actions.procedural_fire: return
  var upper := skeleton.find_bone("R UpperArm")
  var forearm := skeleton.find_bone("R Forearm")
  var hand := skeleton.find_bone("R Hand")
@@ -170,7 +171,8 @@ func aim_arms() -> void:
  var direction := Vector3(0,-sin(actions.aim_pitch),-cos(actions.aim_pitch))
  if actions.has_aim_target:
   direction = (skeleton.to_local(actions.aim_target)-skeleton.get_bone_global_pose(hand).origin).normalized()
-  var yaw := clampf(atan2(direction.x,-direction.z),-1.15,1.15)
+  var limit := 1.65 if actions.hip_firing else 1.15
+  var yaw := clampf(atan2(direction.x,-direction.z),-limit,limit)
   direction = Vector3(sin(yaw)*Vector2(direction.x,direction.z).length(),direction.y,-cos(yaw)*Vector2(direction.x,direction.z).length()).normalized()
  var cfg := actions.weapon_pose
  var recoil := actions.firing_left/maxf(0.001,actions.firing_duration)*cfg.recoil_lift
@@ -185,7 +187,8 @@ func aim_arms() -> void:
   var pose := skeleton.get_bone_global_pose(hand)
   if actions.has_aim_target:
    direction = (skeleton.to_local(actions.aim_target)-pose.origin).normalized()
-   var yaw := clampf(atan2(direction.x,-direction.z),-1.15,1.15)
+   var limit := 1.65 if actions.hip_firing else 1.15
+   var yaw := clampf(atan2(direction.x,-direction.z),-limit,limit)
    direction = Vector3(sin(yaw)*Vector2(direction.x,direction.z).length(),direction.y,-cos(yaw)*Vector2(direction.x,direction.z).length()).normalized()
   var delta := Quaternion(pose.basis.x.normalized(),direction)
   var parent := skeleton.get_bone_parent(hand)
@@ -197,7 +200,7 @@ func aim_arms() -> void:
  var left_upper := skeleton.find_bone("L UpperArm")
  if (actions.reloading or actions.weapon_two_handed) and mini(left_hand,mini(left_forearm,left_upper))>=0:
   var support := skeleton.get_bone_global_pose(hand).origin+(cfg.magazine_offset+Vector3.DOWN*sin(reload_phase*PI)*cfg.magazine_travel if actions.reloading else direction*cfg.support_reach+Vector3.DOWN*cfg.support_drop)
-  for iteration in range(2):
+  for iteration in range(cfg.solver_passes):
    turn_joint(left_forearm,left_hand,support,actions.aim_weight)
    turn_joint(left_upper,left_hand,support,actions.aim_weight)
 func _process(dt: float) -> void:

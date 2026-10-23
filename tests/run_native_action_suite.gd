@@ -114,7 +114,7 @@ func run() -> void:
  check("native model exit can begin safely",seat.request_exit())
  await frames(ceili(seat.profile.exit_seconds*60)+3)
  check("native model exit restores standing actor and gun",seat.state=="on_foot" and actor.control_enabled and is_instance_valid(actor.weapon_muzzle) and actor.weapon_muzzle.get_parent().visible)
- var report := {"engine":Engine.get_version_info().string,"backend":"Jolt Physics","assertions":results.size(),"failures":failures,"results":results,"metrics":metrics,"source_assets_reconverted":false,"reference_runtime_parity":false}
+ var report := {"engine":Engine.get_version_info().string,"backend":"Jolt Physics","assertions":results.size(),"failures":failures,"results":results,"metrics":metrics,"animation_dataset":"Stories VCS core/weapons and LCS bikes","reference_runtime_parity":false}
  var output := FileAccess.open("res://tests/native_action_results.json",FileAccess.WRITE)
  output.store_string(JSON.stringify(report,"  ")); output.close()
  print("RESULT native actions ",results.size()," assertions / ",failures," failures")

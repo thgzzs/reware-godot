@@ -1,0 +1,66 @@
+{
+  "assertions": 10,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": 44,
+      "name": "all 44 supplied IFP blocks retained",
+      "passed": true
+    },
+    {
+      "measured": 781,
+      "name": "all 781 source clips retained without name collisions",
+      "passed": true
+    },
+    {
+      "measured": 1168,
+      "name": "native catalog includes every source clip and 387 gameplay aliases",
+      "passed": true
+    },
+    {
+      "measured": {
+        "channels": 17666,
+        "keys": 294062,
+        "max_error": 0.000000178813934326172,
+        "mismatches": 0,
+        "missing_tracks": 0
+      },
+      "name": "every native key matches source with explicit last-key-wins duplicate times",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "active aliases preserve exact native animation objects",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "VCS controls main locomotion and Colt actions",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "all four active bike blocks come from the LCS PS2 conversion",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "selective model extraction never unpacks full IMG",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "all 28 additional model roles have native scenes",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "VCS fist DAT moves bind to supplied clips",
+      "passed": true
+    }
+  ],
+  "source_channels": 17666,
+  "source_keys": 294062
+}

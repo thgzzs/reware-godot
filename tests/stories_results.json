@@ -1,0 +1,482 @@
+{
+  "assertions": 77,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "acceleration": {
+      "seconds_to_10mps": 1.26666666666667,
+      "speed": 10.02503490448
+    },
+    "cornering": {
+      "maximum_steer": 0.0521754335993973,
+      "minimum_up_dot": 0.99980103969574,
+      "speed": 28.5064582824707
+    },
+    "orchestration": {
+      "max_us": 21141.0,
+      "mean_us": 747.021944444444,
+      "p95_us": 2565.0,
+      "samples": 3600,
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    }
+  },
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "exact Godot 4.7.2 Stable and Jolt backend",
+      "passed": true
+    },
+    {
+      "measured": 24,
+      "name": "24 supported weapon entries have exact imported models",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "no firearm or melee model is substituted",
+      "passed": true
+    },
+    {
+      "measured": 12,
+      "name": "melee arsenal is reusable through Resource clip lists",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "space-prefixed Colt arm tracks bind by original bone ID",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "LCS bike leg and hand tracks bind to original rig",
+      "passed": true
+    },
+    {
+      "measured": {
+        "facing_after": -0.920796334820512,
+        "facing_before": -0.920796334820512,
+        "shots": 4
+      },
+      "name": "hip firing raises arm without steering walking body to camera",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "one-handed hip fire retains base pose on left arm",
+      "passed": true
+    },
+    {
+      "measured": 0.0649054795503616,
+      "name": "two-handed aim uses a compact reachable support grip",
+      "passed": true
+    },
+    {
+      "measured": "colt45_reload",
+      "name": "native VCS reload clip owns supplied arm articulation",
+      "passed": true
+    },
+    {
+      "measured": "airborne",
+      "name": "launch and airborne weapon restrictions survive animation replacement",
+      "passed": true
+    },
+    {
+      "measured": "shotgun_fire",
+      "name": "pump shotgun recovery owns the native fire clip during ammunition recovery",
+      "passed": true
+    },
+    {
+      "measured": 0.66,
+      "name": "pump-shot cadence waits for the source loop before the next shot",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "Tec9 binds the supplied TEC action block",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "FIGHTpunch",
+        "distance_m": 0.261898279190063
+      },
+      "name": "unarmed attacks consume actual planar clip displacement",
+      "passed": true
+    },
+    {
+      "measured": 5.85,
+      "name": "source player attack stat is not multiplied into punch damage",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 94.15,
+        "before": 100.0,
+        "hits": 1
+      },
+      "name": "spatial limb sweep damages a pedestrian without instant death",
+      "passed": true
+    },
+    {
+      "measured": {
+        "state": "fight",
+        "swings": 3
+      },
+      "name": "attacked pedestrians enter fight state instead of ignoring melee",
+      "passed": true
+    },
+    {
+      "measured": 95.4955,
+      "name": "pedestrian melee can physically hit the player",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_v",
+      "name": "bat selects its supplied weapon swing and visible exact model",
+      "passed": true
+    },
+    {
+      "measured": 0.584418177604675,
+      "name": "zero-root weapon clips permit collision-swept attack shuffling",
+      "passed": true
+    },
+    {
+      "measured": 1,
+      "name": "melee damages exactly the struck panel",
+      "passed": true
+    },
+    {
+      "measured": 15.0,
+      "name": "panel damage and engine health have independent scales",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "terminal panel damage creates an independent physical fragment",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "a missing panel cannot respawn another fragment after debris expires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "repair restores panels and clears transient fragments",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": 995.8,
+        "before": 1000.0,
+        "hits": 1,
+        "tip": "(0.373077, 1.085215, 17.1406)"
+      },
+      "name": "an actual bat swing can hit car geometry",
+      "passed": true
+    },
+    {
+      "measured": {
+        "damaged": 1,
+        "health": 789.130752279516,
+        "total": 8
+      },
+      "name": "real Jolt collision damages localized panels rather than every panel",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shot tires retain their full visual dimensions",
+      "passed": true
+    },
+    {
+      "measured": {
+        "flat_y": 0.537999987602234,
+        "healthy_y": 0.650000095367432
+      },
+      "name": "flat tires lower physical support and let wheels sink",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "flat tire grip and drag are separately configurable",
+      "passed": true
+    },
+    {
+      "measured": {
+        "seconds_to_10mps": 1.26666666666667,
+        "speed": 10.02503490448
+      },
+      "name": "native car acceleration reaches 10 m/s within two seconds",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_steer": 0.0521754335993973,
+        "minimum_up_dot": 0.99980103969574,
+        "speed": 28.5064582824707
+      },
+      "name": "high-speed turning uses curvature-limited steering without routine flips",
+      "passed": true
+    },
+    {
+      "measured": "",
+      "name": "tilted vehicle exit finds a clear upright destination 1.5707963267949",
+      "passed": true
+    },
+    {
+      "measured": "CAR_crawloutRHS",
+      "name": "overturned exit selects supplied crawl animation 1.5707963267949",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "crawl pose mirrors to the selected door 1.5707963267949",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(8.4, 0.900375, 12.0)",
+        "state": "on_foot"
+      },
+      "name": "tilted exit releases occupancy and restores on-foot control 1.5707963267949",
+      "passed": true
+    },
+    {
+      "measured": "",
+      "name": "tilted vehicle exit finds a clear upright destination 3.14159265358979",
+      "passed": true
+    },
+    {
+      "measured": "CAR_crawloutRHS",
+      "name": "overturned exit selects supplied crawl animation 3.14159265358979",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "crawl pose mirrors to the selected door 3.14159265358979",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(11.6, 0.900375, 12.0)",
+        "state": "on_foot"
+      },
+      "name": "tilted exit releases occupancy and restores on-foot control 3.14159265358979",
+      "passed": true
+    },
+    {
+      "measured": "ejecting",
+      "name": "moving car permits a validated bailout",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bailout transfers control once and frees vehicle occupancy",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "CAR_rollout_LHS",
+        "velocity": "(1.489955, -1.470371, -11.43543)"
+      },
+      "name": "bailout preserves vehicle momentum in a physical reaction body",
+      "passed": true
+    },
+    {
+      "measured": "CAR_rollout_LHS",
+      "name": "moving car uses supplied rollout animation",
+      "passed": true
+    },
+    {
+      "measured": 4,
+      "name": "four actual bike types are installed",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "car and bike contact lists remain independent per instance",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bikes have no invisible car windshield hit region",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike handlebars and forks have independent steering presentation bindings",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(17.96498, 0.344785, -0.017032)",
+        "up": 0.994868576526642
+      },
+      "name": "two-contact bike settles upright pcj600",
+      "passed": true
+    },
+    {
+      "measured": "BIKEs_jumponL",
+      "name": "bike entry uses LCS mount clip pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat commits unique driver pcj600",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "BIKEs_Ride",
+        "speed": 15.65576171875,
+        "up": 0.999884247779846
+      },
+      "name": "bike accelerates with a balanced visible rider pcj600",
+      "passed": true
+    },
+    {
+      "measured": "BIKEs_getoffLHS",
+      "name": "bike exit uses LCS dismount clip pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike dismount restores continuous on-foot loop pcj600",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(17.87432, 0.433648, -0.000043)",
+        "up": 0.959739208221436
+      },
+      "name": "two-contact bike settles upright sanchez",
+      "passed": true
+    },
+    {
+      "measured": "BIKEd_jumponR",
+      "name": "bike entry uses LCS mount clip sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat commits unique driver sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "right-side bike mount reserves the driver and uses right mount clip",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "BIKEd_Ride",
+        "speed": 18.3459186553955,
+        "up": 0.91321873664856
+      },
+      "name": "bike accelerates with a balanced visible rider sanchez",
+      "passed": true
+    },
+    {
+      "measured": "BIKEd_getoffRHS",
+      "name": "bike exit uses LCS dismount clip sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike dismount restores continuous on-foot loop sanchez",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(17.9666, 0.349709, 0.000123)",
+        "up": 0.995252847671509
+      },
+      "name": "two-contact bike settles upright faggio",
+      "passed": true
+    },
+    {
+      "measured": "BIKEv_jumponL",
+      "name": "bike entry uses LCS mount clip faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat commits unique driver faggio",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "BIKEv_Ride",
+        "speed": 16.9404449462891,
+        "up": 0.999658286571503
+      },
+      "name": "bike accelerates with a balanced visible rider faggio",
+      "passed": true
+    },
+    {
+      "measured": "BIKEv_getoffLHS",
+      "name": "bike exit uses LCS dismount clip faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike dismount restores continuous on-foot loop faggio",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(17.96472, 0.348171, 0.000322)",
+        "up": 0.995336771011353
+      },
+      "name": "two-contact bike settles upright freeway",
+      "passed": true
+    },
+    {
+      "measured": "BIKEh_jumponL",
+      "name": "bike entry uses LCS mount clip freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat commits unique driver freeway",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "BIKEh_Ride",
+        "speed": 17.4446868896484,
+        "up": 0.999741017818451
+      },
+      "name": "bike accelerates with a balanced visible rider freeway",
+      "passed": true
+    },
+    {
+      "measured": "BIKEh_getoffLHS",
+      "name": "bike exit uses LCS dismount clip freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike dismount restores continuous on-foot loop freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "moving bike accepts a validated jump-off",
+      "passed": true
+    },
+    {
+      "measured": "BIKE_fall_off",
+      "name": "bike jump-off uses the bike fall clip and releases its seat",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "passenger bailout cannot steal an existing driver's control",
+      "passed": true
+    }
+  ]
+}

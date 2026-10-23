@@ -79,7 +79,10 @@ func build() -> void:
   push_error("Requires Godot 4.7.2 Stable")
   quit(1)
   return
- var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(OUTPUT+"models.json"))
+ var source := "models.json"
+ for arg in OS.get_cmdline_user_args():
+  if arg.begins_with("--source="): source=arg.trim_prefix("--source=")
+ var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(OUTPUT+source))
  for model in data.models:
   var root_node := Node3D.new()
   root_node.name = String(model.role).capitalize()
@@ -129,7 +132,7 @@ func build() -> void:
    return
   root_node.free()
  var report := {"models":data.models.size(),"surfaces":total_surfaces,"triangles_including_hidden_variants":total_triangles,"engine":version.string}
- var out := FileAccess.open(OUTPUT+"native_model_report.json",FileAccess.WRITE)
+ var out := FileAccess.open(OUTPUT+("native_stories_model_report.json" if source!="models.json" else "native_model_report.json"),FileAccess.WRITE)
  out.store_string(JSON.stringify(report,"  "))
  print(JSON.stringify(report))
  quit()

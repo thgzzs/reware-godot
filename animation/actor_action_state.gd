@@ -20,7 +20,11 @@ var life_time := 0.0
 var life_clip := ""
 var weapon_group := "colt45"
 var weapon_two_handed := false
+var hip_firing := false
+var fire_frame_seconds := 0.0
 var procedural_fire := true
+var native_fire_owns_upper := false
+var native_aim_hold := false
 var crouched := false
 var next_death := ""
 var reaction_clip := ""
@@ -56,9 +60,9 @@ func resolve(candidates: PackedStringArray) -> String:
  for candidate in candidates:
   if motion.clip_names.has(candidate.to_lower()): return motion.clip_names[candidate.to_lower()]
  return ""
-func fire(interval: float) -> void:
+func fire(interval: float, native_recovery:=0.0) -> void:
  if life!="alive": return
- firing_duration = maxf(0.08,minf(interval,0.25))
+ firing_duration = native_recovery if native_recovery>0 else maxf(0.08,minf(interval,0.25))
  firing_left = firing_duration
 func begin_life(next: String) -> void:
  if life=="dying" or life=="dead": return
@@ -87,12 +91,15 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
    motion.time = minf(life_time,duration)
   if life=="dying" and life_time>=maxf(0.1,duration): life = "dead"
   return
- reloading = gun.reload_left>0
+ native_fire_owns_upper=gun.profile.native_fire_recovery>0 and firing_left>0
+ reloading = gun.reload_left>0 and not native_fire_owns_upper
  reload_weight = move_toward(reload_weight,1.0 if reloading else 0.0,profile.upper_blend_rate*dt)
  reload_duration = gun.profile.reload_seconds
  reload_time = reload_duration-gun.reload_left
  weapon_group = gun.profile.animation_group
  weapon_two_handed = gun.profile.two_handed
+ hip_firing = cmd.fire and not cmd.aim and not weapon_two_handed
+ fire_frame_seconds = gun.profile.fire_frame_seconds
  weapon_pose = gun.profile.pose
  upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
@@ -100,11 +107,17 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)
 func upper_clip() -> String:
  if not upper_allowed: return ""
- var group_candidate := weapon_group+("_reload" if reloading else "_fire")
- var candidates := PackedStringArray([group_candidate])
+ var suffix := "_crouchreload" if reloading and crouched else ("_crouchfire" if crouched else ("_reload" if reloading else "_fire"))
+ var group_candidate := weapon_group+suffix
+ var candidates := PackedStringArray([group_candidate,weapon_group+("_crouchload" if crouched else "_load") if reloading else weapon_group+"_fire",weapon_group+("_reload" if reloading else "_fire")])
  if weapon_group in ["colt45","pistol"]: candidates.append_array(profile.reload_clips if reloading else profile.fire_clips)
  var action := resolve(candidates) if reloading or firing_left>0 else ""
  procedural_fire = action.is_empty()
- return action if not action.is_empty() else resolve(profile.aim_clips)
+ native_aim_hold=false
+ if not action.is_empty():return action
+ if weapon_two_handed:
+  var hold:=resolve(PackedStringArray([weapon_group+"_crouchfire" if crouched else weapon_group+"_fire"]))
+  if not hold.is_empty():native_aim_hold=true;return hold
+ return resolve(profile.aim_clips)
 func upper_time() -> float:
- return reload_time if reloading else firing_duration-firing_left
+ return reload_time if reloading else fire_frame_seconds+firing_duration-firing_left

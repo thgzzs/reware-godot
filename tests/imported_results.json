@@ -1,21 +1,21 @@
 {
   "assertions": 36,
   "backend": "Jolt Physics",
-  "claim": "native conversion and functional integration; original mesh/bind pose and reference-runtime parity unverified",
+  "claim": "native conversion and functional integration; rig bindings covered by separate native suites; reference-runtime parity unverified",
   "engine": "4.7.2-stable (official)",
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 17187.0,
-      "mean_us": 1070.87438016529,
-      "p95_us": 3041.0,
-      "samples": 1210,
+      "max_us": 9350.0,
+      "mean_us": 937.38494439692,
+      "p95_us": 1826.0,
+      "samples": 2338,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
-    "model_binding_verified": false,
+    "model_binding_verified": "covered separately by presentation/stories rig-ID suites",
     "native_roundtrip": {
-      "channel_keys": 95427,
-      "channels": 5422,
+      "channel_keys": 294062,
+      "channels": 17666,
       "max_position_or_scale_error": 0.0,
       "max_quaternion_dot_error": 0.000000178813934326172,
       "mismatches": 0
@@ -23,14 +23,14 @@
   },
   "results": [
     {
-      "measured": 234,
+      "measured": 1168,
       "name": "all ANPK clips present in native library",
       "passed": true
     },
     {
       "measured": {
-        "channel_keys": 95427,
-        "channels": 5422,
+        "channel_keys": 294062,
+        "channels": 17666,
         "max_position_or_scale_error": 0.0,
         "max_quaternion_dot_error": 0.000000178813934326172,
         "mismatches": 0
@@ -64,7 +64,7 @@
       "passed": true
     },
     {
-      "measured": "\nJab: 0.200–0.333 s / source damage 2",
+      "measured": "\nJab: 0.333–0.500 s / source damage 2",
       "name": "fight configuration visible in clip inspector",
       "passed": true
     },
@@ -99,8 +99,11 @@
       "passed": true
     },
     {
-      "measured": 1.15887343883514,
-      "name": "walk movement follows imported stride scale",
+      "measured": {
+        "actual": 2.05033349990845,
+        "source": 2.06274539614326
+      },
+      "name": "walk movement follows provided VCS stride",
       "passed": true
     },
     {
@@ -109,7 +112,7 @@
       "passed": true
     },
     {
-      "measured": "(-0.002994, 0.0, -0.588365)",
+      "measured": "(-0.057347, 0.0, -1.319205)",
       "name": "travel follows body heading while turning",
       "passed": true
     },
@@ -129,7 +132,7 @@
       "passed": true
     },
     {
-      "measured": 1.2169588804245,
+      "measured": 1.7675793170929,
       "name": "stop root motion still moves the colliding body",
       "passed": true
     },
@@ -160,7 +163,7 @@
     },
     {
       "measured": null,
-      "name": "all 234 clips sampled on active character skeleton without nonfinite poses",
+      "name": "all 1168 entries sampled on active character skeleton without nonfinite poses",
       "passed": true
     },
     {
@@ -176,13 +179,13 @@
     {
       "measured": [
         "driving",
-        1.88333333333333
+        2.71666666666666
       ],
       "name": "entry commits after open get-in and close clips",
       "passed": true
     },
     {
-      "measured": 8.00606441497803,
+      "measured": 11.3707323074341,
       "name": "driving still accelerates with mapped data",
       "passed": true
     },

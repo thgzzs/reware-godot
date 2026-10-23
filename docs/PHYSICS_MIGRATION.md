@@ -39,3 +39,11 @@ Separate gameplay traces from visual capture and performance capture. A numerica
 ## Imported motion update
 
 The private asset build now has a second, explicitly selected movement policy: body-heading-coupled root displacement and animation commitments. Existing collision/step/gravity machinery is shared. ImportedAssetSetup overrides source-supported data fields; original coefficient/COM mappings remain incomplete. Read IMPORTED_ASSETS.md for the exact policy, heading-rate normalization, unsupported fields and remaining parity gaps.
+
+## Stories revision: current requirements and measurements
+
+Melee spatial displacement enters the same swept motor as locomotion; animated limb/tip sweeps query contacts after pose sampling. No animation directly teleports an independent collision owner. Player and pedestrians share this pipeline, with intent supplied independently.
+
+Vehicle collision events localize part damage using world-space Jolt contact positions/normals. Detachable panels become bounded-lifetime CCD rigid bodies; a brief source-car exception prevents immediate self-damage. Flat tire support radius/grip/drag change without scaling the wheel mesh. Two-contact bikes use inertia-aware supported balance and source LCS ride/lean presentation; four-contact cars use a speed-dependent lateral-acceleration steer cap and ground-only anti-roll.
+
+The native Idaho fixture reaches 10 m/s in approximately 1.27 s. A 22 m/s cornering entry over 2.5 s retains an up-dot above 0.99 in the acceptance scenario. These are target measurements, not original equivalence. Tilted exits use upright capsule destinations and revalidation; moving bailouts inherit vehicle linear and angular-point velocity in the torso reaction body. Remaining migration gaps are listed in DISCREPANCIES.md.

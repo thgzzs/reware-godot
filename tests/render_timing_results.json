@@ -1,6 +1,6 @@
 {
   "physics_hz": 60,
-  "scope": "one local CPU fixed-command native fixture, fixed render deltas 30/60/120/144 plus a real-clock varying render cap; not cross-platform determinism or GPU timing",
+  "scope": "One local CPU fixed-command native fixture; fixed render deltas and real-clock varying render cap. Not cross-platform determinism or GPU timing.",
   "results": [
     {
       "case": "30",
@@ -49,7 +49,7 @@
       "passed": true,
       "max_position_m": 0.0,
       "max_velocity_mps": 0.0,
-      "max_car_position_m": 4.230883717116755e-07,
+      "max_car_position_m": 4.172526839806083e-07,
       "max_pose_quaternion_delta": 0.0,
       "state_shots_equal": true,
       "render_steps": 1441,
@@ -66,10 +66,10 @@
       "max_car_position_m": 0.0,
       "max_pose_quaternion_delta": 0.0,
       "state_shots_equal": true,
-      "render_steps": 819,
+      "render_steps": 792,
       "render_dt_range": [
-        0.001824,
-        0.143006333333333
+        0.000136125003336929,
+        0.145671333333333
       ]
     }
   ],

@@ -1,90 +1,162 @@
 {
-  "scope": "Only selected original payloads are present; no full IMG or new gun clips in current attachment.",
+  "scope": "Current supplied assets fulfill the supported 24-entry arsenal, three cars and four bikes.",
   "weapons": [
     {
-      "name": "Unarmed",
-      "source_model_id": -1,
-      "animation_group": "unarmed",
-      "model_scene": "",
-      "status": "available"
-    },
-    {
-      "name": "Knife",
-      "source_model_id": 263,
-      "animation_group": "knife",
-      "model_scene": "res://assets/converted/models/knife.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
-    },
-    {
-      "name": "BaseballBat",
-      "source_model_id": 264,
-      "animation_group": "baseball",
-      "model_scene": "res://assets/converted/models/baseballbat.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
-    },
-    {
-      "name": "Colt45",
-      "source_model_id": 274,
-      "animation_group": "colt45",
+      "id": "colt45",
       "model_scene": "res://assets/converted/models/colt45.scn",
-      "status": "available"
+      "status": "implemented; native actions configured"
     },
     {
-      "name": "Python",
-      "source_model_id": 275,
-      "animation_group": "python",
+      "id": "python",
       "model_scene": "res://assets/converted/models/python.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
+      "status": "implemented; native actions configured"
     },
     {
-      "name": "Shotgun",
-      "source_model_id": 277,
-      "animation_group": "shotgun",
+      "id": "shotgun",
       "model_scene": "res://assets/converted/models/shotgun.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
+      "status": "implemented; native actions configured"
     },
     {
-      "name": "Tec9",
-      "source_model_id": 281,
-      "animation_group": "colt45",
+      "id": "spas12shotgun",
+      "model_scene": "res://assets/converted/models/spas12shotgun.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "stubbyshotgun",
+      "model_scene": "res://assets/converted/models/stubbyshotgun.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "tec9",
       "model_scene": "res://assets/converted/models/tec9.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
+      "status": "implemented; native actions configured"
     },
     {
-      "name": "Uzi",
-      "source_model_id": 282,
-      "animation_group": "uzi",
+      "id": "uzi",
       "model_scene": "res://assets/converted/models/uzi.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
+      "status": "implemented; native actions configured"
     },
     {
-      "name": "Ruger",
-      "source_model_id": 276,
-      "animation_group": "rifle",
+      "id": "silencedingram",
+      "model_scene": "res://assets/converted/models/silencedingram.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "mp5",
+      "model_scene": "res://assets/converted/models/mp5.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "m4",
+      "model_scene": "res://assets/converted/models/m4.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "ruger",
       "model_scene": "res://assets/converted/models/ruger.scn",
-      "status": "requires original DFF/TXD and weapon-specific IFP block"
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "m60",
+      "model_scene": "res://assets/converted/models/m60.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "unarmed",
+      "model_scene": "",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "brassknuckle",
+      "model_scene": "res://assets/converted/models/brassknuckle.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "screwdriver",
+      "model_scene": "res://assets/converted/models/screwdriver.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "golfclub",
+      "model_scene": "res://assets/converted/models/golfclub.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "nightstick",
+      "model_scene": "res://assets/converted/models/nightstick.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "knife",
+      "model_scene": "res://assets/converted/models/knife.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "baseballbat",
+      "model_scene": "res://assets/converted/models/baseballbat.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "hammer",
+      "model_scene": "res://assets/converted/models/hammer.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "cleaver",
+      "model_scene": "res://assets/converted/models/cleaver.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "machete",
+      "model_scene": "res://assets/converted/models/machete.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "katana",
+      "model_scene": "res://assets/converted/models/katana.scn",
+      "status": "implemented; native actions configured"
+    },
+    {
+      "id": "chainsaw",
+      "model_scene": "res://assets/converted/models/chainsaw.scn",
+      "status": "implemented; native actions configured"
     }
   ],
   "vehicles": [
     {
-      "handling": "IDAHO",
       "model": "idaho",
-      "status": "available"
+      "status": "native model and drivable configuration installed"
     },
     {
-      "handling": "STINGER",
       "model": "stinger",
-      "status": "physics fixture; original model missing"
+      "status": "native model and drivable configuration installed"
     },
     {
-      "handling": "LANDSTAL",
       "model": "landstal",
-      "status": "physics fixture; original model missing"
+      "status": "native model and drivable configuration installed"
+    },
+    {
+      "model": "pcj600",
+      "status": "native model and drivable configuration installed"
+    },
+    {
+      "model": "sanchez",
+      "status": "native model and drivable configuration installed"
+    },
+    {
+      "model": "faggio",
+      "status": "native model and drivable configuration installed"
+    },
+    {
+      "model": "freeway",
+      "status": "native model and drivable configuration installed"
     }
   ],
-  "required_inputs": [
-    "Original gta3.img archive with index or paired DIR if required by its format",
-    "Weapon-specific IFP animation blocks referenced by weapon.dat"
+  "remaining": [
+    "Projectile and area-effect weapon semantics",
+    "Continuous chainsaw cutting semantics",
+    "Facial/cutscene bones absent from current character rig",
+    "Dedicated gameplay states for unused miscellaneous clips"
   ],
-  "import_policy": "Inspect archive index, export only requested DFF/TXD roots and dependencies, retain exact source model ID, then bind role scenes; never unpack the full archive or alias another gun model."
+  "import_policy": "Select exact DFF/TXD dependencies and source IFP blocks. No full IMG unpack or ASI execution."
 }

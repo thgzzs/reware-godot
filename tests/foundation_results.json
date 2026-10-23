@@ -39,7 +39,7 @@
     {
       "measured": {
         "phase": "airborne",
-        "speed": 15.5963640213013
+        "speed": 11.0
       },
       "name": "sprint jump has source-dependent forward momentum",
       "passed": true
@@ -50,27 +50,27 @@
         5.0,
         5.0,
         8.5,
-        15.5963640213013
+        11.0
       ],
       "name": "run and sprint jumps are not forced to the same velocity",
       "passed": true
     },
     {
-      "measured": 2.56774377822876,
+      "measured": 2.14362645149231,
       "name": "walkable uphill slope gains only terrain height",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-27.96074, 0.900012, -24.67376)",
-        "max_y": 3.24697685241699
+        "at": "(-27.88056, 0.900375, -24.36992)",
+        "max_y": 3.10404920578003
       },
       "name": "downhill running/jumping leaves the slope without sticking",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-27.90677, 0.912906, -10.74059)",
+        "at": "(-27.77083, 0.922258, -10.74735)",
         "max_y": 1.77242076396942,
         "speed": 7.61089611053467
       },
@@ -79,29 +79,29 @@
     },
     {
       "measured": {
-        "movement": "(0.0, 0.0, 0.0)",
-        "speed": 0.00000430271484219702
+        "movement": "(-0.000006, 0.0, -0.000002)",
+        "speed": 0.000000921529135666788
       },
       "name": "ordinary movement does not shove a heavy parked vehicle",
       "passed": true
     },
     {
       "measured": {
-        "after": 43.9792414594247,
+        "after": 44.1212556498567,
         "age": 2.83333333333333,
         "before": 99.99285,
-        "closing": 10.0062913894653,
-        "contacts": 138,
+        "closing": 9.98177433013916,
+        "contacts": 137,
         "fresh_hits": 1,
-        "normal": "(0.024889, -0.634354, 0.772642)"
+        "normal": "(0.033619, -0.584678, 0.810568)"
       },
       "name": "fresh collision damages an already active knockdown",
       "passed": true
     },
     {
       "measured": {
-        "after": 43.9792414594247,
-        "before": 43.9792414594247
+        "after": 44.1212556498567,
+        "before": 44.1212556498567
       },
       "name": "sustained resting contact does not drain pedestrian health",
       "passed": true

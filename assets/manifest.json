@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_assets_included": "selected payloads and gameplay data in private build; omitted from public git",
   "assets": [
     {
@@ -51,8 +51,11 @@
     {
       "id": "ped-animation-library",
       "path": "assets/converted/ped_library.res",
-      "clips": 234,
-      "binding_verified": false
+      "clips": 781,
+      "binding_verified": "source bone-ID and selected native runtime checks; unmapped facial/cutscene bones retained",
+      "blocks": 44,
+      "aliases": 387,
+      "library_entries": 1168
     },
     {
       "id": "gameplay-data",
@@ -66,11 +69,39 @@
         "player",
         "idaho",
         "colt45",
-        "trashcan"
+        "trashcan",
+        "baseballbat",
+        "knife",
+        "katana",
+        "shotgun",
+        "m4",
+        "ruger",
+        "python",
+        "tec9",
+        "uzi",
+        "silencedingram",
+        "mp5",
+        "spas12shotgun",
+        "stubbyshotgun",
+        "brassknuckle",
+        "screwdriver",
+        "golfclub",
+        "nightstick",
+        "hammer",
+        "cleaver",
+        "machete",
+        "chainsaw",
+        "m60",
+        "pcj600",
+        "sanchez",
+        "faggio",
+        "freeway",
+        "stinger",
+        "landstal"
       ],
       "skeleton_frames": 25,
       "skin_binds": 24,
-      "material_pngs": 25,
+      "material_pngs": 71,
       "source_geometry": true,
       "complete_visual_or_gameplay_parity": false
     },
@@ -84,13 +115,17 @@
   "selective_model_export": {
     "tool": "tools/convert_model_placeholders.py",
     "inspector": "tools/inspect_rw_archive.py",
-    "actual_model_exports": 4,
-    "png_exports": 25,
+    "actual_model_exports": 32,
+    "png_exports": 71,
     "img_payload_bytes": 369300,
-    "full_archive_unpacked": false
+    "full_archive_unpacked": false,
+    "additional_selected_payload_bytes": 1384856,
+    "stories_importer": "tools/import_stories_assets.py"
   },
   "original_archive_included": false,
   "original_archive_index_supplied": false,
-  "missing_for_requested_expansion": "See assets/expansion_requests.json; missing additional authentic weapon/vehicle models and gun animation blocks.",
-  "physics_props": "PhysicalProp + tuning/trashcan.tres, Jolt rigid bodies"
+  "missing_for_requested_expansion": "Selected firearm/melee/bike/car assets delivered; unsupported projectile/area/continuous semantics and absent facial bones remain. See docs/DISCREPANCIES.md.",
+  "physics_props": "PhysicalProp + tuning/trashcan.tres, Jolt rigid bodies",
+  "animation_policy": "VCS core and PS2 converted weapons, LCS bike blocks; all originals namespaced; duplicate times coalesce last-key-wins in native curves.",
+  "stories_catalog": "assets/converted/stories_catalog.json"
 }

@@ -22,13 +22,28 @@ var enter_open := 0.0
 var enter_close := 0.0
 var exit_total := 0.0
 var exit_close := 0.0
+var escape_mode := false
+var escape_clip := ""
+var ejecting := false
+var ejection_delay := 0.12
+var seated_time := 0.0
+func clip_for(action_name:String, side:int) -> String:
+ var suffix:="LHS" if side%2==0 else "RHS"
+ if vehicle.kind=="bike":
+  var actions:={"getin":"_jumponL" if side%2==0 else "_jumponR","getout":"_getoffLHS" if side%2==0 else "_getoffRHS"}
+  return vehicle.bike_animation+actions.get(action_name,"_Still")
+ return "CAR_"+action_name+"_"+suffix
+
 func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  message = ""
  if state!="on_foot" or not is_instance_valid(candidate) or not actor.control_enabled or actor.health.health<=0: return false
  if not actor.grounded or actor.phase!="grounded" or actor.actions.full_body_busy(): return false
  if actor.stance.crouched and not actor.stance.set_crouched(false): return false
  if candidate.damage.state=="destroyed": return false
+ escape_mode=false;ejecting=false;seated_time=0
  var selected := candidate.seating.choose(candidate,actor.global_position,passenger_only)
+ if candidate.kind=="bike" and not passenger_only and candidate.seating.available(0):selected=0
+ var selected_side:=1 if candidate.to_local(actor.global_position).x>0 else 0
  if selected<0: return false
  if actor.global_position.distance_to(candidate.global_position)>profile.reach: return false
  if candidate.linear_velocity.length()>profile.max_transition_speed or candidate.global_basis.y.dot(Vector3.UP)<0.65: return false
@@ -39,7 +54,7 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  approach.shape = actor.normal_shape
  approach.transform = actor.global_transform
  approach.transform.origin += Vector3.UP*0.03
- approach.motion = candidate.approach_position(selected)-approach.transform.origin
+ approach.motion = candidate.approach_position(selected,selected_side if candidate.kind=="bike" else -1)-approach.transform.origin
  approach.margin = 0.001
  approach.collision_mask = 15
  approach.exclude = [actor.get_rid(),candidate.get_rid()]
@@ -48,8 +63,8 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
   return false
  if not candidate.reserve_seat(actor,selected): return false
  seat_index = selected
- entry_side = candidate.seating.definitions[selected].door
- auto_shuffle = not passenger_only and selected==1
+ entry_side = selected_side if candidate.kind=="bike" else candidate.seating.definitions[selected].door
+ auto_shuffle = not passenger_only and selected==1 and candidate.kind!="bike"
  vehicle = candidate
  vehicle.park()
  start_position = actor.global_position
@@ -63,7 +78,10 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  enter_total = profile.enter_seconds
  enter_open = profile.enter_open_seconds
  enter_close = profile.enter_close_seconds
- if actor.reference_enabled and entry_side%2==1:
+ if candidate.kind=="bike":
+  enter_open=0;enter_close=0
+  enter_total=maxf(0.5,actor.reference_motion.duration(clip_for("getin",entry_side))) if actor.reference_enabled else 0.8
+ elif actor.reference_enabled and entry_side%2==1:
   enter_open = actor.reference_motion.duration("CAR_open_RHS")
   enter_close = actor.reference_motion.duration("CAR_closedoor_RHS")
   enter_total = enter_open+actor.reference_motion.duration("CAR_getin_RHS")+enter_close
@@ -76,8 +94,8 @@ func request_exit() -> bool:
  message = ""
  if state not in ["driving","passenger"] or not is_instance_valid(vehicle): return false
  if vehicle.linear_velocity.length()>profile.max_transition_speed:
-  message = "Stop the vehicle before exiting"
-  return false
+  return request_eject()
+ escape_mode=vehicle.global_basis.y.dot(Vector3.UP)<0.65 or vehicle.kind=="bike"
  var destination := find_exit()
  if destination.is_empty():
   message = "Exit blocked / clear a door"
@@ -88,7 +106,12 @@ func request_exit() -> bool:
  actor.visible = actor.reference_enabled
  exit_total = profile.exit_seconds
  exit_close = profile.exit_close_seconds
- if actor.reference_enabled and exit_side%2==1:
+ if escape_mode:
+  escape_clip=clip_for("getout",exit_side) if vehicle.kind=="bike" else "CAR_crawloutRHS"
+  if vehicle.kind=="car" and actor.reference_pose!=null:actor.reference_pose.scale.x=-1.0 if exit_side%2==0 else 1.0
+  exit_close=0
+  exit_total=maxf(0.5,actor.reference_motion.duration(escape_clip)) if actor.reference_enabled else 0.8
+ elif actor.reference_enabled and exit_side%2==1:
   exit_close = actor.reference_motion.duration("CAR_close_RHS")
   exit_total = actor.reference_motion.duration("CAR_getout_RHS")+exit_close
  remaining = exit_total
@@ -98,6 +121,7 @@ func request_exit() -> bool:
  change_state("exiting")
  return true
 func action(clip: String, time: float) -> void:
+ if actor.reference_enabled:actor.reference_motion.vehicle_layers.clear()
  if not actor.reference_enabled: return
  actor.reference_motion.phase = state
  actor.reference_motion.set_clip(clip,false)
@@ -114,15 +138,30 @@ func tick(dt: float) -> void:
   vehicle.release_seat(actor)
   vehicle.set_door_open(0,false)
   vehicle.set_door_open(1,false)
-  actor.global_position = vehicle.approach_position(seat_index)
+  actor.global_position = vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
   actor.visible = true
   actor.set_reaction_shape()
+  if actor.reference_pose!=null:actor.reference_pose.scale=Vector3.ONE
   vehicle = null
   change_state("on_foot")
   return
+ if state=="ejecting":
+  elapsed+=dt
+  action(escape_clip,elapsed)
+  align_to_seat()
+  if elapsed>=ejection_delay:commit_eject()
+  return
  if state in ["driving","passenger"]:
+  seated_time+=dt
   actor.visible = actor.reference_enabled
-  action(vehicle.seating.definitions[seat_index].seated_clip,0)
+  if vehicle.kind=="bike":
+   var base:=vehicle.bike_animation+("_Still" if absf(vehicle.speed)<0.35 else "_Ride") if seat_index==0 else vehicle.bike_animation+"_passenger"
+   action(base,fposmod(seated_time,maxf(0.001,actor.reference_motion.duration(base))) if actor.reference_enabled else 0)
+   if actor.reference_enabled and seat_index==0:
+    var lean:=clampf(absf(vehicle.bike.lean)/vehicle.bike.profile.maximum_lean,0,1)*0.7
+    var leaning:=vehicle.bike_animation+("_Left" if vehicle.bike.lean>0 else "_Right")
+    actor.reference_motion.vehicle_layers=[{"clip":base,"time":actor.reference_motion.time,"weight":1.0-lean},{"clip":leaning,"time":minf(seated_time,actor.reference_motion.duration(leaning)),"weight":lean}]
+  else:action(vehicle.seating.definitions[seat_index].seated_clip,0)
   if actor.reference_enabled: actor.reference_motion.phase = "seated"
   align_to_seat()
   return
@@ -133,7 +172,9 @@ func tick(dt: float) -> void:
   align_pelvis(vehicle.seat_position(seat_index).lerp(vehicle.seat_position(0),smoothstep(0,shuffle_duration(),elapsed)))
   if remaining<=0:
    if vehicle.seating.transfer(actor,seat_index,0): seat_index=0;change_state("driving")
-   else: message="Driver seat changed";change_state("passenger")
+   else:
+    if vehicle.seating.reservations.get(0)==actor:vehicle.seating.reservations.erase(0)
+    message="Driver seat changed";change_state("passenger")
   return
  remaining = maxf(0,remaining-dt)
  elapsed += dt
@@ -146,11 +187,11 @@ func tick(dt: float) -> void:
   if elapsed<enter_open:
    if elapsed>=profile.open_motion_start or not actor.reference_enabled: vehicle.set_door_open(entry_side,true)
    action("CAR_open_"+suffix,elapsed)
-   actor.global_position = start_position.lerp(vehicle.approach_position(seat_index),smoothstep(0,enter_open,elapsed))
+   actor.global_position = start_position.lerp(vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1),smoothstep(0,enter_open,elapsed))
   elif elapsed<getin_end:
-   action("CAR_getin_"+suffix,elapsed-enter_open)
-   actor.global_position = vehicle.approach_position(seat_index)
-   align_pelvis((vehicle.approach_position(seat_index)+standing_hip_offset).lerp(vehicle.seat_position(seat_index),smoothstep(enter_open,getin_end,elapsed)))
+   action(clip_for("getin",entry_side),elapsed-enter_open)
+   actor.global_position = vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
+   align_pelvis((vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)+standing_hip_offset).lerp(vehicle.seat_position(seat_index),smoothstep(enter_open,getin_end,elapsed)))
   else:
    if elapsed-getin_end>=profile.entry_close_motion_start or not actor.reference_enabled: vehicle.set_door_open(entry_side,false)
    action("CAR_closedoor_"+suffix,elapsed-getin_end)
@@ -162,11 +203,22 @@ func tick(dt: float) -> void:
     if auto_shuffle: request_switch_driver()
    else: recover()
  elif state=="exiting":
+  if escape_mode:
+   action(escape_clip,elapsed)
+   var fraction:=elapsed/maxf(0.01,exit_total)
+   var travel:=smoothstep(0,0.45,fraction) if vehicle.kind=="car" else smoothstep(0,1,fraction)
+   var upright:=smoothstep(0,0.2,fraction) if vehicle.kind=="car" else smoothstep(0,1,fraction)
+   actor.global_position=vehicle.seat_position(seat_index).lerp(exit_position,travel)
+   if actor.reference_pose is SkinnedMotionVisual:
+    actor.visual.global_basis=vehicle.global_basis.slerp(Basis(Vector3.UP,actor.facing),upright)
+    align_pelvis(vehicle.seat_position(seat_index).lerp(exit_position+standing_hip_offset,travel),false)
+   if remaining<=0:finish_exit()
+   return
   var getout_end := exit_total-exit_close
   var suffix := "LHS" if exit_side%2==0 else "RHS"
   if elapsed<getout_end:
    if elapsed>=profile.exit_open_motion_start or not actor.reference_enabled: vehicle.set_door_open(exit_side,true)
-   action("CAR_getout_"+suffix,elapsed)
+   action(clip_for("getout",exit_side),elapsed)
    actor.global_position = vehicle.seat_position(seat_index)
    align_pelvis(vehicle.seat_position(seat_index).lerp(exit_position+standing_hip_offset,smoothstep(0,getout_end,elapsed)))
   else:
@@ -174,27 +226,63 @@ func tick(dt: float) -> void:
    action("CAR_close_"+suffix,elapsed-getout_end)
    actor.global_position = exit_position
   if remaining>0: return
-  # Revalidate the selected volume: never teleport to another newly clear door.
-  var destination := find_exit(exit_index)
-  if destination.is_empty():
-   message = "Exit became blocked"
-   actor.visible = false
-   change_state("driving" if vehicle.seating.definitions[seat_index].driver else "passenger")
-   return
-  actor.collision_grace = 0.1
-  actor.reset_at(destination.position)
-  actor.set_embarked(false)
-  vehicle.release_seat(actor)
-  vehicle = null
-  last_duration = elapsed
-  change_state("on_foot")
+  finish_exit()
+func finish_exit() -> void:
+ var destination:=find_exit(exit_index)
+ if destination.is_empty():
+  message="Exit became blocked"
+  if actor.reference_pose!=null:actor.reference_pose.scale=Vector3.ONE
+  change_state("driving" if vehicle.seating.definitions[seat_index].driver else "passenger")
+  return
+ actor.collision_grace=0.1
+ actor.reset_at(destination.position)
+ actor.set_embarked(false)
+ vehicle.release_seat(actor)
+ vehicle=null
+ escape_mode=false
+ last_duration=elapsed
+ change_state("on_foot")
+func request_eject() -> bool:
+ var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index)
+ if destination.is_empty():message="No clear bailout path";return false
+ exit_side=destination.side;exit_index=destination.index
+ escape_clip="BIKE_fall_off" if vehicle.kind=="bike" else ("CAR_rollout_LHS" if exit_side%2==0 else "CAR_rollout_RHS")
+ elapsed=0;ejecting=true;escape_mode=true
+ actor.visible=actor.reference_enabled
+ vehicle.set_door_open(exit_side,true)
+ change_state("ejecting")
+ return true
+func commit_eject() -> void:
+ var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index)
+ if destination.is_empty():
+  message="Bailout path became blocked"
+  ejecting=false;escape_mode=false
+  change_state("driving" if vehicle.seating.definitions[seat_index].driver else "passenger")
+  return
+ var body:=vehicle
+ var point:Vector3=destination.position
+ var inherited:=body.linear_velocity+body.angular_velocity.cross(point-body.global_position)
+ var outward:=point-body.global_position;outward.y=0;outward=outward.normalized()
+ actor.reset_at(point)
+ actor.set_embarked(false)
+ actor.actions.begin_life("down")
+ actor.actions.life_clip=escape_clip
+ actor.actions.life_time=0
+ actor.control_enabled=false
+ actor.reaction_body.minimum_recovery_age=maxf(0.7,actor.reference_motion.duration(escape_clip)) if actor.reference_enabled else 0.7
+ actor.reaction_body.launch_velocity(point,actor.facing,inherited+outward*1.5+Vector3.UP*2)
+ body.release_seat(actor)
+ if not is_instance_valid(body.driver):body.coast()
+ vehicle=null;ejecting=false;escape_mode=false
+ change_state("on_foot")
+
 func align_to_seat() -> void:
  actor.global_position = vehicle.seat_position(seat_index)
  align_pelvis(vehicle.seat_position(seat_index))
-func align_pelvis(anchor: Vector3) -> void:
+func align_pelvis(anchor: Vector3, match_vehicle := true) -> void:
  if not actor.reference_pose is SkinnedMotionVisual: return
  var pose := actor.reference_pose as SkinnedMotionVisual
- actor.visual.global_basis = vehicle.global_basis
+ if match_vehicle: actor.visual.global_basis = vehicle.global_basis
  pose.sample_pose(0)
  var pelvis := pose.skeleton.find_bone("Pelvis")
  if pelvis<0: pelvis = pose.skeleton.find_bone("Root")
@@ -204,7 +292,7 @@ func align_pelvis(anchor: Vector3) -> void:
 func shuffle_duration() -> float:
  return maxf(0.1,actor.reference_motion.duration("CAR_shuffle_RHS")) if actor.reference_enabled else 0.65
 func request_switch_driver() -> bool:
- if state!="passenger" or seat_index!=1 or not is_instance_valid(vehicle): return false
+ if state!="passenger" or seat_index!=1 or not is_instance_valid(vehicle) or vehicle.kind=="bike": return false
  if vehicle.linear_velocity.length()>profile.max_transition_speed or vehicle.damage.state=="destroyed": return false
  if not vehicle.seating.reserve(actor,0,true):
   message = "Driver seat occupied"
@@ -214,6 +302,7 @@ func request_switch_driver() -> bool:
  change_state("shuffling")
  return true
 func find_exit(required_index := -1) -> Dictionary:
+ if escape_mode:return VehicleExitSolver.select(actor,vehicle,required_index,seat_index)
  var space := actor.get_world_3d().direct_space_state
  var order := range(profile.exit_offsets.size())
  if vehicle.seating.definitions[seat_index].door%2==1 and order.size()>1: order[0]=1;order[1]=0

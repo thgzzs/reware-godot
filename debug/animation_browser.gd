@@ -20,7 +20,7 @@ func _ready() -> void:
  var layout := VBoxContainer.new()
  add_child(layout)
  var heading := Label.new()
- heading.text = "ANIMATIONS / %d CLIPS"%actor.reference_motion.library.get_animation_list().size()
+ heading.text = "ANIMATIONS / %d ENTRIES"%actor.reference_motion.library.get_animation_list().size()
  layout.add_child(heading)
  var note := Label.new()
  note.text = "Search, play or scrub a clip.\nClose to resume locomotion."

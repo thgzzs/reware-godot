@@ -1,0 +1,459 @@
+Structured report transcript. Generated from completed tests/*_results.json; not a raw stdout log.
+Exact engine: Godot 4.7.2 Stable; Jolt; physics 60 Hz.
+
+latest: 47 assertions, 0 failures
+PASS exact engine "4.7.2-stable (official)"
+PASS Jolt selected null
+PASS ground support 0.900012075901031
+PASS movement accelerates to configured speed 5.0
+PASS movement distance in one second 4.41669654846191
+PASS release decelerates to rest 0.0
+PASS camera relative forward rotates movement "(-4.416687, 0.0, 0.0)"
+PASS aim movement modifier 2.5
+PASS aim FOV converges 54.0022201538086
+PASS jump launches after windup {"airborne_s": 0.666666666666667, "apex_m": 1.12139159440994, "launch_delay_s": 0.15}
+PASS jump apex within ballistic tolerance 1.12139159440994
+PASS jump lands and recovers 434
+PASS landing state clears "grounded"
+PASS buffered press launches on landing 1
+PASS wall collision prevents tunneling 13.4799947738647
+PASS jump ceiling collision 1.32416331768036
+PASS step traversal climbs configured low steps "(-10.0, 1.700375, -3.057828)"
+PASS walkable slope gains height "(-16.0, 1.689436, 4.380012)"
+PASS steep slope does not become walkable "(-21.0, 0.900375, 5.648082)"
+PASS camera obstruction sweep retracts 0.739990234375
+PASS camera aim resolves hits true
+PASS damage applied to target 25.0
+PASS firing cadence every 12 ticks at 60 Hz [1061, 1073, 1085, 1097, 1109]
+PASS ammo decreases per shot 4
+PASS reload transfers reserve without duplication [12, 228]
+PASS suspension supports four wheel contacts 4
+PASS suspension settles near static weight {"height_m": 0.582499980926514, "load_N": 23999.9991864669, "vertical_speed": 1.20941390235885e-08}
+PASS suspension vertical oscillation settles 1.20941390235885e-08
+PASS valid approach reserves seat null
+PASS duplicate occupancy rejected null
+PASS entry commits control once "driving"
+PASS entry duration bounded by one tick 0.65
+PASS vehicle accelerates forward {"distance_m": 16.3014011383057, "speed_mps": 12.5326833724976, "time_s": 2.5}
+PASS steering changes heading 0.381670951843262
+PASS brakes bring vehicle to rest {"distance_m": 9.39122581481934, "initial_speed_mps": 15.4812574386597, "time_s": 1.2}
+PASS reverse engages after stop -4.36901044845581
+PASS blocked exits preserve ownership null
+PASS clear exit begins transition null
+PASS exit restores on foot ownership and collision "on_foot"
+PASS exit timing bounded by one tick 0.566666666666667
+PASS movement resumes without restarting null
+PASS three additional enter exit cycles 3
+PASS late exit blockers cancel commit safely "driving"
+PASS vehicle dynamics invariant under world translation [5.39537715911865, 5.39537715911865]
+PASS vehicle remains stable after control restoration 0.0167099982500076
+PASS weapon control resumes after driving {"ammo": 11, "control": true, "cooldown": 0.2, "facing": 6.28318530717959, "grounded": true, "life": "alive", "phase": "grounded", "shots": 1, "yaw": 0.0}
+PASS vehicle body collides without crossing wall "(17.99923, 0.573038, 27.13881)"
+
+revision: 41 assertions, 0 failures
+PASS all arena blocks retain plain colors by default null
+PASS nearest vehicle returns the actual registered body null
+PASS input installation is idempotent null
+PASS switch to rifle succeeds null
+PASS weapon switch cancels reload and preserves shot lock null
+PASS weapon ammo belongs to its slot null
+PASS second weapon retains its own magazine null
+PASS cadence follows source 30 Hz animation conversion 0.24
+PASS walk and run blend at matching normalized phase null
+PASS aim preserves leg locomotion null
+PASS upper action actually moves the gun arm null
+PASS action changes crossfade instead of snapping null
+PASS heavy gun permits source sprint clip ["sprint_civi", 3.60000348091125]
+PASS aiming and walking coexist null
+PASS walking aiming and firing advance together null
+PASS reload blends its own upper action while legs remain available null
+PASS every equipped weapon supports sprint null
+PASS death plays once and holds its terminal frame ["dead", 0.5]
+PASS death blocks movement and leaves a low world collision shape null
+PASS respawn restores health and standing shape null
+PASS Jolt door hinge opens under motor force -1.18683492189352
+PASS open hinge stays attached to chassis null
+PASS door closes and latches without pinning chassis to world 0.0
+PASS chassis sweep finds and reacts to pedestrian [1, 99.6625343267236, "down"]
+PASS run-over reaction stays bounded 0.434727370738983
+PASS low speed impact knocks down instead of instantly killing null
+PASS nonfatal pedestrian gets up with standing volume clearance ["alive", "(-28.00002, 0.900012, 34.25638)"]
+PASS blocked standing volume prevents unsafe get-up null
+PASS get-up retries after overhead obstruction clears null
+PASS fatal impact reaches death and repeated corpse hits do not restart it null
+PASS right door opens in the opposite direction 1.18683492189352
+PASS right door also closes and latches null
+PASS animated entry reserves a single owner null
+PASS door action respects opening contact delay null
+PASS entry advances from opening to get-in null
+PASS inside close uses its own distinct source clip null
+PASS animated stages commit after total clip duration null
+PASS animated exit starts its get-out clip null
+PASS outside close uses the outside source clip null
+PASS animated exit restores control exactly once null
+PASS death during entry releases reservation and controller null
+
+imported: 36 assertions, 0 failures
+PASS all ANPK clips present in native library 1168
+PASS every native key and timestamp matches decoded source {"channel_keys": 294062, "channels": 17666, "max_position_or_scale_error": 0.0, "max_quaternion_dot_error": 1.78813934326172e-07, "mismatches": 0}
+PASS all source data tables loaded null
+PASS fistfight rows and frame-to-second mapping preserved 32
+PASS fistfight clips resolve without inventing sentinel animations null
+PASS sprint motion integrates across loop without reset spike null
+PASS reference assets activated null
+PASS fight configuration visible in clip inspector "\nJab: 0.333–0.500 s / source damage 2"
+PASS player and four pedestrians use identical motor script null
+PASS health and weapon components shared by actor types null
+PASS player heading source unit converted explicitly 13.0899693899575
+PASS weapon DAT fields and derived animation cadence applied "Colt45"
+PASS dimensionally mapped vehicle fields applied null
+PASS walk start uses source clip "WALK_start"
+PASS walk movement follows provided VCS stride {"actual": 2.05033349990845, "source": 2.06274539614326}
+PASS walk loop selected "WALK_player"
+PASS travel follows body heading while turning "(-0.057347, 0.0, -1.319205)"
+PASS sprint source clip active "sprint_civi"
+PASS sprint release enters committed stop "Run_stop"
+PASS stop animation locks heading null
+PASS stop root motion still moves the colliding body 1.7675793170929
+PASS stop commitment completes null
+PASS jump starts source launch clip "JUMP_launch"
+PASS jump waits for clip duration null
+PASS jump launches after imported timing gate null
+PASS jump and landing recover "grounded"
+PASS all 1168 entries sampled on active character skeleton without nonfinite poses null
+PASS browser exposes all imported clip names null
+PASS entry request accepted in imported mode null
+PASS entry commits after open get-in and close clips ["driving", 2.71666666666666]
+PASS driving still accelerates with mapped data 11.3707323074341
+PASS exit request accepted null
+PASS exit returns to shared on-foot actor "on_foot"
+PASS weapon works after imported enter drive exit loop null
+PASS NPC gun reaction consumes ped DAT relationships 4
+PASS source player damage scales by 0.33 rather than NPC weakness null
+
+presentation: 28 assertions, 0 failures
+PASS imported car settles at its spawn {"position": "(1.0, 0.649975, -0.000012)", "velocity": "(-0.0, 0.001612, -0.0)"}
+PASS native character uses real hierarchy and skin [25, 24]
+PASS all source inverse binds cancel rest transforms 1.19557995503783e-07
+PASS all native skin weights and palette indices valid 1153
+PASS idle skin stands upright at original scale {"maximum": "(0.331568, 0.851473, 0.190858)", "minimum": "(-0.314863, -0.980382, -0.187375)"}
+PASS root locomotion translation is not applied twice null
+PASS player and NPCs share skinned presentation and actor components null
+PASS pistol is bound to the actual right hand null
+PASS Idaho retains wheel door and seat markers null
+PASS damaged and low-detail variants are hidden null
+PASS axle spacing derives from original wheel markers ["(-0.875, 0.1, -1.692)", "(0.875, 0.1, -1.692)", "(-0.875, 0.1, 1.693)", "(0.875, 0.1, 1.693)"]
+PASS vehicle hull covers placeholder body length null
+PASS HUD and center ray adapt to 640x360 {"logical": "(1280.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 1024x768 {"logical": "(960.0, 720.0)", "ray_error": 8.94069671630859e-08}
+PASS HUD and center ray adapt to 1280x720 {"logical": "(1280.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 1920x1080 {"logical": "(1280.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 2560x1080 {"logical": "(1706.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 3440x1440 {"logical": "(1720.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 3840x2160 {"logical": "(1280.0, 720.0)", "ray_error": 0.0}
+PASS HUD and center ray adapt to 1080x1920 {"logical": "(720.0, 1280.0)", "ray_error": 0.0}
+PASS camera preserves vertical FOV on resize null
+PASS 3D scale and UI scale are independent null
+PASS display menu blocks firing and movement commands null
+PASS closing display menu resumes weapon input null
+PASS adaptive scale falls after sustained slow frames 0.95
+PASS adaptive cooldown prevents immediate oscillation null
+PASS adaptive scale recovers and remains bounded 1.0
+PASS adaptive scale respects minimum 0.5
+
+native_action: 66 assertions, 0 failures
+PASS native aim mask preserves the moving thigh pose null
+PASS native gun hand follows aim pitch -0.40 1.73775916323393e-07
+PASS native gun hand follows aim pitch 0.00 2.9802325940409e-08
+PASS native gun hand follows aim pitch 0.35 2.26967756589147e-07
+PASS native aimed skin stays finite and within human scale "(0.722927, 1.815543, 0.831322)"
+PASS native sprint works with Colt45 "sprint_civi"
+PASS weapon visual selection remains unique in slot 0 null
+PASS native sprint works with Python "sprint_civi"
+PASS weapon visual selection remains unique in slot 1 null
+PASS native sprint works with Shotgun "sprint_civi"
+PASS weapon visual selection remains unique in slot 2 null
+PASS native sprint works with Spas12Shotgun "sprint_civi"
+PASS weapon visual selection remains unique in slot 3 null
+PASS native sprint works with StubbyShotgun "sprint_civi"
+PASS weapon visual selection remains unique in slot 4 null
+PASS native sprint works with Tec9 "sprint_civi"
+PASS weapon visual selection remains unique in slot 5 null
+PASS native sprint works with Uzi "sprint_civi"
+PASS weapon visual selection remains unique in slot 6 null
+PASS native sprint works with SilencedIngram "sprint_civi"
+PASS weapon visual selection remains unique in slot 7 null
+PASS native sprint works with Mp5 "sprint_civi"
+PASS weapon visual selection remains unique in slot 8 null
+PASS native sprint works with m4 "sprint_civi"
+PASS weapon visual selection remains unique in slot 9 null
+PASS native sprint works with Ruger "sprint_civi"
+PASS weapon visual selection remains unique in slot 10 null
+PASS native sprint works with M60 "sprint_civi"
+PASS weapon visual selection remains unique in slot 11 null
+PASS native sprint works with Unarmed "sprint_civi"
+PASS weapon visual selection remains unique in slot 12 null
+PASS native sprint works with BrassKnuckle "sprint_civi"
+PASS weapon visual selection remains unique in slot 13 null
+PASS native sprint works with BaseballBat "sprint_civi"
+PASS weapon visual selection remains unique in slot 14 null
+PASS native sprint works with Knife "sprint_civi"
+PASS weapon visual selection remains unique in slot 15 null
+PASS native sprint works with Katana "sprint_civi"
+PASS weapon visual selection remains unique in slot 16 null
+PASS native sprint works with GolfClub "sprint_civi"
+PASS weapon visual selection remains unique in slot 17 null
+PASS native sprint works with NightStick "sprint_civi"
+PASS weapon visual selection remains unique in slot 18 null
+PASS native sprint works with Hammer "sprint_civi"
+PASS weapon visual selection remains unique in slot 19 null
+PASS native sprint works with Cleaver "sprint_civi"
+PASS weapon visual selection remains unique in slot 20 null
+PASS native sprint works with Machete "sprint_civi"
+PASS weapon visual selection remains unique in slot 21 null
+PASS native sprint works with ScrewDriver "sprint_civi"
+PASS weapon visual selection remains unique in slot 22 null
+PASS native sprint works with Chainsaw "sprint_civi"
+PASS weapon visual selection remains unique in slot 23 null
+PASS native death reaches its terminal pose once {"body_y": 0.900005340576172, "clip": "KO_shot_front", "minimum": "(-28.70422, 0.038725, 39.14297)", "size": "(1.441174, 0.309022, 1.91827)"}
+PASS native death mesh rests above the arena floor {"body_y": 0.900005340576172, "clip": "KO_shot_front", "minimum": "(-28.70422, 0.038725, 39.14297)", "size": "(1.441174, 0.309022, 1.91827)"}
+PASS native door frame belongs to physical hinge 0 null
+PASS native door moves with its physical body 0 -1.18682876802995
+PASS native door returns to latch 0 null
+PASS native door frame belongs to physical hinge 1 null
+PASS native door moves with its physical body 1 1.18682856288445
+PASS native door returns to latch 1 null
+PASS native model entry can reserve the seat null
+PASS vehicle entry holsters the equipped weapon null
+PASS native model entry commits after all stages null
+PASS native model exit can begin safely null
+PASS native model exit restores standing actor and gun null
+
+motion: 63 assertions, 0 failures
+PASS sprint thigh moves over time in slot 0 1.57782244682312
+PASS run jump owns visible pose and completes in slot 0 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 1 1.57782244682312
+PASS run jump owns visible pose and completes in slot 1 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 2 1.57782244682312
+PASS run jump owns visible pose and completes in slot 2 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 3 1.57782244682312
+PASS run jump owns visible pose and completes in slot 3 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 4 1.57782244682312
+PASS run jump owns visible pose and completes in slot 4 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 5 1.57782244682312
+PASS run jump owns visible pose and completes in slot 5 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 6 1.57782244682312
+PASS run jump owns visible pose and completes in slot 6 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 7 1.57782244682312
+PASS run jump owns visible pose and completes in slot 7 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 8 1.57782244682312
+PASS run jump owns visible pose and completes in slot 8 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 9 1.57782244682312
+PASS run jump owns visible pose and completes in slot 9 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 10 1.57782244682312
+PASS run jump owns visible pose and completes in slot 10 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 11 1.57782244682312
+PASS run jump owns visible pose and completes in slot 11 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 12 1.57782244682312
+PASS run jump owns visible pose and completes in slot 12 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 13 1.57782244682312
+PASS run jump owns visible pose and completes in slot 13 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 14 1.57782244682312
+PASS run jump owns visible pose and completes in slot 14 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 15 1.57782244682312
+PASS run jump owns visible pose and completes in slot 15 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 16 1.57782244682312
+PASS run jump owns visible pose and completes in slot 16 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 17 1.57782244682312
+PASS run jump owns visible pose and completes in slot 17 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 18 1.57782244682312
+PASS run jump owns visible pose and completes in slot 18 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 19 1.57782244682312
+PASS run jump owns visible pose and completes in slot 19 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 20 1.57782244682312
+PASS run jump owns visible pose and completes in slot 20 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 21 1.57782244682312
+PASS run jump owns visible pose and completes in slot 21 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 22 1.57782244682312
+PASS run jump owns visible pose and completes in slot 22 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS sprint thigh moves over time in slot 23 1.57782244682312
+PASS run jump owns visible pose and completes in slot 23 {"bone_delta": 1.64016699790955, "exclusive_layers": true, "rise": 0.874399781227112}
+PASS world gun axis converges on camera-center target pitch -0.35 2.72212787422177e-07
+PASS world gun axis converges on camera-center target pitch 0.00 9.26579630800006e-08
+PASS world gun axis converges on camera-center target pitch 0.40 4.48909077022108e-07
+PASS fire produces a recoil envelope null
+PASS reload is a changing upper pose while legs still move 0.174053266644478
+PASS entry begins null
+PASS driver remains visible with pelvis on seat anchor 2.98023223876953e-08
+PASS seated limbs fit inside cabin and door finishes closing null
+PASS visible hub rotates with forward travel 3.15681511163712
+PASS wheel axle rolls backward during reverse {"delta": 0.206507444381714, "speed": -3.96505618095398}
+PASS exit begins null
+PASS exit restores controllable actor null
+PASS moderate impact survives and physically contacts car {"car_contacts": 137, "contact_ticks": 107, "displacement": 12.6447458267212, "health": 60.6738351130392, "lift": 0.5514275431633, "speed": 2.46676063537598}
+PASS Jolt impact transfers momentum and lifts the torso {"car_contacts": 137, "contact_ticks": 107, "displacement": 12.6447458267212, "health": 60.6738351130392, "lift": 0.5514275431633, "speed": 2.46676063537598}
+PASS nonfatal proxy safely returns to standing control {"life": "alive", "position": "(18.27085, 0.900375, 6.032589)"}
+
+systems: 54 assertions, 0 failures
+PASS exact engine and fixed Jolt timestep null
+PASS reference gravity uses normalized 50 Hz units null
+PASS jump impulse derives from 8.5/70 normalized momentum 6.07142857142857
+PASS trash cans are independent solid rigid bodies null
+PASS bullet impulse translates and rotates a trash can {"distance": 3.46205353736877, "rotation": "(-0.003389, -0.004898, -0.837458)"}
+PASS independent RWD FWD AWD physics vehicles exist null
+PASS vehicle masses and dimensions are distinct null
+PASS native two-door car retains four marker-defined seats null
+PASS four-door native car keeps four hinges and rear-door seat mappings null
+PASS native inventory exposes exact available models and unarmed null
+PASS weapons never substitute another firearm's mesh null
+PASS on-foot camera cycles near medium far with finite framing [2, 0, 1]
+PASS launch and airborne firing never spend ammunition {"phase": "airborne", "shots": 0}
+PASS grounded weapon control resumes after landing null
+PASS crouch preserves feet with a shorter collider null
+PASS source crouch holds position instead of generic crouch running 0.0
+PASS crouch shooting works without leaving crouch null
+PASS blocked standing volume keeps crouch collision null
+PASS standing restores after headroom clears null
+PASS pistol aiming leaves the left arm on its base pose 0.0009765625
+PASS hip fire outside arm range blocks an impossible backward shot null
+PASS hip fire does not rotate the whole actor toward a backward target null
+PASS firing resumes when movement or aim faces within the arm cone null
+PASS bullet ray identifies the actual tire component "(16.985, 0.32, 3.307995)"
+PASS tire hit persists without shrinking its visual mesh "(1.0, 1.0, 1.0)"
+PASS windshield ray resolves its own native glass region "(17.96044, 1.143473, 4.249655)"
+PASS first glass hit selects cracked mesh null
+PASS second glass hit removes glass and its bullet volume null
+PASS passenger-side approach reserves the right seat null
+PASS passenger occupancy never grants driving control null
+PASS passenger can reserve a free driver seat for shuffle null
+PASS shuffle atomically transfers unique driver ownership null
+PASS vehicle camera cycles follow distances and bonnet view [2, 3, 0, 1]
+PASS driver exit can begin null
+PASS exit releases every occupancy and reservation null
+PASS right-side normal entry begins null
+PASS normal right entry uses source shuffle to reach driver null
+PASS melee windup does not apply early damage null
+PASS melee strike window damages a nearby actor {"after": 94.15, "before": 100.0}
+PASS one swing cannot repeatedly damage its target null
+PASS directional death chooses KO_shot_front "KO_shot_front"
+PASS directional death chooses KO_skid_back "KO_skid_back"
+PASS directional death chooses KO_spin_L "KO_spin_L"
+PASS directional death chooses KO_spin_R "KO_spin_R"
+PASS crouched head hits resolve against the posed head "KO_shot_face"
+PASS world collision removes meaningful vehicle health 719.077678999957
+PASS resting wall contact does not repeatedly deal damage {"after": 719.077678999957, "before": 719.077678999957}
+PASS collision damage uses world normals under vehicle rotation [280.922321000043, 280.922321000043]
+PASS a car transfers physical momentum to a trash can 5.13607692718506
+PASS vehicle-to-vehicle impacts damage both bodies {"hitter": 906.77720054108, "struck": 912.094816408918}
+PASS low vehicle health enters a timed burning state null
+PASS burning detonates once and disables drivetrain 1
+PASS destroyed car cannot be reserved or explode twice null
+PASS lab repair restores a nearby stopped wreck for continuous testing null
+
+foundation: 13 assertions, 0 failures
+PASS stationary jump has source-dependent forward momentum {"phase": "airborne", "speed": 5.0}
+PASS walk-start jump has source-dependent forward momentum {"phase": "airborne", "speed": 5.0}
+PASS walk jump has source-dependent forward momentum {"phase": "airborne", "speed": 5.0}
+PASS run jump has source-dependent forward momentum {"phase": "airborne", "speed": 8.5}
+PASS sprint jump has source-dependent forward momentum {"phase": "airborne", "speed": 11.0}
+PASS run and sprint jumps are not forced to the same velocity [5.0, 5.0, 5.0, 8.5, 11.0]
+PASS walkable uphill slope gains only terrain height 2.14362645149231
+PASS downhill running/jumping leaves the slope without sticking {"at": "(-27.88056, 0.900375, -24.36992)", "max_y": 3.10404920578003}
+PASS steep wedge cannot accumulate upward launch energy {"at": "(-27.77083, 0.922258, -10.74735)", "max_y": 1.77242076396942, "speed": 7.61089611053467}
+PASS ordinary movement does not shove a heavy parked vehicle {"movement": "(-0.000006, 0.0, -0.000002)", "speed": 9.21529135666788e-07}
+PASS fresh collision damages an already active knockdown {"after": 44.1212556498567, "age": 2.83333333333333, "before": 99.99285, "closing": 9.98177433013916, "contacts": 137, "fresh_hits": 1, "normal": "(0.033619, -0.584678, 0.810568)"}
+PASS sustained resting contact does not drain pedestrian health {"after": 44.1212556498567, "before": 44.1212556498567}
+PASS subsequent severe impact can kill a downed pedestrian {"fresh_hits": 2, "health": 0.0, "life": "dead"}
+
+stories_assets: 10 assertions, 0 failures
+PASS all 44 supplied IFP blocks retained 44
+PASS all 781 source clips retained without name collisions 781
+PASS native catalog includes every source clip and 387 gameplay aliases 1168
+PASS every native key matches source with explicit last-key-wins duplicate times {"channels": 17666, "keys": 294062, "max_error": 1.78813934326172e-07, "mismatches": 0, "missing_tracks": 0}
+PASS active aliases preserve exact native animation objects null
+PASS VCS controls main locomotion and Colt actions null
+PASS all four active bike blocks come from the LCS PS2 conversion null
+PASS selective model extraction never unpacks full IMG null
+PASS all 28 additional model roles have native scenes null
+PASS VCS fist DAT moves bind to supplied clips null
+
+stories: 77 assertions, 0 failures
+PASS exact Godot 4.7.2 Stable and Jolt backend null
+PASS 24 supported weapon entries have exact imported models 24
+PASS no firearm or melee model is substituted null
+PASS melee arsenal is reusable through Resource clip lists 12
+PASS space-prefixed Colt arm tracks bind by original bone ID null
+PASS LCS bike leg and hand tracks bind to original rig null
+PASS hip firing raises arm without steering walking body to camera {"facing_after": -0.920796334820512, "facing_before": -0.920796334820512, "shots": 4}
+PASS one-handed hip fire retains base pose on left arm null
+PASS two-handed aim uses a compact reachable support grip 0.0649054795503616
+PASS native VCS reload clip owns supplied arm articulation "colt45_reload"
+PASS launch and airborne weapon restrictions survive animation replacement "airborne"
+PASS pump shotgun recovery owns the native fire clip during ammunition recovery "shotgun_fire"
+PASS pump-shot cadence waits for the source loop before the next shot 0.66
+PASS Tec9 binds the supplied TEC action block null
+PASS unarmed attacks consume actual planar clip displacement {"clip": "FIGHTpunch", "distance_m": 0.261898279190063}
+PASS source player attack stat is not multiplied into punch damage 5.85
+PASS spatial limb sweep damages a pedestrian without instant death {"after": 94.15, "before": 100.0, "hits": 1}
+PASS attacked pedestrians enter fight state instead of ignoring melee {"state": "fight", "swings": 3}
+PASS pedestrian melee can physically hit the player 95.4955
+PASS bat selects its supplied weapon swing and visible exact model "WEAPON_bat_v"
+PASS zero-root weapon clips permit collision-swept attack shuffling 0.584418177604675
+PASS melee damages exactly the struck panel 1
+PASS panel damage and engine health have independent scales 15.0
+PASS terminal panel damage creates an independent physical fragment null
+PASS a missing panel cannot respawn another fragment after debris expires null
+PASS repair restores panels and clears transient fragments null
+PASS an actual bat swing can hit car geometry {"after": 995.8, "before": 1000.0, "hits": 1, "tip": "(0.373077, 1.085215, 17.1406)"}
+PASS real Jolt collision damages localized panels rather than every panel {"damaged": 1, "health": 789.130752279516, "total": 8}
+PASS shot tires retain their full visual dimensions null
+PASS flat tires lower physical support and let wheels sink {"flat_y": 0.537999987602234, "healthy_y": 0.650000095367432}
+PASS flat tire grip and drag are separately configurable null
+PASS native car acceleration reaches 10 m/s within two seconds {"seconds_to_10mps": 1.26666666666667, "speed": 10.02503490448}
+PASS high-speed turning uses curvature-limited steering without routine flips {"maximum_steer": 0.0521754335993973, "minimum_up_dot": 0.99980103969574, "speed": 28.5064582824707}
+PASS tilted vehicle exit finds a clear upright destination 1.5707963267949 ""
+PASS overturned exit selects supplied crawl animation 1.5707963267949 "CAR_crawloutRHS"
+PASS crawl pose mirrors to the selected door 1.5707963267949 null
+PASS tilted exit releases occupancy and restores on-foot control 1.5707963267949 {"at": "(8.4, 0.900375, 12.0)", "state": "on_foot"}
+PASS tilted vehicle exit finds a clear upright destination 3.14159265358979 ""
+PASS overturned exit selects supplied crawl animation 3.14159265358979 "CAR_crawloutRHS"
+PASS crawl pose mirrors to the selected door 3.14159265358979 null
+PASS tilted exit releases occupancy and restores on-foot control 3.14159265358979 {"at": "(11.6, 0.900375, 12.0)", "state": "on_foot"}
+PASS moving car permits a validated bailout "ejecting"
+PASS bailout transfers control once and frees vehicle occupancy null
+PASS bailout preserves vehicle momentum in a physical reaction body {"clip": "CAR_rollout_LHS", "velocity": "(1.489955, -1.470371, -11.43543)"}
+PASS moving car uses supplied rollout animation "CAR_rollout_LHS"
+PASS four actual bike types are installed 4
+PASS car and bike contact lists remain independent per instance null
+PASS bikes have no invisible car windshield hit region null
+PASS bike handlebars and forks have independent steering presentation bindings null
+PASS two-contact bike settles upright pcj600 {"at": "(17.96498, 0.344785, -0.017032)", "up": 0.994868576526642}
+PASS bike entry uses LCS mount clip pcj600 "BIKEs_jumponL"
+PASS bike seat commits unique driver pcj600 null
+PASS bike accelerates with a balanced visible rider pcj600 {"clip": "BIKEs_Ride", "speed": 15.65576171875, "up": 0.999884247779846}
+PASS bike exit uses LCS dismount clip pcj600 "BIKEs_getoffLHS"
+PASS bike dismount restores continuous on-foot loop pcj600 null
+PASS two-contact bike settles upright sanchez {"at": "(17.87432, 0.433648, -0.000043)", "up": 0.959739208221436}
+PASS bike entry uses LCS mount clip sanchez "BIKEd_jumponR"
+PASS bike seat commits unique driver sanchez null
+PASS right-side bike mount reserves the driver and uses right mount clip null
+PASS bike accelerates with a balanced visible rider sanchez {"clip": "BIKEd_Ride", "speed": 18.3459186553955, "up": 0.91321873664856}
+PASS bike exit uses LCS dismount clip sanchez "BIKEd_getoffRHS"
+PASS bike dismount restores continuous on-foot loop sanchez null
+PASS two-contact bike settles upright faggio {"at": "(17.9666, 0.349709, 0.000123)", "up": 0.995252847671509}
+PASS bike entry uses LCS mount clip faggio "BIKEv_jumponL"
+PASS bike seat commits unique driver faggio null
+PASS bike accelerates with a balanced visible rider faggio {"clip": "BIKEv_Ride", "speed": 16.9404449462891, "up": 0.999658286571503}
+PASS bike exit uses LCS dismount clip faggio "BIKEv_getoffLHS"
+PASS bike dismount restores continuous on-foot loop faggio null
+PASS two-contact bike settles upright freeway {"at": "(17.96472, 0.348171, 0.000322)", "up": 0.995336771011353}
+PASS bike entry uses LCS mount clip freeway "BIKEh_jumponL"
+PASS bike seat commits unique driver freeway null
+PASS bike accelerates with a balanced visible rider freeway {"clip": "BIKEh_Ride", "speed": 17.4446868896484, "up": 0.999741017818451}
+PASS bike exit uses LCS dismount clip freeway "BIKEh_getoffLHS"
+PASS bike dismount restores continuous on-foot loop freeway null
+PASS moving bike accepts a validated jump-off null
+PASS bike jump-off uses the bike fall clip and releases its seat "BIKE_fall_off"
+PASS passenger bailout cannot steal an existing driver's control null
+
+TOTAL: 435 assertions, 0 failures. Original-runtime parity unverified.

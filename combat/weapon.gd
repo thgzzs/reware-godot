@@ -77,6 +77,7 @@ func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Ca
  if not cmd.fire or not trigger_allowed: return
  if actor!=null and not actor.can_use_weapon(): return
  if profile.kind=="melee":
+  if cooldown>0.000001: return
   melee.damage = profile.damage
   if melee.request(): cooldown=profile.interval
   return
@@ -85,7 +86,7 @@ func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Ca
   var target := AimSolution.camera_target(space,camera,profile.range_meters,exclude)
   var toward := -camera.global_basis.z
   var forward := Basis(Vector3.UP,actor.facing)*Vector3.FORWARD
-  if forward.dot(Vector3(toward.x,0,toward.z).normalized())<cos(1.1): return
+  if forward.dot(Vector3(toward.x,0,toward.z).normalized())<cos(1.1 if cmd.aim or profile.two_handed else 1.65): return
  if magazine<=0:
   start_reload()
   return

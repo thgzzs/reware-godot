@@ -2,6 +2,7 @@ class_name CharacterMotor
 extends CharacterBody3D
 ## CharacterBody supplies swept collision only; acceleration, support, steps,
 ## sliding, launch and landing policy belong to this component.
+signal attacked(event: DamageEvent)
 @export var profile: MovementProfile
 @onready var visual: Node3D = $Visual
 var reference_motion: ReferenceMotion
@@ -69,7 +70,7 @@ func _ready() -> void:
   control_enabled = false
   actions.begin_life("dying")
   set_reaction_shape())
- weapon.shot_fired.connect(func(_a: Vector3,_b: Vector3,_hit: bool): actions.fire(weapon.profile.interval))
+ weapon.shot_fired.connect(func(_a: Vector3,_b: Vector3,_hit: bool): actions.fire(weapon.profile.interval,weapon.profile.native_fire_recovery))
 func configure_reference(db: ImportedGameplayDatabase, stat: String, library: AnimationLibrary) -> void:
  archetype = stat
  var record := db.find_record("ped_stats",stat)
@@ -106,6 +107,7 @@ func receive_hit(event: DamageEvent) -> void:
   var pose := reference_pose as SkinnedMotionVisual
   var head := pose.skeleton.find_bone("Head")
   if head>=0 and event.point.distance_to(pose.skeleton.global_transform*pose.skeleton.get_bone_global_pose(head).origin)<0.3: event.part = "head"
+ attacked.emit(event)
  actions.choose_reaction(event,facing,global_position)
  reaction_velocity += event.direction*minf(2.0,event.amount*0.02)
  health.receive(event.amount)
@@ -167,6 +169,7 @@ func tick_reaction(dt: float) -> void:
  if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
   restore_control()
 func restore_control() -> void:
+ if reference_pose!=null:reference_pose.scale=Vector3.ONE
  if is_instance_valid(occupant_hitbox): occupant_hitbox.collision_layer = 0
  stance.reset()
  if reaction_body.active: reaction_body.deactivate()
@@ -178,6 +181,7 @@ func restore_control() -> void:
  $CollisionShape3D.position = Vector3.ZERO
  reaction_velocity = Vector3.ZERO
  if reference_enabled:
+  reference_motion.vehicle_layers.clear()
   reference_motion.phase = "idle"
   reference_motion.set_clip("IDLE_stance")
 func respawn(where: Vector3) -> void:
@@ -238,15 +242,15 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   elif actions.melee_active:
    reference_motion.force_action(actions.melee_clip,0)
    reference_motion.time = actions.melee_time
-   drive_velocity = Vector3.ZERO
+   drive_velocity = Basis(Vector3.UP,facing)*weapon.melee.root_delta()/maxf(0.00001,dt)+direction*weapon.melee.profile.shuffle_speed
   elif stance.crouched: reference_motion.force_action(stance.profile.crouch_clip,dt)
   elif phase=="launch": reference_motion.force_action("JUMP_launch",dt)
   elif phase=="landing": reference_motion.force_action("HIT_wall" if blocked_jump else "JUMP_land",dt)
   elif not grounded: reference_motion.force_action("JUMP_glide",dt)
   else:
    local_delta = reference_motion.step(direction.length(),cmd.sprint and not (cmd.aim or cmd.fire or weapon.reload_left>0) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy),cmd.walk,dt)
-  if not actions.melee_active and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or cmd.fire):
-   var angle := camera_yaw if cmd.aim or cmd.fire else atan2(-direction.x,-direction.z)
+  if not actions.melee_active and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed)):
+   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed) else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,profile.turn_rate*dt)
   visual.rotation.y = facing
   if grounded and phase!="launch" and not actions.melee_active: drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
@@ -277,8 +281,8 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   velocity.z = horizontal.z
   if grounded and phase not in ["launch","airborne"]: velocity.y = horizontal.y
   else: velocity.y -= profile.gravity*dt
-  if direction.length_squared()>0.01 or cmd.aim or cmd.fire:
-   var angle := camera_yaw if cmd.aim or cmd.fire else atan2(-direction.x,-direction.z)
+  if direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed):
+   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed) else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,profile.turn_rate*dt)
    visual.rotation.y = facing
  actions.upper_allowed = actions.upper_allowed and phase=="grounded" and control_enabled
@@ -396,7 +400,9 @@ func ignore_vehicle_until_restored(body: PhysicsBody3D) -> void:
  add_collision_exception_with(body)
  collision_grace = 0.1
 func set_embarked(value: bool) -> void:
- if not value: visual.rotation = Vector3(0,facing,0)
+ if not value:
+  visual.rotation = Vector3(0,facing,0)
+  if reference_pose!=null:reference_pose.scale=Vector3.ONE
  occupant_hitbox.collision_layer = 8 if value else 0
  control_enabled = not value
  collision_layer = 0 if value else (10 if reference_enabled else 2)

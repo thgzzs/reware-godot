@@ -1,5 +1,5 @@
 {
-  "assertions": 53,
+  "assertions": 54,
   "backend": "Jolt Physics",
   "engine": "4.7.2-stable (official)",
   "failures": 0,
@@ -51,7 +51,7 @@
     },
     {
       "measured": null,
-      "name": "four-door physics fixture owns four physical hinges",
+      "name": "four-door native car keeps four hinges and rear-door seat mappings",
       "passed": true
     },
     {
@@ -112,32 +112,37 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.0009765625,
       "name": "pistol aiming leaves the left arm on its base pose",
       "passed": true
     },
     {
       "measured": null,
-      "name": "backward hip fire waits for body turn instead of twisting arms",
+      "name": "hip fire outside arm range blocks an impossible backward shot",
       "passed": true
     },
     {
       "measured": null,
-      "name": "firing resumes once body can face the camera target",
+      "name": "hip fire does not rotate the whole actor toward a backward target",
       "passed": true
     },
     {
-      "measured": "(16.985, 0.32, 3.307997)",
+      "measured": null,
+      "name": "firing resumes when movement or aim faces within the arm cone",
+      "passed": true
+    },
+    {
+      "measured": "(16.985, 0.32, 3.307995)",
       "name": "bullet ray identifies the actual tire component",
       "passed": true
     },
     {
-      "measured": "(1.0, 0.65, 0.65)",
-      "name": "tire hit persists and lowers the visual rolling radius",
+      "measured": "(1.0, 1.0, 1.0)",
+      "name": "tire hit persists without shrinking its visual mesh",
       "passed": true
     },
     {
-      "measured": "(17.95784, 1.142519, 4.24892)",
+      "measured": "(17.96044, 1.143473, 4.249655)",
       "name": "windshield ray resolves its own native glass region",
       "passed": true
     },
@@ -208,7 +213,7 @@
     },
     {
       "measured": {
-        "after": 76.0,
+        "after": 94.15,
         "before": 100.0
       },
       "name": "melee strike window damages a nearby actor",
@@ -245,35 +250,35 @@
       "passed": true
     },
     {
-      "measured": 719.077517250343,
+      "measured": 719.077678999957,
       "name": "world collision removes meaningful vehicle health",
       "passed": true
     },
     {
       "measured": {
-        "after": 719.077517250343,
-        "before": 719.077517250343
+        "after": 719.077678999957,
+        "before": 719.077678999957
       },
       "name": "resting wall contact does not repeatedly deal damage",
       "passed": true
     },
     {
       "measured": [
-        280.922482749657,
-        280.922482749657
+        280.922321000043,
+        280.922321000043
       ],
       "name": "collision damage uses world normals under vehicle rotation",
       "passed": true
     },
     {
-      "measured": 8.28990268707275,
+      "measured": 5.13607692718506,
       "name": "a car transfers physical momentum to a trash can",
       "passed": true
     },
     {
       "measured": {
-        "hitter": 911.491422122334,
-        "struck": 912.099688313839
+        "hitter": 906.77720054108,
+        "struck": 912.094816408918
       },
       "name": "vehicle-to-vehicle impacts damage both bodies",
       "passed": true

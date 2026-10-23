@@ -122,11 +122,12 @@ func _physics_process(dt: float) -> void:
 	weapon.advance(cmd,armed,dt)
 	actor.actions.aim_pitch = rig.pitch
 	actor.tick(cmd,rig.yaw,dt)
+	weapon.melee.resolve_spatial_hits()
 	var active_car: DriveVehicle = transition.vehicle if is_instance_valid(transition.vehicle) else vehicle
 	for child in get_children():
 		if child is DriveVehicle:
 			if driving and child==active_car: child.command(cmd,"player")
-			elif not is_instance_valid(child.driver) and child.control_owner!="external": child.park()
+			elif not is_instance_valid(child.driver) and child.control_owner not in ["external","coasting"]: child.park()
 	rig.vehicle_basis = active_car.global_basis
 	rig.vehicle_origin = active_car.global_position
 	var pivot := active_car.global_position+Vector3.UP*0.8 if transition.state!="on_foot" else actor.global_position+Vector3.UP*(0.55-actor.stance.profile.camera_drop if actor.stance.crouched else 0.55)

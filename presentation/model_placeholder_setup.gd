@@ -6,6 +6,7 @@ static func apply_character(actor: CharacterMotor, assets: PlaceholderAssets) ->
  for child in actor.visual.get_children(): child.queue_free()
  var driver := SkinnedMotionVisual.new()
  driver.name = "SkinnedPresentation"
+ driver.rig_profile=load(assets.rig_profile) as AnimationRigProfile if ResourceLoader.exists(assets.rig_profile) else null
  driver.motion = actor.reference_motion
  driver.actions = actor.actions
  driver.position = assets.character_offset
@@ -31,7 +32,8 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
  model.name = "VehiclePresentation"
  model.position = assets.vehicle_offset
  car.add_child(model)
- for pair in [[0,"door_lf_dummy"],[1,"door_rf_dummy"]]:
+ for pair in [[0,"door_lf_dummy"],[1,"door_rf_dummy"],[2,"door_lr_dummy"],[3,"door_rr_dummy"]]:
+  if pair[0]>=car.doors.size():continue
   var frame := model.find_child(pair[1],true,false) as Node3D
   if frame!=null:
    var door: VehicleDoor = car.doors[pair[0]]
@@ -61,6 +63,8 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
   car.door_profile.seat_offset += car.door_profile.seat_marker_adjustment
  var rear := model.find_child("ped_backseat",true,false) as Node3D
  car.seating.configure(car.door_profile.seat_offset,car.to_local(rear.global_position) if rear!=null else Vector3.INF)
+ if car.doors.size()>=4:
+  for index in range(2,car.seating.definitions.size()):car.seating.definitions[index].door=2+(index%2)
  car.damage.windshield_ok = model.find_child("windscreen_hi_ok",true,false) as Node3D
  car.damage.windshield_damaged = model.find_child("windscreen_hi_dam",true,false) as Node3D
  VehicleHitboxes.refresh(car,car.damage.windshield_ok)
@@ -109,7 +113,58 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
   spin.add_child(hub)
   hub.position.x = -0.12 if wheel.position.x<0 else 0.12
   hub.rotation.y = -PI*0.5 if wheel.position.x<0 else PI*0.5
- car.set_meta("placeholder_model","idaho")
+ car.parts.bind_model()
+ car.set_meta("placeholder_model",assets.vehicle_scene.get_file().get_basename())
+static func apply_bike(car: DriveVehicle, assets: PlaceholderAssets) -> void:
+ var packed:=assets.scene(assets.vehicle_scene)
+ if packed==null:return
+ for name in ["Body","Windows","LampLeft","LampRight"]:car.get_node(name).hide()
+ var model:=packed.instantiate() as Node3D
+ model.name="VehiclePresentation"
+ model.position=assets.vehicle_offset
+ car.add_child(model)
+ for name in ["handlebars","forks_front"]:
+  var node:=model.find_child(name,true,false) as Node3D
+  if node!=null:
+   car.bike.steering_nodes.append(node)
+   car.bike.steering_rest.append(node.basis)
+ var radii:Array[float]=[]
+ for pair in [[0,"wheel_front"],[2,"wheel_rear"]]:
+  var wheel:=model.find_child(pair[1],true,false) as Node3D
+  if wheel==null:continue
+  var bounds:=AABB()
+  var has_bounds:=false
+  for mesh in wheel.find_children("*","MeshInstance3D",true,false):
+   var relative:Transform3D=wheel.global_transform.affine_inverse()*mesh.global_transform
+   var box:AABB=relative*mesh.get_aabb()
+   bounds=bounds.merge(box) if has_bounds else box
+   has_bounds=true
+  if has_bounds:
+   var radius:=maxf(bounds.size.y,bounds.size.z)*0.5
+   if radius>0.1 and radius<0.6:radii.append(radius)
+  var local:=car.to_local(wheel.global_position)
+  car.mounts[pair[0]].z=local.z
+  var spin:=car.wheel_spinners[pair[0]]
+  for child in spin.get_children():child.hide()
+  wheel.reparent(spin,true)
+  wheel.position=Vector3.ZERO
+  var sag:float=car.profile.suspension_length+local.y-float(car.mounts[pair[0]].y)
+  if sag>0.03:
+   car.profile.static_sag=sag
+   car.profile.spring_rate=car.mass*float(ProjectSettings.get_setting("physics/3d/default_gravity"))/(2*sag)
+   car.profile.damper=2*sqrt(car.profile.spring_rate*car.mass/2)*car.profile.damping_ratio
+ if not radii.is_empty():
+  var sum:=0.0
+  for radius in radii:sum+=radius
+  car.profile.wheel_radius=sum/radii.size()
+ var seat:=model.find_child("ped_frontseat",true,false) as Node3D
+ var rear:=model.find_child("ped_backseat",true,false) as Node3D
+ if seat!=null:car.seating.definitions[0].anchor=car.to_local(seat.global_position)+Vector3(0,-0.02,0.10)
+ if rear!=null:car.seating.definitions[1].anchor=car.to_local(rear.global_position)+Vector3(0,-0.02,0.10)
+ car.seating.definitions[0].seated_clip=car.bike_animation+"_Ride"
+ car.seating.definitions[1].seated_clip=car.bike_animation+"_passenger"
+ car.parts.bind_model()
+ car.set_meta("placeholder_model",assets.vehicle_scene.get_file().get_basename())
 static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  var shots := ShotPresentation.new()
  arena.add_child(shots)

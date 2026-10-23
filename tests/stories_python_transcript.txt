@@ -1,0 +1,28 @@
+test_bad_data_is_rejected (test_asset_conversion.FightDataTests.test_bad_data_is_rejected) ... ok
+test_frame_units_sentinels_and_inactive_reactions (test_asset_conversion.FightDataTests.test_frame_units_sentinels_and_inactive_reactions) ... ok
+test_all_data_tables (test_asset_conversion.SuppliedAssetTests.test_all_data_tables) ... ok
+test_declared_animation_count_enforced (test_asset_conversion.SuppliedAssetTests.test_declared_animation_count_enforced) ... ok
+test_oversized_chunk_rejected (test_asset_conversion.SuppliedAssetTests.test_oversized_chunk_rejected) ... ok
+test_package_counts (test_asset_conversion.SuppliedAssetTests.test_package_counts) ... ok
+test_truncation_rejected (test_asset_conversion.SuppliedAssetTests.test_truncation_rejected) ... ok
+test_units_and_relationships_preserved (test_asset_conversion.SuppliedAssetTests.test_units_and_relationships_preserved) ... ok
+test_unknown_key_encoding_rejected (test_asset_conversion.SuppliedAssetTests.test_unknown_key_encoding_rejected) ... ok
+test_every_png_preserves_decoded_rgba (test_model_conversion.ModelConversionTests.test_every_png_preserves_decoded_rgba) ... ok
+test_inspection_skips_unrecognized_sectors_without_export (test_model_conversion.ModelConversionTests.test_inspection_skips_unrecognized_sectors_without_export) ... ok
+test_matrix_basis_conjugation (test_model_conversion.ModelConversionTests.test_matrix_basis_conjugation) ... ok
+test_selected_original_model_hashes (test_model_conversion.ModelConversionTests.test_selected_original_model_hashes) ... ok
+test_engine_caches_and_output_archive_are_excluded (test_project_package.ProjectPackageTests.test_engine_caches_and_output_archive_are_excluded) ... ok
+test_strict_extractor_can_write_every_nested_file (test_project_package.ProjectPackageTests.test_strict_extractor_can_write_every_nested_file) ... ok
+test_overlay_keeps_private_assets (test_rebuild_test_build.RebuildTests.test_overlay_keeps_private_assets) ... ok
+test_rejects_traversal (test_rebuild_test_build.RebuildTests.test_rejects_traversal) ... ok
+test_repairs_original_217_file_zip_without_changing_asset_bytes (test_rebuild_test_build.RebuildTests.test_repairs_original_217_file_zip_without_changing_asset_bytes) ... ok
+test_dry_run_does_not_read_payload_or_create_output (test_selected_img.SelectedImgTests.test_dry_run_does_not_read_payload_or_create_output) ... ok
+test_existing_output_is_preserved (test_selected_img.SelectedImgTests.test_existing_output_is_preserved) ... ok
+test_invalid_selection_rejected_before_output (test_selected_img.SelectedImgTests.test_invalid_selection_rejected_before_output) ... ok
+test_missing_duplicate_truncated_bounds_and_overlap (test_selected_img.SelectedImgTests.test_missing_duplicate_truncated_bounds_and_overlap) ... ok
+test_only_requested_payloads_and_padding (test_selected_img.SelectedImgTests.test_only_requested_payloads_and_padding) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.184s
+
+OK

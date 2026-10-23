@@ -8,7 +8,7 @@ This design uses scene composition and small components rather than an engine hi
 | CharacterMotor | Intent acceleration, support, sweep/slide, steps, jump, collision pushes | MovementProfile; camera yaw; fixed dt |
 | WeaponController | Ammo, cooldown, reload, two-stage ray, damage dispatch | WeaponProfile; camera, muzzle, space, exclusions; shot/recoil signals |
 | DamageReceiver | Health and prototype target reset | `receive_damage(amount, point, direction)`; damaged/depleted signals |
-| DriveVehicle | Rigid body, input latch, steering, seat ownership | HandlingProfile; four independent wheel solver objects |
+| DriveVehicle | Rigid body, input latch, steering, seat ownership | HandlingProfile; four car or two bike contact solvers |
 | WheelForceSolver | Ground query, spring/damper and combined tire forces | Direct body state + space; SI values; no player knowledge |
 | VehicleTransition | Seat transaction, validation, timing, collision/control changes | Actor, candidate vehicle, InteractionProfile; state_changed signal |
 | FollowCameraRig | Follow/aim/drive framing, lag, swept obstruction and recoil | CameraProfile; target point and exclusion RIDs; no actor lookup |
@@ -26,7 +26,7 @@ At 60 physics ticks per second:
 1. Sample or inject one command. A jump/interact/reload edge exists for one tick.
 2. Read camera look, validate interaction and advance the transition transaction.
 3. Advance weapon selection, cooldown and reload once, then actor action clocks and motor.
-4. Latch the committed driver's command; otherwise park locally owned cars while respecting explicit external control.
+4. Latch the committed driver's command; otherwise respect parked/coasting/external ownership.
 5. Update follow camera/obstruction and solve the camera-center aim target.
 6. Sample the controlled actor pose once, update bone attachments, then resolve muzzle-occluded firing.
 7. Record orchestration CPU time. Each vehicle owns its own wheel presentation callback.
@@ -39,7 +39,7 @@ Jolt invokes vehicle `_integrate_forces` independently with the last latched com
 
 Entry requires grounded actor, reach, line of sight, upright slow vehicle and an unoccupied/unreserved seat. Reserving is synchronous; a competing requester cannot reserve the same seat. Entering suppresses foot/weapon control and parks the car. A timed completion commits the reserved driver exactly once. Loss of vehicle or excessive movement rolls back to the saved approach point.
 
-Driving enables one vehicle input consumer while the foot motor is disabled. Exit requires low linear speed and a supported, clear capsule volume. The prototype tests left, right, then rear candidate positions. Ownership remains committed throughout exiting. On commit it queries again, so a new blocker cancels exit and keeps the driver. A successful commit places the actor, restores control/collision, releases the driver and parks the car.
+Driving enables one vehicle input consumer while the foot motor is disabled. Normal exit requires a supported, clear capsule volume. A moving exit validates a bailout route and hands collision ownership to the physical reaction body. Tilted cars use an upright-world destination and animated crawl path. The prototype tests left, right, then rear candidate positions. Ownership remains committed throughout exiting. On commit it queries again, so a new blocker cancels exit and keeps the driver. A successful commit places the actor, restores control/collision, releases the driver and parks the car.
 
 A collision exception between the actor and the occupied vehicle persists during transfer and for 0.1 s after restoration. This prevents cached Jolt overlap contacts from imparting a spurious impulse as the collision-disabled occupant is moved outside. The acceptance suite checks post-exit vehicle stability. Collision with that one vehicle is suppressed during this short grace interval; it is a documented prototype compromise. The capsule exit test still includes the vehicle before committing.
 
@@ -47,7 +47,7 @@ Entry and exit presently use configured time gates, not skeletal animation marke
 
 ## Extending
 
-- Add a vehicle: duplicate `scenes/vehicle.tscn`, change visuals/shape, inject a HandlingProfile. The four-wheel layout currently lives in DriveVehicle and must be generalized for bikes/boats/aircraft.
+- Add a vehicle: duplicate `scenes/vehicle.tscn`, change visuals/shape, inject a HandlingProfile. Configure active contacts and, for bikes, BikeProfile and clip prefix. Boats/aircraft require new dynamics modules.
 - Add a character archetype: reuse CharacterMotor and a MovementProfile with another command producer and presentation scene. No protagonist name is embedded in gameplay modules.
 - Add a weapon: reuse WeaponController with another WeaponProfile for hitscan types. WeaponLoadout provides switching and per-slot ammo; a projectile strategy remains future work.
 - Add a camera mode: supply another presentation strategy through the rig boundary; current follow/aim/driving modes are parameters of one rig.
@@ -72,7 +72,7 @@ Each CharacterMotor owns ActorActionState, PedHealth and WeaponController. Playe
 
 DriveVehicle composes a PedestrianImpactProbe and two VehicleDoor bodies. VehicleDoorProfile owns hinge, mass, panel, seat and approach tuning; each vehicle duplicates its profile before model markers adjust it. A latched door has no active joint so freezing it cannot pin the chassis to the world. VehicleTransition reserves and commits occupancy around separate opening/get-in/inside-close and get-out/outside-close stages. Exit volume and route are checked again on the same selected exit index.
 
-EquippedWeaponVisual maps firearm families to replaceable scenes; missing long guns use explicit primitive shapes. Unknown original gun animation blocks use procedural action fallbacks and are listed as discrepancies.
+EquippedWeaponVisual binds exact scene roles. The active imported arsenal has 24 entries and native VCS weapon actions. WeaponActionCatalog stores clip lists, muzzle/tip calibration and grip Resources; unavailable assets are not silently aliased to another weapon.
 
 ## Motion ownership revision
 
@@ -83,3 +83,7 @@ AimSolution provides the camera-center target to the actor's world-space hand so
 Each actor composes one dormant top-level PedReactionBody. On impact, the standing collider yields collision/motion ownership to this 75 kg Jolt torso. The body uses CCD, world/vehicle/door/actor contacts, bounded lift and opposite car impulse. The skeleton follows the physical pelvis; it does not also drive the body transform. Recovery requires slow motion, a supported clear standing volume and a get-up action. Death retains the physical body; respawn deactivates and reuses it. It is a single rigid torso approximation, not a per-bone ragdoll.
 
 Each wheel has a steer/suspension parent and an axle spin pivot carrying both tire and visible hub. Rates use the wheel solver's relative longitudinal contact velocity; airborne wheels use chassis speed as a presentation fallback. Physical wheel inertia is still unimplemented.
+
+## Current Stories modules
+
+RigBinding resolves original source bone IDs and caches channel-index mappings for each rig/clip, including duplicate display names. MeleeController passes planar clip displacement through the motor and sweeps animated attack tips. PedBrain only supplies intent; damage and strikes use the shared actor components. VehicleParts owns localized health/variants/fragment lifetime; VehicleStability owns contact-limited steering/anti-roll; BikeDynamics owns two-contact balance and lean. VehicleExitSolver owns clearance, while VehicleTransition retains occupancy until an exit or bailout commit. See STORIES_REVISION.md for configuration and extension paths.

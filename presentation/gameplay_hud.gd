@@ -179,10 +179,12 @@ func draw_radar(rect: Rect2) -> void:
  if icons.radar_disc!=null: draw_texture_rect(icons.radar_disc,rect,false)
  draw_arc(center,rect.size.x*0.5-2,0,TAU,64,AQUA,2)
  # Local test-yard radar; it does not pretend to be the original game's map.
- var origin: Vector3 = arena.vehicle.global_position if arena.transition.state=="driving" else arena.actor.global_position
+ var active: DriveVehicle = arena.transition.vehicle
+ var origin: Vector3 = active.global_position if is_instance_valid(active) else arena.actor.global_position
  for target in arena.targets: radar_point(target.global_position,origin,center,PINK,3)
  for ped in arena.pedestrians: radar_point(ped.global_position,origin,center,INK,2)
- radar_point(arena.vehicle.global_position,origin,center,AQUA,4)
+ for child in arena.get_children():
+  if child is DriveVehicle: radar_point(child.global_position,origin,center,AQUA,4)
  draw_line(center+Vector2(-50,0),center+Vector2(50,0),Color(1,1,1,0.1))
  draw_line(center+Vector2(0,-50),center+Vector2(0,50),Color(1,1,1,0.1))
  if icons.player_marker!=null: draw_texture_rect(icons.player_marker,Rect2(center-Vector2.ONE*8,Vector2.ONE*16),false)
@@ -199,13 +201,13 @@ func draw_world_markers() -> void:
   for wheel in arena.vehicle.wheels:
    if not camera.is_position_behind(wheel.point): draw_circle(camera.unproject_position(wheel.point),4,AQUA if wheel.touching else PINK)
 func draw_help(screen: Vector2) -> void:
- var rect := Rect2(Vector2(18,116),Vector2(minf(430,screen.x-36),minf(280,screen.y-300)))
+ var rect := Rect2(Vector2(18,116),Vector2(minf(430,screen.x-36),maxf(180,minf(370,screen.y-134))))
  draw_rect(rect,BACK)
- var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire","R Reload / E Enter or exit", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
+ var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire or strike","R Reload / E Enter, exit or bail", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
  if diagnostics:
   var motor: CharacterMotor = arena.actor
   lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]
+ var step := minf(28,(rect.size.y-20)/lines.size())
  for i in range(lines.size()):
-  if 28+i*28>rect.size.y: break
-  text_at(lines[i],rect.position+Vector2(16,28+i*28),16 if i==0 else 14,AQUA if i==0 else INK,rect.size.x-32)
+  text_at(lines[i],rect.position+Vector2(16,18+i*step),16 if i==0 else (12 if step<22 else 14),AQUA if i==0 else INK,rect.size.x-32)
 

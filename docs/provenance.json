@@ -19,7 +19,7 @@
     "https://docs.godotengine.org/en/4.7/classes/class_physicsbody3d.html",
     "https://docs.godotengine.org/en/4.7/classes/class_physicsdirectspacestate3d.html"
   ],
-  "verified_at": "2026-10-22",
+  "verified_at": "2026-10-23",
   "source_files_reviewed": [
     "src/peds/PlayerPed.cpp",
     "src/peds/Ped.cpp",
@@ -34,7 +34,12 @@
     "src/vehicles/HandlingMgr.cpp",
     "src/vehicles/Transmission.cpp",
     "src/entities/Physical.cpp",
-    "src/animation/AnimBlendAssociation.cpp"
+    "src/animation/AnimBlendAssociation.cpp",
+    "src/peds/PedFight.cpp",
+    "src/vehicles/Bike.cpp",
+    "src/peds/CivilianPed.cpp",
+    "src/control/CarCtrl.cpp",
+    "src/vehicles/DamageManager.cpp"
   ],
   "asset_import": {
     "source_files": [
@@ -48,21 +53,22 @@
     ],
     "missing_files": [],
     "source_sha256": {
-      "weapon.dat": "a96fe002cbaa80324f5f40fd1de465e40364c027136e1c3270fee4b63d918514",
-      "fistfite.dat": "5e75d5701fa19590d4368c1dc6f629675865c0f5356d0b971186c0e7a7251185",
-      "pedstats.dat": "429678a44fb2dbeb9c8a981889db9271b19f44ec4f8cb541f79a46190b6cc9ae",
+      "weapon.dat": "4a42abdefe407050c2749125fdaf485645da6773049e62df1e013b324bc48e21",
+      "fistfite.dat": "b71af76fdc2d7915249ae8184bf8b7f92eba3ea8bf57b7c02d868176a6be7078",
+      "pedgrp.dat": "80d9adc1296382559dc8e18a56026e819d751c859c137feded48c815f6be5049",
       "handling.cfg": "d0a97810c0ef35ba14d8e5fd0ddaabd1515f177da793157a9753bda0dbd25728",
-      "ped.dat": "b11b8fe3f062b6cf317b9e08fd8ff3978f08f45e92e7720e897dbeec34167f25",
       "ped.ifp": "a200cf5085f1549434f7459bdaeb526b883425457f38c402456d60c3c129cfe4",
-      "pedgrp.dat": "80d9adc1296382559dc8e18a56026e819d751c859c137feded48c815f6be5049"
+      "pedstats.dat": "429678a44fb2dbeb9c8a981889db9271b19f44ec4f8cb541f79a46190b6cc9ae",
+      "ped.dat": "b11b8fe3f062b6cf317b9e08fd8ff3978f08f45e92e7720e897dbeec34167f25"
     },
-    "native_clips": 234,
-    "native_channel_keys": 95427,
+    "native_clips": 781,
+    "native_channel_keys": 294062,
     "independent_source_key_comparisons": 87546,
-    "binding_validated": "selected original character: 25 frames/24 inverse binds and upright CPU skin evaluation; full action/visual parity unverified",
+    "binding_validated": "source-ID binding tests and selected native skin/action checks; full visual parity unverified",
     "external_decoder_reference": "Psycrow101/io_scene_gta_ifp@e54ad39ee2711399ff1c6596f8d572e7f4e8027b",
     "dragonff_inspected_reference": "54baca8ea2ed95fe5a86917f44399ce677379c59",
-    "third_party_tool_code_bundled": false
+    "third_party_tool_code_bundled": false,
+    "independent_source_key_comparisons_note": "87,546 keys in legacy ped.ifp; independent decoder comparison predates Stories. Current native curves are round-tripped over 294,062 coalesced keys."
   },
   "selective_model_update": {
     "fistfight_records": 32,
@@ -395,7 +401,7 @@
       "python": 18
     }
   },
-  "repository_update_base": "4b6b7bf69e6c298ef554ca2d148386e5898d1559",
+  "repository_update_base": "a2ed4384fd1b3eb92081c649591a257cc64e5c37",
   "action_revision": {
     "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
     "repository_base": "5dc3eb87d9269e7150ea860aec57639464880d26",
@@ -428,5 +434,28 @@
     "layout_captures": 6,
     "reference_runtime_tested": false,
     "browser_runtime_tested": false
+  },
+  "stories_revision": {
+    "input_sha256": {
+      "models.zip": "e61c4855f8aa86cfa09e631936590ed64e35d3868d22986b1e959a5715a83e8e",
+      "stories-animation-pack-complete-set_1746563954_297644.zip": "c4d77632f7cd293c3f5a6a39db1fd248bdacf978a6116b8fa72bcbfe6930d829"
+    },
+    "original_clips": 781,
+    "blocks": 44,
+    "aliases": 387,
+    "source_keys": 294083,
+    "native_keys": 294062,
+    "channels": 17666,
+    "additional_models": 28,
+    "additional_textures": 46,
+    "new_selected_payload_bytes": 1384856,
+    "binding": "original bone IDs, names as fallback, cached by channel index",
+    "runtime_assertions": 435,
+    "python_passed": 23,
+    "render_comparisons": 5,
+    "rendered_states": 9,
+    "reference_runtime_tested": false,
+    "browser_playback_tested": false,
+    "documentation": "docs/STORIES_REVISION.md"
   }
 }

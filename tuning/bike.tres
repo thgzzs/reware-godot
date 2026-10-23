@@ -1,0 +1,4 @@
+[gd_resource type="Resource" script_class="BikeProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://driving/bike_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")

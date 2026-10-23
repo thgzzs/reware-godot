@@ -1,6 +1,7 @@
 class_name PlaceholderAssets
 extends Resource
 ## Semantic presentation bindings. Replace paths/transforms in one Resource.
+@export_file("*.tres") var rig_profile := "res://assets/converted/models/player_rig.tres"
 @export_file("*.scn","*.tscn","*.glb") var character_scene := "res://assets/converted/models/player.scn"
 @export_file("*.scn","*.tscn","*.glb") var vehicle_scene := "res://assets/converted/models/idaho.scn"
 @export_file("*.scn","*.tscn","*.glb") var weapon_scene := "res://assets/converted/models/colt45.scn"

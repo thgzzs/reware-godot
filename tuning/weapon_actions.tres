@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponActionCatalog" load_steps=2 format=3]
+[ext_resource type="Script" path="res://combat/weapon_action_catalog.gd" id="1"]
+[resource]
+script = ExtResource("1")
+melee_sets = Dictionary[String,PackedStringArray]({
+  "baseballbat":PackedStringArray("WEAPON_bat_h","WEAPON_bat_v"),
+  "golfclub":PackedStringArray("WEAPON_golfclub","WEAPON_bat_h"),
+  "nightstick":PackedStringArray("WEAPON_bat_h","WEAPON_bat_v"),
+  "hammer":PackedStringArray("WEAPON_bat_v","WEAPON_bat_h"),
+  "knife":PackedStringArray("WEAPON_knife_in","WEAPON_knife_1","WEAPON_knife_2","WEAPON_knife_3"),
+  "screwdriver":PackedStringArray("WEAPON_knife_in","WEAPON_knife_1"),
+  "cleaver":PackedStringArray("WEAPON_knife_1","WEAPON_knife_2"),
+  "machete":PackedStringArray("sword_1","sword_2","sword_3"),
+  "katana":PackedStringArray("sword_1","sword_2","sword_3"),
+  "chainsaw":PackedStringArray("WEAPON_csaw","WEAPON_csawlo")})
+
+muzzle_offsets = Dictionary[String,Vector3]({"colt45":Vector3(0.23809,0.10353,-0.03917), "stubbyshotgun":Vector3(0.54555,0.19156,0.02044), "shotgun":Vector3(0.77122,0.2024,0.04714), "silencedingram":Vector3(0.27803,0.10601,-0.03529), "m4":Vector3(0.6231,0.13218,0.03137), "m60":Vector3(0.86022,0.22652,0.01531), "mp5":Vector3(0.45484,0.18552,0.02676), "python":Vector3(0.37271,0.12904,-0.02338), "ruger":Vector3(0.69271,0.15936,0.03289), "spas12shotgun":Vector3(0.72462,0.18644,0.03599), "tec9":Vector3(0.40784,0.11365,-0.02077), "uzi":Vector3(0.38295,0.10161,0.00322)})
+
+melee_tips = Dictionary[String,Vector3]({"baseballbat":Vector3(0.06818,0.67947,0.01938), "chainsaw":Vector3(0.86503,0.34607,-0.0377), "cleaver":Vector3(0.13251,0.28615,-0.03628), "golfclub":Vector3(0.02193,0.88139,0.01528), "hammer":Vector3(0.10535,0.34819,-0.02989), "katana":Vector3(0.04678,0.98475,0.02462), "knife":Vector3(0.13344,0.41553,-0.03967), "machete":Vector3(0.07799,0.56797,-0.02248), "nightstick":Vector3(0.05682,0.44501,-0.03016), "screwdriver":Vector3(0.16255,0.27543,0.01856)})
+
+animation_groups = Dictionary[String,String]({"tec9":"tec"})

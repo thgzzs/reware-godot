@@ -7,8 +7,11 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
  car.position = at
  car.profile = load("res://tuning/handling.tres").duplicate()
  parent.add_child(car)
+ car.kind=variant.kind
+ car.bike_animation=variant.bike_animation
  var record := db.find_record("handling",variant.handling_id)
  HandlingDataMapper.apply(car,record)
+ if record.is_empty():record=db.find_record("handling","BIKE")
  var dimensions: Array = record.dimensions_source
  var size := Vector3(float(dimensions[0]),0.50,float(dimensions[1]))
  var hull := car.get_node("Hull") as CollisionShape3D
@@ -31,8 +34,18 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
    car.doors.append(door)
   for seat in car.seating.definitions:
    if seat.id.begins_with("rear_"):seat.door+=2
- VehicleHitboxes.refresh(car)
- var label := LabGeometry.label(car,variant.handling_id+" physics fixture / mesh pending",Vector3(0,1.9,0),18)
+ var assets:=load("res://tuning/placeholder_assets.tres").duplicate() as PlaceholderAssets
+ assets.vehicle_scene=variant.model_scene
+ assets.vehicle_hull_size=size
+ if variant.kind=="bike":
+  car.bike=BikeDynamics.new()
+  car.bike.configure(car)
+  if ResourceLoader.exists(variant.model_scene):ModelPlaceholderSetup.apply_bike(car,assets)
+ else:
+  if ResourceLoader.exists(variant.model_scene):ModelPlaceholderSetup.apply_vehicle(car,assets)
+ VehicleHitboxes.refresh(car,car.damage.windshield_ok)
+ car.parts.bind_model()
+ var label := LabGeometry.label(car,variant.id+" / "+variant.handling_id,Vector3(0,1.9,0),18)
  label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
- car.set_meta("diagnostic_vehicle",true)
+ car.set_meta("diagnostic_vehicle",variant.diagnostic_only)
  return car

@@ -4,9 +4,9 @@
   "failures": 0,
   "metrics": {
     "player_pose_cpu": {
-      "max_us": 3579.0,
-      "mean_us": 498.6,
-      "p95_us": 1104.0,
+      "max_us": 1038.0,
+      "mean_us": 236.394444444444,
+      "p95_us": 499.0,
       "samples": 180,
       "scope": "one player's SkinnedMotionVisual.sample_pose CPU time only; excludes other actors, Jolt and rendering"
     },
@@ -15,8 +15,8 @@
   "results": [
     {
       "measured": {
-        "position": "(1.0, 0.649975, -0.000008)",
-        "velocity": "(0.0, 0.001612, 0.000004)"
+        "position": "(1.0, 0.649975, -0.000012)",
+        "velocity": "(-0.0, 0.001612, -0.0)"
       },
       "name": "imported car settles at its spawn",
       "passed": true
@@ -41,8 +41,8 @@
     },
     {
       "measured": {
-        "maximum": "(0.309934, 0.820493, 0.215398)",
-        "minimum": "(-0.331645, -1.014735, -0.171255)"
+        "maximum": "(0.331568, 0.851473, 0.190858)",
+        "minimum": "(-0.314863, -0.980382, -0.187375)"
       },
       "name": "idle skin stands upright at original scale",
       "passed": true

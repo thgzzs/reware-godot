@@ -1,14 +1,14 @@
 # Harbor / Behavior Lab
 
-An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The earlier asset-inclusive test build has a textured skinned character shared by the player and four pedestrians, an Idaho car, a Colt .45, yard props, 234 converted animations and data-driven tuning. It is a first playable framework; full reVC equivalence is unverified.
+An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The asset-inclusive test build has a shared player/pedestrian actor, 24 weapon entries, three cars, four bikes, dynamic props and 781 converted original animation clips. It is a playable framework; full reVC equivalence remains unverified.
 
-The latest [physics, stance and damage revision](docs/SYSTEMS_REVISION.md) adds movable trash cans, shootable tires and glass, crouch shooting, airborne firing restrictions, melee, vehicle damage/fire/explosions and passenger seat transactions. It corrects slope/jump and Jolt contact handling. The native loadout uses Colt .45 and unarmed; additional authentic weapon/vehicle assets remain required. Public git uses primitive fallbacks; the private ZIP retains all selected supplied assets.
+The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian retaliation, native hip-fire/reload refinement, individual panel damage and physical fragments, full-size flat tires, stronger acceleration, safer cornering, tilted-car crawl exits and moving bailouts. VCS core/weapon animations and LCS bike animations are active; all clips remain accessible in F4. Public git supplies source and import tools; the private ZIP includes selected supplied assets.
 
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.
 2. Import `project.godot`, wait for imports, then press F5.
-3. Move, jump, aim and shoot the resetting targets. Approach the car, press E, drive/brake/reverse, stop and exit with E, then resume on foot.
+3. Move, jump, aim and shoot the resetting targets. Approach a car or bike, press E, drive/brake/reverse, and exit with E (bail out while moving), then resume on foot.
 4. F2 opens resolution and interface settings. F4 previews all supplied clips.
 
 The Compatibility renderer and Jolt are configured. The engine executable is not bundled. The private download includes the selected converted assets; no conversion tool is needed to run it. The public source repository uses primitive fallbacks until local game data is imported. Original game uploads and derivatives are excluded from public git.
@@ -22,11 +22,11 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | V | Cycle follow distances | Follow/bonnet camera |
 | Alt+E / X | Passenger entry / — | Passenger-to-driver shuffle |
 | F6 | Repair nearby stopped lab car | Repair stopped lab car |
-| Right / left mouse | Aim / fire | — |
+| Right / left mouse | Aim / fire or melee strike | — |
 | R | Reload | — |
-| Wheel / Q / Z / 1–3 | Switch weapon | — |
+| Wheel / Q / Z / 1–9 | Switch weapon | — |
 | Backspace | Respawn after death | — |
-| E | Enter nearby car | Exit when stopped and clear |
+| E | Enter nearby car | Exit, crawl out when tilted, or bail while moving |
 | Mouse | Orbit camera | Orbit camera |
 | F1 / F2 | Controls / display settings | Same |
 | F3 / F4 | Diagnostics / animation browser | Same; leave the car to preview the actor |
@@ -38,7 +38,7 @@ The resizable window supports expanding aspect ratios, a height-preserving camer
 
 Edit **tuning/ped_impact.tres** for impact mass, lift, survival and recovery, **tuning/weapon_pose.tres** for arm/recoil/reload presentation, and **tuning/doors.tres** for seat calibration and door motors. Edit **tuning/arsenal.tres** for loadout profiles/reference weapon names and **tuning/actions.tres** for blend, reaction and all-gun sprint settings. Edit **tuning/placeholder_assets.tres** to replace model/texture roles, attachment offsets, paint and approximate hull sizing. Gameplay controllers do not own the artwork. Replacement character rigs must be compatible with the animation bindings or deliberately retargeted.
 
-Only four selected model roots and 25 PNGs were exported from the uploaded files. The entire IMG is not included. See [the model/display milestone](docs/MODEL_AND_DISPLAY_MILESTONE.md) for selection evidence, native skin validation, setup, limitations and rebuilding.
+The build contains 32 selected model scenes and 71 PNGs; the entire IMG is not included. The Stories revision documents the 28 additional models and 46 additional textures. Bone-ID bindings, exact model roles and data-driven melee/weapon action definitions support replacement assets. See [the model/display milestone](docs/MODEL_AND_DISPLAY_MILESTONE.md) for selection evidence, native skin validation, setup, limitations and rebuilding.
 
 ## Validate
 
@@ -58,10 +58,11 @@ Every ZIP created with the packager includes explicit parent-directory entries f
 python3 tools/rebuild_test_build.py --input old-build.zip --output repaired-build.zip
 ```
 
-To apply this source revision and preserve the old converted assets, add `--project .` to that command. No model, texture or animation conversion is required. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
+To overlay a project directory, add `--project .` to that command. This revision requires the new Stories assets as well as source; overlaying only scripts onto an old build is insufficient. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
 
 ## Documentation
 
+- [STORIES_REVISION.md](docs/STORIES_REVISION.md): current combat, bike, vehicle, conversion and extension details.
 - [IMPORTED_ASSETS.md](docs/IMPORTED_ASSETS.md): animation conversion, DAT mappings, shared character behavior and limitations.
 - [MODEL_AND_DISPLAY_MILESTONE.md](docs/MODEL_AND_DISPLAY_MILESTONE.md): models, materials, skin binding, responsive UI, rebuilding and replacement workflow.
 - [SELECTIVE_MODEL_IMPORT.md](docs/SELECTIVE_MODEL_IMPORT.md): archive selection and minimal asset scope.

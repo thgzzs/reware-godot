@@ -14,6 +14,7 @@ var run_clip := "run_player"
 var preview_clip := ""
 var preview_time := 0.0
 var preview_playing := true
+var vehicle_layers: Array[Dictionary] = []
 var roots := {}
 var clip_names := {}
 func _init(source: AnimationLibrary) -> void:
@@ -21,7 +22,7 @@ func _init(source: AnimationLibrary) -> void:
  for name in library.get_animation_list():
   clip_names[String(name).to_lower()] = String(name)
   var a := library.get_animation(name)
-  roots[name] = a.find_track(NodePath("Skeleton3D:Root"),Animation.TYPE_POSITION_3D)
+  roots[name] = AnimationRigBinding.indices_for(a,"Root",0)[1]
 func duration(name: String) -> float:
  return library.get_animation(name).length if library.has_animation(name) else 0.0
 func set_clip(name: String, reset := true) -> void:
@@ -42,6 +43,7 @@ func loop_segment(name: String, a: float, b: float) -> Vector3:
  if finish<=length: return segment(name,start,finish)
  return segment(name,start,length)+segment(name,0,finish-length)
 func pose_layers() -> Array[Dictionary]:
+ if not vehicle_layers.is_empty() and preview_clip.is_empty(): return vehicle_layers
  if not preview_clip.is_empty(): return [{"clip":preview_clip,"time":preview_time,"weight":1.0}]
  if phase=="move" and not was_sprinting:
   var blend := clampf(intensity-1.0,0,1)
