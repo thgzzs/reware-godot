@@ -159,6 +159,7 @@ func _draw() -> void:
  if message.is_empty() and arena.transition.state=="on_foot" and arena.actor.control_enabled and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
  if message.is_empty() and arena.transition.state=="passenger": message = "[X] Move to driver / [E] Exit"
  if message.is_empty() and arena.actor.stance.crouched and arena.transition.state=="on_foot": message = "CROUCHED / [C] Stand"
+ if message.is_empty() and arena.transition.state=="approaching": message="Walking to vehicle / [E] Cancel"
  if message.is_empty() and arena.transition.state=="shuffling": message = "Moving to driver seat…"
  if message.is_empty() and arena.transition.state=="entering": message = "Entering vehicle…"
  elif message.is_empty() and arena.transition.state=="exiting": message = "Leaving vehicle…"
@@ -205,7 +206,7 @@ func draw_world_markers() -> void:
 func draw_help(screen: Vector2) -> void:
  var rect := Rect2(Vector2(18,116),Vector2(minf(430,screen.x-36),maxf(180,minf(370,screen.y-134))))
  draw_rect(rect,BACK)
- var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire or strike","R Reload / E Enter, exit or bail", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
+ var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint (tap boost) / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire or strike","R Reload / E Enter, exit or bail", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
  if diagnostics:
   var motor: CharacterMotor = arena.actor
   lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Fall %.1f m / impact %.1f m/s / damage %.1f"%[motor.fall.drop,motor.fall.last_impact_speed,motor.fall.last_damage],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]

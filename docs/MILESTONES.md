@@ -168,3 +168,7 @@ Selected 28 additional models/46 textures and converted all 44 blocks/781 clips;
 ## Falling and mobile-melee extension (current)
 
 Created FallProfile, ActorFallState, tuning/fall.tres, a real-Jolt acceptance suite and a four-state render fixture. Modified the shared actor/health/action state, melee, native pose composition, player/NPC pose ordering, HUD and validator. The exact created/modified inventory is in fall_files.json. Implemented sustained descent, looping glide, single-impact damage/recovery/death and mobile melee across the imported arsenal. Current validation and gaps are recorded in VALIDATION.md and FALL_AND_MOBILE_MELEE.md; earlier counts above are historical.
+
+## Sprint, approach and settled reactions (current source revision)
+
+Created SprintProfile/ActorSprintState, VehicleApproach, ReactionRestProfile/ReactionRestState, tuning resources, synthetic/Jolt acceptance tests and an approach-time test helper. Modified shared motor/commands, vehicle transaction/variant policy, reaction body, HUD, composition and validation. Created/modified files are enumerated in intent_files.json. Source-only validation and remaining native-asset gaps are documented in SPRINT_ENTRY_SETTLING.md and VALIDATION.md.

@@ -22,6 +22,7 @@ var occupant_hitbox: OccupantHitbox
 var normal_shape: Shape3D
 var stance := CharacterStance.new()
 var fall := ActorFallState.new()
+var sprint := ActorSprintState.new()
 var jump_forward := Vector3.ZERO
 var blocked_jump := false
 var low_shape := SphereShape3D.new()
@@ -138,7 +139,8 @@ func tick_reaction(dt: float) -> void:
   if actions.life=="down" and reaction_body.can_recover():
    actions.life = "getting_up"
    actions.life_time = 0
-   actions.life_clip = actions.resolve(actions.profile.getup_clips)
+   actions.life_clip = reaction_body.getup_clip()
+   facing = reaction_body.rest.heading
    global_position = reaction_body.stand_position
    reaction_body.deactivate()
    $CollisionShape3D.shape = normal_shape
@@ -166,10 +168,12 @@ func tick_reaction(dt: float) -> void:
   if get_world_3d().direct_space_state.intersect_shape(query,1).is_empty():
    actions.life = "getting_up"
    actions.life_time = 0
-   actions.life_clip = actions.resolve(actions.profile.getup_clips)
+   actions.life_clip = reaction_body.getup_clip()
+   facing = reaction_body.rest.heading
  if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
   restore_control()
 func restore_control() -> void:
+ sprint.reset()
  fall.reset()
  if reference_pose!=null:reference_pose.scale=Vector3.ONE
  if is_instance_valid(occupant_hitbox): occupant_hitbox.collision_layer = 0
@@ -237,7 +241,18 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   phase = "airborne"
   jump_count += 1
  if not grounded: fall.observe_air(global_position.y,velocity.y,dt)
+ if fall.profile.physical_tumble_enabled and fall.falling and fall.drop>=fall.profile.physical_tumble_drop and velocity.y<= -fall.profile.physical_tumble_speed:
+  weapon.melee.cancel()
+  actions.begin_life("down")
+  actions.life_clip=actions.resolve(fall.profile.fall_clips)
+  actions.life_time=0
+  control_enabled=false
+  reaction_body.launch_velocity(global_position,facing,velocity,true)
+  reaction_body.follow_pose(dt)
+  return
  var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
+ var sprint_allowed := grounded and phase=="grounded" and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy)
+ sprint.tick(cmd,sprint_allowed,dt)
  var horizontal := Vector3.ZERO
  if reference_enabled:
   var local_delta := Vector3.ZERO
@@ -257,7 +272,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if actions.melee_mobile and reference_motion.phase=="action":
     reference_motion.phase="move"
     reference_motion.intensity=1.0 if cmd.walk else 2.0
-   local_delta = reference_motion.step(direction.length(),cmd.sprint and not (cmd.aim or (cmd.fire and weapon.profile.kind!="melee") or weapon.reload_left>0) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy),cmd.walk,dt)
+   local_delta = reference_motion.step(direction.length(),sprint.active,cmd.walk,dt*clampf(cmd.locomotion_scale,0,1)*(sprint.multiplier if sprint.active else 1.0))
   if (not actions.melee_active or actions.melee_mobile) and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed)):
    var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active) else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,(weapon.melee.profile.steering_rate if actions.melee_mobile else profile.turn_rate)*dt)
@@ -274,7 +289,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if grounded and phase not in ["launch","airborne"]: velocity.y = horizontal.y
   else: velocity.y -= profile.gravity*dt
  else:
-  var speed := profile.sprint_speed if cmd.sprint else profile.speed
+  var speed := (profile.sprint_speed*sprint.multiplier if sprint.active else profile.speed)*clampf(cmd.locomotion_scale,0,1)
   if cmd.aim: speed *= profile.aim_multiplier
   if stance.crouched: speed *= stance.profile.move_multiplier if stance.profile.allow_crouch_walk else 0.0
   if phase == "launch" or phase == "landing": speed = 0
@@ -372,6 +387,12 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if fall.tracked:fall.land(landing_speed)
    phase = "grounded"
  elif phase != "launch": phase = "falling" if fall.falling else "airborne"
+func receive_fall_landing(speed: float) -> void:
+ if health.health<=0:return
+ var amount:=fall.land(speed)
+ if amount>0:
+  actions.next_death=actions.resolve(fall.profile.death_clips)
+  health.receive(amount,false)
 func jump_has_clearance() -> bool:
  var shape := SphereShape3D.new()
  shape.radius = 0.25
@@ -424,6 +445,7 @@ func ignore_vehicle_until_restored(body: PhysicsBody3D) -> void:
  add_collision_exception_with(body)
  collision_grace = 0.1
 func set_embarked(value: bool) -> void:
+ sprint.reset()
  fall.reset()
  weapon.melee.cancel()
  if not value:
@@ -436,6 +458,7 @@ func set_embarked(value: bool) -> void:
  visible = not value
  velocity = Vector3.ZERO
 func reset_at(where: Vector3) -> void:
+ sprint.reset()
  fall.reset()
  weapon.melee.cancel()
  global_position = where

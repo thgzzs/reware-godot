@@ -1,0 +1,249 @@
+{
+  "assertions": 42,
+  "assets": "synthetic clips and primitive models; native converted assets unavailable after workspace maintenance",
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "sprint": {
+      "cap_multiplier": 1.2,
+      "maximum_mps": 7.20000696182251,
+      "minimum_mps": 5.99999380111694
+    }
+  },
+  "native_visual_validation": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "exact stable engine and Jolt",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "holding sprint does not manufacture tap boosts",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "repeated sprint presses stay continuous between taps",
+      "passed": true
+    },
+    {
+      "measured": 1.2,
+      "name": "tap boost reaches a strict configurable cap",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint release grace expires into ordinary movement",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ineligible actions discard sprint boost",
+      "passed": true
+    },
+    {
+      "measured": {
+        "cap_multiplier": 1.2,
+        "maximum_mps": 7.20000696182251,
+        "minimum_mps": 5.99999380111694
+      },
+      "name": "tapping preserves the sprint clip and never restarts locomotion",
+      "passed": true
+    },
+    {
+      "measured": 7.20000696182251,
+      "name": "gait playback and motor speed share the capped tap multiplier",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "renewed movement interrupts a lingering run-stop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "entry initially reserves without disabling the standing collider",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "walk-in keeps the door closed before arrival",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.891929363366216,
+        "maximum_tick_displacement": 0.0250025987625122,
+        "state": "entering"
+      },
+      "name": "automatic entry physically walks to the approach marker",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "only mounting commits unique driver ownership",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "walk-in entry preserves the continuous enter-drive-exit loop",
+      "passed": true
+    },
+    {
+      "measured": 2,
+      "name": "approach planner can route around the chassis from the front",
+      "passed": true
+    },
+    {
+      "measured": "",
+      "name": "corner route reaches and mounts without teleporting through the car",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "cancelling approach releases the seat at the current physical position",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "lost reservations cancel approach without duplicate control",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "death while approaching releases reservation without moving the corpse into a seat",
+      "passed": true
+    },
+    {
+      "measured": "Approach blocked / try another position",
+      "name": "new obstacles cancel a stalled approach while preserving collision and occupancy",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "destroyed vehicles cancel the walk-in transaction",
+      "passed": true
+    },
+    {
+      "measured": "GETUP_front",
+      "name": "prone reactions choose a face-down get-up clip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "get-up waits for quiet supported settling",
+      "passed": true
+    },
+    {
+      "measured": -0.785398163397448,
+      "name": "recovered heading follows the direction of the fall",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "BIKEs_getoffBACK",
+        "exit_index": 2
+      },
+      "name": "bike bailout chooses the model-specific rear exit and rear animation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike rear get-off has its own mount-release windup",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike bailout releases once into the physical reaction body",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "no settling correction is allowed while airborne",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sliding bodies preserve their physical orientation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "forward falls settle prone only after continuous quiet contact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "backward falls settle belly up with a consistent heading",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "a new impact unlocks the settled presentation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "Jolt reaction remains spinning before support (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "angular": 0.0,
+        "clip": "FALL_front",
+        "locked": true
+      },
+      "name": "landed quiet corpse chooses the matching face orientation (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "Jolt reaction remains spinning before support (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "angular": 0.0,
+        "clip": "FALL_back",
+        "locked": true
+      },
+      "name": "landed quiet corpse chooses the matching face orientation (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "long on-foot falls transfer motion to the Jolt reaction body",
+      "passed": true
+    },
+    {
+      "measured": {
+        "damage": 138.296429812549,
+        "health": 0.0
+      },
+      "name": "physical fall landing dispatches environmental damage once",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "intentional bike bailout selects rear get-off for BIKEs",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "intentional bike bailout selects rear get-off for BIKEd",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "intentional bike bailout selects rear get-off for BIKEv",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "intentional bike bailout selects rear get-off for BIKEh",
+      "passed": true
+    }
+  ]
+}

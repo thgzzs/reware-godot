@@ -1,0 +1,140 @@
+Current source-only validation. Structured report transcript, not raw stdout.
+Godot 4.7.2 Stable / Jolt / physics 60 Hz. Native converted assets unavailable.
+
+latest: 47 assertions; 0 failures
+PASS exact engine "4.7.2-stable (official)"
+PASS Jolt selected null
+PASS ground support 0.900012075901031
+PASS movement accelerates to configured speed 5.0
+PASS movement distance in one second 4.41669654846191
+PASS release decelerates to rest 0.0
+PASS camera relative forward rotates movement "(-4.416687, 0.0, 0.0)"
+PASS aim movement modifier 2.5
+PASS aim FOV converges 54.0022201538086
+PASS jump launches after windup {"airborne_s": 0.666666666666667, "apex_m": 1.12139159440994, "launch_delay_s": 0.15}
+PASS jump apex within ballistic tolerance 1.12139159440994
+PASS jump lands and recovers 434
+PASS landing state clears "grounded"
+PASS buffered press launches on landing 1
+PASS wall collision prevents tunneling 13.4799947738647
+PASS jump ceiling collision 1.32416331768036
+PASS step traversal climbs configured low steps "(-10.0, 1.700375, -3.057828)"
+PASS walkable slope gains height "(-16.0, 1.689436, 4.380012)"
+PASS steep slope does not become walkable "(-21.0, 0.900375, 5.648082)"
+PASS camera obstruction sweep retracts 0.739990234375
+PASS camera aim resolves hits true
+PASS damage applied to target 25.0
+PASS firing cadence every 12 ticks at 60 Hz [1061, 1073, 1085, 1097, 1109]
+PASS ammo decreases per shot 4
+PASS reload transfers reserve without duplication [12, 228]
+PASS suspension supports four wheel contacts 4
+PASS suspension settles near static weight {"height_m": 0.582499980926514, "load_N": 23999.9991864669, "vertical_speed": 1.20941390235885e-08}
+PASS suspension vertical oscillation settles 1.20941390235885e-08
+PASS valid approach reserves seat null
+PASS duplicate occupancy rejected null
+PASS entry commits control once "driving"
+PASS entry duration bounded by one tick 0.65
+PASS vehicle accelerates forward {"distance_m": 16.2920684814453, "speed_mps": 12.529109954834, "time_s": 2.5}
+PASS steering changes heading 0.3817538022995
+PASS brakes bring vehicle to rest {"distance_m": 9.38755989074707, "initial_speed_mps": 15.4779539108276, "time_s": 1.2}
+PASS reverse engages after stop -4.36932563781738
+PASS blocked exits preserve ownership null
+PASS clear exit begins transition null
+PASS exit restores on foot ownership and collision "on_foot"
+PASS exit timing bounded by one tick 0.566666666666667
+PASS movement resumes without restarting null
+PASS three additional enter exit cycles 3
+PASS late exit blockers cancel commit safely "driving"
+PASS vehicle dynamics invariant under world translation [5.39537715911865, 5.39537715911865]
+PASS vehicle remains stable after control restoration 0.0167099982500076
+PASS weapon control resumes after driving {"ammo": 11, "control": true, "cooldown": 0.2, "facing": 6.28318530717959, "grounded": true, "life": "alive", "phase": "grounded", "shots": 1, "yaw": 0.0}
+PASS vehicle body collides without crossing wall "(17.99923, 0.573038, 27.13881)"
+
+revision: 41 assertions; 0 failures
+PASS all arena blocks retain plain colors by default null
+PASS nearest vehicle returns the actual registered body null
+PASS input installation is idempotent null
+PASS switch to rifle succeeds null
+PASS weapon switch cancels reload and preserves shot lock null
+PASS weapon ammo belongs to its slot null
+PASS second weapon retains its own magazine null
+PASS cadence follows source 30 Hz animation conversion 0.24
+PASS walk and run blend at matching normalized phase null
+PASS aim preserves leg locomotion null
+PASS upper action actually moves the gun arm null
+PASS action changes crossfade instead of snapping null
+PASS heavy gun permits source sprint clip ["sprint_civi", 3.60000348091125]
+PASS aiming and walking coexist null
+PASS walking aiming and firing advance together null
+PASS reload blends its own upper action while legs remain available null
+PASS every equipped weapon supports sprint null
+PASS death plays once and holds its terminal frame ["dead", 0.5]
+PASS death blocks movement and leaves a low world collision shape null
+PASS respawn restores health and standing shape null
+PASS Jolt door hinge opens under motor force -1.18683492189352
+PASS open hinge stays attached to chassis null
+PASS door closes and latches without pinning chassis to world 0.0
+PASS chassis sweep finds and reacts to pedestrian [1, 99.6625343267236, "down"]
+PASS run-over reaction stays bounded 0.434727370738983
+PASS low speed impact knocks down instead of instantly killing null
+PASS nonfatal pedestrian gets up with standing volume clearance ["alive", "(-28.00002, 0.900012, 34.25638)"]
+PASS blocked standing volume prevents unsafe get-up null
+PASS get-up retries after overhead obstruction clears null
+PASS fatal impact reaches death and repeated corpse hits do not restart it null
+PASS right door opens in the opposite direction 1.18683492189352
+PASS right door also closes and latches null
+PASS animated entry reserves a single owner null
+PASS door action respects opening contact delay null
+PASS entry advances from opening to get-in null
+PASS inside close uses its own distinct source clip null
+PASS animated stages commit after total clip duration null
+PASS animated exit starts its get-out clip null
+PASS outside close uses the outside source clip null
+PASS animated exit restores control exactly once null
+PASS death during entry releases reservation and controller null
+
+intent_revision: 42 assertions; 0 failures
+PASS exact stable engine and Jolt null
+PASS holding sprint does not manufacture tap boosts null
+PASS repeated sprint presses stay continuous between taps null
+PASS tap boost reaches a strict configurable cap 1.2
+PASS sprint release grace expires into ordinary movement null
+PASS ineligible actions discard sprint boost null
+PASS tapping preserves the sprint clip and never restarts locomotion {"cap_multiplier": 1.2, "maximum_mps": 7.20000696182251, "minimum_mps": 5.99999380111694}
+PASS gait playback and motor speed share the capped tap multiplier 7.20000696182251
+PASS renewed movement interrupts a lingering run-stop null
+PASS entry initially reserves without disabling the standing collider null
+PASS walk-in keeps the door closed before arrival null
+PASS automatic entry physically walks to the approach marker {"distance": 0.891929363366216, "maximum_tick_displacement": 0.0250025987625122, "state": "entering"}
+PASS only mounting commits unique driver ownership null
+PASS walk-in entry preserves the continuous enter-drive-exit loop null
+PASS approach planner can route around the chassis from the front 2
+PASS corner route reaches and mounts without teleporting through the car ""
+PASS cancelling approach releases the seat at the current physical position null
+PASS lost reservations cancel approach without duplicate control null
+PASS death while approaching releases reservation without moving the corpse into a seat null
+PASS new obstacles cancel a stalled approach while preserving collision and occupancy "Approach blocked / try another position"
+PASS destroyed vehicles cancel the walk-in transaction null
+PASS prone reactions choose a face-down get-up clip "GETUP_front"
+PASS get-up waits for quiet supported settling null
+PASS recovered heading follows the direction of the fall -0.785398163397448
+PASS bike bailout chooses the model-specific rear exit and rear animation {"clip": "BIKEs_getoffBACK", "exit_index": 2}
+PASS bike rear get-off has its own mount-release windup null
+PASS bike bailout releases once into the physical reaction body null
+PASS no settling correction is allowed while airborne null
+PASS sliding bodies preserve their physical orientation null
+PASS forward falls settle prone only after continuous quiet contact null
+PASS backward falls settle belly up with a consistent heading null
+PASS a new impact unlocks the settled presentation null
+PASS Jolt reaction remains spinning before support (0.0, 0.0, -1.0) null
+PASS landed quiet corpse chooses the matching face orientation (0.0, 0.0, -1.0) {"angular": 0.0, "clip": "FALL_front", "locked": true}
+PASS Jolt reaction remains spinning before support (0.0, 0.0, 1.0) null
+PASS landed quiet corpse chooses the matching face orientation (0.0, 0.0, 1.0) {"angular": 0.0, "clip": "FALL_back", "locked": true}
+PASS long on-foot falls transfer motion to the Jolt reaction body null
+PASS physical fall landing dispatches environmental damage once {"damage": 138.296429812549, "health": 0.0}
+PASS intentional bike bailout selects rear get-off for BIKEs null
+PASS intentional bike bailout selects rear get-off for BIKEd null
+PASS intentional bike bailout selects rear get-off for BIKEv null
+PASS intentional bike bailout selects rear get-off for BIKEh null
+
+TOTAL: 130 assertions; 0 failures. Native artwork and original-runtime parity unverified.

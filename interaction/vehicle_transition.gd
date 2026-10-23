@@ -27,6 +27,7 @@ var escape_clip := ""
 var ejecting := false
 var ejection_delay := 0.12
 var seated_time := 0.0
+var approach := VehicleApproach.new()
 func clip_for(action_name:String, side:int) -> String:
  var suffix:="LHS" if side%2==0 else "RHS"
  if vehicle.kind=="bike":
@@ -50,24 +51,22 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  var q := PhysicsRayQueryParameters3D.create(actor.global_position,candidate.global_position,5,[actor.get_rid()])
  var hit := actor.get_world_3d().direct_space_state.intersect_ray(q)
  if not hit.is_empty() and hit.collider!=candidate: return false
- var approach := PhysicsShapeQueryParameters3D.new()
- approach.shape = actor.normal_shape
- approach.transform = actor.global_transform
- approach.transform.origin += Vector3.UP*0.03
- approach.motion = candidate.approach_position(selected,selected_side if candidate.kind=="bike" else -1)-approach.transform.origin
- approach.margin = 0.001
- approach.collision_mask = 15
- approach.exclude = [actor.get_rid(),candidate.get_rid()]
- if actor.get_world_3d().direct_space_state.cast_motion(approach)[0]<0.99:
-  message = "Approach blocked / clear the driver door"
+ var target:=candidate.approach_position(selected,selected_side if candidate.kind=="bike" else -1)
+ if not approach.plan(actor,candidate,target,profile):
+  message="Approach blocked / clear a route to the vehicle"
   return false
  if not candidate.reserve_seat(actor,selected): return false
  seat_index = selected
  entry_side = selected_side if candidate.kind=="bike" else candidate.seating.definitions[selected].door
  auto_shuffle = not passenger_only and selected==1 and candidate.kind!="bike"
  vehicle = candidate
- vehicle.park()
- start_position = actor.global_position
+ if not is_instance_valid(vehicle.driver):vehicle.park()
+ start_position=actor.global_position
+ change_state("approaching")
+ return true
+func begin_entry() -> void:
+ start_position=actor.global_position
+ var candidate:=vehicle
  if actor.reference_pose is SkinnedMotionVisual:
   var pose := actor.reference_pose as SkinnedMotionVisual
   var pelvis := pose.skeleton.find_bone("Pelvis")
@@ -89,7 +88,31 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  elapsed = 0
  vehicle.set_door_open(entry_side,not actor.reference_enabled)
  change_state("entering")
- return true
+func approach_command() -> GameplayCommand:
+ return approach.command()
+func cancel_approach(reason: String) -> void:
+ if is_instance_valid(vehicle):vehicle.release_seat(actor)
+ vehicle=null
+ message=reason
+ change_state("on_foot")
+func tick_approach(dt: float) -> void:
+ if actor.health.health<=0 or not actor.control_enabled or not actor.grounded:
+  cancel_approach("Entry interrupted")
+  return
+ if vehicle.damage.state=="destroyed" or vehicle.seating.reservations.get(seat_index)!=actor or vehicle.linear_velocity.length()>profile.max_transition_speed or vehicle.global_basis.y.dot(Vector3.UP)<0.65:
+  cancel_approach("Vehicle or seat changed")
+  return
+ var target:=vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
+ var arrived:=approach.advance(dt,target)
+ if approach.elapsed>profile.approach_timeout or approach.stalled>profile.approach_stall_timeout:
+  cancel_approach("Approach blocked / try another position")
+  return
+ if arrived:
+  var desired:=vehicle.global_rotation.y
+  actor.facing=rotate_toward(actor.facing,desired,profile.approach_turn_rate*dt)
+  actor.visual.rotation.y=actor.facing
+  if absf(angle_difference(actor.facing,desired))<=profile.approach_heading_tolerance and Vector2(actor.velocity.x,actor.velocity.z).length()<0.25:
+   begin_entry()
 func request_exit() -> bool:
  message = ""
  if state not in ["driving","passenger"] or not is_instance_valid(vehicle): return false
@@ -131,7 +154,11 @@ func action(clip: String, time: float) -> void:
 func tick(dt: float) -> void:
  if state=="on_foot": return
  if not is_instance_valid(vehicle):
+  if state=="approaching":cancel_approach("Vehicle removed");return
   recover()
+  return
+ if state=="approaching":
+  tick_approach(dt)
   return
  if actor.health.health<=0:
   # Release ownership before the corpse resumes its own collision/reaction.
@@ -243,17 +270,19 @@ func finish_exit() -> void:
  last_duration=elapsed
  change_state("on_foot")
 func request_eject() -> bool:
- var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index)
+ var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index,vehicle.kind=="bike")
  if destination.is_empty():message="No clear bailout path";return false
+ exit_position=destination.position
  exit_side=destination.side;exit_index=destination.index
- escape_clip="BIKE_fall_off" if vehicle.kind=="bike" else ("CAR_rollout_LHS" if exit_side%2==0 else "CAR_rollout_RHS")
+ escape_clip=vehicle.variant.bailout_clip(vehicle.bike_animation,actor.actions) if vehicle.kind=="bike" else ("CAR_rollout_LHS" if exit_side%2==0 else "CAR_rollout_RHS")
+ ejection_delay=vehicle.variant.bike_bailout_release_seconds if vehicle.kind=="bike" else 0.12
  elapsed=0;ejecting=true;escape_mode=true
  actor.visible=actor.reference_enabled
  vehicle.set_door_open(exit_side,true)
  change_state("ejecting")
  return true
 func commit_eject() -> void:
- var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index)
+ var destination:=VehicleExitSolver.select(actor,vehicle,-1,seat_index,vehicle.kind=="bike")
  if destination.is_empty():
   message="Bailout path became blocked"
   ejecting=false;escape_mode=false
@@ -261,6 +290,7 @@ func commit_eject() -> void:
   return
  var body:=vehicle
  var point:Vector3=destination.position
+ exit_position=point
  var inherited:=body.linear_velocity+body.angular_velocity.cross(point-body.global_position)
  var outward:=point-body.global_position;outward.y=0;outward=outward.normalized()
  actor.reset_at(point)
@@ -336,6 +366,7 @@ func find_exit(required_index := -1) -> Dictionary:
   return {"position":p,"side":side,"index":i}
  return {}
 func recover() -> void:
+ if state=="approaching":cancel_approach("Entry cancelled");return
  if is_instance_valid(vehicle):
   vehicle.release_seat(actor)
   vehicle.set_door_open(0,false)

@@ -216,6 +216,7 @@ func run() -> void:
  for cycle in range(3):
   await place_actor(car.global_position+Vector3(-1.7,0.22,0))
   if not seat.request_enter(car): break
+  await TransitionTestWait.approach(arena)
   await frames(40)
   if not seat.request_exit(): break
   await frames(35)
@@ -224,6 +225,7 @@ func run() -> void:
  # A blocker arriving during exit cancels the commit and keeps control unique.
  await place_actor(car.global_position+Vector3(-1.7,0.22,0))
  seat.request_enter(car)
+ await TransitionTestWait.approach(arena)
  await frames(40)
  seat.request_exit()
  var late_blockers: Array[Node] = []
@@ -240,6 +242,7 @@ func run() -> void:
  # Regression: wheel point velocity must be independent of world translation.
  await place_actor(car.global_position+Vector3(-1.7,0.22,0))
  seat.request_enter(car)
+ await TransitionTestWait.approach(arena)
  await frames(40)
  var acceleration_samples: Array[float] = []
  for z in [35.0,-25.0]:

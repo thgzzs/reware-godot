@@ -91,3 +91,7 @@ RigBinding resolves original source bone IDs and caches channel-index mappings f
 ## Falling and mobile strikes
 
 ActorFallState tracks per-instance trajectory evidence; FallProfile owns thresholds/clip choices; CharacterMotor supplies relative support-normal landing speed and commits damage through PedHealth once. Mobile melee retains the locomotion base, overlays configured striking bones and sweeps the displayed tip after fixed-tick pose evaluation. Player and pedestrian roots use that same order. See FALL_AND_MOBILE_MELEE.md.
+
+## Intent, approach and reaction settling
+
+ActorSprintState owns capped tap history; SprintProfile owns gain/decay/grace. VehicleApproach supplies collision-driven walk intent before VehicleTransition suppresses the motor for mounting. ReactionRestState observes supported quiet motion and selects a presentation basis/pose, leaving Jolt trajectory ownership intact. VehicleVariant owns intentional rear-bike bailout clip/release policy. See SPRINT_ENTRY_SETTLING.md for current validation boundaries.

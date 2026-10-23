@@ -6,6 +6,8 @@ The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian 
 
 The [falling and moving-melee revision](docs/FALL_AND_MOBILE_MELEE.md) adds impact-based fall damage, native descent/glide/landing recovery and walk/run/sprint attacks with blended striking limbs. Tune it through tuning/fall.tres and tuning/melee.tres.
 
+The current [sprint, walk-in entry and settling source revision](docs/SPRINT_ENTRY_SETTLING.md) adds capped Shift tapping, collision-driven approach before mounting, quiet grounded prone/supine settling, and bike-specific rear bailouts. Native asset regression for this source revision remains pending; keep your existing converted assets when applying the update.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.
@@ -18,7 +20,7 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | Control | On foot | Driving |
 | --- | --- | --- |
 | WASD | Camera-relative movement, heading-coupled travel | Accelerate/brake/reverse and steer |
-| Alt / Shift | Walk / sprint | — |
+| Alt / Shift | Walk / hold sprint; tap for capped boost | — |
 | Space | Jump with animation windup; firing disabled in air | Brake |
 | C | Toggle crouch; crouched aim/fire | — |
 | V | Cycle follow distances | Follow/bonnet camera |
@@ -28,7 +30,7 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | R | Reload | — |
 | Wheel / Q / Z / 1–9 | Switch weapon | — |
 | Backspace | Respawn after death | — |
-| E | Enter nearby car | Exit, crawl out when tilted, or bail while moving |
+| E | Walk to the selected door/mount, enter; press again to cancel approach | Exit, crawl out when tilted, or bail while moving |
 | Mouse | Orbit camera | Orbit camera |
 | F1 / F2 | Controls / display settings | Same |
 | F3 / F4 | Diagnostics / animation browser | Same; leave the car to preview the actor |

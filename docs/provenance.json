@@ -401,7 +401,7 @@
       "python": 18
     }
   },
-  "repository_update_base": "c9a7ab8425cf8f4022f6b8b48f100397518f3ce2",
+  "repository_update_base": "2488ec5b798a2fb7b265bb3d356d6d1e552f2b60",
   "action_revision": {
     "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
     "repository_base": "5dc3eb87d9269e7150ea860aec57639464880d26",
@@ -469,5 +469,24 @@
     "source_review": "prior pinned behavioral findings retained; fall curve is explicit new tuning",
     "reference_runtime_tested": false,
     "browser_runtime_tested": false
+  },
+  "intent_revision": {
+    "engine": "4.7.2-stable",
+    "source_runtime_assertions": 130,
+    "new_assertions": 42,
+    "python_passed": 14,
+    "python_skipped_private_inputs": 9,
+    "project_scripts_parsed": 106,
+    "native_assets_available": false,
+    "native_visual_validation": false,
+    "asset_conversion_performed": false,
+    "reference_source_review": [
+      "src/peds/PedAI.cpp: intentional bike rear exit",
+      "src/animation/AnimManager.cpp: bike-specific getoffBACK mapping",
+      "src/peds/Ped.cpp: front/back get-up policy",
+      "src/peds/PlayerPed.cpp: sprint/stop phases"
+    ],
+    "tapping_curve": "explicit new tuning, 1.20 multiplier cap; not source-equivalence claim",
+    "documentation": "docs/SPRINT_ENTRY_SETTLING.md"
   }
 }

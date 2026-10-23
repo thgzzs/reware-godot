@@ -168,6 +168,7 @@ func run() -> void:
  car.damage.repair();car.reset_at(Vector3(24,0.9,20));await frames(80)
  await place(car.global_position+Vector3(-1.7,0.25,0))
  check("entry request accepted in imported mode",seat.request_enter(car))
+ await TransitionTestWait.approach(arena)
  await frames(ceili(seat.profile.enter_seconds*60)+2)
  check("entry commits after open get-in and close clips",seat.state=="driving" and absf(seat.last_duration-seat.profile.enter_seconds)<1.0/60.0+0.00001,[seat.state,seat.last_duration])
  var drive := GameplayCommand.new()

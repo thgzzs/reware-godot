@@ -2,6 +2,11 @@ class_name PedReactionBody
 extends RigidBody3D
 ## Reusable dormant Jolt torso proxy. The same component serves player and NPC.
 ## Animation supplies articulation; this body exclusively owns impact trajectory.
+var rest := ReactionRestState.new()
+var support_normal := Vector3.UP
+var fall_landing_pending := false
+var tumble_fall := false
+var air_animation_time := 0.0
 var actor: CharacterMotor
 var profile: PedImpactProfile = preload("res://tuning/ped_impact.tres")
 var active := false
@@ -40,7 +45,9 @@ func configure(owner_actor: CharacterMotor) -> void:
  collider.shape = shape
  collider.rotation.x = PI*0.5
  add_child(collider)
-func launch_velocity(at:Vector3, heading:float, initial:Vector3) -> void:
+func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall := false) -> void:
+ rest.begin(heading,initial)
+ tumble_fall=physical_fall;fall_landing_pending=physical_fall;air_animation_time=0
  active=true;age=0;vehicle_contacts=0;contact_ticks=0
  impact_contacts.clear()
  actor.collision_layer=0;actor.collision_mask=0
@@ -54,6 +61,8 @@ func launch_velocity(at:Vector3, heading:float, initial:Vector3) -> void:
  previous_angular=angular_velocity
 func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  if active: return
+ rest.begin(actor.facing,direction*closing)
+ tumble_fall=false;fall_landing_pending=false;air_animation_time=0
  impact_contacts.clear()
  impact_contacts[car.get_instance_id()] = {"seen":0.0,"hit":0.0,"armed":false}
  active = true
@@ -81,9 +90,14 @@ func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
 func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  if not active: return
  supported = false
+ var landing_speed := 0.0
  for i in range(state.get_contact_count()):
   var normal := state.get_contact_local_normal(i) # Jolt contact normal is already world-space.
-  if normal.dot(Vector3.UP)>0.45: supported = true
+  if normal.dot(Vector3.UP)>0.45:
+   supported=true;support_normal=normal
+   if fall_landing_pending:
+    var hit_object:=state.get_contact_collider_object(i)
+    landing_speed=maxf(landing_speed,ActorFallState.closing_speed(previous_velocity,normal,hit_object,state.get_contact_collider_position(i)))
   var other := state.get_contact_collider_object(i) as DriveVehicle
   if other!=null:
    vehicle_contacts += 1
@@ -108,6 +122,9 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
     record.armed = false
    record.seen = age
    impact_contacts[id] = record
+ if fall_landing_pending and supported:
+  fall_landing_pending=false
+  actor.call_deferred("receive_fall_landing",landing_speed)
  if state.get_contact_count()>0: contact_ticks += 1
  previous_velocity = state.linear_velocity
  previous_angular = state.angular_velocity
@@ -117,7 +134,23 @@ func follow_pose(dt: float) -> void:
  actor.velocity = linear_velocity
  actor.grounded = supported
  actor.global_position = global_position
- actor.visual.global_basis = global_basis
+ rest.observe(supported,linear_velocity,angular_velocity,global_basis,dt)
+ actor.visual.global_basis=global_basis.slerp(rest.basis_on_floor(support_normal),rest.weight)
+ if rest.locked:
+  var clip:=actor.actions.resolve(rest.profile.prone_clips if rest.face_down else rest.profile.supine_clips)
+  if not clip.is_empty():
+   actor.actions.life_clip=clip
+   actor.actions.life_time=actor.reference_motion.duration(clip)
+ elif tumble_fall and actor.health.health>0 and actor.reference_enabled:
+  air_animation_time+=dt
+  var first:=actor.actions.resolve(actor.fall.profile.fall_clips)
+  var length:=actor.reference_motion.duration(first)
+  var clip:=first if air_animation_time<=length else actor.actions.resolve(actor.fall.profile.glide_clips)
+  actor.actions.life_clip=clip
+  actor.actions.life_time=air_animation_time if air_animation_time<=length else fposmod(air_animation_time-length,maxf(0.001,actor.reference_motion.duration(clip)))
+ if actor.reference_enabled:
+  actor.reference_motion.set_clip(actor.actions.life_clip,false)
+  actor.reference_motion.time=actor.actions.life_time
  if actor.reference_pose is SkinnedMotionVisual:
   var pose := actor.reference_pose as SkinnedMotionVisual
   pose.sample_pose(dt)
@@ -125,7 +158,7 @@ func follow_pose(dt: float) -> void:
   if hip>=0:
    actor.global_position += global_position-(pose.skeleton.global_transform*pose.skeleton.get_bone_global_pose(hip).origin)
 func can_recover() -> bool:
- if age<minimum_recovery_age:return false
+ if age<minimum_recovery_age or not rest.locked or rest.weight<0.99:return false
  if age<profile.recovery_delay or linear_velocity.length()>profile.recovery_speed: return false
  var space := actor.get_world_3d().direct_space_state
  var ray := PhysicsRayQueryParameters3D.create(global_position+Vector3.UP*0.2,global_position-Vector3.UP*1.2,5,[get_rid(),actor.get_rid()])
@@ -139,7 +172,10 @@ func can_recover() -> bool:
  query.exclude = [actor.get_rid(),get_rid()]
  query.margin = 0.005
  return space.intersect_shape(query,1).is_empty()
+func getup_clip() -> String:
+ return actor.actions.resolve(rest.profile.prone_getup if rest.face_down else rest.profile.supine_getup)
 func deactivate() -> void:
+ rest.reset();fall_landing_pending=false;tumble_fall=false
  active = false
  minimum_recovery_age=0
  freeze = true

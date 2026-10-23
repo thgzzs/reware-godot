@@ -10,6 +10,7 @@ var parts := VehicleParts.new()
 var bike: BikeDynamics
 var kind := "car"
 var bike_animation := "BIKEs"
+var variant := VehicleVariant.new()
 var active_contacts:Array[int]=[0,1,2,3]
 func wheel_indices() -> Array[int]:return active_contacts
 var driver: Node:

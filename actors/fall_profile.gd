@@ -2,6 +2,9 @@ class_name FallProfile
 extends Resource
 ## SI units. Environmental landing damage is independent of combat defense stats.
 @export var damage_enabled := true
+@export var physical_tumble_enabled := true
+@export var physical_tumble_drop := 4.0
+@export var physical_tumble_speed := 14.0
 @export var minimum_air_seconds := 0.24
 @export var minimum_drop := 1.4
 @export var descent_seconds := 0.12

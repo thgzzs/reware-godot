@@ -62,6 +62,9 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  if not preview_clip.is_empty():
   if preview_playing: preview_time = fposmod(preview_time+dt,maxf(0.001,duration(preview_clip)))
   return Vector3.ZERO
+ if phase=="stop" and amount>=0.01:
+  phase="move"
+  heading_locked=false
  if phase=="stop":
   heading_locked = true
   var old := time
