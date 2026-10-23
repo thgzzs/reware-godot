@@ -198,6 +198,7 @@ func run() -> void:
 	seat.profile.enter_open_seconds = 0.5; seat.profile.enter_close_seconds = 0.5; seat.profile.enter_seconds = 1.5
 	seat.profile.exit_close_seconds = 0.5; seat.profile.exit_seconds = 1.0
 	check("animated entry reserves a single owner",seat.request_enter(car) and car.reservation==actor)
+	await TransitionTestWait.approach(arena)
 	await frames(10)
 	check("door action respects opening contact delay",motion.clip=="CAR_open_LHS" and not car.doors[0].opened)
 	await frames(35)

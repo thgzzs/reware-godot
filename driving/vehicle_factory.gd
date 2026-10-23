@@ -7,6 +7,7 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
  car.position = at
  car.profile = load("res://tuning/handling.tres").duplicate()
  parent.add_child(car)
+ car.variant=variant
  car.kind=variant.kind
  car.bike_animation=variant.bike_animation
  var record := db.find_record("handling",variant.handling_id)

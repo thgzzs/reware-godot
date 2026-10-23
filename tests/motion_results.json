@@ -4,24 +4,24 @@
   "failures": 0,
   "metrics": {
     "impact": {
-      "car_contacts": 137,
+      "car_contacts": 133,
       "contact_ticks": 107,
-      "displacement": 12.6447458267212,
+      "displacement": 12.5333061218262,
       "health": 60.6738351130392,
       "lift": 0.5514275431633,
-      "speed": 2.46676063537598
+      "speed": 2.36024713516235
     },
     "orchestration": {
-      "max_us": 4749.0,
-      "mean_us": 264.765277777778,
-      "p95_us": 392.0,
+      "max_us": 3705.0,
+      "mean_us": 281.171666666667,
+      "p95_us": 444.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "wheel_forces": {
-      "max_us": 1009.0,
-      "mean_us": 34.4958333333333,
-      "p95_us": 61.0,
+      "max_us": 1563.0,
+      "mean_us": 37.2630555555556,
+      "p95_us": 75.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -35,7 +35,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -49,7 +49,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -63,7 +63,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -77,7 +77,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -91,7 +91,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -105,7 +105,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -119,7 +119,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -133,7 +133,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -147,7 +147,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -161,7 +161,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -175,7 +175,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -189,7 +189,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -203,7 +203,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -217,7 +217,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -231,7 +231,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -245,7 +245,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -259,7 +259,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -273,7 +273,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -287,7 +287,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -301,7 +301,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -315,7 +315,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -329,7 +329,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -343,7 +343,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -357,7 +357,7 @@
     },
     {
       "measured": {
-        "bone_delta": 1.64016699790955,
+        "bone_delta": 2.00177907943726,
         "exclusive_layers": true,
         "rise": 0.874399781227112
       },
@@ -365,7 +365,7 @@
       "passed": true
     },
     {
-      "measured": 0.000000272212787422177,
+      "measured": 0.0000000938189046451043,
       "name": "world gun axis converges on camera-center target pitch -0.35",
       "passed": true
     },
@@ -405,7 +405,7 @@
       "passed": true
     },
     {
-      "measured": 3.15681511163712,
+      "measured": 3.15681505203247,
       "name": "visible hub rotates with forward travel",
       "passed": true
     },
@@ -429,24 +429,24 @@
     },
     {
       "measured": {
-        "car_contacts": 137,
+        "car_contacts": 133,
         "contact_ticks": 107,
-        "displacement": 12.6447458267212,
+        "displacement": 12.5333061218262,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 2.46676063537598
+        "speed": 2.36024713516235
       },
       "name": "moderate impact survives and physically contacts car",
       "passed": true
     },
     {
       "measured": {
-        "car_contacts": 137,
+        "car_contacts": 133,
         "contact_ticks": 107,
-        "displacement": 12.6447458267212,
+        "displacement": 12.5333061218262,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 2.46676063537598
+        "speed": 2.36024713516235
       },
       "name": "Jolt impact transfers momentum and lifts the torso",
       "passed": true
@@ -454,7 +454,7 @@
     {
       "measured": {
         "life": "alive",
-        "position": "(18.27085, 0.900375, 6.032589)"
+        "position": "(18.49526, 0.900375, 4.626311)"
       },
       "name": "nonfatal proxy safely returns to standing control",
       "passed": true

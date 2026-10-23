@@ -46,6 +46,7 @@ func sample() -> GameplayCommand:
  cmd.fire = Input.is_action_pressed("fire")
  cmd.walk = Input.is_action_pressed("walk")
  cmd.sprint = Input.is_action_pressed("sprint")
+ cmd.sprint_pressed = Input.is_action_just_pressed("sprint")
  cmd.brake = Input.is_action_pressed("brake")
  cmd.look = mouse_delta
  cmd.weapon_step = int(Input.is_action_just_pressed("weapon_next"))-int(Input.is_action_just_pressed("weapon_previous"))

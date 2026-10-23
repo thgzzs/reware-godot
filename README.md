@@ -6,6 +6,8 @@ The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian 
 
 The [falling and moving-melee revision](docs/FALL_AND_MOBILE_MELEE.md) adds impact-based fall damage, native descent/glide/landing recovery and walk/run/sprint attacks with blended striking limbs. Tune it through tuning/fall.tres and tuning/melee.tres.
 
+The current [sprint, walk-in entry and settling revision](docs/SPRINT_ENTRY_SETTLING.md) adds capped Shift tapping, collision-driven walking and alignment before mounting, quiet grounded prone/supine settling, and bike-specific rear bailouts. The complete test ZIP includes the supplied assets unchanged; native regression and selected software-rendered poses have been checked.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.
@@ -18,7 +20,7 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | Control | On foot | Driving |
 | --- | --- | --- |
 | WASD | Camera-relative movement, heading-coupled travel | Accelerate/brake/reverse and steer |
-| Alt / Shift | Walk / sprint | — |
+| Alt / Shift | Walk / hold sprint; tap for capped boost | — |
 | Space | Jump with animation windup; firing disabled in air | Brake |
 | C | Toggle crouch; crouched aim/fire | — |
 | V | Cycle follow distances | Follow/bonnet camera |
@@ -28,7 +30,7 @@ The Compatibility renderer and Jolt are configured. The engine executable is not
 | R | Reload | — |
 | Wheel / Q / Z / 1–9 | Switch weapon | — |
 | Backspace | Respawn after death | — |
-| E | Enter nearby car | Exit, crawl out when tilted, or bail while moving |
+| E | Walk to the selected door/mount, enter; press again to cancel approach | Exit, crawl out when tilted, or bail while moving |
 | Mouse | Orbit camera | Orbit camera |
 | F1 / F2 | Controls / display settings | Same |
 | F3 / F4 | Diagnostics / animation browser | Same; leave the car to preview the actor |
@@ -60,7 +62,7 @@ Every ZIP created with the packager includes explicit parent-directory entries f
 python3 tools/rebuild_test_build.py --input old-build.zip --output repaired-build.zip
 ```
 
-To overlay a project directory, add `--project .` to that command. This revision requires the new Stories assets as well as source; overlaying only scripts onto an old build is insufficient. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
+To overlay a project directory, add `--project .` to that command. This revision reuses the supplied Stories assets without reconversion. The complete revised ZIP already contains them. To package the current directory, run `python3 tools/package_project.py --output Harbor.zip`. An actual browser import and exported web runtime remain unverified.
 
 ## Documentation
 

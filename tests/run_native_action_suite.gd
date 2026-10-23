@@ -109,6 +109,7 @@ func run() -> void:
  check("native model entry can reserve the seat",seat.request_enter(car))
  await frames(1)
  check("vehicle entry holsters the equipped weapon",not actor.weapon_muzzle.get_parent().visible)
+ await TransitionTestWait.approach(arena)
  await frames(ceili(seat.profile.enter_seconds*60)+3)
  check("native model entry commits after all stages",seat.state=="driving" and car.driver==actor)
  check("native model exit can begin safely",seat.request_exit())

@@ -1,0 +1,296 @@
+{
+  "assertions": 43,
+  "assets": "supplied native skin, VCS core and LCS bike clips",
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "metrics": {
+    "prone": {
+      "clip": "KO_skid_back",
+      "face_down": true,
+      "heading": 0.0,
+      "height": 0.310828447341919,
+      "minimum_y": 0.0100995302200317
+    },
+    "sprint": {
+      "maximum_mps": 13.9487171173096,
+      "minimum_late_multiplier": 1.119,
+      "minimum_mps": 6.91915988922119,
+      "moving_ticks": 300
+    },
+    "supine": {
+      "clip": "KO_skid_front",
+      "face_down": false,
+      "heading": 0.0,
+      "height": 0.362725675106049,
+      "minimum_y": 0.0103659629821777
+    }
+  },
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "supplied native player and animation library activated",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_mps": 13.9487171173096,
+        "minimum_late_multiplier": 1.119,
+        "minimum_mps": 6.91915988922119,
+        "moving_ticks": 300
+      },
+      "name": "native sprint taps retain one gait without stop or walk-start",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native sprint root motion never stalls between taps",
+      "passed": true
+    },
+    {
+      "measured": 1.178,
+      "name": "native sprint tap boost remains capped",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native walk-in reserves Idaho",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.765799443935975,
+        "maximum_step": 0.0344155468046665,
+        "state": "entering"
+      },
+      "name": "native walk reaches mount before animation Idaho",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native entry commits sole driver Idaho",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native walk-in reserves pcj600",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.765781671740115,
+        "maximum_step": 0.0344154834747314,
+        "state": "entering"
+      },
+      "name": "native walk reaches mount before animation pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native entry commits sole driver pcj600",
+      "passed": true
+    },
+    {
+      "measured": "BIKEs_getoffBACK",
+      "name": "supplied bike rear bailout clip resolves pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike windup holds ownership pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike releases into Jolt exactly once pcj600",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native walk-in reserves sanchez",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.730226126965135,
+        "maximum_step": 0.0344160683453083,
+        "state": "entering"
+      },
+      "name": "native walk reaches mount before animation sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native entry commits sole driver sanchez",
+      "passed": true
+    },
+    {
+      "measured": "BIKEd_getoffBACK",
+      "name": "supplied bike rear bailout clip resolves sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike windup holds ownership sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike releases into Jolt exactly once sanchez",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native walk-in reserves faggio",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.765796909574419,
+        "maximum_step": 0.0344154834747314,
+        "state": "entering"
+      },
+      "name": "native walk reaches mount before animation faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native entry commits sole driver faggio",
+      "passed": true
+    },
+    {
+      "measured": "BIKEv_getoffBACK",
+      "name": "supplied bike rear bailout clip resolves faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike windup holds ownership faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike releases into Jolt exactly once faggio",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native walk-in reserves freeway",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 0.761079758871347,
+        "maximum_step": 0.0354130789637566,
+        "state": "entering"
+      },
+      "name": "native walk reaches mount before animation freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native entry commits sole driver freeway",
+      "passed": true
+    },
+    {
+      "measured": "BIKEh_getoffBACK",
+      "name": "supplied bike rear bailout clip resolves freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike windup holds ownership freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native bike releases into Jolt exactly once freeway",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native fall preserves airborne spin (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "KO_skid_back",
+        "face_down": true,
+        "heading": 0.0,
+        "height": 0.310828447341919,
+        "minimum_y": 0.0100995302200317
+      },
+      "name": "native quiet fall chooses matching terminal pose (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "KO_skid_back",
+        "face_down": true,
+        "heading": 0.0,
+        "height": 0.310828447341919,
+        "minimum_y": 0.0100995302200317
+      },
+      "name": "native settled skin clears floor without hovering (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": -0.995139479637146,
+      "name": "native chest faces the intended floor/sky direction (0.0, 0.0, -1.0)",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "native fall preserves airborne spin (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "KO_skid_front",
+        "face_down": false,
+        "heading": 0.0,
+        "height": 0.362725675106049,
+        "minimum_y": 0.0103659629821777
+      },
+      "name": "native quiet fall chooses matching terminal pose (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "KO_skid_front",
+        "face_down": false,
+        "heading": 0.0,
+        "height": 0.362725675106049,
+        "minimum_y": 0.0103659629821777
+      },
+      "name": "native settled skin clears floor without hovering (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": 0.9977006316185,
+      "name": "native chest faces the intended floor/sky direction (0.0, 0.0, 1.0)",
+      "passed": true
+    },
+    {
+      "measured": "getup_front",
+      "name": "native recovery selects matching get-up (3.0, 0.0, -3.0)",
+      "passed": true
+    },
+    {
+      "measured": -0.785398163397448,
+      "name": "native recovery preserves fallen heading (3.0, 0.0, -3.0)",
+      "passed": true
+    },
+    {
+      "measured": "getup",
+      "name": "native recovery selects matching get-up (-3.0, 0.0, 3.0)",
+      "passed": true
+    },
+    {
+      "measured": -0.785398163397448,
+      "name": "native recovery preserves fallen heading (-3.0, 0.0, 3.0)",
+      "passed": true
+    }
+  ]
+}

@@ -16,20 +16,20 @@
   "fixed_hz": 60,
   "metrics": {
     "acceleration": {
-      "distance_m": 16.3014011383057,
-      "speed_mps": 12.5326833724976,
+      "distance_m": 16.2920684814453,
+      "speed_mps": 12.529109954834,
       "time_s": 2.5
     },
     "braking": {
-      "distance_m": 9.39122581481934,
-      "initial_speed_mps": 15.4812574386597,
+      "distance_m": 9.38755989074707,
+      "initial_speed_mps": 15.4779539108276,
       "time_s": 1.2
     },
     "gameplay_cpu": {
-      "max_us": 1983.0,
-      "mean_us": 77.503733486502,
-      "p95_us": 148.0,
-      "samples": 3482,
+      "max_us": 2148.0,
+      "mean_us": 81.8029176201373,
+      "p95_us": 152.0,
+      "samples": 3496,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "jump": {
@@ -38,17 +38,17 @@
       "launch_delay_s": 0.15
     },
     "node_count": 201.0,
-    "physics_process_seconds_last": 0.005155,
+    "physics_process_seconds_last": 0.002919,
     "suspension": {
       "height_m": 0.582499980926514,
       "load_N": 23999.9991864669,
       "vertical_speed": 0.0000000120941390235885
     },
     "vehicle_force_cpu": {
-      "max_us": 1297.0,
-      "mean_us": 54.9551981619759,
-      "p95_us": 96.0,
-      "samples": 3482,
+      "max_us": 500.0,
+      "mean_us": 54.6996567505721,
+      "p95_us": 105.0,
+      "samples": 3496,
       "scope": "four wheel queries and forces; excludes Jolt contact solve"
     }
   },
@@ -234,29 +234,29 @@
     },
     {
       "measured": {
-        "distance_m": 16.3014011383057,
-        "speed_mps": 12.5326833724976,
+        "distance_m": 16.2920684814453,
+        "speed_mps": 12.529109954834,
         "time_s": 2.5
       },
       "name": "vehicle accelerates forward",
       "passed": true
     },
     {
-      "measured": 0.381670951843262,
+      "measured": 0.3817538022995,
       "name": "steering changes heading",
       "passed": true
     },
     {
       "measured": {
-        "distance_m": 9.39122581481934,
-        "initial_speed_mps": 15.4812574386597,
+        "distance_m": 9.38755989074707,
+        "initial_speed_mps": 15.4779539108276,
         "time_s": 1.2
       },
       "name": "brakes bring vehicle to rest",
       "passed": true
     },
     {
-      "measured": -4.36901044845581,
+      "measured": -4.36932563781738,
       "name": "reverse engages after stop",
       "passed": true
     },

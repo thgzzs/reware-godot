@@ -122,6 +122,7 @@ func run() -> void:
  var seat:VehicleTransition=arena.transition
  actor.reset_at(car.approach_position(1));await frames(25)
  check("passenger-side approach reserves the right seat",seat.request_enter(car,true) and seat.seat_index==1 and seat.entry_side==1)
+ await TransitionTestWait.approach(arena)
  await frames(ceili(seat.profile.enter_seconds*60)+10)
  check("passenger occupancy never grants driving control",seat.state=="passenger" and car.driver==null and car.seating.occupants.get(1)==actor)
  check("passenger can reserve a free driver seat for shuffle",seat.request_switch_driver())
@@ -136,6 +137,7 @@ func run() -> void:
  check("exit releases every occupancy and reservation",seat.state=="on_foot" and car.seating.occupants.is_empty() and car.seating.reservations.is_empty())
  actor.reset_at(car.approach_position(1));await frames(25)
  check("right-side normal entry begins",seat.request_enter(car))
+ await TransitionTestWait.approach(arena)
  await frames(ceili(seat.profile.enter_seconds*60)+60)
  check("normal right entry uses source shuffle to reach driver",seat.state=="driving" and car.driver==actor)
  seat.request_exit();await frames(ceili(seat.profile.exit_seconds*60)+10)

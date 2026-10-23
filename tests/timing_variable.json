@@ -3,10 +3,10 @@
   "engine": "4.7.2-stable (official)",
   "physics_hz": 60,
   "render_dt_range": [
-    0.000862999993842095,
-    0.147414666666667
+    0.000795374973677099,
+    0.15
   ],
-  "render_steps": 839,
+  "render_steps": 842,
   "snapshots": [
     {
       "car": [

@@ -1,55 +1,54 @@
-# Current validation
+# Current asset-inclusive validation
 
-Godot **4.7.2 Stable**, official `ed1daf0bf`, built-in **Jolt**, fixed 60 Hz. See provenance.json for the exact engine archive digest. Historical reports and milestone counts describe earlier revisions.
+Godot **4.7.2 Stable**, official ed1daf0bf, built-in Jolt, physics 60 Hz. The verified official Linux archive has SHA-256 cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4. No engine substitution was used.
+
+The supplied complete ZIP restored the native assets. All **569 Godot/Jolt assertions across 13 suites** and all **23 Python tests without skips** pass in this revision. Earlier milestone counts are historical.
 
 | Suite | Passed | Scope |
 | --- | ---: | --- |
-| Baseline gameplay | 47 | Movement, jump, targeting, suspension and first playable loop |
-| Action contracts | 41 | Synthetic fixtures: masks, reactions, doors and transitions |
-| Imported animation/data | 36 | Native 294,062-key round trip and data integration |
-| Native presentation | 28 | Skin, model markers, layout/display and pose sampling |
-| Native actions | 66 | 24-entry loadout, masked actions, death and doors |
-| Temporal motion | 63 | 24-entry action timing, movement, seats, wheel spin and physical impacts |
-| Systems | 54 | Props, tires/glass, stance, firing, melee, seats and damage |
-| Foundations | 13 | Jump/slope response, heavy pushes and impact lifecycle |
-| Stories assets | 10 | 44 blocks, all originals/aliases, rig-ID mapping and exact assets |
-| Stories gameplay | 77 | Retaliation, spatial strikes, localized collisions, fragments, bikes and bailouts |
-| Falling / mobile melee | 48 | Real drops/ledge/recovery, shared actors, all melee weapons, stride/pose/tip/collision and cancellation |
+| Baseline | 47 | Primitive real-Jolt playable loop |
+| Action/door regression | 41 | Synthetic clips, masks, doors and impacts |
+| Intent regression | 42 | Independent tap/route/settling fixtures |
+| Imported data | 37 | All 1168 native entries and every converted key |
+| Presentation | 28 | Rig, models, HUD and replacement bindings |
+| Native actions | 66 | Weapon masks, sprint, doors, death and holstering |
+| Motion/impacts | 63 | Native motion and physical momentum exchange |
+| Systems | 54 | Props, stance, glass, tires and damage |
+| Foundation | 13 | State, units, ownership and configuration |
+| Native intent | 43 | Native tapping, car/four-bike entry, rear release and directional rests/get-up |
+| Stories assets | 10 | Selected models and all source animation blocks |
+| Stories gameplay | 77 | Melee, panels, handling, exits and bikes |
+| Fall/mobile melee | 48 | Fall damage, recovery and moving strikes |
 
-Total: **483 Godot/Jolt assertions**, **23 Python tests with none skipped**, and **five local render-rate comparisons**. The prior nine selected software-OpenGL states were reviewed: pistol hip fire, M4 aim, katana strike, PCJ600 rider, Faggio rider, bike collection, panel damage, detached bonnet and overturned crawl. This is selected visual review, not exhaustive contact verification.
+All 108 other GDScript files load in the script check. Five fixed-physics comparisons pass at 30/60/120/144 and varying render caps. These CPU replay checks do not measure GPU throughput or prove cross-platform determinism.
 
-Reports are tests/*_results.json. The current structured transcript is tests/fall_validation_transcript.txt; fall_python_transcript.txt records the 23 Python tests. Four new software-OpenGL captures review descent, hard landing and running bat/katana attacks. Earlier transcripts are historical. The independent legacy decoder report applies to the original ped.ifp only; current Stories validation compares native curves against the portable source representation after deterministic duplicate-time coalescing. The Stories import CLI was reproduced in isolation: five portable outputs and all 46 new PNGs exactly matched.
+## Current measurements
+
+Repeated native sprint tapping keeps sprint_civi and the moving phase for all 300 sampled ticks. The gait clock advances on every tick. Instantaneous native root speed is 6.92–13.95 m/s; the supplied clip has a varying root curve. The independent linear fixture measures 6.0–7.2 m/s and verifies the strict 1.20 multiplier cap, decay and release grace. Neither curve is calibrated against a running original executable.
+
+Native walk-ins reach the car and all four bikes through the standing motor before mounting. Sampled maximum tick displacement is under 0.04 m. The right-side Sanchez regression now completes with normal-rate walk-start anticipation. The seat remains reserved until mounting commits; cancellation/death/lost reservation/blockers preserve safe ownership.
+
+Forward quiet falls select prone KO_skid_back; backward falls select supine KO_skid_front. Native skin minima are 0.01010 and 0.01037 m above the flat floor, with terminal heights 0.311 and 0.363 m. Chest orientation is checked independently. Native getup_front/getup restores the diagonal fall heading. All four supplied bike-specific getoffBACK clips retain occupancy during windup and release once into the Jolt torso.
+
+Seven selected poses were rendered at 1280×720 with the Compatibility renderer and Mesa llvmpipe: sprint, prone, supine, and rear-exit windup on PCJ600/Sanchez/Faggio/Freeway. They were visually reviewed. The complete ZIP includes these previews and their repeatable render script. These snapshots are limited visual checks, not exhaustive hand/foot/vehicle-contact or temporal parity.
+
+The native Stories orchestration callback sampled 3600 ticks: mean 271.8 us, p95 423 us. The primitive baseline sampled 3496 ticks: mean 81.8 us, p95 152 us. These shared CPU-environment samples exclude Jolt solving and rendering; the fixtures have different workloads. No comparative speedup or full frame-budget claim is made.
 
 ## Reproduce
 
 ```bash
 python3 tools/validate.py --godot /absolute/path/Godot_4.7.2_stable
+Godot_4.7.2_stable --headless --path . --script res://tools/check_project_scripts.gd
 python3 tools/check_render_timing.py --godot /absolute/path/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-The validator checks the exact version, imports first, removes stale result files, enforces process timeouts and fails on script errors or failed assertions. Asset-dependent suites only run when their private inputs exist. Python private-input tests skip if those inputs are absent. Rendering fixtures in tests/render_stories_preview.gd require a graphical display.
+With a graphical display, run `Godot_4.7.2_stable --path . --resolution 1280x720 --fixed-fps 60 --script res://tests/render_native_intent_preview.gd` to regenerate selected previews.
 
-## Target measurements
+The validator rejects other engines, imports first and selects private-asset suites only when their inputs exist. Synthetic suites explicitly disable those assets. Native transition tests wait for approach completion before measuring animation-stage duration. Current JSON reports, intent_validation_transcript.txt and intent_python_transcript.txt record the results.
 
-The native Idaho acceptance fixture reaches 10 m/s in 1.267 s. Its 2.5 s high-speed corner test begins at 22 m/s, ends near 28.51 m/s and retains a minimum upright dot of 0.99980. Source-derived behavior and intentional balance changes are distinguished in STORIES_REVISION.md. These targets have not been compared to original-runtime traces.
+The complete ZIP retains explicit parent directories before files, passes CRC/SHA checks and strict sequential extraction, and imports/starts from a fresh cache. All 315 selected private asset/support payloads are byte-identical to the supplied ZIP; no reconversion occurred. Public git excludes those payloads and native screenshots, while the delivered private test ZIP contains them.
 
-| Callback | Samples | Mean, us | p95, us |
-| --- | ---: | ---: | ---: |
-| Stories native orchestration | 3600 | 277.5 | 442.0 |
-| Four-wheel force/query | 3600 | 34.5 | 61.0 |
-| Native player pose sample | 180 | 160.5 | 260.0 |
+## Remaining validation gaps
 
-These shared-environment CPU samples cover only the named callbacks. Orchestration includes the controlled player pose but excludes independent NPC/door/probe callbacks, Jolt solving, HUD drawing and rendering. Pose timing excludes other actors and GPU skinning. The Stories orchestration maximum was 5.5 ms; shared-environment scheduling pauses are included. Complete statistics remain in the JSON report. No complete frame budget, speedup or performance superiority is claimed. Caches avoid repeated rig resolution and contact-list allocations; no comparative benchmark isolates their savings.
-
-Five replays use render rates 30/60/120/144 and a variable-cap real-clock run, with physics fixed at 60 Hz. Sampled player position, velocity, pose, state and shot count agree; the maximum car-position difference is 4.173e-07 m. The variable case observes render deltas from 0.000863 to 0.1474147 s. This controlled local fixture does not establish all-bike, cross-platform, alternate-physics-rate or network determinism.
-
-## Packaging and limits
-
-The ZIP uses explicit parent-directory entries, CRC checks, SHA-256 manifests and strict extraction. The four original model scenes and 25 PNGs are preserved; the active animation library and weapon/fight tables are intentionally replaced. The original source ZIP had 217 files and zero directory entries. A fresh extracted-project import/startup is required by the delivery packager.
-
-Software-rendered captures use Mesa llvmpipe, not a physical GPU. Original executable behavior, browser import/playback, full visual parity, hardware GPU performance and target-device usability remain unverified. Gameplay parity, visual parity and performance parity are separate goals.
-
-## Falling and mobile-melee measurements
-
-In the current native fixture a 2 m drop causes no damage, a 4 m drop causes approximately 10 health damage, a 7 m drop approximately 64 and an 18 m drop reaches the 200-damage cap. Walk/run/sprint attacks retain at least 85% of unarmed stride distance and remain below 115%, without adding stationary attack-root velocity. These are target acceptance bands, not original-game parity. See tests/fall_melee_results.json and FALL_AND_MOBILE_MELEE.md. All previously selected private asset bytes are retained; this revision performs no asset reconversion.
+Original-executable behavioral/visual/performance traces, actual browser import/export/playback, hardware GPU profiling, the full device matrix, exhaustive clip contacts and articulated ragdolls remain unverified. This is a playable framework, not a claim of full reVC equivalence. See SPRINT_ENTRY_SETTLING.md and DISCREPANCIES.md.

@@ -27,12 +27,12 @@ def main():
             raise SystemExit(result.returncode or 1)
 
     run(['--headless', '--editor', '--import', '--quit'])
-    suites = [('suite', 'latest'), ('revision_suite', 'revision')]
+    suites = [('suite', 'latest'), ('revision_suite', 'revision'), ('intent_revision_suite', 'intent_revision')]
     if (root/'assets/converted/ped_library.res').exists():
         suites.append(('imported_suite', 'imported'))
     if (root/'assets/converted/models/player.scn').exists():
         suites.extend((name+'_suite', name) for name in
-                      ('presentation', 'native_action', 'motion', 'systems', 'foundation'))
+                      ('presentation', 'native_action', 'motion', 'systems', 'foundation', 'native_intent'))
     if (root/'assets/converted/stories_animation_source.json').exists():
         suites.extend([('stories_assets', 'stories_assets'), ('stories_suite', 'stories'), ('fall_melee_suite', 'fall_melee')])
     total = 0

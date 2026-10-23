@@ -1,15 +1,15 @@
 {
-  "assertions": 36,
+  "assertions": 37,
   "backend": "Jolt Physics",
   "claim": "native conversion and functional integration; rig bindings covered by separate native suites; reference-runtime parity unverified",
   "engine": "4.7.2-stable (official)",
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 7735.0,
-      "mean_us": 559.821642429427,
-      "p95_us": 988.0,
-      "samples": 2338,
+      "max_us": 7334.0,
+      "mean_us": 548.7014604811,
+      "p95_us": 976.0,
+      "samples": 2328,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "model_binding_verified": "covered separately by presentation/stories rig-ID suites",
@@ -134,6 +134,11 @@
     {
       "measured": 1.7675793170929,
       "name": "stop root motion still moves the colliding body",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "renewed movement interrupts native stop without restarting walk-start",
       "passed": true
     },
     {

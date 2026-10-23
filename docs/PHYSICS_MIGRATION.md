@@ -51,3 +51,7 @@ The native Idaho fixture reaches 10 m/s in approximately 1.27 s. A 22 m/s corner
 ## Falling extension
 
 On-foot falls now accumulate airborne/descent evidence and use relative normal closing speed against the landing support. Environmental damage bypasses combat defense. Grounded steps, ordinary jumps and reset/seat transfers cannot carry stale descent evidence into another landing. Moving melee consumes the existing locomotion velocity without also applying attack-root velocity; stationary attacks retain their swept root movement. Parameters and validation limits are in FALL_AND_MOBILE_MELEE.md.
+
+## Current source revision
+
+Sprint tap gain scales the gait clock and consumed root displacement together. Automatic entry walks through the existing swept motor and aligns before any door action. High descents may transfer velocity to the existing physical torso, with one supported-impact damage event. Quiet-contact settling modifies only presentation, then chooses matching get-up/facing. Native follow-up measures continuous sprint root playback, five walk-in/mount transactions, four rear-bike releases, directional get-up and terminal skin clearance. Native FALL_front/back are not flat terminal rest poses: KO_skid_back supplies prone and KO_skid_front supplies supine. After quiet support, a cached terminal skin minimum corrects presentation to 1 cm floor clearance; Jolt transforms and velocities remain untouched. See VALIDATION.md for measured scope.

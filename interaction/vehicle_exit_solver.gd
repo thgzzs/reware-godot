@@ -1,7 +1,7 @@
 class_name VehicleExitSolver
 extends RefCounted
 ## Upright world-space capsule clearance for tilted vehicles and moving bailouts.
-static func select(actor:CharacterMotor, car:DriveVehicle, required:=-1, seat_index:=0) -> Dictionary:
+static func select(actor:CharacterMotor, car:DriveVehicle, required:=-1, seat_index:=0, prefer_rear:=false) -> Dictionary:
  var space:=actor.get_world_3d().direct_space_state
  var forward:=Vector3(-car.global_basis.z.x,0,-car.global_basis.z.z).normalized()
  if forward.length_squared()<0.1:forward=Vector3.FORWARD
@@ -10,11 +10,11 @@ static func select(actor:CharacterMotor, car:DriveVehicle, required:=-1, seat_in
  var width:=maxf(1.2,hull.x*0.5+0.55)
  var length:=maxf(1.6,hull.z*0.5+0.55)
  var offsets:Array[Vector3]=[-right*width,right*width,-forward*length,forward*length,-right*(width+0.65),right*(width+0.65),(-right-forward).normalized()*(length+0.4),(right-forward).normalized()*(length+0.4),(-right+forward).normalized()*(length+0.4),(right+forward).normalized()*(length+0.4)]
- var order:=range(offsets.size())
+ var order:=[2,6,7] if prefer_rear else range(offsets.size())
  # Prefer the occupied side in world space when inverted; crossing the whole
  # cabin would pull the crawl pose through the underside of the vehicle.
  var occupied_side := (car.seat_position(seat_index)-car.global_position).dot(right)
- if car.global_basis.x.dot(Vector3.UP)>0.2 or occupied_side>0.05:order[0]=1;order[1]=0
+ if not prefer_rear and (car.global_basis.x.dot(Vector3.UP)>0.2 or occupied_side>0.05):order[0]=1;order[1]=0
  for index in order:
   if required>=0 and index!=required:continue
   var point:=car.global_position+offsets[index]

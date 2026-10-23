@@ -97,6 +97,7 @@ func run() -> void:
  car.reset_at(Vector3(18,0.9,25));await frames(100)
  actor.reset_at(car.approach_position());await frames(25)
  check("entry begins",arena.transition.request_enter(car))
+ await TransitionTestWait.approach(arena)
  await frames(ceili(arena.transition.profile.enter_seconds*60)+20)
  var pelvis := visual.skeleton.find_bone("Pelvis")
  var hip: Vector3 = visual.skeleton.global_transform*visual.skeleton.get_bone_global_pose(pelvis).origin
