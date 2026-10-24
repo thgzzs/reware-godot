@@ -1,6 +1,6 @@
 # Current discrepancies
 
-Latest revision: SPRINT_ENTRY_SETTLING.md. Native regression now runs against the restored supplied models/animations. Selected sprint, settled fall and four bike rear-exit poses were rendered locally. The counts in VALIDATION.md describe this build; older milestones remain historical.
+Latest input/export revision: MOBILE_ANDROID.md. Native gameplay details remain in SPRINT_ENTRY_SETTLING.md. Native regression now runs against the restored supplied models/animations. Selected sprint, settled fall and four bike rear-exit poses were rendered locally. The counts in VALIDATION.md describe this build; older milestones remain historical.
 
 Falling and moving melee are documented in [FALL_AND_MOBILE_MELEE.md](FALL_AND_MOBILE_MELEE.md). The asset/vehicle delivery is documented in [STORIES_REVISION.md](STORIES_REVISION.md); older milestones are historical. Gameplay, visual and performance parity remain unverified against a running original build.
 
@@ -13,6 +13,7 @@ Falling and moving melee are documented in [FALL_AND_MOBILE_MELEE.md](FALL_AND_M
 | Damage | Localized panels/fragments, engine, tires and glass work. No general fracture simulation, exhaustive panel/hinge interaction or all original light-damage visuals. |
 | Transitions | Crawl and moving bailouts work; source right crawl mirrors for left exits. No jacking/lock policy, exhaustive animation contact markers or steering-wheel/door-handle IK. |
 | World/AI/camera | Small yard and shared fight/flee peds. No full traffic, population, navigation/crowds, streaming, missions, save/load or full cinematic camera set. |
+| Android | Signed ARM32/ARM64 release-engine test APK and packed-resource smoke checks pass. Physical/emulated Android Java/JNI, lifecycle, insets, GPU, thermals and broad touch ergonomics remain untested. |
 | Validation | No original executable traces, browser playback, hardware GPU frame budget or full device/usability matrix. Local replay agreement does not prove cross-platform/network determinism. |
 | Extensions | Data/command boundaries exist; multiplayer replication and mod loading are unimplemented. |
 

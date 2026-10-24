@@ -59,6 +59,7 @@ func build_settings() -> void:
  note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
  box.add_child(note)
  var resolutions := OptionButton.new()
+ resolutions.visible = not OS.has_feature("mobile")
  for value in ["Window size…","960 × 540","1280 × 720","1440 × 900","1920 × 1080","2560 × 1440"]: resolutions.add_item(value)
  resolutions.item_selected.connect(func(index: int):
   if index>0:
@@ -66,12 +67,13 @@ func build_settings() -> void:
    get_tree().root.size = [Vector2i(960,540),Vector2i(1280,720),Vector2i(1440,900),Vector2i(1920,1080),Vector2i(2560,1440)][index-1])
  box.add_child(resolutions)
  var fullscreen := CheckButton.new()
+ fullscreen.visible = not OS.has_feature("mobile")
  fullscreen.text = "Fullscreen"
  fullscreen.button_pressed = get_tree().root.mode in [Window.MODE_FULLSCREEN,Window.MODE_EXCLUSIVE_FULLSCREEN]
  fullscreen.toggled.connect(func(value: bool): get_tree().root.mode = Window.MODE_FULLSCREEN if value else Window.MODE_WINDOWED)
  box.add_child(fullscreen)
  var close := Button.new()
- close.text = "Resume / F2"
+ close.text = "Resume" if OS.has_feature("mobile") else "Resume / F2"
  close.pressed.connect(toggle_settings)
  box.add_child(close)
  render_slider.value_changed.connect(func(value: float):
@@ -96,7 +98,7 @@ func toggle_settings() -> void:
   controls_visible = false
   if is_instance_valid(arena.animation_browser) and arena.animation_browser.visible: arena.animation_browser.toggle()
   Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
- elif DisplayServer.get_name()!="headless": Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+ elif DisplayServer.get_name()!="headless" and not arena.uses_touch_controls(): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func on_shot(origin: Vector3, end: Vector3, hit: bool) -> void:
  tracer_from = origin; tracer_to = end; flash_left = 0.08; hit_flash = hit
 func _process(dt: float) -> void:
@@ -104,6 +106,12 @@ func _process(dt: float) -> void:
  flash_left = maxf(0,flash_left-dt)
  var screen := get_viewport_rect().size
  layout = DisplayController.hud_layout(screen)
+ if arena.uses_touch_controls():
+  var safe:Rect2=arena.mobile_controls.safe
+  layout.context.position=safe.position
+  layout.status.position=Vector2(safe.end.x-layout.status.size.x,safe.position.y)
+  layout.ammo.position=Vector2(safe.end.x-layout.ammo.size.x,layout.status.end.y+10)
+  layout.radar=Rect2(safe.position+Vector2(0,94),Vector2(128,128))
  if settings.visible:
   settings.size = Vector2(minf(480,screen.x-36),minf(620,screen.y-36))
   settings.position = (screen-settings.size)*0.5
@@ -133,8 +141,8 @@ func _draw() -> void:
  var context: Rect2 = layout.context
  draw_rect(status,BACK); draw_rect(ammo,BACK)
  text_at("HARBOR",context.position+Vector2(0,22),24,PINK,context.size.x)
- text_at("F1 Controls / F2 Display",context.position+Vector2(0,47),14,INK,context.size.x)
- text_at("F3 Debug / F4 Animations",context.position+Vector2(0,67),14,AQUA,context.size.x)
+ text_at("Left stick: move / steer" if arena.uses_touch_controls() else "F1 Controls / F2 Display",context.position+Vector2(0,47),14,INK,context.size.x)
+ text_at("Right drag: camera" if arena.uses_touch_controls() else "F3 Debug / F4 Animations",context.position+Vector2(0,67),14,AQUA,context.size.x)
  var health: float = arena.actor.health.health
  text_at("HEALTH",status.position+Vector2(16,24),14,PINK)
  text_at("%03d"%health,status.position+Vector2(status.size.x-68,28),24,PINK)
@@ -163,6 +171,8 @@ func _draw() -> void:
  if message.is_empty() and arena.transition.state=="shuffling": message = "Moving to driver seat…"
  if message.is_empty() and arena.transition.state=="entering": message = "Entering vehicle…"
  elif message.is_empty() and arena.transition.state=="exiting": message = "Leaving vehicle…"
+ if arena.uses_touch_controls():
+  message=message.replace("[Backspace]","Tap RESPAWN:").replace("[E]","Tap ENTER / EXIT:").replace("[X]","Tap SEAT:").replace("[C]","Tap CROUCH:")
  if not message.is_empty():
   var width := minf(420,screen.x-36)
   text_at(message,Vector2((screen.x-width)*0.5,screen.y-196 if screen.x<1000 else screen.y-54),17,AQUA,width)

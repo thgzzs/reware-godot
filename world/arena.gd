@@ -5,6 +5,8 @@ var enable_vehicle_fixtures := true
 var enable_model_placeholders := true
 var placeholder_assets: PlaceholderAssets = preload("res://tuning/placeholder_assets.tres")
 var display_controller: DisplayController
+var mobile_controls: MobileControls
+var force_touch_controls := false
 var reference_library: AnimationLibrary
 var reference_database: ImportedGameplayDatabase
 var pedestrians: Array[CharacterMotor] = []
@@ -72,7 +74,19 @@ func _ready() -> void:
 		animation_browser.actor = actor
 		animation_browser.database = reference_database
 		canvas.add_child(animation_browser)
-	if DisplayServer.get_name()!="headless": Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	mobile_controls = MobileControls.new()
+	mobile_controls.arena = self
+	mobile_controls.enabled = force_touch_controls or OS.has_feature("mobile") or DisplayServer.is_touchscreen_available() or "--touch" in OS.get_cmdline_user_args()
+	canvas.add_child(mobile_controls)
+	transition.state_changed.connect(func(_state: String): mobile_controls.sync_context())
+	if mobile_controls.enabled: input_source.touch = mobile_controls.intent
+	if DisplayServer.get_name()!="headless" and not uses_touch_controls(): Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+func uses_touch_controls() -> bool:
+	return is_instance_valid(mobile_controls) and mobile_controls.enabled
+func _notification(what: int) -> void:
+	if what==NOTIFICATION_WM_GO_BACK_REQUEST and uses_touch_controls():
+		overlay.toggle_settings()
+		mobile_controls.clear()
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F1:
@@ -95,13 +109,14 @@ func _unhandled_input(event: InputEvent) -> void:
 		overlay.diagnostics = not overlay.diagnostics
 		overlay.controls_visible = false
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE: Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	if event is InputEventMouseButton and event.pressed and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and not overlay.settings.visible and (not is_instance_valid(animation_browser) or not animation_browser.visible):
+	if event is InputEventMouseButton and event.pressed and not uses_touch_controls() and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE and not overlay.settings.visible and (not is_instance_valid(animation_browser) or not animation_browser.visible):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _physics_process(dt: float) -> void:
 	if not is_instance_valid(actor): return
 	var start_us := Time.get_ticks_usec()
+	if uses_touch_controls(): mobile_controls.sync_context()
 	var cmd := injected_command if test_mode else input_source.sample()
-	if overlay.settings.visible or (is_instance_valid(animation_browser) and animation_browser.visible) or (not test_mode and Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED):
+	if overlay.settings.visible or (is_instance_valid(animation_browser) and animation_browser.visible) or (not test_mode and not uses_touch_controls() and Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED):
 		cmd = GameplayCommand.new()
 		input_source.mouse_delta = Vector2.ZERO
 	if cmd.repair_vehicle and transition.state=="on_foot" and actor.control_enabled:

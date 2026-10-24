@@ -1,0 +1,189 @@
+{
+  "android_device_tested": false,
+  "assertions": 34,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": null,
+      "name": "a complete tap between physics ticks preserves its edge",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "one-shot actions consume their edge exactly once",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "releasing one finger preserves another held action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "last release stops held firing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "a quick fire tap survives an entire input frame",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "aim toggle survives finger release",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "a second aim tap returns to hip fire",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint taps preserve a distinct press edge",
+      "passed": true
+    },
+    {
+      "measured": "(0.447214, -0.894427)",
+      "name": "vehicle throttle combines with analog steering",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "reverse and brake are independent vehicle actions",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "clearing touch intent removes all held/toggle/edge/look state",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch mode runs with a visible cursor and the normal input producer",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "screen-touch movement owns one stick finger",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "camera drag is independent from the movement finger",
+      "passed": true
+    },
+    {
+      "measured": {
+        "distance": 1.1969963312149,
+        "shots": 3
+      },
+      "name": "simultaneous move/aim/fire uses the live gameplay loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch release stops movement and firing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stick deadzone filters thumb jitter",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "dragging out of a button releases its held action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "focus loss clears held touches without requiring release events",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch menu opens the existing display panel",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "modal UI blocks game touches and clears previous movement",
+      "passed": true
+    },
+    {
+      "measured": 0.85,
+      "name": "touch drags adjust the native render-scale slider",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "modal controls accept touch while gameplay mouse emulation stays off",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "resuming on mobile does not require mouse capture",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch layout respects display cutout bounds",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "action targets remain inside safe bounds without overlap",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch entry starts the existing seat transaction",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch entry commits unique vehicle ownership",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "driving context swaps combat buttons for vehicle controls",
+      "passed": true
+    },
+    {
+      "measured": {
+        "speed": 7.14319801330566,
+        "steer": -0.375192761421204
+      },
+      "name": "touch gas and steering drive the real Jolt vehicle",
+      "passed": true
+    },
+    {
+      "measured": [
+        7.29367923736572,
+        -0.0494281202554703
+      ],
+      "name": "touch brake slows the vehicle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch exit restores on-foot controls and releases occupancy",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "death exposes a reachable touch respawn action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "touch respawn restores the continuous gameplay loop",
+      "passed": true
+    }
+  ],
+  "scope": "Real ScreenTouch/ScreenDrag events through the live command producer, primitive/Jolt gameplay; native regression runs separately"
+}

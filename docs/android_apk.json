@@ -1,0 +1,26 @@
+{
+  "file": "Harbor-Mobile-Test.apk",
+  "bytes": 75417696,
+  "sha256": "f56cd45b1a1d3c99ea2dce1e5d1bf4b19f78c06be31bdd30f280830d791c467b",
+  "signed": true,
+  "zip_crc": true,
+  "native_16kb_zip_alignment": true,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a"
+  ],
+  "model_scenes": 32,
+  "engine": "4.7.2.stable",
+  "engine_build": "release",
+  "android_native_jolt_present": true,
+  "elf_load_alignment": {
+    "lib/arm64-v8a/libc++_shared.so": 16384,
+    "lib/arm64-v8a/libgodot_android.so": 16384,
+    "lib/armeabi-v7a/libc++_shared.so": 4096,
+    "lib/armeabi-v7a/libgodot_android.so": 4096
+  },
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "android_device_tested": false,
+  "notes": "Release engine signed with the private test key. No physical device or Android emulator was available."
+}

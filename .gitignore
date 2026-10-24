@@ -25,3 +25,10 @@ docs/fall-*.png.import
 
 docs/intent-*.png
 docs/intent-*.png.import
+
+# Private local APK signing and mobile previews.
+android/test-signing/
+*.apk
+*.idsig
+docs/mobile-*.png
+docs/mobile-*.png.import

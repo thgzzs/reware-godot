@@ -178,3 +178,11 @@ Created SprintProfile/ActorSprintState, VehicleApproach, ReactionRestProfile/Rea
 Reused all 315 private asset/support payloads from the supplied complete ZIP byte for byte; no reconversion. Created native intent acceptance and seven-pose render fixtures, native results and updated transcripts. Modified holstering, native near-marker start timing, terminal clip selection and floor-clearance presentation. The file register is intent_files.json.
 
 Validation: exact Godot 4.7.2 Stable/Jolt, 569 assertions across 13 suites, 23 Python tests without skips, five render-rate comparisons, seven selected native software renders, explicit-directory ZIP/CRC/SHA checks and fresh extraction/import/startup. No original-executable, browser or hardware-GPU parity claim.
+
+## Mobile controls and Android APK
+
+Created TouchProfile, TouchIntent and MobileControls with a tuning Resource; an original vector app icon; Android export preset and repeatable export tool; mobile acceptance/render fixtures and reports. Modified input production, arena wiring, mobile HUD/modal handling, exported asset detection, project display/input/texture settings and validation. Exact created/modified public paths are in mobile_files.json.
+
+Implemented simultaneous stick/look/action ownership, press-edge buffering, contextual vehicle/death controls, cutout layout, input clearing, touch-accessible display settings and Android Back. The full private project preserves all 315 supplied private payloads; its local test key is excluded from git and the APK.
+
+Validation: 603 current assertions across 14 suites (602 in the full batch plus the final 34-check quick-tap follow-up); 113 scripts parsed; 23 Python tests; four reviewed desktop touch previews. The signed release APK passes manifest/ABI, CRC, signature, native archive/ARM64 ELF alignment and packed-resource startup checks. Fresh ZIP import/startup and file manifests are verified. Remaining: physical-device/emulator installation, Android Java/JNI/GPU/lifecycle, thermals, broader ergonomics and original/browser/hardware performance parity. See MOBILE_ANDROID.md and VALIDATION.md.

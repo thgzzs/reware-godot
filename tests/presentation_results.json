@@ -4,9 +4,9 @@
   "failures": 0,
   "metrics": {
     "player_pose_cpu": {
-      "max_us": 458.0,
-      "mean_us": 158.283333333333,
-      "p95_us": 243.0,
+      "max_us": 1228.0,
+      "mean_us": 312.677777777778,
+      "p95_us": 734.0,
       "samples": 180,
       "scope": "one player's SkinnedMotionVisual.sample_pose CPU time only; excludes other actors, Jolt and rendering"
     },

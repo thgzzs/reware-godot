@@ -1,0 +1,91 @@
+Current mobile revision: Godot 4.7.2 Stable official ed1daf0bf / Jolt / 60 Hz
+latest: 47 passed, 0 failed
+revision: 41 passed, 0 failed
+intent_revision: 42 passed, 0 failed
+mobile: 34 passed, 0 failed
+imported: 37 passed, 0 failed
+presentation: 28 passed, 0 failed
+native_action: 66 passed, 0 failed
+motion: 63 passed, 0 failed
+systems: 54 passed, 0 failed
+foundation: 13 passed, 0 failed
+native_intent: 43 passed, 0 failed
+stories_assets: 10 passed, 0 failed
+stories: 77 passed, 0 failed
+fall_melee: 48 passed, 0 failed
+Total current reports: 603 assertions across 14 suites. Full batch before final quick-tap fix: 602. Final mobile follow-up: 34.
+113 other scripts parsed; 23 Python tests passed.
+No physical Android device or emulator used.
+
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS a complete tap between physics ticks preserves its edge <null>
+PASS one-shot actions consume their edge exactly once <null>
+PASS releasing one finger preserves another held action <null>
+PASS last release stops held firing <null>
+PASS a quick fire tap survives an entire input frame <null>
+PASS aim toggle survives finger release <null>
+PASS a second aim tap returns to hip fire <null>
+PASS sprint taps preserve a distinct press edge <null>
+PASS vehicle throttle combines with analog steering (0.447214, -0.894427)
+PASS reverse and brake are independent vehicle actions <null>
+PASS clearing touch intent removes all held/toggle/edge/look state <null>
+PASS touch mode runs with a visible cursor and the normal input producer <null>
+PASS screen-touch movement owns one stick finger <null>
+PASS camera drag is independent from the movement finger <null>
+PASS simultaneous move/aim/fire uses the live gameplay loop { "shots": 3, "distance": 1.1969963312149 }
+PASS touch release stops movement and firing <null>
+PASS stick deadzone filters thumb jitter <null>
+PASS dragging out of a button releases its held action <null>
+PASS focus loss clears held touches without requiring release events <null>
+PASS touch menu opens the existing display panel <null>
+PASS modal UI blocks game touches and clears previous movement <null>
+PASS touch drags adjust the native render-scale slider 0.85
+PASS modal controls accept touch while gameplay mouse emulation stays off <null>
+PASS resuming on mobile does not require mouse capture <null>
+PASS touch layout respects display cutout bounds <null>
+PASS action targets remain inside safe bounds without overlap <null>
+PASS touch entry starts the existing seat transaction <null>
+PASS touch entry commits unique vehicle ownership <null>
+PASS driving context swaps combat buttons for vehicle controls <null>
+PASS touch gas and steering drive the real Jolt vehicle { "speed": 7.14319801330566, "steer": -0.3751927614212 }
+PASS touch brake slows the vehicle [7.29367923736572, -0.04942812025547]
+PASS touch exit restores on-foot controls and releases occupancy <null>
+PASS death exposes a reachable touch respawn action <null>
+PASS touch respawn restores the continuous gameplay loop <null>
+RESULT mobile 34 / failures 0
+
+WARNING: Couldn't get executable path from /proc/self/exe, using argv[0]
+     at: get_executable_path (drivers/unix/os_unix.cpp:1157)
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PACKAGED PAYLOAD native=true animations=1168 weapons=24 peds=4 vehicles=7 touch=true
+
+{
+  "file": "Harbor-Mobile-Test.apk",
+  "bytes": 75417696,
+  "sha256": "f56cd45b1a1d3c99ea2dce1e5d1bf4b19f78c06be31bdd30f280830d791c467b",
+  "signed": true,
+  "zip_crc": true,
+  "native_16kb_zip_alignment": true,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a"
+  ],
+  "model_scenes": 32,
+  "engine": "4.7.2.stable",
+  "engine_build": "release",
+  "android_native_jolt_present": true,
+  "elf_load_alignment": {
+    "lib/arm64-v8a/libc++_shared.so": 16384,
+    "lib/arm64-v8a/libgodot_android.so": 16384,
+    "lib/armeabi-v7a/libc++_shared.so": 4096,
+    "lib/armeabi-v7a/libgodot_android.so": 4096
+  },
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "android_device_tested": false,
+  "notes": "Release engine signed with the private test key. No physical device or Android emulator was available."
+}
