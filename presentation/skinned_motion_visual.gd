@@ -24,8 +24,12 @@ var sample_us := 0.0
 var rest_position := Vector3.ZERO
 var ground_offset := 0.0
 var floor_minimum := {}
+var actor:CharacterMotor
+var sampled_physics_frame := -1
+var sample_count := 0
 func _ready() -> void:
  rest_position = position
+ actor=get_parent().get_parent() as CharacterMotor
  skeleton = find_child("Skeleton3D",true,false) as Skeleton3D
  if skeleton!=null:
   for i in range(skeleton.get_bone_count()):
@@ -58,6 +62,8 @@ func scale_at(name: String, at: float, bone: int) -> Vector3:
  return motion.library.get_animation(name).scale_track_interpolate(index,at) if index>=0 else Vector3.ONE
 func sample_pose(dt: float = 1.0/60.0) -> void:
  if motion==null or skeleton==null: return
+ sampled_physics_frame=Engine.get_physics_frames()
+ sample_count+=1
  var layers := motion.pose_layers()
  var next := ""
  for layer in layers: next += layer.clip+"|"
@@ -102,14 +108,22 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   q = from_rotations[i].slerp(q,alpha)
   s = from_scales[i].lerp(s,alpha)
   base_rotations[i] = q
+  if actor!=null and actor.landing.weight>0 and motion.library.has_animation(actor.landing.clip) and motion.preview_clip.is_empty():
+   p=p.lerp(position_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
+   q=q.slerp(rotation_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
   if not upper.is_empty() and actions.includes_upper_bone(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
    q = q.slerp(upper_from[i].slerp(rotation_at(upper,upper_at,i),upper_alpha),actions.aim_weight)
   if actions!=null and actions.life=="alive" and actions.melee_weight>0 and motion.preview_clip.is_empty() and (i in melee_mask or (actions.melee_is_kick and i in melee_kick_mask)) and not actions.melee_clip.is_empty():
    q=q.slerp(rotation_at(actions.melee_clip,minf(actions.melee_time,motion.duration(actions.melee_clip)),i),actions.melee_weight)
   upper_rotations[i] = q
-  if actions!=null and actions.life=="alive" and not actions.melee_active and actions.reaction_left>0 and skeleton.get_bone_name(i) in ["Spine","Spine1","Neck","Head"] and motion.preview_clip.is_empty():
-   var at := actions.reaction_duration-actions.reaction_left
-   q = q.slerp(rotation_at(actions.reaction_clip,at,i),minf(1,actions.reaction_left/maxf(0.001,actions.reaction_duration))*0.45)
+  if actions!=null and actions.life=="alive" and actions.reaction_left>0 and motion.library.has_animation(actions.reaction_clip) and motion.preview_clip.is_empty():
+   var at:=actions.reaction_time/maxf(0.001,actions.reaction_duration)*motion.duration(actions.reaction_clip)
+   var weight:=minf(clampf(actions.reaction_time/0.05,0,1),clampf(actions.reaction_left/0.15,0,1))
+   var stationary:=actor!=null and actor.drive_velocity.length()<0.2
+   if i in upper_mask or skeleton.get_bone_name(i) in ["Spine","Pelvis"] or stationary:q=q.slerp(rotation_at(actions.reaction_clip,at,i),weight)
+   if stationary and skeleton.get_bone_name(i)=="Root":p=p.lerp(position_at(actions.reaction_clip,at,i),weight)
+  if actions!=null and actions.floor_hit_left>0 and not actions.floor_hit_clip.is_empty() and motion.preview_clip.is_empty():
+   q=q.slerp(rotation_at(actions.floor_hit_clip,actions.floor_hit_time,i),minf(1,actions.floor_hit_left/0.12))
   skeleton.set_bone_pose_position(i,p)
   skeleton.set_bone_pose_rotation(i,q)
   skeleton.set_bone_pose_scale(i,s)
@@ -169,7 +183,11 @@ func turn_joint(joint: int, end: int, target: Vector3, weight: float) -> void:
  skeleton.set_bone_pose_rotation(joint,skeleton.get_bone_pose_rotation(joint).slerp(next,weight))
  skeleton.force_update_all_bone_transforms()
 func aim_arms() -> void:
+ if actions.reaction_left>0:return
  if (actions.reloading or actions.native_fire_owns_upper) and not actions.procedural_fire: return
+ if actions.weapon_pose.preserve_native_grip and not actions.reloading and not upper_signature.is_empty():
+  aim_native_upper_body()
+  return
  var upper := skeleton.find_bone("R UpperArm")
  var forearm := skeleton.find_bone("R Forearm")
  var hand := skeleton.find_bone("R Hand")
@@ -210,6 +228,21 @@ func aim_arms() -> void:
    turn_joint(left_forearm,left_hand,support,actions.aim_weight)
    turn_joint(left_upper,left_hand,support,actions.aim_weight)
 func _process(dt: float) -> void:
+ if sampled_physics_frame==Engine.get_physics_frames():return
  var actor := get_parent().get_parent() as CharacterMotor
  if actor!=null and actor.reaction_body.active: return
  sample_pose(dt)
+func aim_native_upper_body() -> void:
+ var spine:=skeleton.find_bone("Spine1")
+ var hand:=skeleton.find_bone("R Hand")
+ if mini(spine,hand)<0:return
+ var grip:=skeleton.get_bone_global_pose(hand)
+ var desired:=Vector3(0,-sin(actions.aim_pitch),-cos(actions.aim_pitch))
+ if actions.has_aim_target:desired=(skeleton.to_local(actions.aim_target)-grip.origin).normalized()
+ var turn:=Quaternion(grip.basis.x.normalized(),desired)
+ var parent:=skeleton.get_bone_parent(spine)
+ var rotation:=skeleton.get_bone_global_pose(spine).basis.get_rotation_quaternion()
+ var parent_rotation:=skeleton.get_bone_global_pose(parent).basis.get_rotation_quaternion()
+ var local:=parent_rotation.inverse()*Quaternion.IDENTITY.slerp(turn,actions.aim_weight)*rotation
+ skeleton.set_bone_pose_rotation(spine,local)
+ skeleton.force_update_all_bone_transforms()

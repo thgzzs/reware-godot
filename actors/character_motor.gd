@@ -16,12 +16,15 @@ var reference_pose: Node3D
 var actions := ActorActionState.new()
 var reaction_velocity := Vector3.ZERO
 var reaction_body: PedReactionBody
+var corpse_hitbox: CorpseHitbox
+var corpse_retired := false
 var impact_cooldown := 0.0
 var down_time := 0.0
 var occupant_hitbox: OccupantHitbox
 var normal_shape: Shape3D
 var stance := CharacterStance.new()
 var fall := ActorFallState.new()
+var landing := ActorLandingState.new()
 var sprint := ActorSprintState.new()
 var jump_forward := Vector3.ZERO
 var blocked_jump := false
@@ -44,6 +47,7 @@ var landing_count := 0
 var ignored_vehicle: PhysicsBody3D
 var collision_grace := 0.0
 func _ready() -> void:
+ add_to_group("combat_actors")
  weapon = WeaponController.new()
  weapon.actor = self
  weapon.profile = preload("res://tuning/weapon.tres")
@@ -51,6 +55,9 @@ func _ready() -> void:
  reaction_body = PedReactionBody.new()
  reaction_body.configure(self)
  add_child(reaction_body)
+ corpse_hitbox=CorpseHitbox.new()
+ corpse_hitbox.configure(self)
+ add_child(corpse_hitbox)
  health = PedHealth.new()
  add_child(health)
  occupant_hitbox = OccupantHitbox.new()
@@ -105,7 +112,9 @@ func configure_reference(db: ImportedGameplayDatabase, stat: String, library: An
 func receive_damage(amount: float, point: Vector3, direction: Vector3) -> void:
  receive_hit(DamageEvent.make(amount,point,direction))
 func receive_hit(event: DamageEvent) -> void:
- if health.health<=0: return
+ if health.health<=0:
+  if event.kind=="melee":actions.react_on_floor(reaction_body.rest.face_down)
+  return
  if event.kind=="bullet" and reference_pose is SkinnedMotionVisual:
   var pose := reference_pose as SkinnedMotionVisual
   var head := pose.skeleton.find_bone("Head")
@@ -114,7 +123,13 @@ func receive_hit(event: DamageEvent) -> void:
  actions.choose_reaction(event,facing,global_position)
  reaction_velocity += event.direction*minf(2.0,event.amount*0.02)
  health.receive(event.amount)
- if health.health>0: actions.react(event)
+ if actions.life in ["down","getting_up"] and event.kind=="melee":actions.react_on_floor(reaction_body.rest.face_down)
+ if health.health>0:
+  if event.amount>=actions.profile.hit_interrupt_damage:weapon.melee.cancel();actions.firing_left=0
+  actions.react(event)
+  if event.kind=="melee" and event.amount>=actions.profile.melee_knockdown_damage and actions.life=="alive" and grounded:
+   actions.begin_life("down");control_enabled=false;down_time=0
+   reaction_body.launch_velocity(global_position,facing,event.direction*2.5+Vector3.UP*1.5)
 func set_reaction_shape() -> void:
  collision_layer = 8 if health.health>0 else 0
  collision_mask = 1
@@ -134,9 +149,12 @@ func receive_vehicle_impact(car: DriveVehicle, closing_speed: float, direction: 
 func tick_reaction(dt: float) -> void:
  down_time += dt
  actions.tick(GameplayCommand.new(),weapon,dt)
+ if corpse_retired:return
  if reaction_body.active:
   reaction_body.follow_pose(dt)
-  if health.health<=0: return
+  if health.health<=0:
+   if reaction_body.rest.locked and reaction_body.rest.weight>=0.99 and reaction_body.presentation_settled:retire_corpse()
+   return
   if actions.life=="down" and reaction_body.can_recover():
    actions.life = "getting_up"
    actions.life_time = 0
@@ -159,7 +177,9 @@ func tick_reaction(dt: float) -> void:
   reaction_velocity = reaction_velocity.slide(hit.get_normal())
   grounded = hit.get_normal().y>=slope_cos()
  velocity = reaction_velocity
- if health.health<=0: return
+ if health.health<=0:
+  if grounded and actions.life=="dead":retire_corpse()
+  return
  if actions.life=="down" and down_time>actions.profile.knockdown_seconds+maxf(0.1,reference_motion.duration(actions.life_clip) if reference_enabled else 0.6):
   var query := PhysicsShapeQueryParameters3D.new()
   query.shape = normal_shape
@@ -174,13 +194,16 @@ func tick_reaction(dt: float) -> void:
  if actions.life=="getting_up" and actions.life_time>=maxf(0.5,reference_motion.duration(actions.life_clip) if reference_enabled else 0.5):
   restore_control()
 func restore_control() -> void:
+ corpse_retired=false
+ if is_instance_valid(corpse_hitbox):corpse_hitbox.clear()
+ landing.reset()
  interaction_holstered = false
  sprint.reset()
  fall.reset()
  if reference_pose!=null:reference_pose.scale=Vector3.ONE
  if is_instance_valid(occupant_hitbox): occupant_hitbox.collision_layer = 0
  stance.reset()
- if reaction_body.active: reaction_body.deactivate()
+ reaction_body.deactivate()
  actions.reset()
  control_enabled = true
  collision_layer = 10 if reference_enabled else 2
@@ -197,6 +220,7 @@ func respawn(where: Vector3) -> void:
  restore_control()
  reset_at(where)
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
+ landing.tick(dt)
  impact_cooldown = maxf(0,impact_cooldown-dt)
  if is_instance_valid(ignored_vehicle):
   collision_grace -= dt
@@ -279,7 +303,10 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active) else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,(weapon.melee.profile.steering_rate if actions.melee_mobile else profile.turn_rate)*dt)
   visual.rotation.y = facing
-  if grounded and phase!="launch" and (not actions.melee_active or actions.melee_mobile): drive_velocity = Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
+  if grounded and phase!="launch" and (not actions.melee_active or actions.melee_mobile):
+   var target_velocity:=Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
+   var rate:=reference_motion.gait.ground_acceleration if target_velocity.length()>drive_velocity.length() else reference_motion.gait.ground_deceleration
+   drive_velocity=drive_velocity.move_toward(target_velocity,rate*dt)
   if stance.crouched:
    drive_velocity = direction*profile.speed*stance.profile.move_multiplier if stance.profile.allow_crouch_walk else Vector3.ZERO
   if grounded and cmd.aim and not stance.crouched:
@@ -311,6 +338,10 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed) else atan2(-direction.x,-direction.z)
    facing = rotate_toward(facing,angle,profile.turn_rate*dt)
    visual.rotation.y = facing
+ if actions.reaction_left>0:
+  velocity.x*=actions.profile.hit_move_multiplier;velocity.z*=actions.profile.hit_move_multiplier
+ velocity+=reaction_velocity
+ reaction_velocity=reaction_velocity.move_toward(Vector3.ZERO,actions.profile.hit_impulse_decay*dt)
  actions.upper_allowed = actions.upper_allowed and phase=="grounded" and control_enabled
  var was_grounded := grounded
  var impact := velocity.y
@@ -375,9 +406,13 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if not was_grounded and impact < -1:
    last_impact_speed = -impact
    landing_count += 1
-   phase = "landing"
-   phase_left = profile.landing_delay
+   var air_time:=fall.air_seconds
+   var drop_height:=fall.drop
    var amount := fall.land(landing_speed)
+   if reference_enabled:landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing)
+   if reference_enabled and not fall.hard_landing:reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
+   phase = "landing" if fall.hard_landing else "grounded"
+   phase_left = profile.landing_delay if fall.hard_landing else 0.0
    if fall.hard_landing:
     weapon.melee.cancel()
     drive_velocity = Vector3.ZERO
@@ -395,6 +430,16 @@ func receive_fall_landing(speed: float) -> void:
  if amount>0:
   actions.next_death=actions.resolve(fall.profile.death_clips)
   health.receive(amount,false)
+func retire_corpse() -> void:
+ corpse_retired=true
+ reaction_body.active=false;reaction_body.freeze=true;reaction_body.collision_layer=0;reaction_body.collision_mask=0
+ reaction_body.linear_velocity=Vector3.ZERO;reaction_body.angular_velocity=Vector3.ZERO
+ collision_layer=0;collision_mask=0;reaction_velocity=Vector3.ZERO;velocity=Vector3.ZERO
+ var center:=global_position
+ if reference_pose is SkinnedMotionVisual:
+  var pose:=reference_pose as SkinnedMotionVisual
+  center=pose.skeleton.global_transform*pose.skeleton.get_bone_global_pose(pose.skeleton.find_bone("Pelvis")).origin
+ corpse_hitbox.activate(center,visual.global_basis)
 func jump_has_clearance() -> bool:
  var shape := SphereShape3D.new()
  shape.radius = 0.25
@@ -408,7 +453,7 @@ func jump_has_clearance() -> bool:
   if not get_world_3d().direct_space_state.intersect_shape(query,1).is_empty(): return false
  return true
 func can_use_weapon() -> bool:
- return control_enabled and not interaction_holstered and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy()
+ return control_enabled and not interaction_holstered and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy() and actions.reaction_left<=0
 func slope_cos() -> float:
  return cos(deg_to_rad(profile.max_slope_degrees))
 func try_step(horizontal: Vector3) -> bool:
@@ -460,6 +505,7 @@ func set_embarked(value: bool) -> void:
  visible = not value
  velocity = Vector3.ZERO
 func reset_at(where: Vector3) -> void:
+ landing.reset()
  sprint.reset()
  fall.reset()
  weapon.melee.cancel()
@@ -472,6 +518,7 @@ func reset_at(where: Vector3) -> void:
  if reference_enabled:
   reference_motion.phase = "idle"
   reference_motion.was_sprinting = false
+  reference_motion.sprint_weight = 0
   reference_motion.set_clip("IDLE_stance")
  blocked_jump = false
  jump_left = 0

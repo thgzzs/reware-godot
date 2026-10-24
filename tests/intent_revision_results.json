@@ -74,8 +74,8 @@
     },
     {
       "measured": {
-        "distance": 0.891929363366216,
-        "maximum_tick_displacement": 0.0250025987625122,
+        "distance": 0.894914245698601,
+        "maximum_tick_displacement": 0.0247744265943766,
         "state": "entering"
       },
       "name": "automatic entry physically walks to the approach marker",
@@ -92,13 +92,13 @@
       "passed": true
     },
     {
-      "measured": 2,
-      "name": "approach planner can route around the chassis from the front",
+      "measured": "Move closer to the door or mount",
+      "name": "entry requires being near a door rather than the front bumper",
       "passed": true
     },
     {
-      "measured": "",
-      "name": "corner route reaches and mounts without teleporting through the car",
+      "measured": "Move closer to the door or mount",
+      "name": "distant entry does not reserve or transfer ownership",
       "passed": true
     },
     {

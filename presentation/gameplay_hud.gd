@@ -167,7 +167,8 @@ func _draw() -> void:
  if message.is_empty() and arena.transition.state=="on_foot" and arena.actor.control_enabled and nearest!=null and arena.actor.global_position.distance_to(nearest.global_position)<arena.transition.profile.reach: message = "[E] Enter vehicle"
  if message.is_empty() and arena.transition.state=="passenger": message = "[X] Move to driver / [E] Exit"
  if message.is_empty() and arena.actor.stance.crouched and arena.transition.state=="on_foot": message = "CROUCHED / [C] Stand"
- if message.is_empty() and arena.transition.state=="approaching": message="Walking to vehicle / [E] Cancel"
+ if message.is_empty() and arena.transition.state=="approaching": message="Approaching vehicle / [E] Cancel"
+ if message.is_empty() and arena.transition.state=="lifting":message="Lifting bike / [E] Cancel"
  if message.is_empty() and arena.transition.state=="shuffling": message = "Moving to driver seat…"
  if message.is_empty() and arena.transition.state=="entering": message = "Entering vehicle…"
  elif message.is_empty() and arena.transition.state=="exiting": message = "Leaving vehicle…"
@@ -219,7 +220,7 @@ func draw_help(screen: Vector2) -> void:
  var lines: Array[String] = ["CONTROLS","WASD Move / steer","Shift Sprint (tap boost) / Alt Walk","Space Jump / vehicle brake","RMB Aim / LMB Fire or strike","R Reload / E Enter, exit or bail", "C Crouch / V Camera / X Change seat", "Alt + E Passenger entry", "F6 Repair nearby stopped vehicle (lab)","Wheel / Q / Z / 1–9 Switch weapon","Backspace Respawn after death / Esc Cursor"]
  if diagnostics:
   var motor: CharacterMotor = arena.actor
-  lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Fall %.1f m / impact %.1f m/s / damage %.1f"%[motor.fall.drop,motor.fall.last_impact_speed,motor.fall.last_damage],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]
+  lines = ["GAMEPLAY / PHYSICS","%s / grounded %s"%[motor.phase,motor.grounded],"Velocity %.2f %.2f %.2f m/s"%[motor.velocity.x,motor.velocity.y,motor.velocity.z],"Landing %s %.2f / hit %s"%[motor.landing.clip,motor.landing.weight,motor.actions.reaction_clip if motor.actions.reaction_left>0 else "-"],"Gait %.2f / sprint blend %.2f"%[motor.reference_motion.intensity if motor.reference_enabled else 0.0,motor.reference_motion.sprint_weight if motor.reference_enabled else 0.0],"Fall %.1f m / impact %.1f m/s / damage %.1f"%[motor.fall.drop,motor.fall.last_impact_speed,motor.fall.last_damage],"Steering %.2f / camera %.2f"%[arena.vehicle.steering,arena.rig.obstruction_fraction],"Gameplay %.0f us / tick %d"%[arena.last_tick_us,arena.tick_number],"3D %.0f%% / sampled %.1f ms"%[arena.display_controller.current_scale*100,arena.display_controller.last_frame_ms],"Collision: Debug > Visible Collision Shapes"]
  var step := minf(28,(rect.size.y-20)/lines.size())
  for i in range(lines.size()):
   text_at(lines[i],rect.position+Vector2(16,18+i*step),16 if i==0 else (12 if step<22 else 14),AQUA if i==0 else INK,rect.size.x-32)

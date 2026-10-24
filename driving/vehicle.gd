@@ -11,6 +11,8 @@ var bike: BikeDynamics
 var kind := "car"
 var bike_animation := "BIKEs"
 var variant := VehicleVariant.new()
+var entry_clips := {}
+var entry_points := {}
 var active_contacts:Array[int]=[0,1,2,3]
 func wheel_indices() -> Array[int]:return active_contacts
 var driver: Node:
@@ -76,18 +78,24 @@ func seat_position(index := 0) -> Vector3:
  return global_transform*seating.definitions[index].anchor
 func approach_position(index := 0, side_override:=-1) -> Vector3:
  var local:Vector3=seating.definitions[index].approach
+ if side_override>=0 and entry_points.has(Vector2i(index,side_override)):local=entry_points[Vector2i(index,side_override)]
  if side_override>=0:local.x=absf(local.x)*(-1 if side_override%2==0 else 1)
- var p := global_transform*local
+ var p := global_position+upright_basis()*local if kind=="bike" else global_transform*local
  var query := PhysicsRayQueryParameters3D.create(p+Vector3.UP*2,p-Vector3.UP*3,1,[get_rid()])
  var floor_hit := get_world_3d().direct_space_state.intersect_ray(query)
  if not floor_hit.is_empty() and floor_hit.normal.y>0.65: p.y = floor_hit.position.y+0.93
  return p
+func upright_basis() -> Basis:
+ var forward:=-global_basis.z;forward.y=0
+ if forward.length_squared()<0.01:forward=Vector3.FORWARD
+ return Basis.looking_at(forward.normalized(),Vector3.UP)
 func command(cmd: GameplayCommand, owner_id := "external") -> void:
  control_owner = owner_id
  if damage.state=="destroyed":
   park()
   return
  var pedal := -cmd.move.y
+ if bike!=null:bike.reverse_intent=pedal< -0.1
  throttle = pedal
  brake = 1.0 if cmd.brake else 0.0
  if pedal*speed < -0.5:
@@ -114,6 +122,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  limit=minf(limit,atan(profile.maximum_lateral_acceleration*wheelbase/maxf(1.0,speed*speed)))
  steering = move_toward(steering,steering_input*limit,profile.steering_rate*state.step)
  var drive_force := (0.0 if damage.state=="destroyed" else throttle)*(profile.engine_force if throttle>=0 else profile.reverse_force)
+ if bike!=null and throttle<0:drive_force=0.0
  if (speed>profile.max_speed and drive_force>0) or (speed < -profile.max_reverse_speed and drive_force<0): drive_force = 0
  var boost:=lerpf(profile.launch_force_multiplier,1.0,clampf(absf(speed)/profile.launch_boost_end_speed,0,1))
  drive_force*=boost
@@ -144,6 +153,7 @@ func commit_seat(actor: Node, index := 0) -> bool:
  return damage.state!="destroyed" and seating.commit(actor,index)
 func release_seat(actor: Node) -> void:
  seating.release(actor)
+ if bike!=null and not is_instance_valid(driver):bike.mounting=false
  if not is_instance_valid(driver): park()
 func receive_hit(event: DamageEvent) -> void: damage.receive_hit(event)
 func coast() -> void:

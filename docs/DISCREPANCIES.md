@@ -1,3 +1,7 @@
+# Current combat/driving milestone
+
+See [COMBAT_DRIVING_REVISION.md](COMBAT_DRIVING_REVISION.md) for the latest behavior changes, source evidence and remaining limits. Earlier milestone entries below are historical.
+
 # Current discrepancies
 
 Latest input/export revision: MOBILE_ANDROID.md. Native gameplay details remain in SPRINT_ENTRY_SETTLING.md. Native regression now runs against the restored supplied models/animations. Selected sprint, settled fall and four bike rear-exit poses were rendered locally. The counts in VALIDATION.md describe this build; older milestones remain historical.

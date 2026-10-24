@@ -62,7 +62,7 @@ static func apply_vehicle(car: DriveVehicle, assets: PlaceholderAssets) -> void:
   car.door_profile.seat_offset.x = -absf(car.door_profile.seat_offset.x)
   car.door_profile.seat_offset += car.door_profile.seat_marker_adjustment
  var rear := model.find_child("ped_backseat",true,false) as Node3D
- car.seating.configure(car.door_profile.seat_offset,car.to_local(rear.global_position) if rear!=null else Vector3.INF)
+ car.seating.configure(car.door_profile.seat_offset,car.to_local(rear.global_position) if rear!=null and car.doors.size()>=4 else Vector3.INF)
  if car.doors.size()>=4:
   for index in range(2,car.seating.definitions.size()):car.seating.definitions[index].door=2+(index%2)
  car.damage.windshield_ok = model.find_child("windscreen_hi_ok",true,false) as Node3D
@@ -173,6 +173,7 @@ static func apply(arena: Node3D, assets: PlaceholderAssets) -> void:
  apply_character(arena.actor,assets)
  for ped in arena.pedestrians: apply_character(ped,assets)
  apply_vehicle(arena.vehicle,assets)
+ VehicleEntryGeometry.configure(arena.vehicle,arena.reference_library)
  var prop := assets.scene(assets.prop_scene)
  if prop!=null:
   for at in [Vector3(4,0,7),Vector3(4,0,10)]:

@@ -57,20 +57,24 @@ func sample_contacts(direct: PhysicsDirectBodyState3D) -> void:
   if other is CharacterMotor or other is PedReactionBody: continue
   if other is VehiclePartDebris and other.source_car==car:continue
   var id := direct.get_contact_collider_id(i)
-  active[id] = true
   var normal := direct.get_contact_local_normal(i) # Jolt reports world-space normals despite the API name.
+  var axis:=normal.abs().max_axis_index()
+  var key:=id*8+axis*2+int(normal[axis]>0)
+  active[key] = true
   var lever := direct.get_contact_local_position(i)-direct.transform.origin-direct.center_of_mass
   var own_velocity := previous_velocity+previous_angular.cross(lever)
   var closing := maxf(0,-(own_velocity-direct.get_contact_collider_velocity_at_position(i)).dot(normal))
-  if closing>profile.collision_min_speed and not contacts.has(id) and not damaged_this_step.has(id) and collision_clock-float(damage_times.get(id,-100))>=profile.collision_rearm_seconds:
+  if car.bike!=null:car.bike.record_collision(closing,normal,own_velocity,direct.get_contact_local_position(i))
+  if closing>profile.collision_min_speed and not contacts.has(key) and not damaged_this_step.has(id) and collision_clock-float(damage_times.get(key,-100))>=profile.collision_rearm_seconds:
    damaged_this_step[id] = true
-   damage_times[id] = collision_clock
+   damage_times[key] = collision_clock
    var other_mass: float = other.mass if other is RigidBody3D else INF
    var reduced := car.mass if is_inf(other_mass) else car.mass*other_mass/(car.mass+other_mass)
    var amount:=0.5*reduced*pow(closing-profile.collision_min_speed,2)*profile.collision_health_per_joule
    pending_collision_damage+=amount
    var event:=DamageEvent.make(amount,direct.get_contact_local_position(i),-normal,"collision",other)
    event.normal=normal
+   event.relative_speed=closing
    pending_contacts.append(event)
  contacts = active
  previous_velocity = direct.linear_velocity
@@ -78,7 +82,7 @@ func sample_contacts(direct: PhysicsDirectBodyState3D) -> void:
  for id in damage_times.keys():
   if collision_clock-float(damage_times[id])>2.0 and not active.has(id): damage_times.erase(id)
 func tick(dt: float) -> void:
- for event in pending_contacts: car.parts.receive(event)
+ for event in pending_contacts: car.parts.receive_collision(event)
  pending_contacts.clear()
  if pending_collision_damage>0:
   var value := pending_collision_damage

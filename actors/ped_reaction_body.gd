@@ -10,6 +10,7 @@ var air_animation_time := 0.0
 var actor: CharacterMotor
 var profile: PedImpactProfile = preload("res://tuning/ped_impact.tres")
 var active := false
+var presentation_settled := false
 var age := 0.0
 var minimum_recovery_age := 0.0
 var vehicle_contacts := 0
@@ -46,6 +47,7 @@ func configure(owner_actor: CharacterMotor) -> void:
  collider.rotation.x = PI*0.5
  add_child(collider)
 func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall := false) -> void:
+ presentation_settled=false
  rest.begin(heading,initial)
  tumble_fall=physical_fall;fall_landing_pending=physical_fall;air_animation_time=0
  active=true;age=0;vehicle_contacts=0;contact_ticks=0
@@ -61,6 +63,7 @@ func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall :
  previous_angular=angular_velocity
 func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  if active: return
+ presentation_settled=false
  rest.begin(actor.facing,direction*closing)
  tumble_fall=false;fall_landing_pending=false;air_animation_time=0
  impact_contacts.clear()
@@ -134,6 +137,7 @@ func follow_pose(dt: float) -> void:
  actor.velocity = linear_velocity
  actor.grounded = supported
  actor.global_position = global_position
+ presentation_settled=false
  rest.observe(supported,linear_velocity,angular_velocity,global_basis,dt)
  actor.visual.global_basis=global_basis.slerp(rest.basis_on_floor(support_normal),rest.weight)
  if rest.locked:
@@ -168,6 +172,7 @@ func follow_pose(dt: float) -> void:
    if is_finite(minimum) and not hit.is_empty():
     var target:=clampf((hit.position-pose.to_global(Vector3(0,minimum,0))).dot(support_normal)+actor.actions.profile.reaction_floor_clearance,-actor.actions.profile.reaction_max_lift,actor.actions.profile.reaction_max_lift)
     rest.floor_offset=move_toward(rest.floor_offset,target,actor.actions.profile.reaction_settle_speed*dt)
+    presentation_settled=absf(rest.floor_offset-target)<0.002
    actor.global_position+=support_normal*rest.floor_offset
 func can_recover() -> bool:
  if age<minimum_recovery_age or not rest.locked or rest.weight<0.99:return false
@@ -187,7 +192,7 @@ func can_recover() -> bool:
 func getup_clip() -> String:
  return actor.actions.resolve(rest.profile.prone_getup if rest.face_down else rest.profile.supine_getup)
 func deactivate() -> void:
- rest.reset();fall_landing_pending=false;tumble_fall=false
+ rest.reset();fall_landing_pending=false;tumble_fall=false;presentation_settled=false
  active = false
  minimum_recovery_age=0
  freeze = true

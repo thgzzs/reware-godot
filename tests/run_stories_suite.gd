@@ -66,7 +66,8 @@ func run() -> void:
  var direction:Vector3=(pose.skeleton.to_local(actor.actions.aim_target)-right_point).normalized()
  var support:=right_point+direction*gun.profile.pose.support_reach-Vector3.UP*gun.profile.pose.support_drop
  var grip_error:=pose.skeleton.get_bone_global_pose(left_hand).origin.distance_to(support)
- check("two-handed aim uses a compact reachable support grip",actor.actions.native_aim_hold and grip_error<0.08,grip_error)
+ var authored_forearm:=pose.rotation_at(actor.actions.upper_clip(),clampf(gun.profile.fire_frame_seconds-0.03,0,actor.reference_motion.duration(actor.actions.upper_clip())),forearm)
+ check("two-handed aim preserves authored arm articulation",actor.actions.native_aim_hold and pose.skeleton.get_bone_pose_rotation(forearm).angle_to(authored_forearm)<0.01,grip_error)
  equip("colt45");await frames(2)
  gun.magazine=1
  var reload:=GameplayCommand.new();reload.reload=true
@@ -217,9 +218,9 @@ func run() -> void:
  check("bikes have no invisible car windshield hit region",bikes.all(func(b:DriveVehicle):return b.damage.glass_region==null))
  check("bike handlebars and forks have independent steering presentation bindings",bikes.all(func(b:DriveVehicle):return b.bike.steering_nodes.size()==2))
  for bike in bikes:
-  bike.damage.repair();bike.reset_at(Vector3(18,0.7,0));await frames(120)
+  bike.damage.repair();bike.reset_at(Vector3(18,0.7,0));bike.bike.mounting=true;await frames(120)
   var supported:=bike.wheels[0].touching and bike.wheels[2].touching
-  check("two-contact bike settles upright "+String(bike.name),supported and bike.global_basis.y.y>0.9,{"at":bike.global_position,"up":bike.global_basis.y.y})
+  check("two-contact bike mount assistance settles upright "+String(bike.name),supported and bike.global_basis.y.y>0.9,{"at":bike.global_position,"up":bike.global_basis.y.y})
   actor.respawn(bike.approach_position(0,1 if bike.name=="sanchez" else 0));actor.facing=0;await frames(30)
   var entered:=transition.request_enter(bike)
   check("bike entry uses LCS mount clip "+String(bike.name),entered and transition.clip_for("getin",transition.entry_side).begins_with(bike.bike_animation),transition.clip_for("getin",transition.entry_side))

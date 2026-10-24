@@ -1,0 +1,58 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "backend": "Jolt Physics",
+  "suites": 15,
+  "assertions": 645,
+  "failures": 0,
+  "gdscript_parsed": 123,
+  "python_tests": 23,
+  "selected_software_renders": [
+    "m4-aim",
+    "shotgun-aim",
+    "legacy-crouch",
+    "hit-reaction",
+    "soft-landing",
+    "ground-unarmed",
+    "ground-baseballbat",
+    "bike-pickup",
+    "bike-walkback"
+  ],
+  "timing_cases": 5,
+  "apk": {
+    "file": "Harbor-Mobile-Test.apk",
+    "bytes": 75452138,
+    "sha256": "b887213d18e89bbb8a4451a1ccf89d4d458168c7e71c184cc5291fc6c8948b22",
+    "signed": true,
+    "zip_crc": true,
+    "native_16kb_zip_alignment": true,
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a"
+    ],
+    "model_scenes": 32,
+    "engine": "4.7.2.stable",
+    "engine_build": "release",
+    "android_native_jolt_present": true,
+    "elf_load_alignment": {
+      "lib/arm64-v8a/libc++_shared.so": 16384,
+      "lib/arm64-v8a/libgodot_android.so": 16384,
+      "lib/armeabi-v7a/libc++_shared.so": 4096,
+      "lib/armeabi-v7a/libgodot_android.so": 4096
+    },
+    "min_sdk": 24,
+    "target_sdk": 36,
+    "android_device_tested": false,
+    "notes": "Release engine signed with the private test key. No physical device or Android emulator was available."
+  },
+  "reference_runtime_parity": false,
+  "android_device_tested": false,
+  "original_asset_payloads_preserved": 315,
+  "added_private_asset": "legacy_crouch.res",
+  "profile_scope": {
+    "max_us": 54487.0,
+    "mean_us": 854.628333333333,
+    "p95_us": 2276.0,
+    "samples": 3600,
+    "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+  }
+}

@@ -13,17 +13,17 @@
       "minimum_y": 0.0100995302200317
     },
     "sprint": {
-      "maximum_mps": 13.9487171173096,
+      "maximum_mps": 12.0323066711426,
       "minimum_late_multiplier": 1.119,
-      "minimum_mps": 6.91915988922119,
+      "minimum_mps": 8.32416248321533,
       "moving_ticks": 300
     },
     "supine": {
       "clip": "KO_skid_front",
       "face_down": false,
       "heading": 0.0,
-      "height": 0.362725675106049,
-      "minimum_y": 0.0103659629821777
+      "height": 0.363097488880157,
+      "minimum_y": 0.0100001096725464
     }
   },
   "reference_runtime_parity": false,
@@ -35,9 +35,9 @@
     },
     {
       "measured": {
-        "maximum_mps": 13.9487171173096,
+        "maximum_mps": 12.0323066711426,
         "minimum_late_multiplier": 1.119,
-        "minimum_mps": 6.91915988922119,
+        "minimum_mps": 8.32416248321533,
         "moving_ticks": 300
       },
       "name": "native sprint taps retain one gait without stop or walk-start",
@@ -60,8 +60,8 @@
     },
     {
       "measured": {
-        "distance": 0.765799443935975,
-        "maximum_step": 0.0344155468046665,
+        "distance": 0.749573105713353,
+        "maximum_step": 0.0344155579805374,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation Idaho",
@@ -79,8 +79,8 @@
     },
     {
       "measured": {
-        "distance": 0.765781671740115,
-        "maximum_step": 0.0344154834747314,
+        "distance": 0.749571997439489,
+        "maximum_step": 0.034415427595377,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation pcj600",
@@ -113,8 +113,8 @@
     },
     {
       "measured": {
-        "distance": 0.730226126965135,
-        "maximum_step": 0.0344160683453083,
+        "distance": 0.749572020489722,
+        "maximum_step": 0.0344154313206673,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation sanchez",
@@ -147,8 +147,8 @@
     },
     {
       "measured": {
-        "distance": 0.765796909574419,
-        "maximum_step": 0.0344154834747314,
+        "distance": 0.749571965774521,
+        "maximum_step": 0.0344154313206673,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation faggio",
@@ -181,8 +181,8 @@
     },
     {
       "measured": {
-        "distance": 0.761079758871347,
-        "maximum_step": 0.0354130789637566,
+        "distance": 0.749577192822471,
+        "maximum_step": 0.0344161167740822,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation freeway",
@@ -250,8 +250,8 @@
         "clip": "KO_skid_front",
         "face_down": false,
         "heading": 0.0,
-        "height": 0.362725675106049,
-        "minimum_y": 0.0103659629821777
+        "height": 0.363097488880157,
+        "minimum_y": 0.0100001096725464
       },
       "name": "native quiet fall chooses matching terminal pose (0.0, 0.0, 1.0)",
       "passed": true
@@ -261,14 +261,14 @@
         "clip": "KO_skid_front",
         "face_down": false,
         "heading": 0.0,
-        "height": 0.362725675106049,
-        "minimum_y": 0.0103659629821777
+        "height": 0.363097488880157,
+        "minimum_y": 0.0100001096725464
       },
       "name": "native settled skin clears floor without hovering (0.0, 0.0, 1.0)",
       "passed": true
     },
     {
-      "measured": 0.9977006316185,
+      "measured": 0.997601211071014,
       "name": "native chest faces the intended floor/sky direction (0.0, 0.0, 1.0)",
       "passed": true
     },

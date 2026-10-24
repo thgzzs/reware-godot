@@ -1,6 +1,6 @@
 # Harbor / Behavior Lab
 
-An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The asset-inclusive test build has a shared player/pedestrian actor, 24 weapon entries, three cars, four bikes, dynamic props and 781 converted original animation clips. It is a playable framework; full reVC equivalence remains unverified.
+An original Godot gameplay framework inspired by reVC behavior, using **Godot 4.7.2 Stable** and built-in **Jolt Physics**. The asset-inclusive test build has a shared player/pedestrian actor, 24 weapon entries, three cars, four bikes, dynamic props and 1168 native animation entries (781 original clips plus retained source variants). It is a playable framework; full reVC equivalence remains unverified.
 
 The [Stories revision](docs/STORIES_REVISION.md) adds spatial melee, pedestrian retaliation, native hip-fire/reload refinement, individual panel damage and physical fragments, full-size flat tires, stronger acceleration, safer cornering, tilted-car crawl exits and moving bailouts. VCS core/weapon animations and LCS bike animations are active; all clips remain accessible in F4. Public git supplies source and import tools; the private ZIP includes selected supplied assets.
 
@@ -9,6 +9,8 @@ The [falling and moving-melee revision](docs/FALL_AND_MOBILE_MELEE.md) adds impa
 The current [sprint, walk-in entry and settling revision](docs/SPRINT_ENTRY_SETTLING.md) adds capped Shift tapping, collision-driven walking and alignment before mounting, quiet grounded prone/supine settling, and bike-specific rear bailouts. The complete test ZIP includes the supplied assets unchanged; native regression and selected software-rendered poses have been checked.
 
 The [Android/mobile revision](docs/MOBILE_ANDROID.md) adds multi-touch movement, camera and context-sensitive action controls, a phone HUD layout, and a signed Android test APK. The full project ZIP preserves the supplied assets and includes the local test signing identity for repeatable test updates.
+
+The current [combat and driving revision](docs/COMBAT_DRIVING_REVISION.md) adds independent soft landing presentation, directional hit reactions, gradual gait changes, native long-gun grips, legacy crouch, ground attacks, tighter calibrated entry, Idaho two-seat capacity, quiet corpse retirement, physical bike pickup/falls, slow pushing reverse, crash ejection and frontal bonnet damage.
 
 ## Run
 

@@ -24,7 +24,7 @@ func plan(owner_actor: CharacterMotor, candidate: DriveVehicle, target: Vector3,
  elapsed=0;stalled=0;best_distance=INF;index=0;points.clear()
  shape_query.shape=actor.normal_shape;shape_query.margin=0.001;shape_query.collision_mask=15
  shape_query.exclude=[actor.get_rid(),actor.reaction_body.get_rid()]
- if clear_segment(actor.global_position,goal):points.append(goal);return true
+ if clear_segment(actor.global_position,goal):points.append(goal);return actor.global_position.distance_to(goal)<=profile.maximum_approach_path
  var hull:Vector3=(car.get_node("Hull").shape as BoxShape3D).size*0.5
  var x:=hull.x+profile.approach_clearance
  var z:=hull.z+profile.approach_clearance
@@ -40,12 +40,13 @@ func plan(owner_actor: CharacterMotor, candidate: DriveVehicle, target: Vector3,
     var point:=corners[posmod(first+steps*direction,4)]
     if not point.is_finite() or not clear_segment(prior,point):break
     length+=prior.distance_to(point);route.append(point);prior=point
-    if clear_segment(point,goal) and length+point.distance_to(goal)<best:
+    if clear_segment(point,goal) and length+point.distance_to(goal)<minf(best,profile.maximum_approach_path):
      best=length+point.distance_to(goal);points=route.duplicate();points.append(goal)
  return not points.is_empty()
 func command() -> GameplayCommand:
- var cmd:=GameplayCommand.new();cmd.walk=true
+ var cmd:=GameplayCommand.new()
  var delta:=points[index]-actor.global_position;delta.y=0
+ cmd.walk=delta.length()<profile.approach_run_distance
  if delta.length()>profile.approach_arrival_radius:
   cmd.move=Vector2(delta.x,delta.z).normalized()
   cmd.locomotion_scale=clampf(delta.length()/profile.approach_slow_radius,0.08,1)

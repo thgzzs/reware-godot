@@ -63,7 +63,7 @@ func update_layout() -> void:
    add_button("throttle","GAS",safe.end-Vector2(62,64)*scale_factor,40*scale_factor)
    add_button("brake","BRAKE",safe.end-Vector2(155,130)*scale_factor,35*scale_factor)
    add_button("reverse","REV",safe.end-Vector2(62,180)*scale_factor,35*scale_factor)
- elif mode=="approaching":
+ elif mode in ["approaching","lifting"]:
   add_button("interact","CANCEL",safe.end-Vector2(62,285)*scale_factor,34*scale_factor)
  elif mode=="on_foot":
   for item in [["fire","FIRE",Vector2(62,185),38],["aim","AIM",Vector2(145,118),32],["jump","JUMP",Vector2(62,55),32],["sprint","SPRINT",Vector2(225,55),33],["crouch","CROUCH",Vector2(225,135),32],["reload","LOAD",Vector2(145,217),30],["interact","ENTER",Vector2(62,285),32],["weapon_previous","‹",Vector2(300,217),27],["weapon_next","›",Vector2(225,217),27]]:

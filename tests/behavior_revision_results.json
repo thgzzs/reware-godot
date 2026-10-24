@@ -1,0 +1,269 @@
+{
+  "assertions": 42,
+  "backend": "Jolt Physics",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "exact stable engine and Jolt",
+      "passed": true
+    },
+    {
+      "measured": {
+        "locked": false,
+        "motion": 1.03489932278171,
+        "visible": true
+      },
+      "name": "low drop plays a visible landing without locking locomotion",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "HIT_front",
+        "time": 0.0666666666666667
+      },
+      "name": "directional hit owns a timed full upper reaction",
+      "passed": true
+    },
+    {
+      "measured": -0.0157670974731445,
+      "name": "stationary hit translation keeps a foot near the floor",
+      "passed": true
+    },
+    {
+      "measured": 0.00550079345703125,
+      "name": "hits apply collision-swept physical stagger",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "hit recovery restores upper control",
+      "passed": true
+    },
+    {
+      "measured": 0.96031746031746,
+      "name": "releasing sprint retains a decaying stride contribution",
+      "passed": true
+    },
+    {
+      "measured": 0.484126984126985,
+      "name": "sprint to walk blends over multiple frames",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "walk transition finishes",
+      "passed": true
+    },
+    {
+      "measured": 30,
+      "name": "native presentation advances once per simulation tick",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "RIFLE_fire",
+        "error_rad": 0.00384941743686795
+      },
+      "name": "m4 preserves native two-handed pose and centers aim",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "RIFLE_fire",
+        "error_rad": 0.00383154395967722
+      },
+      "name": "ruger preserves native two-handed pose and centers aim",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "shotgun_fire",
+        "error_rad": 0.00934266857802868
+      },
+      "name": "shotgun preserves native two-handed pose and centers aim",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "shotgun_fire",
+        "error_rad": 0.00935229286551476
+      },
+      "name": "spas12 preserves native two-handed pose and centers aim",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "shotgun_fire",
+        "error_rad": 0.00916656386107206
+      },
+      "name": "stubby preserves native two-handed pose and centers aim",
+      "passed": true
+    },
+    {
+      "measured": 0.5,
+      "name": "old crouch is selected without replacing the animation archive",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "all moving bare combos use one punch and never kick",
+      "passed": true
+    },
+    {
+      "measured": {
+        "body": false,
+        "retired": true
+      },
+      "name": "settled dead pedestrians retire solid collision",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "corpse is a query-only melee target",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ground detection selects nearby prone body",
+      "passed": true
+    },
+    {
+      "measured": "KICK_floor",
+      "name": "unarmed floor attack selects native ground kick",
+      "passed": true
+    },
+    {
+      "measured": "FLOOR_hit_f",
+      "name": "native ground kick sweep reaches the corpse proxy",
+      "passed": true
+    },
+    {
+      "measured": "WEAPON_bat_v",
+      "name": "weapon floor attack selects downward swing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "floor hits animate without reactivating corpse physics",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "respawn clears retired hitbox",
+      "passed": true
+    },
+    {
+      "measured": [
+        2,
+        2
+      ],
+      "name": "Idaho exposes exactly two seats and two doors",
+      "passed": true
+    },
+    {
+      "measured": "",
+      "name": "entry rejects a distant door even inside old center radius",
+      "passed": true
+    },
+    {
+      "measured": "",
+      "name": "nearby valid door reserves an approach",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "approach runs until the final alignment distance",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "state": "driving"
+      },
+      "name": "calibrated door approach reaches driver ownership",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "seated pelvis matches model seat anchor",
+      "passed": true
+    },
+    {
+      "measured": {
+        "anchor": "(-0.0, 0.351957, -0.793117)",
+        "bounds": "[P: (-0.875265, 0.212012, -2.605276), S: (1.75053, 0.157897, 1.812159)]",
+        "damaged": "bonnet_hi_dam:<Node3D#150139311177>",
+        "detached": false,
+        "health": 48.2529842691525,
+        "ok": "bonnet_hi_ok:<Node3D#150172865611>",
+        "state": "damaged"
+      },
+      "name": "real frontal Jolt collision damages bonnet",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike fixtures exist",
+      "passed": true
+    },
+    {
+      "measured": 0.724410712718964,
+      "name": "unoccupied bike falls under Jolt without rider balancing",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "state": "driving",
+        "up": 0.995464205741882
+      },
+      "name": "fallen bike uses pickup animation and physical lift",
+      "passed": true
+    },
+    {
+      "measured": "driving",
+      "name": "pickup resumes mount into exclusive driver control",
+      "passed": true
+    },
+    {
+      "measured": "BIKEs_pushes",
+      "name": "bike reverse uses pushing clip",
+      "passed": true
+    },
+    {
+      "measured": -0.906316220760345,
+      "name": "bike reverse is capped at walking speed",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "bike reverse releases steering lean",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "cancelling pickup releases reservation and standing control",
+      "passed": true
+    },
+    {
+      "measured": {
+        "life": "down",
+        "state": "on_foot",
+        "velocity": "(0.0, 0.0, 0.0)"
+      },
+      "name": "wall impact ejects rider and releases bike ownership",
+      "passed": true
+    },
+    {
+      "measured": {
+        "clip": "KO_skid_back",
+        "peak_speed": 8.56933879852295
+      },
+      "name": "crash inherits momentum and native bike fall presentation",
+      "passed": true
+    }
+  ]
+}

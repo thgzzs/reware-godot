@@ -46,7 +46,7 @@
     },
     {
       "measured": null,
-      "name": "native two-door car retains four marker-defined seats",
+      "name": "native two-door Idaho exposes two usable seats",
       "passed": true
     },
     {
@@ -277,8 +277,8 @@
     },
     {
       "measured": {
-        "hitter": 906.778258212259,
-        "struck": 912.09480160049
+        "hitter": 902.762367842785,
+        "struck": 912.115532177434
       },
       "name": "vehicle-to-vehicle impacts damage both bodies",
       "passed": true
