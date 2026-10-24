@@ -3,6 +3,7 @@ extends RefCounted
 ## SI forces, relative point velocities, load-limited combined tire forces.
 var compression := 0.0
 var normal_load := 0.0
+var contact_normal:=Vector3.UP
 var slip := 0.0
 var point := Vector3.ZERO
 var touching := false
@@ -25,6 +26,7 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  if not touching: return
  point = hit.position
  var normal: Vector3 = hit.normal
+ contact_normal=normal
  if normal.dot(up)<0.2: return
  var lever := point-state.transform.origin
  var velocity := state.linear_velocity+state.angular_velocity.cross(lever-state.center_of_mass)

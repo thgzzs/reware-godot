@@ -1,51 +1,45 @@
-# Validation / combat and driving revision
+# Build 6 validation
 
-Exactly Godot **4.7.2 Stable**, official ed1daf0bf, built-in **Jolt Physics**, fixed simulation 60 Hz. Current reports pass **645 assertions across 15 suites**. The complete 644-check batch passed; a final stationary-hit root-translation correction then passed the expanded 42-check native revision suite. All **123** other GDScript files compile/instantiate in the script check. All **23 Python tests** pass.
+Exactly Godot **4.7.2 Stable** (ed1daf0bf), Jolt Physics, 60 Hz simulation. The complete batch passes **663 assertions across 16 suites**. All **127 scripts** compile and **23 Python tests** pass.
 
 | Suite | Assertions |
 | --- | ---: |
-| Core gameplay | 47 |
-| Earlier regressions | 41 |
-| Sprint / transitions / settling | 42 |
-| Touch input | 34 |
-| Imported data / movement | 37 |
-| Presentation | 28 |
-| Native action ownership | 66 |
-| Motion and impacts | 63 |
-| Props / stance / glass / tires / damage | 54 |
-| Units and ownership | 13 |
-| Native entry / resting / recovery | 43 |
-| Stories assets | 10 |
-| Combat / panels / handling / bikes | 77 |
-| Falling / moving melee | 48 |
-| Combat / landing / bike revision | 42 |
+| latest | 47 |
+| revision | 41 |
+| intent_revision | 42 |
+| mobile | 34 |
+| imported | 37 |
+| presentation | 28 |
+| native_action | 66 |
+| motion | 63 |
+| systems | 54 |
+| foundation | 13 |
+| native_intent | 43 |
+| stories_assets | 10 |
+| stories | 77 |
+| fall_melee | 48 |
+| behavior_revision | 42 |
+| spatial_motion | 18 |
 
-The new 42-check native suite includes actual low-drop movement, directional hits and stagger, one presentation update per simulation tick, gradual sprint blending, five rifle/shotgun aim variants, legacy crouch, seven moving punch requests, query-only corpse retirement, an actual floor-kick sweep, downward bat selection, door range/run-in/occupancy/pelvis alignment, bonnet damage in a real wall contact, bike falling/pickup/cancellation, walking reverse and crash ejection with inherited motion.
+The new spatial suite measures actual collision travel against independently sampled native animation keys, lateral motion under turning, bounded ground heading, frozen input-driven air/landing heading, spatial jump launch and landing, upright empty parked bikes, fully side-resting bikes, wheel-support release, physical pickup, removal of riding layers on ejection, changing rider limbs and bounded torso rotation. The other suites retain combat, damage, props, entry/exit, assets and mobile regression coverage. Geometry fixtures reset facing explicitly now that turning is deliberately gradual.
 
-## Measured behavior
+## Final APK
 
-- Soft-drop fixture: visible landing motion continues; no hard-landing movement lock. Hard/unsafe impacts retain recovery and environmental damage.
-- Native pose sampler: **30 calls over 30 simulation ticks** in the idle fixture. Presentation fallback skips a pose already sampled by the simulation, so blend clocks do not advance twice. This is an update-ownership check, not an FPS claim.
-- Idle corpse fixtures retire solid physics only after supported quiet rest and visual floor alignment. Prone/supine skins clear the flat floor; floor-hit queries remain active.
-- Final car acceleration fixture reaches 10 m/s in **1.267 s**. The high-speed steering fixture records minimum chassis-up dot **0.9998**. These are target measurements, not original-runtime parity.
-- Bike reverse approaches **0.91 m/s** with the native pushes clip. The crash fixture records peak transferred rider speed above 8 m/s and the bike fall clip before quiet terminal settling.
-- Native repeated sprint tapping keeps its gait across all 300 sampled ticks. Current measurements are in native_intent_results.json; raw animation root curves vary within each stride and are not constant-speed caps.
+**Harbor Rev 6**, version **0.5.0-spatial6**, code **6**, package **org.reware.harbor.revision5**. It updates Build 5 using the same private test signing key. ARM64 + ARMv7, minimum API 24, target API 36. Signature, CRC, 16 KiB native ZIP alignment, 16 KiB ARM64 ELF load alignment, native Jolt and all 32 model scenes pass.
 
-## Timing and profiling
+After a clean extraction of the actual final APK assets, the exact desktop engine verifies BUILD 6 identity, HUD label fit, native asset activation and mobile controls. The extracted compiled gameplay then passes **42 behavior + 18 spatial + 34 touch-input checks**. This exercises the packaged payload, not Android Java/JNI/GPU execution. The loaded content includes 1168 animation entries, 24 weapons, four pedestrians, seven vehicles, legacy crouch and two-seat Idaho.
 
-The native fixed-command playback was rerun at 30/60/120/144 and a varying render cap while physics stays at 60 Hz. All five comparisons pass for sampled positions, velocity, vehicle position, pose quaternion, shots and state, with tolerance 0.002. See render_timing_results.json. This local CPU fixture does not establish cross-platform determinism or GPU throughput.
+## Timing and visual checks
 
-Current Stories orchestration callback: mean **854.6 microseconds**, p95 **2276.0 microseconds**, maximum **54487.0 microseconds**, 3600 samples. It excludes Jolt solving and rendering and includes environment noise. Different milestone workloads cannot support a comparative speedup claim. No speculative FPS improvement is asserted.
+Native command playback was repeated at 30/60/120/144 and varying render caps while physics stays at 60 Hz. All five comparisons pass for sampled movement, vehicle position, pose quaternion, shots and state within 0.002 tolerance. This is local fixture consistency, not cross-platform determinism or GPU profiling.
 
-## Visual review
+Nine selected native poses were rendered with Compatibility/Mesa llvmpipe and reviewed: walking, turning, airborne jump, landing, upright parked bikes, fallen bike, pickup, crash release and crash follow-through. Repeat with tests/render_spatial_preview.gd. These are desktop software renders, not phone captures or exhaustive animation-contact validation.
 
-Nine selected poses were rendered with the Compatibility renderer and Mesa llvmpipe: M4 aim, shotgun aim, legacy crouch, directional hit, soft landing, unarmed ground kick, downward bat attack, bike pickup and walking reverse. Repeatable script: tests/render_behavior_preview.gd. These are desktop software renders, not Android screenshots or complete temporal/contact validation.
+## Measurements and performance scope
 
-## Android and project package
+The new free-ground fixture records approximately 0.000002 m maximum per-tick displacement error against animation keys, with tolerance 0.003 m. The direction-change fixture records about 0.004 m maximum lateral movement, consistent with the supplied root sway. Input-driven air and landing heading changes are zero in the fixture. The side-resting bike has near-zero up-dot and leaves wheel-ray support; parked fixtures retain up-dot above 0.98.
 
-Version **0.4-behavior-test**, code **4**, package **org.reware.harbor**, minimum API **24**, target API **36**, ARM64 + ARMv7. The release-engine APK retains the prior test signing identity. Signature, archive CRC, 16 KiB ZIP alignment, 16 KiB ARM64 ELF load alignment, native Jolt and all 32 selected model scenes pass. A clean extraction of the final APK payload loads 1168 animation entries, 24 weapons, four pedestrians, seven vehicles, the legacy crouch override, two-seat Idaho and mobile controls in the exact desktop engine.
-
-The complete ZIP retains explicit parent directories, a full SHA256 manifest, selected assets and the test signing key. The 315 original selected asset/support payloads remain byte-identical; one legacy crouch Resource was added from the existing decoded source. The public source repository excludes private assets, native previews and signing material. Fresh ZIP extraction/import/startup is checked separately during packaging.
+Current Stories orchestration callback: mean **286.8 microseconds**, p95 **439.0 microseconds**, maximum **4257.0 microseconds**, 3600 samples. This excludes Jolt solving/rendering and includes environment noise. Workloads changed, so no comparative FPS improvement is claimed.
 
 ## Reproduce
 
@@ -56,8 +50,10 @@ python3 tools/check_render_timing.py --godot /absolute/path/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-Run tests/render_behavior_preview.gd with a graphical display to recreate the selected poses. The validator refuses other engine versions and enables native suites only when their private inputs are present. Reports and behavior_validation_transcript.txt describe this milestone; earlier named transcripts are historical.
+Use tools/export_android.py for a signed test rebuild. Run tools/check_android_payload.gd against a clean extracted APK assets directory for the identity/content smoke test. The native suites require the supplied private assets. Current reports are the *_results.json files and spatial_validation_transcript.txt; earlier named transcripts are historical.
 
-## Remaining gaps
+## Assets, packaging and remaining gaps
 
-No original executable traces or Android device/emulator were available. Android Java/JNI/GPU execution, installation, lifecycle/insets/thermals, uneven-ground edge cases, every asset/pose/contact combination, articulated ragdolls, full browser runtime, full open-world simulation and behavioral/visual/performance equivalence remain unverified. See COMBAT_DRIVING_REVISION.md and DISCREPANCIES.md. The tests establish a playable target implementation, not full reVC parity.
+All 315 original selected asset/support payloads are unchanged. The legacy crouch override remains the only added converted clip. The full project ZIP includes explicit parent directories, a complete SHA256 manifest and the private test key; public git excludes supplied assets, native previews and signing material. Fresh ZIP import/startup is checked during packaging.
+
+No physical Android device, Android emulator or running original executable was available. Exact original feel, every slope/weapon/pose contact, aim-strafe variants, grip constraints, full browser execution, articulated ragdolls, hardware performance and full gameplay/visual/performance parity remain unverified. See SPATIAL_MOTION_REVISION.md for source-confirmed findings, target tuning and limits.

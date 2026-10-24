@@ -13,10 +13,10 @@
     {
       "measured": {
         "locked": false,
-        "motion": 1.03489932278171,
+        "motion": 0.418677730020136,
         "visible": true
       },
-      "name": "low drop plays a visible landing without locking locomotion",
+      "name": "low drop plays spatial landing travel without disabling control",
       "passed": true
     },
     {
@@ -195,10 +195,10 @@
       "measured": {
         "anchor": "(-0.0, 0.351957, -0.793117)",
         "bounds": "[P: (-0.875265, 0.212012, -2.605276), S: (1.75053, 0.157897, 1.812159)]",
-        "damaged": "bonnet_hi_dam:<Node3D#150139311177>",
+        "damaged": "bonnet_hi_dam:<Node3D#150357414990>",
         "detached": false,
         "health": 48.2529842691525,
-        "ok": "bonnet_hi_ok:<Node3D#150172865611>",
+        "ok": "bonnet_hi_ok:<Node3D#150390969424>",
         "state": "damaged"
       },
       "name": "real frontal Jolt collision damages bonnet",
@@ -210,7 +210,7 @@
       "passed": true
     },
     {
-      "measured": 0.724410712718964,
+      "measured": -0.0400024652481079,
       "name": "unoccupied bike falls under Jolt without rider balancing",
       "passed": true
     },
@@ -218,7 +218,7 @@
       "measured": {
         "message": "",
         "state": "driving",
-        "up": 0.995464205741882
+        "up": 0.99872350692749
       },
       "name": "fallen bike uses pickup animation and physical lift",
       "passed": true
@@ -234,7 +234,7 @@
       "passed": true
     },
     {
-      "measured": -0.906316220760345,
+      "measured": -0.901265382766724,
       "name": "bike reverse is capped at walking speed",
       "passed": true
     },
@@ -252,7 +252,7 @@
       "measured": {
         "life": "down",
         "state": "on_foot",
-        "velocity": "(0.0, 0.0, 0.0)"
+        "velocity": "(-0.01587, -0.000044, -0.000009)"
       },
       "name": "wall impact ejects rider and releases bike ownership",
       "passed": true
@@ -260,7 +260,7 @@
     {
       "measured": {
         "clip": "KO_skid_back",
-        "peak_speed": 8.56933879852295
+        "peak_speed": 8.56238651275635
       },
       "name": "crash inherits momentum and native bike fall presentation",
       "passed": true

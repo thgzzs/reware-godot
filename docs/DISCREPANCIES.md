@@ -1,3 +1,7 @@
+# Current spatial motion milestone
+
+See [SPATIAL_MOTION_REVISION.md](SPATIAL_MOTION_REVISION.md) for the latest movement, fall-pose and bike-support changes, measured checks and remaining limits.
+
 # Current combat/driving milestone
 
 See [COMBAT_DRIVING_REVISION.md](COMBAT_DRIVING_REVISION.md) for the latest behavior changes, source evidence and remaining limits. Earlier milestone entries below are historical.

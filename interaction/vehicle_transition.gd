@@ -322,12 +322,12 @@ func commit_eject() -> void:
  actor.reset_at(point)
  actor.set_embarked(false)
  actor.actions.begin_life("down")
- actor.actions.life_clip=escape_clip
+ actor.actions.life_clip=actor.actions.resolve(PackedStringArray(["BIKE_fall_off","BIKE_fallR"])) if body.kind=="bike" else escape_clip
  actor.actions.life_time=0
  actor.control_enabled=false
  actor.reaction_body.minimum_recovery_age=maxf(0.7,actor.reference_motion.duration(escape_clip)) if actor.reference_enabled else 0.7
  actor.reaction_body.launch_velocity(point,actor.facing,inherited+outward*1.5+Vector3.UP*2)
- body.release_seat(actor)
+ body.release_seat(actor,false)
  if not is_instance_valid(body.driver):body.coast()
  vehicle=null;ejecting=false;escape_mode=false
  change_state("on_foot")
@@ -426,8 +426,8 @@ func tick_lift(dt:float) -> void:
  var length:=maxf(0.8,actor.reference_motion.duration(lift_clip)) if actor.reference_enabled else 1.0
  vehicle.bike.lift_progress=clampf((lift_elapsed-vehicle.bike.profile.lift_release_seconds)/maxf(0.2,length-vehicle.bike.profile.lift_release_seconds),0,1)
  if lift_elapsed>vehicle.bike.profile.lift_timeout:cancel_lift("Bike lift obstructed");return
- if lift_elapsed>=length and vehicle.global_basis.y.dot(Vector3.UP)>0.92 and vehicle.angular_velocity.length()<1.2:
-  vehicle.bike.lifting=false;actor.restore_control()
+ if lift_elapsed>=length and vehicle.global_basis.y.dot(Vector3.UP)>0.92 and vehicle.angular_velocity.length()<1.2 and vehicle.linear_velocity.length()<profile.max_transition_speed:
+  vehicle.bike.lifting=false;vehicle.bike.standing=true;actor.restore_control()
   var target:=vehicle.approach_position(seat_index,entry_side)
   if not approach.plan(actor,vehicle,target,profile):cancel_lift("Mount path obstructed");return
   change_state("approaching")
@@ -441,7 +441,7 @@ func crash_eject(event:DamageEvent) -> void:
  var body:=vehicle
  var initial:Vector3=event.get_meta("launch_velocity",body.linear_velocity)
  actor.facing=body.upright_basis().get_euler().y
- body.release_seat(actor);body.coast()
+ body.release_seat(actor,false);body.coast()
  actor.reset_at(point);actor.set_embarked(false)
  actor.health.receive(event.amount,false)
  if actor.health.health>0:actor.actions.begin_life("down")

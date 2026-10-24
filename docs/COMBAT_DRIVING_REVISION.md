@@ -1,3 +1,7 @@
+# Historical combat/driving milestone
+
+The current spatial movement and support rules are documented in [SPATIAL_MOTION_REVISION.md](SPATIAL_MOTION_REVISION.md). The independent soft-landing overlay and unoccupied-bike rules below describe the preceding milestone.
+
 # Combat, landing and vehicle revision
 
 Target: Godot **4.7.2 Stable**, official ed1daf0bf, Jolt Physics. Public baseline: 41fc84fd17b058305f9d42e62bc43b8141ab555e.

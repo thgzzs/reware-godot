@@ -17,6 +17,7 @@ func check(name: String, condition: bool, measured: Variant = null) -> void:
  print("PASS " if condition else "FAIL ",name," ",measured)
 func place_actor(p: Vector3) -> void:
  arena.actor.reset_at(p)
+ arena.actor.facing=0;arena.actor.visual.rotation.y=0
  arena.rig.yaw = 0
  arena.rig.pitch = 0.12
  arena.rig.initialized = false
@@ -47,7 +48,7 @@ func run() -> void:
  arena.rig.yaw = PI/2
  var old := actor.global_position
  await frames(60,walk)
- check("camera relative forward rotates movement",actor.global_position.x<old.x-4.0 and absf(actor.global_position.z-old.z)<0.1,actor.global_position-old)
+ check("camera relative forward follows a bounded turning arc",actor.global_position.x<old.x-3.0 and absf(actor.global_position.z-old.z)<1.5 and absf(angle_difference(actor.facing,PI/2))<0.01,actor.global_position-old)
  await place_actor(Vector3(-28,0.94,30))
  var aim_walk := GameplayCommand.new()
  aim_walk.aim = true

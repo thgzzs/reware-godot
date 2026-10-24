@@ -2,7 +2,7 @@ class_name GameplayHud
 extends Control
 ## Logical canvas coordinates stay independent of the 3D render-buffer scale.
 var arena: Node3D
-var build_label := "GAMEPLAY REVISION / BUILD %d" % int(ProjectSettings.get_setting("application/config/build_number",5))
+var build_label := "GAMEPLAY REVISION / BUILD %d" % int(ProjectSettings.get_setting("application/config/build_number",6))
 var diagnostics := false
 var controls_visible := false
 var flash_left := 0.0

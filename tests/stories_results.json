@@ -14,9 +14,9 @@
       "speed": 28.5064582824707
     },
     "orchestration": {
-      "max_us": 54487.0,
-      "mean_us": 854.628333333333,
-      "p95_us": 2276.0,
+      "max_us": 4257.0,
+      "mean_us": 286.751111111111,
+      "p95_us": 439.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -68,7 +68,7 @@
       "passed": true
     },
     {
-      "measured": 0.332077771425247,
+      "measured": 0.33208104968071,
       "name": "two-handed aim preserves authored arm articulation",
       "passed": true
     },
@@ -138,7 +138,7 @@
       "passed": true
     },
     {
-      "measured": 1.40860557556152,
+      "measured": 1.5224244594574,
       "name": "zero-root weapon clips permit collision-swept attack shuffling",
       "passed": true
     },
@@ -172,7 +172,7 @@
         "after": 995.8,
         "before": 1000.0,
         "hits": 1,
-        "tip": "(0.372703, 1.085216, 17.12872)"
+        "tip": "(0.373077, 1.085215, 17.1406)"
       },
       "name": "an actual bat swing can hit car geometry",
       "passed": true
@@ -312,8 +312,8 @@
     },
     {
       "measured": {
-        "at": "(18.0, 0.346321, -0.017197)",
-        "up": 0.999278604984283
+        "at": "(18.0, 0.345389, -0.006598)",
+        "up": 0.998806536197662
       },
       "name": "two-contact bike mount assistance settles upright pcj600",
       "passed": true
@@ -331,8 +331,8 @@
     {
       "measured": {
         "clip": "BIKEs_Ride",
-        "speed": 15.65709400177,
-        "up": 0.999902486801147
+        "speed": 20.4413604736328,
+        "up": 0.990752279758453
       },
       "name": "bike accelerates with a balanced visible rider pcj600",
       "passed": true
@@ -349,8 +349,8 @@
     },
     {
       "measured": {
-        "at": "(18.0, 0.451768, -0.00005)",
-        "up": 1.0
+        "at": "(18.0, 0.45164, 0.029204)",
+        "up": 0.999993443489075
       },
       "name": "two-contact bike mount assistance settles upright sanchez",
       "passed": true
@@ -373,8 +373,8 @@
     {
       "measured": {
         "clip": "BIKEd_Ride",
-        "speed": 18.6586761474609,
-        "up": 0.999138116836548
+        "speed": 26.012035369873,
+        "up": 0.983900845050812
       },
       "name": "bike accelerates with a balanced visible rider sanchez",
       "passed": true
@@ -391,7 +391,7 @@
     },
     {
       "measured": {
-        "at": "(18.0, 0.351379, 0.00016)",
+        "at": "(18.0, 0.351379, 0.000192)",
         "up": 0.99999988079071
       },
       "name": "two-contact bike mount assistance settles upright faggio",
@@ -410,8 +410,8 @@
     {
       "measured": {
         "clip": "BIKEv_Ride",
-        "speed": 16.9446640014648,
-        "up": 0.999690175056458
+        "speed": 17.3551731109619,
+        "up": 0.992660999298096
       },
       "name": "bike accelerates with a balanced visible rider faggio",
       "passed": true
@@ -428,8 +428,8 @@
     },
     {
       "measured": {
-        "at": "(18.0, 0.349804, 0.000387)",
-        "up": 0.999999642372131
+        "at": "(18.0, 0.349781, 0.002737)",
+        "up": 0.999999821186066
       },
       "name": "two-contact bike mount assistance settles upright freeway",
       "passed": true
@@ -447,8 +447,8 @@
     {
       "measured": {
         "clip": "BIKEh_Ride",
-        "speed": 17.4486312866211,
-        "up": 0.999766051769257
+        "speed": 20.7181453704834,
+        "up": 0.992224633693695
       },
       "name": "bike accelerates with a balanced visible rider freeway",
       "passed": true
@@ -469,8 +469,8 @@
       "passed": true
     },
     {
-      "measured": "BIKEs_getoffBACK",
-      "name": "bike jump-off uses the model rear get-off clip and releases its seat",
+      "measured": "BIKE_fall_off",
+      "name": "bike jump-off hands rear dismount into the airborne fall clip",
       "passed": true
     },
     {

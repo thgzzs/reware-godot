@@ -53,6 +53,8 @@ func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall :
  active=true;age=0;vehicle_contacts=0;contact_ticks=0
  impact_contacts.clear()
  actor.collision_layer=0;actor.collision_mask=0
+ if actor.reference_enabled:actor.reference_motion.vehicle_layers.clear()
+ if actor.reference_pose is SkinnedMotionVisual:actor.reference_pose.snap_next_pose=true
  global_transform=Transform3D(Basis(Vector3.UP,heading),at)
  freeze=false;sleeping=false
  collision_layer=8;collision_mask=31
@@ -74,6 +76,8 @@ func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  contact_ticks = 0
  actor.collision_layer = 0
  actor.collision_mask = 0
+ if actor.reference_enabled:actor.reference_motion.vehicle_layers.clear()
+ if actor.reference_pose is SkinnedMotionVisual:actor.reference_pose.snap_next_pose=true
  global_transform = Transform3D(Basis(Vector3.UP,actor.facing),actor.global_position+Vector3.UP*0.12)
  freeze = false
  sleeping = false
@@ -128,6 +132,18 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  if fall_landing_pending and supported:
   fall_landing_pending=false
   actor.call_deferred("receive_fall_landing",landing_speed)
+ if not supported:
+  var frame:=Basis(Vector3.UP,rest.original_heading)
+  var angles:Vector3=(frame.inverse()*state.transform.basis).get_euler()
+  var angular:=frame.inverse()*state.angular_velocity
+  angular.y=0
+  for axis in [0,2]:
+   var limit:=profile.maximum_air_pitch if axis==0 else profile.maximum_air_roll
+   if absf(angles[axis])>limit:
+    if angular[axis]*angles[axis]>0:angular[axis]=0
+    angular[axis]-=signf(angles[axis])*(absf(angles[axis])-limit)*profile.air_angular_restore*state.step
+  state.angular_velocity=frame*angular.limit_length(profile.maximum_angular_speed)
+ else:state.angular_velocity=state.angular_velocity.limit_length(profile.maximum_angular_speed)
  if state.get_contact_count()>0: contact_ticks += 1
  previous_velocity = state.linear_velocity
  previous_angular = state.angular_velocity
@@ -139,7 +155,10 @@ func follow_pose(dt: float) -> void:
  actor.global_position = global_position
  presentation_settled=false
  rest.observe(supported,linear_velocity,angular_velocity,global_basis,dt)
- actor.visual.global_basis=global_basis.slerp(rest.basis_on_floor(support_normal),rest.weight)
+ var frame:=Basis(Vector3.UP,rest.original_heading)
+ var angles:Vector3=(frame.inverse()*global_basis).get_euler()
+ var bounded:=frame*Basis.from_euler(Vector3(clampf(angles.x,-profile.maximum_air_pitch,profile.maximum_air_pitch),0,clampf(angles.z,-profile.maximum_air_roll,profile.maximum_air_roll)))
+ actor.visual.global_basis=bounded.slerp(rest.basis_on_floor(support_normal),rest.weight)
  if rest.locked:
   var clip:=actor.actions.resolve(rest.profile.prone_clips if rest.face_down else rest.profile.supine_clips)
   if not clip.is_empty():

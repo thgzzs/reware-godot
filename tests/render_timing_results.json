@@ -66,10 +66,10 @@
       "max_car_position_m": 0.0,
       "max_pose_quaternion_delta": 0.0,
       "state_shots_equal": true,
-      "render_steps": 795,
+      "render_steps": 839,
       "render_dt_range": [
-        0.000634375028312206,
-        0.139197
+        0.000865750014781952,
+        0.15
       ]
     }
   ],

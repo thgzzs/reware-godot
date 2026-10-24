@@ -79,6 +79,7 @@ func fire(interval: float, native_recovery:=0.0) -> void:
 func begin_life(next: String) -> void:
  if life=="dying" or life=="dead": return
  life = next
+ if motion!=null:motion.vehicle_layers.clear()
  life_time = 0
  aim_weight = 0
  firing_left = 0

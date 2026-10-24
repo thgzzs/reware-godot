@@ -17,3 +17,10 @@ extends Resource
 @export var max_slope_degrees := 46.0
 @export var turn_rate := 12.0
 @export var push_mass := 70.0
+
+@export var standing_turn_rate := 3.6
+@export var running_turn_rate := 2.1
+@export var braking_turn_rate := 1.0
+@export var turn_speed_reference := 5.5
+@export var reversal_angle_degrees := 105.0
+@export var pivot_speed := 0.8

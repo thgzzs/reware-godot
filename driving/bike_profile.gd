@@ -19,5 +19,13 @@ extends Resource
 @export var rider_max_angular_speed := 5.0
 @export var lift_release_seconds := 0.4667
 @export var lift_timeout := 4.5
-@export var lift_strength := 48.0
-@export var lift_damping := 13.0
+@export var lift_strength := 160.0
+@export var lift_damping := 26.0
+
+@export var standing_release_speed := 1.25
+@export var standing_up_dot := 0.82
+@export var wheel_support_up_dot := 0.68
+@export var center_of_mass := Vector3(0,0.12,0)
+
+@export var lift_weight_support := 0.80
+@export var lift_max_angular_acceleration := 120.0

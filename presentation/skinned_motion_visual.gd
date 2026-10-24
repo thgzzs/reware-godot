@@ -27,6 +27,7 @@ var floor_minimum := {}
 var actor:CharacterMotor
 var sampled_physics_frame := -1
 var sample_count := 0
+var snap_next_pose := false
 func _ready() -> void:
  rest_position = position
  actor=get_parent().get_parent() as CharacterMotor
@@ -76,9 +77,10 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   transition_time = 0
  transition_time += dt
  var duration := actions.profile.blend_seconds if actions!=null else 0.16
- if motion.clip=="JUMP_launch": duration = minf(duration,0.04)
+ if motion.clip=="JUMP_launch" or (actor!=null and actor.landing.active): duration = minf(duration,0.04)
  var alpha := smoothstep(0,1,clampf(transition_time/maxf(0.001,duration),0,1))
- if not motion.preview_clip.is_empty(): alpha = 1
+ if not motion.preview_clip.is_empty() or snap_next_pose: alpha = 1
+ snap_next_pose=false
  var started := Time.get_ticks_usec()
  var upper := actions.upper_clip() if actions!=null and actions.life=="alive" else ""
  if upper!=upper_signature:

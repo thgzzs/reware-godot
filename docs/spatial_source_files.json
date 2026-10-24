@@ -1,0 +1,29 @@
+{
+  "commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
+  "files": [
+    {
+      "path": "src/peds/PlayerPed.cpp",
+      "sha256": "632f6789d06590d882b2c3622c8b8adc8cc4550d7ffdb96c59eb7924c6f885f0"
+    },
+    {
+      "path": "src/peds/Ped.cpp",
+      "sha256": "57866bb070c7c2b1874f7fc6225f45d9f18e321e2664efa7e620e0c09adea118"
+    },
+    {
+      "path": "src/peds/PedFight.cpp",
+      "sha256": "60eb80580ce02361d21a3ffd3e2c899bfd5e44a37ae27519194aca00a859aaf1"
+    },
+    {
+      "path": "src/peds/PedAI.cpp",
+      "sha256": "73b3a8a24ecf45a1c0559212ad3ce491339e64411c829144da5facaf758835fc"
+    },
+    {
+      "path": "src/vehicles/Bike.cpp",
+      "sha256": "2981aea3f6fa089f990bb9ca58aa92026b429694376a8d206af1bee08b9930ba"
+    },
+    {
+      "path": "src/animation/AnimManager.cpp",
+      "sha256": "8a5d7b682d56a8a0a73dcaa7dd498d5ce1fb69ee6d343b4c7ff5c44e609c8bb7"
+    }
+  ]
+}

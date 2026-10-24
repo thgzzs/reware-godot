@@ -56,22 +56,22 @@
       "passed": true
     },
     {
-      "measured": 2.33373284339905,
+      "measured": 2.14357042312622,
       "name": "walkable uphill slope gains only terrain height",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-27.9165, 0.900375, -22.66442)",
-        "max_y": 3.12241148948669
+        "at": "(-27.93216, 0.900012, -18.09767)",
+        "max_y": 2.33126616477966
       },
       "name": "downhill running/jumping leaves the slope without sticking",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-28.00596, 0.900084, -10.73241)",
-        "max_y": 1.77242076396942,
+        "at": "(-28.20657, 0.902382, -10.73314)",
+        "max_y": 1.77316904067993,
         "speed": 7.61089611053467
       },
       "name": "steep wedge cannot accumulate upward launch energy",
@@ -79,29 +79,29 @@
     },
     {
       "measured": {
-        "movement": "(-0.001514, 0.0, -0.000422)",
-        "speed": 0.000024543298422941
+        "movement": "(0.0, 0.0, 0.0)",
+        "speed": 0.00000088665677822064
       },
       "name": "ordinary movement does not shove a heavy parked vehicle",
       "passed": true
     },
     {
       "measured": {
-        "after": 44.1205202594487,
+        "after": 43.18965113568,
         "age": 2.83333333333333,
         "before": 99.99285,
-        "closing": 9.98190689086914,
-        "contacts": 137,
+        "closing": 10.0044374465942,
+        "contacts": 155,
         "fresh_hits": 1,
-        "normal": "(0.033559, -0.584253, 0.810878)"
+        "normal": "(0.030539, -0.609319, 0.792337)"
       },
       "name": "fresh collision damages an already active knockdown",
       "passed": true
     },
     {
       "measured": {
-        "after": 44.1205202594487,
-        "before": 44.1205202594487
+        "after": 43.18965113568,
+        "before": 43.18965113568
       },
       "name": "sustained resting contact does not drain pedestrian health",
       "passed": true
