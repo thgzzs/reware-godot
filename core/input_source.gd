@@ -1,6 +1,7 @@
 class_name LocalInputSource
 extends RefCounted
 var mouse_delta := Vector2.ZERO
+var touch: TouchIntent
 func install() -> void:
  var bindings := {"left":KEY_A,"right":KEY_D,"forward":KEY_W,"back":KEY_S,"jump":KEY_SPACE,"interact":KEY_E,"reload":KEY_R,"sprint":KEY_SHIFT,"walk":KEY_ALT,"brake":KEY_SPACE,"debug":KEY_F3,"crouch":KEY_C,"camera_cycle":KEY_V,"switch_seat":KEY_X,"repair_vehicle":KEY_F6}
  for action in bindings:
@@ -54,5 +55,5 @@ func sample() -> GameplayCommand:
   if Input.is_action_just_pressed("weapon_slot_%d"%i): cmd.weapon_slot = i
  cmd.respawn = Input.is_action_just_pressed("respawn")
  mouse_delta = Vector2.ZERO
- return cmd
+ return touch.apply(cmd) if touch!=null else cmd
 

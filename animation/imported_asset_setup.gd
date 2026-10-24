@@ -3,7 +3,7 @@ extends RefCounted
 const LIBRARY_PATH := "res://assets/converted/ped_library.res"
 const DATABASE_PATH := "res://assets/converted/gameplay_database.tres"
 static func available() -> bool:
- return FileAccess.file_exists(LIBRARY_PATH) and FileAccess.file_exists(DATABASE_PATH)
+ return ResourceLoader.exists(LIBRARY_PATH) and ResourceLoader.exists(DATABASE_PATH)
 static func weapon_profile(record: Dictionary, prototype: WeaponProfile, library:AnimationLibrary=null) -> WeaponProfile:
  var result: WeaponProfile = prototype.duplicate()
  result.id = String(record.name).to_lower()

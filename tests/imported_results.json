@@ -6,9 +6,9 @@
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 7334.0,
-      "mean_us": 548.7014604811,
-      "p95_us": 976.0,
+      "max_us": 148020.0,
+      "mean_us": 1801.41108247423,
+      "p95_us": 4364.0,
       "samples": 2328,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
