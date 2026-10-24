@@ -25,6 +25,8 @@ var tip_ready := false
 var sphere := SphereShape3D.new()
 var query := PhysicsShapeQueryParameters3D.new()
 var ignored: Array[RID] = []
+var ground_attack := false
+var ground_victim:CharacterMotor
 func configure(owner_actor: CharacterMotor) -> void:
  actor = owner_actor
  query.shape = sphere
@@ -36,9 +38,19 @@ func request(cmd: GameplayCommand = null) -> bool:
  var gun := actor.weapon.profile
  var bare := gun.id in ["unarmed","brassknuckle"]
  var choices := gun.melee_clips if not bare else profile.combo_clips
+ ground_victim=MeleeTargeting.ground_target(actor,profile.ground_reach)
+ ground_attack=is_instance_valid(ground_victim)
+ var moving:=cmd!=null and cmd.move.length_squared()>0.01
  if choices.is_empty(): return false
  var selected := combo%choices.size()
  clip = actor.actions.resolve(PackedStringArray([choices[selected]]))
+ if bare and moving and not ground_attack:
+  selected=0;clip=actor.actions.resolve(PackedStringArray([profile.mobile_punch_clip,"FIGHTpunch"]))
+ if ground_attack:
+  var catalog:WeaponActionCatalog=preload("res://tuning/weapon_actions.tres")
+  clip=actor.actions.resolve(PackedStringArray([profile.ground_kick_clip]) if bare else catalog.ground_attacks.get(gun.id,gun.melee_clips))
+  var direction:=ground_victim.global_position-actor.global_position;direction.y=0
+  if direction.length_squared()>0.01:actor.facing=atan2(-direction.x,-direction.z)
  if clip.is_empty(): clip = "PUNCHR"
  var move: Dictionary = moves[selected%moves.size()] if not moves.is_empty() else {}
  if bare:
@@ -48,6 +60,8 @@ func request(cmd: GameplayCommand = null) -> bool:
   if actor.archetype!="STAT_PLAYER": strike_damage *= actor.attack_multiplier
   if gun.id=="brassknuckle": strike_damage *= 1.5
   strike_bone = profile.strike_bones[selected%profile.strike_bones.size()]
+  if moving and not ground_attack:strike_bone="R Hand"
+  if ground_attack:strike_bone="R Foot"
  else:
   strike_damage = gun.damage*profile.weapon_damage_scale
   strike_bone = "R Hand"
@@ -59,6 +73,8 @@ func request(cmd: GameplayCommand = null) -> bool:
  else:
   strike_start = duration*gun.melee_strike_start
   strike_end = duration*gun.melee_strike_end
+ if ground_attack:
+  strike_start=duration*0.35;strike_end=duration*0.8
  radius = profile.strike_radius if bare else gun.melee_radius
  reach = profile.hand_reach if bare else gun.melee_reach
  active = true;time = 0;previous_time=0;queued = false;hit_ids.clear();tip_ready=false
@@ -69,6 +85,7 @@ func request(cmd: GameplayCommand = null) -> bool:
  actor.actions.melee_time = 0
  actor.actions.melee_is_kick = strike_bone.ends_with("Foot")
  read_locomotion(cmd)
+ if not active:return false
  return true
 func cancel() -> void:
  if active: recovery = profile.minimum_recovery
@@ -79,13 +96,17 @@ func tick(cmd: GameplayCommand, dt: float) -> void:
  if not active: return
  if not actor.control_enabled or actor.health.health<=0 or not actor.grounded: cancel();return
  read_locomotion(cmd)
+ if not active:return
  previous_time = time
  time = minf(duration,time+dt)
  actor.actions.melee_time = time
  if time>=duration: cancel()
 func read_locomotion(cmd: GameplayCommand) -> void:
  # The moving pose retains locomotion except the configured striking limbs.
- actor.actions.melee_mobile=profile.allow_mobile_attacks and cmd!=null and cmd.move.length_squared()>0.01
+ var moving:=profile.allow_mobile_attacks and cmd!=null and cmd.move.length_squared()>0.01
+ if moving and actor.weapon.profile.id in ["unarmed","brassknuckle"] and actor.actions.melee_is_kick and not ground_attack:
+  cancel();return
+ actor.actions.melee_mobile=moving and not ground_attack
 func posed_tip() -> Vector3:
  var visual:=actor.reference_pose as SkinnedMotionVisual
  var bone:=visual.skeleton.find_bone(strike_bone)
@@ -138,6 +159,7 @@ func strike_at(point: Vector3) -> void:
   var receiver: Object = hit.collider
   var identity: Object = receiver
   if receiver is PedReactionBody: identity=receiver.actor;receiver=identity
+  if receiver is CorpseHitbox:identity=receiver.actor;receiver=identity
   if receiver is OccupantHitbox: identity=receiver.actor
   if receiver is VehicleHitRegion: identity=receiver.car
   if identity==actor or hit_ids.has(identity.get_instance_id()): continue

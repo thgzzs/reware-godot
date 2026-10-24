@@ -127,6 +127,7 @@ func _physics_process(dt: float) -> void:
 	if cmd.interact:
 		if transition.state == "on_foot": transition.request_enter(nearest_vehicle(),cmd.walk)
 		elif transition.state=="approaching":transition.cancel_approach("Entry cancelled")
+		elif transition.state=="lifting":transition.cancel_lift("Lift cancelled")
 		elif transition.state in ["driving","passenger"]: transition.request_exit()
 	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
 		actor.respawn(Vector3(-3,0.94,4))
@@ -147,10 +148,10 @@ func _physics_process(dt: float) -> void:
 			elif not is_instance_valid(child.driver) and child.control_owner not in ["external","coasting"]: child.park()
 	rig.vehicle_basis = active_car.global_basis
 	rig.vehicle_origin = active_car.global_position
-	var pivot := active_car.global_position+Vector3.UP*0.8 if transition.state not in ["on_foot","approaching"] else actor.global_position+Vector3.UP*(0.55-actor.stance.profile.camera_drop if actor.stance.crouched else 0.55)
+	var pivot := active_car.global_position+Vector3.UP*0.8 if transition.state not in ["on_foot","approaching","lifting"] else actor.global_position+Vector3.UP*(0.55-actor.stance.profile.camera_drop if actor.stance.crouched else 0.55)
 	var exclude: Array[RID] = [actor.get_rid()]
 	if transition.state!="on_foot": exclude.append(active_car.get_rid())
-	rig.tick(pivot,cmd,transition.state not in ["on_foot","approaching"],exclude,dt)
+	rig.tick(pivot,cmd,transition.state not in ["on_foot","approaching","lifting"],exclude,dt)
 	actor.actions.aim_target = AimSolution.camera_target(get_world_3d().direct_space_state,rig.camera,weapon.profile.range_meters,exclude,actor.global_position+Vector3.UP*0.35)
 	actor.actions.has_aim_target = true
 	if actor.reference_pose is SkinnedMotionVisual and not actor.reaction_body.active:

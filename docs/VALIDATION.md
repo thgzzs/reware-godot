@@ -1,41 +1,51 @@
-# Current mobile and asset-inclusive validation
+# Validation / combat and driving revision
 
-Godot **4.7.2 Stable**, official ed1daf0bf, built-in Jolt, physics 60 Hz. The verified official Linux archive has SHA-256 cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4. No engine substitution was used.
+Exactly Godot **4.7.2 Stable**, official ed1daf0bf, built-in **Jolt Physics**, fixed simulation 60 Hz. Current reports pass **645 assertions across 15 suites**. The complete 644-check batch passed; a final stationary-hit root-translation correction then passed the expanded 42-check native revision suite. All **123** other GDScript files compile/instantiate in the script check. All **23 Python tests** pass.
 
-The supplied complete ZIP restored the native assets. All **603 current Godot/Jolt assertions across 14 suites** and all **23 Python tests without skips** pass in this revision. Earlier milestone counts are historical.
+| Suite | Assertions |
+| --- | ---: |
+| Core gameplay | 47 |
+| Earlier regressions | 41 |
+| Sprint / transitions / settling | 42 |
+| Touch input | 34 |
+| Imported data / movement | 37 |
+| Presentation | 28 |
+| Native action ownership | 66 |
+| Motion and impacts | 63 |
+| Props / stance / glass / tires / damage | 54 |
+| Units and ownership | 13 |
+| Native entry / resting / recovery | 43 |
+| Stories assets | 10 |
+| Combat / panels / handling / bikes | 77 |
+| Falling / moving melee | 48 |
+| Combat / landing / bike revision | 42 |
 
-| Suite | Passed | Scope |
-| --- | ---: | --- |
-| Baseline | 47 | Primitive real-Jolt playable loop |
-| Action/door regression | 41 | Synthetic clips, masks, doors and impacts |
-| Intent regression | 42 | Independent tap/route/settling fixtures |
-| Mobile touch | 34 | Live viewport/command input, simultaneous controls, modal touch, vehicle loop, focus clearing and quick-tap buffering |
-| Imported data | 37 | All 1168 native entries and every converted key |
-| Presentation | 28 | Rig, models, HUD and replacement bindings |
-| Native actions | 66 | Weapon masks, sprint, doors, death and holstering |
-| Motion/impacts | 63 | Native motion and physical momentum exchange |
-| Systems | 54 | Props, stance, glass, tires and damage |
-| Foundation | 13 | State, units, ownership and configuration |
-| Native intent | 43 | Native tapping, car/four-bike entry, rear release and directional rests/get-up |
-| Stories assets | 10 | Selected models and all source animation blocks |
-| Stories gameplay | 77 | Melee, panels, handling, exits and bikes |
-| Fall/mobile melee | 48 | Fall damage, recovery and moving strikes |
+The new 42-check native suite includes actual low-drop movement, directional hits and stagger, one presentation update per simulation tick, gradual sprint blending, five rifle/shotgun aim variants, legacy crouch, seven moving punch requests, query-only corpse retirement, an actual floor-kick sweep, downward bat selection, door range/run-in/occupancy/pelvis alignment, bonnet damage in a real wall contact, bike falling/pickup/cancellation, walking reverse and crash ejection with inherited motion.
 
-All 113 other GDScript files load in the script check. The previous five fixed-physics comparisons passed at 30/60/120/144 and varying render caps. Those replay cases were retained rather than rerun for this input/interface revision. They do not measure GPU throughput or prove cross-platform determinism.
+## Measured behavior
 
-The full regression batch passed 602 assertions. A final quick-fire-tap buffering fix then passed the complete 34-check mobile suite, adding one assertion; the 13 other suites remain unchanged in scope. The current reports total 603. All 23 Python tests pass without skips. See MOBILE_ANDROID.md and android_apk.json for packaging and device-test boundaries.
+- Soft-drop fixture: visible landing motion continues; no hard-landing movement lock. Hard/unsafe impacts retain recovery and environmental damage.
+- Native pose sampler: **30 calls over 30 simulation ticks** in the idle fixture. Presentation fallback skips a pose already sampled by the simulation, so blend clocks do not advance twice. This is an update-ownership check, not an FPS claim.
+- Idle corpse fixtures retire solid physics only after supported quiet rest and visual floor alignment. Prone/supine skins clear the flat floor; floor-hit queries remain active.
+- Final car acceleration fixture reaches 10 m/s in **1.267 s**. The high-speed steering fixture records minimum chassis-up dot **0.9998**. These are target measurements, not original-runtime parity.
+- Bike reverse approaches **0.91 m/s** with the native pushes clip. The crash fixture records peak transferred rider speed above 8 m/s and the bike fall clip before quiet terminal settling.
+- Native repeated sprint tapping keeps its gait across all 300 sampled ticks. Current measurements are in native_intent_results.json; raw animation root curves vary within each stride and are not constant-speed caps.
 
-## Current measurements
+## Timing and profiling
 
-Repeated native sprint tapping keeps sprint_civi and the moving phase for all 300 sampled ticks. The gait clock advances on every tick. Instantaneous native root speed is 6.92–13.95 m/s; the supplied clip has a varying root curve. The independent linear fixture measures 6.0–7.2 m/s and verifies the strict 1.20 multiplier cap, decay and release grace. Neither curve is calibrated against a running original executable.
+The native fixed-command playback was rerun at 30/60/120/144 and a varying render cap while physics stays at 60 Hz. All five comparisons pass for sampled positions, velocity, vehicle position, pose quaternion, shots and state, with tolerance 0.002. See render_timing_results.json. This local CPU fixture does not establish cross-platform determinism or GPU throughput.
 
-Native walk-ins reach the car and all four bikes through the standing motor before mounting. Sampled maximum tick displacement is under 0.04 m. The right-side Sanchez regression now completes with normal-rate walk-start anticipation. The seat remains reserved until mounting commits; cancellation/death/lost reservation/blockers preserve safe ownership.
+Current Stories orchestration callback: mean **854.6 microseconds**, p95 **2276.0 microseconds**, maximum **54487.0 microseconds**, 3600 samples. It excludes Jolt solving and rendering and includes environment noise. Different milestone workloads cannot support a comparative speedup claim. No speculative FPS improvement is asserted.
 
-Forward quiet falls select prone KO_skid_back; backward falls select supine KO_skid_front. Native skin minima are 0.01010 and 0.01037 m above the flat floor, with terminal heights 0.311 and 0.363 m. Chest orientation is checked independently. Native getup_front/getup restores the diagonal fall heading. All four supplied bike-specific getoffBACK clips retain occupancy during windup and release once into the Jolt torso.
+## Visual review
 
-Seven retained native poses were rendered at 1280×720 with the Compatibility renderer and Mesa llvmpipe: sprint, prone, supine, and rear-exit windup on PCJ600/Sanchez/Faggio/Freeway. They were visually reviewed. Four additional desktop touch previews cover on-foot, settings, driving and a 16:9 resize; all were reviewed. The complete ZIP includes the previews and repeatable render scripts. These are desktop software renders, not Android device captures. These snapshots are limited visual checks, not exhaustive hand/foot/vehicle-contact or temporal parity.
+Nine selected poses were rendered with the Compatibility renderer and Mesa llvmpipe: M4 aim, shotgun aim, legacy crouch, directional hit, soft landing, unarmed ground kick, downward bat attack, bike pickup and walking reverse. Repeatable script: tests/render_behavior_preview.gd. These are desktop software renders, not Android screenshots or complete temporal/contact validation.
 
-The current native Stories orchestration callback and primitive baseline metrics are in stories_results.json and latest_results.json. These shared CPU-environment samples exclude Jolt solving and rendering; the fixtures have different workloads. No comparative speedup or full frame-budget claim is made.
+## Android and project package
+
+Version **0.4-behavior-test**, code **4**, package **org.reware.harbor**, minimum API **24**, target API **36**, ARM64 + ARMv7. The release-engine APK retains the prior test signing identity. Signature, archive CRC, 16 KiB ZIP alignment, 16 KiB ARM64 ELF load alignment, native Jolt and all 32 selected model scenes pass. A clean extraction of the final APK payload loads 1168 animation entries, 24 weapons, four pedestrians, seven vehicles, the legacy crouch override, two-seat Idaho and mobile controls in the exact desktop engine.
+
+The complete ZIP retains explicit parent directories, a full SHA256 manifest, selected assets and the test signing key. The 315 original selected asset/support payloads remain byte-identical; one legacy crouch Resource was added from the existing decoded source. The public source repository excludes private assets, native previews and signing material. Fresh ZIP extraction/import/startup is checked separately during packaging.
 
 ## Reproduce
 
@@ -46,16 +56,8 @@ python3 tools/check_render_timing.py --godot /absolute/path/Godot_4.7.2_stable
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-With a graphical display, run `Godot_4.7.2_stable --path . --resolution 1280x720 --fixed-fps 60 --script res://tests/render_native_intent_preview.gd` to regenerate selected previews.
+Run tests/render_behavior_preview.gd with a graphical display to recreate the selected poses. The validator refuses other engine versions and enables native suites only when their private inputs are present. Reports and behavior_validation_transcript.txt describe this milestone; earlier named transcripts are historical.
 
-The validator rejects other engines, imports first and selects private-asset suites only when their inputs exist. Synthetic suites explicitly disable those assets. Native transition tests wait for approach completion before measuring animation-stage duration. Current JSON reports, mobile_validation_transcript.txt and mobile_python_transcript.txt record this revision; intent transcripts describe the preceding native revision.
+## Remaining gaps
 
-The complete ZIP retains explicit parent directories before files, passes CRC/SHA checks and strict sequential extraction, and imports/starts from a fresh cache. All 315 selected private asset/support payloads are byte-identical to the supplied ZIP; no reconversion occurred. Public git excludes those payloads, native screenshots and the local test keystore. The complete private project ZIP contains the supplied payloads and test key; the APK includes runtime assets and excludes signing material, source archives, tests and documentation.
-
-## Android export validation
-
-The release-engine test APK is signed and verifies with Android build tools 36.0.0. Manifest inspection confirms package org.reware.harbor, version 0.3-mobile-test, minimum API 24, target API 36 and ARM64/ARMv7 engines. Archive CRC, 16 KiB native ZIP alignment, 16 KiB ARM64 ELF load alignment, native Jolt presence and all 32 model scenes pass. The exact desktop engine loads the extracted final APK payload with the native 1168-entry animation library, 24 weapons, four pedestrians, seven vehicles and touch controls. This is a packed-resource smoke test; Android Java/JNI, GPU and lifecycle execution remain untested without a device/emulator.
-
-## Remaining validation gaps
-
-Original-executable behavioral/visual/performance traces, actual browser import/export/playback, hardware GPU profiling, the full device matrix, exhaustive clip contacts and articulated ragdolls remain unverified. This is a playable framework, not a claim of full reVC equivalence. See SPRINT_ENTRY_SETTLING.md and DISCREPANCIES.md.
+No original executable traces or Android device/emulator were available. Android Java/JNI/GPU execution, installation, lifecycle/insets/thermals, uneven-ground edge cases, every asset/pose/contact combination, articulated ragdolls, full browser runtime, full open-world simulation and behavioral/visual/performance equivalence remain unverified. See COMBAT_DRIVING_REVISION.md and DISCREPANCIES.md. The tests establish a playable target implementation, not full reVC parity.

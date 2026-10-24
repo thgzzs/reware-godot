@@ -13,3 +13,6 @@ extends Resource
 @export var weapon_reach := 0.55
 @export var combo_clips := PackedStringArray(["FIGHTpunch","FIGHTjab","FIGHTLhook","FIGHTlngkck"])
 @export var strike_bones := PackedStringArray(["R Hand","R Hand","L Hand","R Foot"])
+@export var mobile_punch_clip := "PUNCHR"
+@export var ground_reach := 1.35
+@export var ground_kick_clip := "KICK_floor"

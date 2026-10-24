@@ -12,4 +12,5 @@ func scan(folder:String) -> void:
   var path:=folder.path_join(name)
   if name.ends_with(".gd") and path!="res://tools/check_project_scripts.gd":
    count+=1
-   if load(path)==null:failures+=1
+   var script:=load(path) as GDScript
+   if script==null or not script.can_instantiate():failures+=1

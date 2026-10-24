@@ -10,7 +10,7 @@ extends Resource
 @export var bike_bailout_suffix := "_getoffBACK"
 @export var bike_bailout_fallbacks := PackedStringArray(["BIKE_fall_off","BIKE_fallR"])
 @export var door_count := 2
-@export var seat_count := 4
+@export var seat_count := 2
 @export var display_color := Color(0.35,0.55,0.65)
 
 func bailout_clip(prefix: String, actions: ActorActionState) -> String:

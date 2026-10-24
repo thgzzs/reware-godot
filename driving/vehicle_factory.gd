@@ -1,7 +1,7 @@
 class_name VehicleFactory
 extends RefCounted
 ## Spawn independent physics fixtures while native replacement meshes are unavailable.
-static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayDatabase, at: Vector3) -> DriveVehicle:
+static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayDatabase, at: Vector3, library:AnimationLibrary=null) -> DriveVehicle:
  var car: DriveVehicle = load("res://scenes/vehicle.tscn").instantiate()
  car.name = variant.id
  car.position = at
@@ -46,6 +46,8 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
   if ResourceLoader.exists(variant.model_scene):ModelPlaceholderSetup.apply_vehicle(car,assets)
  VehicleHitboxes.refresh(car,car.damage.windshield_ok)
  car.parts.bind_model()
+ VehicleEntryGeometry.configure(car,library)
+ if car.kind=="bike":car.rotation.z=0.08
  var label := LabGeometry.label(car,variant.id+" / "+variant.handling_id,Vector3(0,1.9,0),18)
  label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
  car.set_meta("diagnostic_vehicle",variant.diagnostic_only)

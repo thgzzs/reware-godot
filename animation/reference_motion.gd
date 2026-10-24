@@ -9,6 +9,8 @@ var cycle := 0.0
 var intensity := 0.0
 var heading_locked := false
 var was_sprinting := false
+var gait: GaitProfile = preload("res://tuning/gait.tres")
+var sprint_weight := 0.0
 var walk_clip := "WALK_player"
 var run_clip := "run_player"
 var preview_clip := ""
@@ -45,9 +47,9 @@ func loop_segment(name: String, a: float, b: float) -> Vector3:
 func pose_layers() -> Array[Dictionary]:
  if not vehicle_layers.is_empty() and preview_clip.is_empty(): return vehicle_layers
  if not preview_clip.is_empty(): return [{"clip":preview_clip,"time":preview_time,"weight":1.0}]
- if phase=="move" and not was_sprinting:
+ if phase=="move":
   var blend := clampf(intensity-1.0,0,1)
-  return [{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":1.0-blend},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":blend}]
+  return [{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":(1.0-blend)*(1.0-sprint_weight)},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":blend*(1.0-sprint_weight)},{"clip":"sprint_civi","time":cycle*duration("sprint_civi"),"weight":sprint_weight}]
  return [{"clip":clip,"time":time,"weight":1.0}]
 func force_action(name: String, dt: float) -> void:
  # Exclusive actions must never sample stale walk/run layers.
@@ -59,6 +61,7 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  if phase=="action" or phase=="seated":
   phase = "idle"
   was_sprinting = false
+  sprint_weight = 0
  if not preview_clip.is_empty():
   if preview_playing: preview_time = fposmod(preview_time+dt,maxf(0.001,duration(preview_clip)))
   return Vector3.ZERO
@@ -87,7 +90,8 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
   set_clip("IDLE_stance")
   time = fposmod(time+dt,duration(clip))
   return Vector3.ZERO
- intensity = move_toward(intensity,amount*(1.0 if walk else 2.0),3.5*dt)
+ var target_intensity:=amount*(1.0 if walk else 2.0)
+ intensity = move_toward(intensity,target_intensity,(gait.acceleration if target_intensity>intensity else gait.deceleration)*dt)
  if phase=="idle":
   phase = "start"
   set_clip("WALK_start")
@@ -102,15 +106,16 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
   return delta
  phase = "move"
  var blend := clampf(intensity-1.0,0,1)
- var moving_clip := "sprint_civi" if sprint and not walk else run_clip
- var length := duration(moving_clip) if sprint and not walk else lerpf(duration(walk_clip),duration(run_clip),blend)
+ sprint_weight=move_toward(sprint_weight,1.0 if sprint and not walk else 0.0,dt/maxf(0.01,gait.sprint_blend_in if sprint and not walk else gait.sprint_blend_out))
+ var moving_clip := "sprint_civi" if sprint_weight>0.5 else run_clip
+ var length := lerpf(lerpf(duration(walk_clip),duration(run_clip),blend),duration("sprint_civi"),sprint_weight)
  var increment := dt/maxf(0.001,length)
- var local_delta := loop_segment(moving_clip,cycle*duration(moving_clip),(cycle+increment)*duration(moving_clip))
- if not sprint or walk:
-  var walk_delta := loop_segment(walk_clip,cycle*duration(walk_clip),(cycle+increment)*duration(walk_clip))
-  local_delta = walk_delta.lerp(local_delta,blend)
+ var walk_delta := loop_segment(walk_clip,cycle*duration(walk_clip),(cycle+increment)*duration(walk_clip))
+ var run_delta := loop_segment(run_clip,cycle*duration(run_clip),(cycle+increment)*duration(run_clip))
+ var sprint_delta := loop_segment("sprint_civi",cycle*duration("sprint_civi"),(cycle+increment)*duration("sprint_civi"))
+ var local_delta := walk_delta.lerp(run_delta,blend).lerp(sprint_delta,sprint_weight)
  cycle = fposmod(cycle+increment,1.0)
- was_sprinting = sprint and not walk
+ was_sprinting = sprint_weight>0.5
  set_clip(moving_clip if was_sprinting or blend>=0.5 else walk_clip,false)
  time = cycle*duration(clip)
  local_delta.y = 0

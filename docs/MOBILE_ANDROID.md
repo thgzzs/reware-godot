@@ -1,3 +1,7 @@
+# Current Android update
+
+Version 0.4-behavior-test (code 4) includes the combat/driving revision and retains the prior test signing identity. See COMBAT_DRIVING_REVISION.md and VALIDATION.md for current checks and limits.
+
 # Mobile controls and Android test build
 
 The complete test ZIP now includes phone controls and an Android export preset. The APK uses the release engine, Compatibility renderer and built-in Jolt from exactly Godot 4.7.2 Stable. It is signed with the included local test identity; it is a private test build rather than a store release.

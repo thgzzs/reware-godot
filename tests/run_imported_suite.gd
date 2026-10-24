@@ -115,7 +115,7 @@ func run() -> void:
  await frames(80,walking)
  var walk_distance := start.distance_to(actor.global_position)
  var expected_walk:=actor.reference_motion.segment("WALK_start",0,actor.reference_motion.duration("WALK_start")).length()+(90.0/60.0-actor.reference_motion.duration("WALK_start"))*actor.reference_motion.segment("WALK_player",0,actor.reference_motion.duration("WALK_player")).length()/actor.reference_motion.duration("WALK_player")
- check("walk movement follows provided VCS stride",absf(walk_distance-expected_walk)<0.08,{"actual":walk_distance,"source":expected_walk})
+ check("walk movement follows provided VCS stride with bounded acceleration lag",walk_distance<=expected_walk+0.02 and expected_walk-walk_distance<0.15,{"actual":walk_distance,"source":expected_walk})
  check("walk loop selected",actor.reference_motion.clip=="WALK_player",actor.reference_motion.clip)
  var turn_rate := actor.profile.turn_rate
  actor.profile.turn_rate = 0.5
@@ -140,7 +140,7 @@ func run() -> void:
  check("stop root motion still moves the colliding body",actor.global_position.distance_to(stop_start)>0.1,actor.global_position.distance_to(stop_start))
  await frames(1,right)
  check("renewed movement interrupts native stop without restarting walk-start",actor.reference_motion.phase=="move" and not actor.reference_motion.heading_locked)
- await frames(ceili(actor.reference_motion.duration(actor.reference_motion.clip)*60)+2)
+ await frames(ceili(maxf(actor.reference_motion.duration("Run_stop"),actor.reference_motion.duration("Run_stopR"))*60)+3)
  check("stop commitment completes",actor.reference_motion.phase!="stop")
  await place(Vector3(-30,0.94,40))
  var launch := GameplayCommand.new()

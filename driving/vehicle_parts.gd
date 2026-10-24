@@ -65,6 +65,15 @@ func receive(event: DamageEvent) -> void:
      if door.is_ancestor_of(source):door.collision_layer=0
  update_visual(part)
  events+=1
+func receive_collision(event:DamageEvent) -> void:
+ var primary:=nearest(event.point)
+ receive(event)
+ var local_normal:=car.global_basis.inverse()*event.normal
+ var local_point:=car.to_local(event.point)
+ var half:Vector3=(car.get_node("Hull").shape as BoxShape3D).size*0.5
+ if event.amount>=profile.bonnet_collision_threshold and local_normal.z>0.55 and local_point.z< -half.z*0.35 and primary!="bonnet" and parts.has("bonnet"):
+  var bonnet:=DamageEvent.make(event.amount*profile.bonnet_collision_share,event.point,event.direction,"collision",event.source)
+  bonnet.part="bonnet";bonnet.normal=event.normal;receive(bonnet)
 func update_visual(part: Dictionary) -> void:
  var damaged:Node3D=part.damaged
  var ok:Node3D=part.ok

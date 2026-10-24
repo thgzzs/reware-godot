@@ -2,6 +2,7 @@ class_name WeaponPoseProfile
 extends Resource
 ## Replaceable arm presentation tuning, independent of ballistic weapon stats.
 @export var reach := 0.53
+@export var preserve_native_grip := false
 @export var recoil_lift := 0.055
 @export var grip_offset := Vector3(0.02,0,0)
 @export var reload_grip := Vector3(0.10,-0.02,-0.30)

@@ -14,9 +14,9 @@
       "speed": 28.5064582824707
     },
     "orchestration": {
-      "max_us": 67016.0,
-      "mean_us": 1053.24555555556,
-      "p95_us": 2831.0,
+      "max_us": 54487.0,
+      "mean_us": 854.628333333333,
+      "p95_us": 2276.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -68,8 +68,8 @@
       "passed": true
     },
     {
-      "measured": 0.0649054795503616,
-      "name": "two-handed aim uses a compact reachable support grip",
+      "measured": 0.332077771425247,
+      "name": "two-handed aim preserves authored arm articulation",
       "passed": true
     },
     {
@@ -122,7 +122,7 @@
     {
       "measured": {
         "state": "fight",
-        "swings": 3
+        "swings": 2
       },
       "name": "attacked pedestrians enter fight state instead of ignoring melee",
       "passed": true
@@ -138,7 +138,7 @@
       "passed": true
     },
     {
-      "measured": 1.52263450622559,
+      "measured": 1.40860557556152,
       "name": "zero-root weapon clips permit collision-swept attack shuffling",
       "passed": true
     },
@@ -172,14 +172,14 @@
         "after": 995.8,
         "before": 1000.0,
         "hits": 1,
-        "tip": "(0.373077, 1.085215, 17.1406)"
+        "tip": "(0.372703, 1.085216, 17.12872)"
       },
       "name": "an actual bat swing can hit car geometry",
       "passed": true
     },
     {
       "measured": {
-        "damaged": 1,
+        "damaged": 2,
         "health": 789.130752279516,
         "total": 8
       },
@@ -312,14 +312,14 @@
     },
     {
       "measured": {
-        "at": "(17.96498, 0.344785, -0.017032)",
-        "up": 0.994868576526642
+        "at": "(18.0, 0.346321, -0.017197)",
+        "up": 0.999278604984283
       },
-      "name": "two-contact bike settles upright pcj600",
+      "name": "two-contact bike mount assistance settles upright pcj600",
       "passed": true
     },
     {
-      "measured": "BIKEs_jumponL",
+      "measured": "BIKEs_jumponR",
       "name": "bike entry uses LCS mount clip pcj600",
       "passed": true
     },
@@ -331,8 +331,8 @@
     {
       "measured": {
         "clip": "BIKEs_Ride",
-        "speed": 15.6557588577271,
-        "up": 0.999884247779846
+        "speed": 15.65709400177,
+        "up": 0.999902486801147
       },
       "name": "bike accelerates with a balanced visible rider pcj600",
       "passed": true
@@ -349,14 +349,14 @@
     },
     {
       "measured": {
-        "at": "(17.87432, 0.433648, -0.000043)",
-        "up": 0.959739208221436
+        "at": "(18.0, 0.451768, -0.00005)",
+        "up": 1.0
       },
-      "name": "two-contact bike settles upright sanchez",
+      "name": "two-contact bike mount assistance settles upright sanchez",
       "passed": true
     },
     {
-      "measured": "BIKEd_jumponR",
+      "measured": "BIKEd_jumponL",
       "name": "bike entry uses LCS mount clip sanchez",
       "passed": true
     },
@@ -373,14 +373,14 @@
     {
       "measured": {
         "clip": "BIKEd_Ride",
-        "speed": 17.3406791687012,
-        "up": 0.888160467147827
+        "speed": 18.6586761474609,
+        "up": 0.999138116836548
       },
       "name": "bike accelerates with a balanced visible rider sanchez",
       "passed": true
     },
     {
-      "measured": "BIKEd_getoffRHS",
+      "measured": "BIKEd_getoffLHS",
       "name": "bike exit uses LCS dismount clip sanchez",
       "passed": true
     },
@@ -391,14 +391,14 @@
     },
     {
       "measured": {
-        "at": "(17.9666, 0.349709, 0.000123)",
-        "up": 0.995252847671509
+        "at": "(18.0, 0.351379, 0.00016)",
+        "up": 0.99999988079071
       },
-      "name": "two-contact bike settles upright faggio",
+      "name": "two-contact bike mount assistance settles upright faggio",
       "passed": true
     },
     {
-      "measured": "BIKEv_jumponL",
+      "measured": "BIKEv_jumponR",
       "name": "bike entry uses LCS mount clip faggio",
       "passed": true
     },
@@ -410,8 +410,8 @@
     {
       "measured": {
         "clip": "BIKEv_Ride",
-        "speed": 16.9404449462891,
-        "up": 0.999658226966858
+        "speed": 16.9446640014648,
+        "up": 0.999690175056458
       },
       "name": "bike accelerates with a balanced visible rider faggio",
       "passed": true
@@ -428,14 +428,14 @@
     },
     {
       "measured": {
-        "at": "(17.96472, 0.348171, 0.000322)",
-        "up": 0.995336771011353
+        "at": "(18.0, 0.349804, 0.000387)",
+        "up": 0.999999642372131
       },
-      "name": "two-contact bike settles upright freeway",
+      "name": "two-contact bike mount assistance settles upright freeway",
       "passed": true
     },
     {
-      "measured": "BIKEh_jumponL",
+      "measured": "BIKEh_jumponR",
       "name": "bike entry uses LCS mount clip freeway",
       "passed": true
     },
@@ -447,8 +447,8 @@
     {
       "measured": {
         "clip": "BIKEh_Ride",
-        "speed": 17.4446868896484,
-        "up": 0.999741017818451
+        "speed": 17.4486312866211,
+        "up": 0.999766051769257
       },
       "name": "bike accelerates with a balanced visible rider freeway",
       "passed": true

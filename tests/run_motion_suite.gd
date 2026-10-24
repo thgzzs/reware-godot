@@ -67,7 +67,7 @@ func run() -> void:
     check_upper_block(actor)
    if phase=="launch": saw_launch = true
    if phase=="airborne": saw_glide = true
-   if phase=="landing": saw_land = true
+   if phase=="landing" or actor.landing.weight>0: saw_land = true
    if i==16 and slot==0: await image_at("jump",actor.global_position+Vector3(-3,1.1,-2.5),actor.global_position)
   check("run jump owns visible pose and completes in slot %d"%slot,saw_launch and saw_glide and saw_land and selected_exclusively and motion_change>0.3 and maximum_y-base_y>0.5,{"rise":maximum_y-base_y,"bone_delta":motion_change,"exclusive_layers":selected_exclusively})
  actor.weapon.equip_slot(0)

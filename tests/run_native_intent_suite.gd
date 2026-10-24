@@ -57,6 +57,7 @@ func run() -> void:
  for id in ["Idaho","pcj600","sanchez","faggio","freeway"]:
   var car:DriveVehicle=arena.vehicle if id=="Idaho" else arena.get_node(id)
   car.freeze=true
+  if car.kind=="bike":car.global_basis=Basis.IDENTITY
   actor.respawn(car.approach_position()+Vector3(-0.75,0,0.35));actor.facing=0;await frames(35)
   var accepted:bool=arena.transition.request_enter(car)
   check("native walk-in reserves "+id,accepted and arena.transition.state=="approaching")

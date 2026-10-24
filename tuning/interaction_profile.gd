@@ -1,6 +1,10 @@
 class_name InteractionProfile
 extends Resource
 @export var reach := 3.0
+@export var door_reach := 1.6
+@export var maximum_entry_height := 0.65
+@export var maximum_approach_path := 3.0
+@export var approach_run_distance := 0.85
 @export var approach_arrival_radius := 0.10
 @export var approach_slow_radius := 0.65
 @export var approach_start_scale := 1.0

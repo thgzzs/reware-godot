@@ -28,9 +28,12 @@ var ejecting := false
 var ejection_delay := 0.12
 var seated_time := 0.0
 var approach := VehicleApproach.new()
+var lift_clip := ""
+var lift_elapsed := 0.0
 func clip_for(action_name:String, side:int) -> String:
  var suffix:="LHS" if side%2==0 else "RHS"
  if vehicle.kind=="bike":
+  if action_name=="getin" and vehicle.entry_clips.has(side%2):return vehicle.entry_clips[side%2]
   var actions:={"getin":"_jumponL" if side%2==0 else "_jumponR","getout":"_getoffLHS" if side%2==0 else "_getoffRHS"}
   return vehicle.bike_animation+actions.get(action_name,"_Still")
  return "CAR_"+action_name+"_"+suffix
@@ -44,14 +47,18 @@ func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  escape_mode=false;ejecting=false;seated_time=0
  var selected := candidate.seating.choose(candidate,actor.global_position,passenger_only)
  if candidate.kind=="bike" and not passenger_only and candidate.seating.available(0):selected=0
- var selected_side:=1 if candidate.to_local(actor.global_position).x>0 else 0
+ var selected_side:=1 if (candidate.upright_basis().inverse()*(actor.global_position-candidate.global_position)).x>0 else 0
  if selected<0: return false
  if actor.global_position.distance_to(candidate.global_position)>profile.reach: return false
- if candidate.linear_velocity.length()>profile.max_transition_speed or candidate.global_basis.y.dot(Vector3.UP)<0.65: return false
+ if candidate.linear_velocity.length()>profile.max_transition_speed or (candidate.kind!="bike" and candidate.global_basis.y.dot(Vector3.UP)<0.65): return false
  var q := PhysicsRayQueryParameters3D.create(actor.global_position,candidate.global_position,5,[actor.get_rid()])
  var hit := actor.get_world_3d().direct_space_state.intersect_ray(q)
  if not hit.is_empty() and hit.collider!=candidate: return false
  var target:=candidate.approach_position(selected,selected_side if candidate.kind=="bike" else -1)
+ var gap:=target-actor.global_position
+ if Vector2(gap.x,gap.z).length()>profile.door_reach or absf(gap.y)>profile.maximum_entry_height:
+  message="Move closer to the door or mount"
+  return false
  if not approach.plan(actor,candidate,target,profile):
   message="Approach blocked / clear a route to the vehicle"
   return false
@@ -99,7 +106,7 @@ func tick_approach(dt: float) -> void:
  if actor.health.health<=0 or not actor.control_enabled or not actor.grounded:
   cancel_approach("Entry interrupted")
   return
- if vehicle.damage.state=="destroyed" or vehicle.seating.reservations.get(seat_index)!=actor or vehicle.linear_velocity.length()>profile.max_transition_speed or vehicle.global_basis.y.dot(Vector3.UP)<0.65:
+ if vehicle.damage.state=="destroyed" or vehicle.seating.reservations.get(seat_index)!=actor or vehicle.linear_velocity.length()>profile.max_transition_speed or (vehicle.kind!="bike" and vehicle.global_basis.y.dot(Vector3.UP)<0.65):
   cancel_approach("Vehicle or seat changed")
   return
  var target:=vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
@@ -108,11 +115,12 @@ func tick_approach(dt: float) -> void:
   cancel_approach("Approach blocked / try another position")
   return
  if arrived:
-  var desired:=vehicle.global_rotation.y
+  var desired:=vehicle.upright_basis().get_euler().y
   actor.facing=rotate_toward(actor.facing,desired,profile.approach_turn_rate*dt)
   actor.visual.rotation.y=actor.facing
   if absf(angle_difference(actor.facing,desired))<=profile.approach_heading_tolerance and Vector2(actor.velocity.x,actor.velocity.z).length()<0.25:
-   begin_entry()
+   if vehicle.kind=="bike" and vehicle.bike.fallen():begin_lift()
+   else:begin_entry()
 func request_exit() -> bool:
  message = ""
  if state not in ["driving","passenger"] or not is_instance_valid(vehicle): return false
@@ -149,7 +157,7 @@ func action(clip: String, time: float) -> void:
  actor.reference_motion.phase = state
  actor.reference_motion.set_clip(clip,false)
  actor.reference_motion.time = minf(time,actor.reference_motion.duration(clip))
- actor.facing = vehicle.global_rotation.y
+ actor.facing = vehicle.upright_basis().get_euler().y
  actor.visual.rotation.y = actor.facing
 func tick(dt: float) -> void:
  if state=="on_foot": return
@@ -159,6 +167,9 @@ func tick(dt: float) -> void:
   return
  if state=="approaching":
   tick_approach(dt)
+  return
+ if state=="lifting":
+  tick_lift(dt)
   return
  if actor.health.health<=0:
   # Release ownership before the corpse resumes its own collision/reaction.
@@ -179,13 +190,19 @@ func tick(dt: float) -> void:
   if elapsed>=ejection_delay:commit_eject()
   return
  if state in ["driving","passenger"]:
+  if vehicle.bike!=null:
+   var crash:=vehicle.bike.take_crash()
+   if crash!=null:
+    crash_eject(crash)
+    return
   seated_time+=dt
   actor.visible = actor.reference_enabled
   if vehicle.kind=="bike":
-   var base:=vehicle.bike_animation+("_Still" if absf(vehicle.speed)<0.35 else "_Ride") if seat_index==0 else vehicle.bike_animation+"_passenger"
+   var pushing:bool=vehicle.bike.reverse_intent and vehicle.speed<0.25
+   var base:=vehicle.bike_animation+("_pushes" if pushing else ("_Still" if absf(vehicle.speed)<0.35 else "_Ride")) if seat_index==0 else vehicle.bike_animation+"_passenger"
    action(base,fposmod(seated_time,maxf(0.001,actor.reference_motion.duration(base))) if actor.reference_enabled else 0)
    if actor.reference_enabled and seat_index==0:
-    var lean:=clampf(absf(vehicle.bike.lean)/vehicle.bike.profile.maximum_lean,0,1)*0.7
+    var lean:=clampf(absf(vehicle.bike.lean)/vehicle.bike.profile.maximum_lean,0,1)*0.7 if not pushing else 0.0
     var leaning:=vehicle.bike_animation+("_Left" if vehicle.bike.lean>0 else "_Right")
     actor.reference_motion.vehicle_layers=[{"clip":base,"time":actor.reference_motion.time,"weight":1.0-lean},{"clip":leaning,"time":minf(seated_time,actor.reference_motion.duration(leaning)),"weight":lean}]
   else:action(vehicle.seating.definitions[seat_index].seated_clip,0)
@@ -218,7 +235,16 @@ func tick(dt: float) -> void:
   elif elapsed<getin_end:
    action(clip_for("getin",entry_side),elapsed-enter_open)
    actor.global_position = vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
-   align_pelvis((vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)+standing_hip_offset).lerp(vehicle.seat_position(seat_index),smoothstep(enter_open,getin_end,elapsed)))
+   var mount_clip:=clip_for("getin",entry_side)
+   if actor.reference_enabled:
+    var end:=actor.reference_motion.position_at(mount_clip,actor.reference_motion.duration(mount_clip))
+    var start:=actor.reference_motion.position_at(mount_clip,0)
+    var at:=actor.reference_motion.position_at(mount_clip,elapsed-enter_open)
+    var basis:=vehicle.upright_basis()
+    var residual:=vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)+standing_hip_offset-(vehicle.seat_position(seat_index)+basis*(start-end))
+    var progress:=clampf((elapsed-enter_open)/maxf(0.001,getin_end-enter_open),0,1)
+    align_pelvis(vehicle.seat_position(seat_index)+basis*(at-end)+residual*(1-progress))
+   else:align_pelvis((vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)+standing_hip_offset).lerp(vehicle.seat_position(seat_index),smoothstep(enter_open,getin_end,elapsed)))
   else:
    if elapsed-getin_end>=profile.entry_close_motion_start or not actor.reference_enabled: vehicle.set_door_open(entry_side,false)
    action("CAR_closedoor_"+suffix,elapsed-getin_end)
@@ -366,6 +392,7 @@ func find_exit(required_index := -1) -> Dictionary:
   return {"position":p,"side":side,"index":i}
  return {}
 func recover() -> void:
+ if state=="lifting":cancel_lift("Bike lift cancelled");return
  if state=="approaching":cancel_approach("Entry cancelled");return
  if is_instance_valid(vehicle):
   vehicle.release_seat(actor)
@@ -377,8 +404,50 @@ func recover() -> void:
  vehicle = null
  change_state("on_foot")
 func change_state(next: String) -> void:
+ if is_instance_valid(vehicle) and vehicle.bike!=null:vehicle.bike.mounting=next=="entering"
  actor.interaction_holstered = next!="on_foot"
  state = next
  state_changed.emit(state)
 func _exit_tree() -> void:
+ if is_instance_valid(vehicle) and vehicle.bike!=null:vehicle.bike.lifting=false;vehicle.bike.mounting=false
  if is_instance_valid(vehicle): vehicle.release_seat(actor)
+func begin_lift() -> void:
+ var side:="L" if entry_side%2==0 else "R"
+ var pick:=vehicle.global_basis.x.dot(Vector3.UP)*(1 if entry_side%2==0 else -1)>0
+ lift_clip=actor.actions.resolve(PackedStringArray(["BIKE_"+("pickup"if pick else "pullup")+side,"BIKE_pickup"+side]))
+ lift_elapsed=0;vehicle.bike.lifting=true;vehicle.bike.lift_progress=0
+ actor.control_enabled=false;actor.sprint.reset();actor.weapon.melee.cancel()
+ change_state("lifting")
+func tick_lift(dt:float) -> void:
+ if actor.health.health<=0 or vehicle.damage.state=="destroyed" or vehicle.seating.reservations.get(seat_index)!=actor:
+  cancel_lift("Bike lift interrupted");return
+ lift_elapsed+=dt
+ action(lift_clip,lift_elapsed)
+ var length:=maxf(0.8,actor.reference_motion.duration(lift_clip)) if actor.reference_enabled else 1.0
+ vehicle.bike.lift_progress=clampf((lift_elapsed-vehicle.bike.profile.lift_release_seconds)/maxf(0.2,length-vehicle.bike.profile.lift_release_seconds),0,1)
+ if lift_elapsed>vehicle.bike.profile.lift_timeout:cancel_lift("Bike lift obstructed");return
+ if lift_elapsed>=length and vehicle.global_basis.y.dot(Vector3.UP)>0.92 and vehicle.angular_velocity.length()<1.2:
+  vehicle.bike.lifting=false;actor.restore_control()
+  var target:=vehicle.approach_position(seat_index,entry_side)
+  if not approach.plan(actor,vehicle,target,profile):cancel_lift("Mount path obstructed");return
+  change_state("approaching")
+func cancel_lift(reason:String) -> void:
+ if is_instance_valid(vehicle) and vehicle.bike!=null:vehicle.bike.lifting=false
+ if actor.health.health>0:actor.restore_control()
+ cancel_approach(reason)
+func crash_eject(event:DamageEvent) -> void:
+ var point:=BikeEjectionSolver.destination(actor,vehicle)
+ if not point.is_finite():message="Rider exit obstructed";return
+ var body:=vehicle
+ var initial:Vector3=event.get_meta("launch_velocity",body.linear_velocity)
+ actor.facing=body.upright_basis().get_euler().y
+ body.release_seat(actor);body.coast()
+ actor.reset_at(point);actor.set_embarked(false)
+ actor.health.receive(event.amount,false)
+ if actor.health.health>0:actor.actions.begin_life("down")
+ actor.actions.life_clip=actor.actions.resolve(PackedStringArray(["BIKE_fall_off","BIKE_fallR"]))
+ actor.actions.life_time=0;actor.control_enabled=false
+ actor.reaction_body.launch_velocity(point,actor.facing,initial*0.75+event.normal*1.5+Vector3.UP*2)
+ actor.reaction_body.minimum_recovery_age=0.9
+ vehicle=null;escape_mode=false;ejecting=false
+ change_state("on_foot")

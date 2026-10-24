@@ -32,7 +32,7 @@ func run() -> void:
   if child is DriveVehicle and child.kind=="car":variants.append(child)
  check("independent RWD FWD AWD physics vehicles exist",variants.size()==3 and variants[0].profile.driven_rear and not variants[0].profile.driven_front and variants[1].profile.driven_front and not variants[1].profile.driven_rear and variants[2].profile.driven_front and variants[2].profile.driven_rear)
  check("vehicle masses and dimensions are distinct",variants[0].mass!=variants[1].mass and variants[1].mass!=variants[2].mass and (variants[1].get_node("Hull").shape as BoxShape3D).size!=(variants[2].get_node("Hull").shape as BoxShape3D).size)
- check("native two-door car retains four marker-defined seats",car.seating.definitions.size()==4 and car.doors.size()==2)
+ check("native two-door Idaho exposes two usable seats",car.seating.definitions.size()==2 and car.doors.size()==2)
  check("four-door native car keeps four hinges and rear-door seat mappings",variants[2].doors.size()==4 and variants[2].seating.definitions[3].door==3)
  var unarmed:=-1
  for i in range(gun.inventory.size()):

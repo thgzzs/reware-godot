@@ -33,6 +33,17 @@
       "external_dependencies": [
         "Godot 4.7.2 Stable"
       ]
+    },
+    {
+      "id": "legacy-crouch-runtime-override",
+      "source": "assets/converted/legacy_crouch.res",
+      "kind": "single ANPK clip rebuilt from existing decoded ped source",
+      "external_dependencies": [
+        "assets/converted/ped_animation_source.json"
+      ],
+      "sha256": "26cbf4ec23ed7b68c3ec253a890b4e5db4a3a4ec584e62c02928217af2182c9c",
+      "public_git": false,
+      "builder": "tools/build_legacy_crouch.gd"
     }
   ],
   "pipeline": "ANPK/DAT -> native animation/gameplay Resources; reviewed IMG root ranges + external DragonFF -> portable model data/selected PNGs -> native model scenes",

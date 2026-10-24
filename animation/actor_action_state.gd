@@ -36,6 +36,10 @@ var melee_active := false
 var melee_mobile := false
 var melee_is_kick := false
 var melee_weight := 0.0
+var reaction_time := 0.0
+var floor_hit_clip := ""
+var floor_hit_time := 0.0
+var floor_hit_left := 0.0
 func full_body_busy() -> bool: return melee_active
 func choose_reaction(event: DamageEvent, facing: float, origin: Vector3) -> void:
  var local := Basis(Vector3.UP,facing).inverse()*(-event.direction)
@@ -52,8 +56,13 @@ func choose_reaction(event: DamageEvent, facing: float, origin: Vector3) -> void
  reaction_clip = resolve(PackedStringArray(["HIT_"+side,"HIT_front"]))
 func react(event: DamageEvent) -> void:
  if life!="alive" or event.kind=="vehicle" or motion==null: return
- reaction_duration = minf(0.45,motion.duration(reaction_clip))
+ reaction_duration = minf(profile.hit_max_seconds,motion.duration(reaction_clip)/profile.hit_playback_rate)
  reaction_left = reaction_duration
+ reaction_time=0
+func react_on_floor(face_down:bool) -> void:
+ floor_hit_clip=resolve(PackedStringArray(["FLOOR_hit_f","FLOOR_hit"]) if face_down else PackedStringArray(["FLOOR_hit","FLOOR_hit_f"]))
+ floor_hit_time=0
+ floor_hit_left=motion.duration(floor_hit_clip) if motion!=null else 0
 func includes_upper_bone(name: String) -> bool:
  if not profile.upper_bones.has(name): return false
  if (name.begins_with("L ") or " L Clavicle" in name) and not weapon_two_handed and not reloading: return false
@@ -81,10 +90,13 @@ func begin_life(next: String) -> void:
   motion.time = 0
 func reset() -> void:
  next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
- life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0
+ life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
  reaction_left = maxf(0,reaction_left-dt)
+ if reaction_left>0:reaction_time+=dt
+ floor_hit_left=maxf(0,floor_hit_left-dt)
+ if floor_hit_left>0:floor_hit_time+=dt
  firing_left = maxf(0,firing_left-dt)
  if life!="alive":
   life_time += dt
@@ -107,6 +119,7 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  weapon_pose = gun.profile.pose
  upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
+ if reaction_left>0:upper_allowed=false
  var target := 1.0 if upper_allowed and (cmd.aim or firing_left>0 or reloading) else 0.0
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)
 func upper_clip() -> String:

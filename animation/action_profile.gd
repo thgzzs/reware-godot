@@ -17,3 +17,9 @@ extends Resource
 @export var allow_sprint_all_guns := true
 @export var aim_movement_multiplier := 0.55
 @export var knockdown_seconds := 1.2
+@export var hit_move_multiplier := 0.6
+@export var hit_impulse_decay := 9.0
+@export var hit_playback_rate := 1.8
+@export var hit_max_seconds := 0.65
+@export var hit_interrupt_damage := 5.0
+@export var melee_knockdown_damage := 22.0

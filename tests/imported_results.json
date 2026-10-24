@@ -6,10 +6,10 @@
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 148020.0,
-      "mean_us": 1801.41108247423,
-      "p95_us": 4364.0,
-      "samples": 2328,
+      "max_us": 444971.0,
+      "mean_us": 1588.86936936937,
+      "p95_us": 3209.0,
+      "samples": 2442,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "model_binding_verified": "covered separately by presentation/stories rig-ID suites",
@@ -100,10 +100,10 @@
     },
     {
       "measured": {
-        "actual": 2.05033349990845,
+        "actual": 1.98151051998138,
         "source": 2.06274539614326
       },
-      "name": "walk movement follows provided VCS stride",
+      "name": "walk movement follows provided VCS stride with bounded acceleration lag",
       "passed": true
     },
     {
@@ -132,7 +132,7 @@
       "passed": true
     },
     {
-      "measured": 1.7675793170929,
+      "measured": 2.07828116416931,
       "name": "stop root motion still moves the colliding body",
       "passed": true
     },

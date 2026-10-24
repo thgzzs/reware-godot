@@ -48,6 +48,10 @@ static func weapon_profile(record: Dictionary, prototype: WeaponProfile, library
  return result
 static func apply(arena: Node3D) -> void:
  var lib: AnimationLibrary = load(LIBRARY_PATH)
+ if ResourceLoader.exists("res://assets/converted/legacy_crouch.res"):
+  lib=lib.duplicate(false)
+  lib.remove_animation("WEAPON_crouch")
+  lib.add_animation("WEAPON_crouch",load("res://assets/converted/legacy_crouch.res"))
  var db: ImportedGameplayDatabase = load(DATABASE_PATH)
  arena.reference_library = lib
  arena.reference_database = db
@@ -96,11 +100,11 @@ static func apply(arena: Node3D) -> void:
   var label := LabGeometry.label(ped,"Pedestrian %02d"%(i+1),Vector3(0,1.15,0),14)
   label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
  if arena.enable_vehicle_fixtures:
-  VehicleFactory.spawn(arena,preload("res://tuning/front_drive_fixture.tres"),db,Vector3(18,0.9,32))
-  VehicleFactory.spawn(arena,preload("res://tuning/all_drive_fixture.tres"),db,Vector3(25,0.9,32))
+  VehicleFactory.spawn(arena,preload("res://tuning/front_drive_fixture.tres"),db,Vector3(18,0.9,32),lib)
+  VehicleFactory.spawn(arena,preload("res://tuning/all_drive_fixture.tres"),db,Vector3(25,0.9,32),lib)
  if arena.enable_vehicle_fixtures:
   for row in [["pcj600",Vector3(10,0.7,14)],["sanchez",Vector3(13,0.7,14)],["faggio",Vector3(16,0.7,14)],["freeway",Vector3(19,0.7,14)]]:
-   VehicleFactory.spawn(arena,load("res://tuning/"+row[0]+".tres"),db,row[1])
+   VehicleFactory.spawn(arena,load("res://tuning/"+row[0]+".tres"),db,row[1],lib)
  arena.weapon.shot_fired.connect(func(origin: Vector3,_end: Vector3,_hit: bool):
   for brain in arena.ped_brains: brain.hear_shot(origin))
 

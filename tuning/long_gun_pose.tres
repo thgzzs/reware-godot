@@ -2,6 +2,7 @@
 [ext_resource type="Script" path="res://presentation/weapon_pose_profile.gd" id="1"]
 [resource]
 script = ExtResource("1")
+preserve_native_grip = true
 reach = 0.32
 grip_offset = Vector3(-0.16,-0.015,0)
 support_reach = 0.16
