@@ -54,7 +54,7 @@
         "health": 100.0,
         "height": 2.0,
         "native_clip": true,
-        "phase": "grounded",
+        "phase": "landing",
         "speed": 8.66666698455811
       },
       "name": "short drops do not apply fall damage",
@@ -189,8 +189,8 @@
     },
     {
       "measured": {
-        "at": "(-28.05012, 0.900368, 25.0759)",
-        "health": 87.0824461756274
+        "at": "(-28.02882, 0.90031, 25.1298)",
+        "health": 86.4416929530807
       },
       "name": "running off geometry produces a real falling and damaged landing loop",
       "passed": true
@@ -216,8 +216,8 @@
     },
     {
       "measured": {
-        "attack_m": 3.15927028656006,
-        "base_m": 3.14537811279297,
+        "attack_m": 3.15943813323975,
+        "base_m": 3.14559578895569,
         "mobile_ticks": 36
       },
       "name": "run melee retains normal stride speed without adding attack-root velocity",
@@ -235,8 +235,8 @@
     },
     {
       "measured": {
-        "attack_m": 5.58293867111206,
-        "base_m": 5.62161111831665,
+        "attack_m": 5.60430908203125,
+        "base_m": 5.54749250411987,
         "mobile_ticks": 36
       },
       "name": "sprint melee retains normal stride speed without adding attack-root velocity",
@@ -314,7 +314,7 @@
     },
     {
       "measured": {
-        "distance_m": 0.145569041371346,
+        "distance_m": 0.218352794647217,
         "phase": "start"
       },
       "name": "stationary strikes can transition into walking or running",
@@ -340,7 +340,7 @@
     },
     {
       "measured": {
-        "at": "(-28.05482, 0.900012, 34.5202)"
+        "at": "(-28.03665, 0.900012, 34.52035)"
       },
       "name": "running attacks remain collision swept against world walls",
       "passed": true

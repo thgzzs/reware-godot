@@ -6,6 +6,7 @@ var index := 0
 var elapsed := 0.0
 var stalled := 0.0
 var best_distance := INF
+var best_heading_error:=INF
 var goal := Vector3.ZERO
 var actor: CharacterMotor
 var car: DriveVehicle
@@ -21,7 +22,7 @@ func floor_point(at: Vector3) -> Vector3:
  return hit.position+Vector3.UP*0.93 if not hit.is_empty() and hit.normal.y>=actor.slope_cos() else Vector3.INF
 func plan(owner_actor: CharacterMotor, candidate: DriveVehicle, target: Vector3, tuning: InteractionProfile) -> bool:
  actor=owner_actor;car=candidate;goal=target;profile=tuning
- elapsed=0;stalled=0;best_distance=INF;index=0;points.clear()
+ elapsed=0;stalled=0;best_distance=INF;best_heading_error=INF;index=0;points.clear()
  shape_query.shape=actor.normal_shape;shape_query.margin=0.001;shape_query.collision_mask=15
  shape_query.exclude=[actor.get_rid(),actor.reaction_body.get_rid()]
  if clear_segment(actor.global_position,goal):points.append(goal);return actor.global_position.distance_to(goal)<=profile.maximum_approach_path
@@ -47,6 +48,7 @@ func command() -> GameplayCommand:
  var cmd:=GameplayCommand.new()
  var delta:=points[index]-actor.global_position;delta.y=0
  cmd.walk=delta.length()<profile.approach_run_distance
+ if delta.length()<=profile.approach_arrival_radius:cmd.locomotion_scale=0
  if delta.length()>profile.approach_arrival_radius:
   cmd.move=Vector2(delta.x,delta.z).normalized()
   cmd.locomotion_scale=clampf(delta.length()/profile.approach_slow_radius,0.08,1)
@@ -61,6 +63,8 @@ func advance(dt: float, target: Vector3) -> bool:
  if delta.length()<=profile.approach_arrival_radius:
   if index<points.size()-1:index+=1;best_distance=INF;stalled=0
   return index==points.size()-1 and Vector2(goal.x-actor.global_position.x,goal.z-actor.global_position.z).length()<=profile.approach_arrival_radius
- if delta.length()<best_distance-0.015:best_distance=delta.length();stalled=0
+ var heading_error:=absf(angle_difference(actor.facing,atan2(-delta.x,-delta.z)))
+ if delta.length()<best_distance-0.015:best_distance=delta.length();best_heading_error=heading_error;stalled=0
+ elif heading_error<best_heading_error-0.005:best_heading_error=heading_error;stalled=0
  else:stalled+=dt
  return false

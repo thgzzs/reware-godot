@@ -33,8 +33,8 @@ func run() -> void:
   var before:=actor.global_position
   await frames(1,move)
   if actor.landing.weight>0:
-   landing_seen=true;lock_seen=lock_seen or actor.phase=="landing";landing_motion+=actor.global_position.distance_to(before)
- check("low drop plays a visible landing without locking locomotion",landing_seen and not lock_seen and actor.landing.events>events and landing_motion>0.05,{"visible":landing_seen,"locked":lock_seen,"motion":landing_motion})
+   landing_seen=true;lock_seen=lock_seen or not actor.control_enabled;landing_motion+=actor.global_position.distance_to(before)
+ check("low drop plays spatial landing travel without disabling control",landing_seen and not lock_seen and actor.landing.events>events and landing_motion>0.05,{"visible":landing_seen,"locked":lock_seen,"motion":landing_motion})
  reset();await frames(35)
  var hit:=DamageEvent.make(12,actor.global_position,Vector3.BACK,"bullet")
  var hit_at:=actor.global_position

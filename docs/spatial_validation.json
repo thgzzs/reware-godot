@@ -1,0 +1,49 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "backend": "Jolt Physics",
+  "assertions": 663,
+  "suites": 16,
+  "script_checks": 127,
+  "python_tests": 23,
+  "render_rate_cases": 5,
+  "selected_software_renders": [
+    "walking",
+    "turning",
+    "airborne",
+    "landing",
+    "parked-upright",
+    "fallen-side",
+    "pickup",
+    "bike-fall-pose",
+    "bike-fall-followthrough"
+  ],
+  "packaged_rechecks": {
+    "behavior": 42,
+    "spatial": 18,
+    "mobile": 34
+  },
+  "apk": {
+    "apk": "/workspace/scratch/c8a11d6b1d2f/deliverables/Harbor-Rev6.apk",
+    "size": 75456403,
+    "sha256": "8db5861ae518e2526767c69ead407643811edbda93ceab1aa2fb2b3c1e6aa121",
+    "source_base": "2e27df6e42eceb25d303766a0d7aa73817193104",
+    "build_number": 6,
+    "package_id": "org.reware.harbor.revision5",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "signature_verified": true,
+    "fresh_test_signing_key": false,
+    "zip_crc": true,
+    "native_16k_alignment": true,
+    "model_scenes": 32,
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a"
+    ],
+    "android_device_tested": false,
+    "gameplay_assertions_rechecked": 42,
+    "mobile_assertions_rechecked": 34
+  },
+  "original_asset_payloads_unchanged": 315,
+  "android_device_tested": false,
+  "original_runtime_parity": false
+}

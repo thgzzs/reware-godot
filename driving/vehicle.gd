@@ -131,6 +131,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  var driven_count := int(axle_count)*((1 if profile.driven_front else 0)+(1 if profile.driven_rear else 0))
  var space := get_world_3d().direct_space_state
  for i in indices:
+  if bike!=null and not bike.use_wheel_support():
+   wheels[i].touching=false;wheels[i].normal_load=0;wheels[i].compression=0;continue
   var driven := profile.driven_front if i<2 else profile.driven_rear
   wheels[i].solve(state,space,mounts[i],steering if i<2 else 0.0,drive_force/maxi(1,driven_count) if driven else 0.0,brake*profile.brake_force*(profile.brake_bias if i<2 else 1.0-profile.brake_bias)/axle_count,profile,get_rid(),damage.wheel_flat[i],damage.profile,indices.size())
  if kind=="bike" and bike!=null: bike.solve(state)
@@ -151,8 +153,10 @@ func reserve_seat(actor: Node, index := 0) -> bool:
  return damage.state!="destroyed" and seating.reserve(actor,index)
 func commit_seat(actor: Node, index := 0) -> bool:
  return damage.state!="destroyed" and seating.commit(actor,index)
-func release_seat(actor: Node) -> void:
+func release_seat(actor: Node,allow_stand:=true) -> void:
+ var was_driver:=driver==actor
  seating.release(actor)
+ if bike!=null and was_driver:bike.release_rider(allow_stand)
  if bike!=null and not is_instance_valid(driver):bike.mounting=false
  if not is_instance_valid(driver): park()
 func receive_hit(event: DamageEvent) -> void: damage.receive_hit(event)
@@ -167,6 +171,7 @@ func park() -> void:
  steering_input = 0
  brake = 1
 func reset_at(where: Vector3) -> void:
+ if bike!=null:bike.standing=true;bike.lean=0;bike.crash_pending=null
  reset_transform = Transform3D(Basis.IDENTITY,where)
  reset_pending = true
  park()

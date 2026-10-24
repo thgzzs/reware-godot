@@ -45,16 +45,19 @@ func loop_segment(name: String, a: float, b: float) -> Vector3:
  if finish<=length: return segment(name,start,finish)
  return segment(name,start,length)+segment(name,0,finish-length)
 func pose_layers() -> Array[Dictionary]:
- if not vehicle_layers.is_empty() and preview_clip.is_empty(): return vehicle_layers
+ if phase=="seated" and not vehicle_layers.is_empty() and preview_clip.is_empty(): return vehicle_layers
  if not preview_clip.is_empty(): return [{"clip":preview_clip,"time":preview_time,"weight":1.0}]
  if phase=="move":
   var blend := clampf(intensity-1.0,0,1)
-  return [{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":(1.0-blend)*(1.0-sprint_weight)},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":blend*(1.0-sprint_weight)},{"clip":"sprint_civi","time":cycle*duration("sprint_civi"),"weight":sprint_weight}]
+  var moving:=clampf(intensity,0,1)
+  return [{"clip":"IDLE_stance","time":0.0,"weight":1.0-moving},{"clip":walk_clip,"time":cycle*duration(walk_clip),"weight":moving*(1.0-blend)*(1.0-sprint_weight)},{"clip":run_clip,"time":cycle*duration(run_clip),"weight":moving*blend*(1.0-sprint_weight)},{"clip":"sprint_civi","time":cycle*duration("sprint_civi"),"weight":moving*sprint_weight}]
  return [{"clip":clip,"time":time,"weight":1.0}]
 func force_action(name: String, dt: float) -> void:
  # Exclusive actions must never sample stale walk/run layers.
  phase = "seated" if name=="CAR_sit" else "action"
- if clip!=name: set_clip(name)
+ if clip!=name:
+  set_clip(name)
+  time=minf(dt,duration(name))
  else: time = minf(time+dt,duration(name))
 func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  heading_locked = false
@@ -85,11 +88,10 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
    phase = "stop"
    set_clip("Run_stop" if cycle<0.5 else "Run_stopR")
    return step(amount,false,walk,dt)
-  phase = "idle"
-  intensity = 0
-  set_clip("IDLE_stance")
-  time = fposmod(time+dt,duration(clip))
-  return Vector3.ZERO
+  if phase=="idle" or intensity<=gait.deceleration*dt:
+   phase="idle";intensity=0;sprint_weight=0
+   set_clip("IDLE_stance");time=fposmod(time+dt,duration(clip))
+   return Vector3.ZERO
  var target_intensity:=amount*(1.0 if walk else 2.0)
  intensity = move_toward(intensity,target_intensity,(gait.acceleration if target_intensity>intensity else gait.deceleration)*dt)
  if phase=="idle":
@@ -113,7 +115,7 @@ func step(amount: float, sprint: bool, walk: bool, dt: float) -> Vector3:
  var walk_delta := loop_segment(walk_clip,cycle*duration(walk_clip),(cycle+increment)*duration(walk_clip))
  var run_delta := loop_segment(run_clip,cycle*duration(run_clip),(cycle+increment)*duration(run_clip))
  var sprint_delta := loop_segment("sprint_civi",cycle*duration("sprint_civi"),(cycle+increment)*duration("sprint_civi"))
- var local_delta := walk_delta.lerp(run_delta,blend).lerp(sprint_delta,sprint_weight)
+ var local_delta := walk_delta.lerp(run_delta,blend).lerp(sprint_delta,sprint_weight)*clampf(intensity,0,1)
  cycle = fposmod(cycle+increment,1.0)
  was_sprinting = sprint_weight>0.5
  set_clip(moving_clip if was_sprinting or blend>=0.5 else walk_clip,false)

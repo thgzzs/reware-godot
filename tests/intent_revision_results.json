@@ -74,8 +74,8 @@
     },
     {
       "measured": {
-        "distance": 0.894914245698601,
-        "maximum_tick_displacement": 0.0247744265943766,
+        "distance": 0.925696757156402,
+        "maximum_tick_displacement": 0.0250026825815439,
         "state": "entering"
       },
       "name": "automatic entry physically walks to the approach marker",
@@ -191,7 +191,7 @@
     },
     {
       "measured": {
-        "angular": 0.0,
+        "angular": 0.0813627541065216,
         "clip": "KO_skid_back",
         "locked": true
       },
@@ -205,7 +205,7 @@
     },
     {
       "measured": {
-        "angular": 0.0,
+        "angular": 0.100361734628677,
         "clip": "KO_skid_front",
         "locked": true
       },

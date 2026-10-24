@@ -16,3 +16,8 @@ extends Resource
 @export var lift_per_speed := 0.45
 @export var recovery_speed := 1.6
 @export var recovery_delay := 2.0
+
+@export var maximum_angular_speed := 2.2
+@export var maximum_air_pitch := 0.9
+@export var maximum_air_roll := 0.65
+@export var air_angular_restore := 10.0

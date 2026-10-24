@@ -26,6 +26,9 @@ var stance := CharacterStance.new()
 var fall := ActorFallState.new()
 var landing := ActorLandingState.new()
 var sprint := ActorSprintState.new()
+var steering:=CharacterSteering.new()
+var root_requested:=Vector3.ZERO
+var root_applied:=Vector3.ZERO
 var jump_forward := Vector3.ZERO
 var blocked_jump := false
 var low_shape := SphereShape3D.new()
@@ -220,6 +223,7 @@ func respawn(where: Vector3) -> void:
  restore_control()
  reset_at(where)
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
+ root_requested=Vector3.ZERO;root_applied=Vector3.ZERO
  landing.tick(dt)
  impact_cooldown = maxf(0,impact_cooldown-dt)
  if is_instance_valid(ignored_vehicle):
@@ -246,6 +250,8 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   phase = "grounded"
   blocked_jump = false
   fall.hard_landing = false
+ if reference_enabled and not landing.active and phase=="grounded" and reference_motion.phase=="action" and reference_motion.clip==landing.clip:
+  reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
  if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not (reference_enabled and reference_motion.heading_locked):
   if reference_enabled:
    var desired := LegacyPhysicsUnits.jump_forward(reference_motion.intensity,reference_motion.was_sprinting)
@@ -277,6 +283,8 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   reaction_body.follow_pose(dt)
   return
  var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
+ var aim_turn:bool=cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active)
+ var locomotion_amount:=steering.update(self,direction,camera_yaw,aim_turn,dt)
  var sprint_allowed := grounded and phase=="grounded" and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy)
  sprint.tick(cmd,sprint_allowed,dt)
  var horizontal := Vector3.ZERO
@@ -289,8 +297,14 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    reference_motion.time = actions.melee_time
    drive_velocity = Basis(Vector3.UP,facing)*weapon.melee.root_delta()/maxf(0.00001,dt)+direction*weapon.melee.profile.shuffle_speed
   elif stance.crouched: reference_motion.force_action(stance.profile.crouch_clip,dt)
-  elif phase=="launch": reference_motion.force_action("JUMP_launch",dt)
-  elif phase=="landing": reference_motion.force_action("HIT_wall" if blocked_jump else (actions.resolve(fall.profile.landing_clips) if fall.hard_landing else "JUMP_land"),dt)
+  elif phase=="launch":
+   var before:=reference_motion.time if reference_motion.clip=="JUMP_launch" else 0.0
+   reference_motion.force_action("JUMP_launch",dt)
+   local_delta=reference_motion.segment("JUMP_launch",before,reference_motion.time);local_delta.y=0
+  elif landing.active or landing.travel.length_squared()>0:
+   reference_motion.force_action(landing.clip,0);reference_motion.time=landing.time
+   local_delta=landing.travel
+  elif phase=="landing":reference_motion.force_action("HIT_wall" if blocked_jump else actions.resolve(fall.profile.landing_clips),dt)
   elif not grounded:
    reference_motion.force_action(fall.air_clip(actions) if fall.falling else "JUMP_glide",dt)
    if fall.falling:reference_motion.time=fall.pose_time(actions)
@@ -298,18 +312,14 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if actions.melee_mobile and reference_motion.phase=="action":
     reference_motion.phase="move"
     reference_motion.intensity=1.0 if cmd.walk else 2.0
-   local_delta = reference_motion.step(direction.length(),sprint.active,cmd.walk,dt*clampf(cmd.locomotion_scale,0,1)*(sprint.multiplier if sprint.active else 1.0))
-  if (not actions.melee_active or actions.melee_mobile) and not reference_motion.heading_locked and (direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed)):
-   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active) else atan2(-direction.x,-direction.z)
-   facing = rotate_toward(facing,angle,(weapon.melee.profile.steering_rate if actions.melee_mobile else profile.turn_rate)*dt)
+   local_delta = reference_motion.step(locomotion_amount,sprint.active,cmd.walk,dt*clampf(cmd.locomotion_scale,0,1)*(sprint.multiplier if sprint.active else 1.0))
   visual.rotation.y = facing
-  if grounded and phase!="launch" and (not actions.melee_active or actions.melee_mobile):
-   var target_velocity:=Basis(Vector3.UP,facing)*local_delta/maxf(0.00001,dt)
-   var rate:=reference_motion.gait.ground_acceleration if target_velocity.length()>drive_velocity.length() else reference_motion.gait.ground_deceleration
-   drive_velocity=drive_velocity.move_toward(target_velocity,rate*dt)
+  if grounded and (not actions.melee_active or actions.melee_mobile):
+   # The exact sampled root displacement owns collision travel. No second velocity lerp.
+   drive_velocity=Basis(Vector3.UP,landing.heading if landing.active or landing.travel.length_squared()>0 else facing)*local_delta/maxf(0.00001,dt)
   if stance.crouched:
    drive_velocity = direction*profile.speed*stance.profile.move_multiplier if stance.profile.allow_crouch_walk else Vector3.ZERO
-  if grounded and cmd.aim and not stance.crouched:
+  if grounded and cmd.aim and not stance.crouched and not landing.active and phase!="landing":
    drive_velocity = direction*Vector2(local_delta.x,local_delta.z).length()/maxf(0.00001,dt)*actions.profile.aim_movement_multiplier
   horizontal = drive_velocity
   if grounded: horizontal = horizontal.slide(support_normal)
@@ -322,7 +332,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if cmd.aim: speed *= profile.aim_multiplier
   if stance.crouched: speed *= stance.profile.move_multiplier if stance.profile.allow_crouch_walk else 0.0
   if phase == "launch" or phase == "landing": speed = 0
-  var target := direction * speed
+  var target := (Basis(Vector3.UP,facing)*Vector3.FORWARD if not cmd.aim else direction.normalized()) * speed * (locomotion_amount if not cmd.aim else direction.length())
   horizontal = drive_velocity
   var rate := profile.acceleration if direction.length_squared()>0 else profile.deceleration
   if not grounded: rate = profile.air_acceleration
@@ -334,10 +344,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   velocity.z = horizontal.z
   if grounded and phase not in ["launch","airborne"]: velocity.y = horizontal.y
   else: velocity.y -= profile.gravity*dt
-  if direction.length_squared()>0.01 or cmd.aim or (cmd.fire and weapon.profile.two_handed):
-   var angle := camera_yaw if cmd.aim or (cmd.fire and weapon.profile.two_handed) else atan2(-direction.x,-direction.z)
-   facing = rotate_toward(facing,angle,profile.turn_rate*dt)
-   visual.rotation.y = facing
+  visual.rotation.y = facing
  if actions.reaction_left>0:
   velocity.x*=actions.profile.hit_move_multiplier;velocity.z*=actions.profile.hit_move_multiplier
  velocity+=reaction_velocity
@@ -347,11 +354,14 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  var impact := velocity.y
  var incoming := velocity
  var landing_speed := 0.0
+ root_requested=Vector3(velocity.x,0,velocity.z)*dt
+ var root_start:=global_position
  var motion := velocity*dt
  var obstruction := KinematicCollision3D.new()
  if was_grounded and phase != "launch" and Vector2(motion.x,motion.z).length()>0.0001 and test_move(global_transform,Vector3(motion.x,0,motion.z),obstruction):
   if obstruction.get_normal().y<0.98 and not obstruction.get_collider() is RigidBody3D:
    if try_step(Vector3(motion.x,0,motion.z)):
+    root_applied=global_position-root_start;root_applied.y=0
     velocity.y = 0
     return
  grounded = false
@@ -409,10 +419,14 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    var air_time:=fall.air_seconds
    var drop_height:=fall.drop
    var amount := fall.land(landing_speed)
-   if reference_enabled:landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing)
-   if reference_enabled and not fall.hard_landing:reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
-   phase = "landing" if fall.hard_landing else "grounded"
-   phase_left = profile.landing_delay if fall.hard_landing else 0.0
+   if reference_enabled:
+    landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing)
+    landing.heading=facing
+   if reference_enabled:
+    if landing.active:reference_motion.force_action(landing.clip,0);reference_motion.time=0
+    elif not fall.hard_landing:reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
+   phase = "landing" if fall.hard_landing or landing.active else "grounded"
+   phase_left = landing.duration/landing.playback_rate if landing.active else (profile.landing_delay if fall.hard_landing else 0.0)
    if fall.hard_landing:
     weapon.melee.cancel()
     drive_velocity = Vector3.ZERO
@@ -424,6 +438,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if fall.tracked:fall.land(landing_speed)
    phase = "grounded"
  elif phase != "launch": phase = "falling" if fall.falling else "airborne"
+ root_applied=global_position-root_start;root_applied.y=0
 func receive_fall_landing(speed: float) -> void:
  if health.health<=0:return
  var amount:=fall.land(speed)
@@ -496,6 +511,8 @@ func set_embarked(value: bool) -> void:
  fall.reset()
  weapon.melee.cancel()
  if not value:
+  if reference_enabled:reference_motion.vehicle_layers.clear()
+  if reference_pose is SkinnedMotionVisual:reference_pose.snap_next_pose=true
   visual.rotation = Vector3(0,facing,0)
   if reference_pose!=null:reference_pose.scale=Vector3.ONE
  occupant_hitbox.collision_layer = 8 if value else 0

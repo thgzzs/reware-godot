@@ -77,7 +77,7 @@
     },
     {
       "measured": {
-        "distance": 1.1969963312149,
+        "distance": 1.19693696498871,
         "shots": 3
       },
       "name": "simultaneous move/aim/fire uses the live gameplay loop",

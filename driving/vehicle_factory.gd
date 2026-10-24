@@ -47,7 +47,7 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
  VehicleHitboxes.refresh(car,car.damage.windshield_ok)
  car.parts.bind_model()
  VehicleEntryGeometry.configure(car,library)
- if car.kind=="bike":car.rotation.z=0.08
+ if car.kind=="bike":car.rotation.z=0
  var label := LabGeometry.label(car,variant.id+" / "+variant.handling_id,Vector3(0,1.9,0),18)
  label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
  car.set_meta("diagnostic_vehicle",variant.diagnostic_only)

@@ -246,7 +246,7 @@ func run() -> void:
  var bike_bail:=transition.request_exit()
  check("moving bike accepts a validated jump-off",bike_bail and transition.state=="ejecting")
  await frames(15)
- check("bike jump-off uses the model rear get-off clip and releases its seat",transition.state=="on_foot" and fast_bike.driver==null and actor.reaction_body.active and actor.actions.life_clip==fast_bike.bike_animation+"_getoffBACK",actor.actions.life_clip)
+ check("bike jump-off hands rear dismount into the airborne fall clip",transition.state=="on_foot" and fast_bike.driver==null and actor.reaction_body.active and actor.actions.life_clip in ["BIKE_fall_off","BIKE_fallR"],actor.actions.life_clip)
  fast_bike.park();fast_bike.reset_at(Vector3(18,0.7,10));await frames(100)
  var other_driver:=Node3D.new();arena.add_child(other_driver)
  fast_bike.seating.reserve(other_driver,0);fast_bike.seating.commit(other_driver,0)

@@ -12,6 +12,8 @@ The [Android/mobile revision](docs/MOBILE_ANDROID.md) adds multi-touch movement,
 
 The current [combat and driving revision](docs/COMBAT_DRIVING_REVISION.md) adds independent soft landing presentation, directional hit reactions, gradual gait changes, native long-gun grips, legacy crouch, ground attacks, tighter calibrated entry, Idaho two-seat capacity, quiet corpse retirement, physical bike pickup/falls, slow pushing reverse, crash ejection and frontal bonnet damage.
 
+The latest [spatial movement and bike revision](docs/SPATIAL_MOTION_REVISION.md) makes native strides and landings drive collision travel, limits turning on the ground and in the air, clears riding layers on ejection, and separates upright parked bikes from physically fallen bikes. Android Build 6 replaces Build 5 under the same isolated package.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.
