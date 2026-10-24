@@ -1,6 +1,9 @@
 config_version=5
 [application]
-config/name="Harbor / Behavior Lab"
+config/name="Harbor Rev 5"
+config/version="0.4.1-revision5"
+config/build_number=5
+config/source_revision="4377cd3d419d344d89e2387f7566d16b089ef622"
 config/icon="res://assets/app_icon.svg"
 config/quit_on_go_back=false
 run/main_scene="res://scenes/arena.tscn"

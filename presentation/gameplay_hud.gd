@@ -2,6 +2,7 @@ class_name GameplayHud
 extends Control
 ## Logical canvas coordinates stay independent of the 3D render-buffer scale.
 var arena: Node3D
+var build_label := "GAMEPLAY REVISION / BUILD %d" % int(ProjectSettings.get_setting("application/config/build_number",5))
 var diagnostics := false
 var controls_visible := false
 var flash_left := 0.0
@@ -143,6 +144,7 @@ func _draw() -> void:
  text_at("HARBOR",context.position+Vector2(0,22),24,PINK,context.size.x)
  text_at("Left stick: move / steer" if arena.uses_touch_controls() else "F1 Controls / F2 Display",context.position+Vector2(0,47),14,INK,context.size.x)
  text_at("Right drag: camera" if arena.uses_touch_controls() else "F3 Debug / F4 Animations",context.position+Vector2(0,67),14,AQUA,context.size.x)
+ text_at(build_label,context.position+Vector2(0,85),12,PINK,context.size.x)
  var health: float = arena.actor.health.health
  text_at("HEALTH",status.position+Vector2(16,24),14,PINK)
  text_at("%03d"%health,status.position+Vector2(status.size.x-68,28),24,PINK)
