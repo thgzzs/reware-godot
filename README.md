@@ -14,6 +14,8 @@ The current [combat and driving revision](docs/COMBAT_DRIVING_REVISION.md) adds 
 
 The latest [spatial movement and bike revision](docs/SPATIAL_MOTION_REVISION.md) makes native strides and landings drive collision travel, limits turning on the ground and in the air, clears riding layers on ejection, and separates upright parked bikes from physically fallen bikes. Android Build 6 replaces Build 5 under the same isolated package.
 
+The current [respawn and bike lean revision](docs/RECOVERY_REVISION.md) adds timed pedestrian respawn, safe actor and vehicle void recovery, twenty-percent quicker player turning and corrected tire-force compensation during bike banking. Android Build 7 updates the preceding app using the same package.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.

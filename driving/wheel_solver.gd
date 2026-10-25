@@ -3,6 +3,7 @@ extends RefCounted
 ## SI forces, relative point velocities, load-limited combined tire forces.
 var compression := 0.0
 var normal_load := 0.0
+var applied_force:=Vector3.ZERO
 var contact_normal:=Vector3.UP
 var slip := 0.0
 var point := Vector3.ZERO
@@ -20,6 +21,7 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  var hit := space.intersect_ray(ray)
  touching = not hit.is_empty()
  normal_load = 0
+ applied_force = Vector3.ZERO
  compression = 0
  slip = 0
  point = ray.to
@@ -50,6 +52,7 @@ func solve(state: PhysicsDirectBodyState3D, space: PhysicsDirectSpaceState3D, mo
  slip = maxf(0,desired.length()-limit)
  desired = desired.limit_length(limit)
  var force := normal*normal_load+forward*desired.x+side*desired.y
+ applied_force=force
  state.apply_force(force,lever)
  if hit.collider is RigidBody3D:
   hit.collider.apply_force(-force,point-hit.collider.global_position)

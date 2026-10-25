@@ -1,0 +1,22 @@
+{
+  "apk": "/workspace/scratch/c8a11d6b1d2f/deliverables/Harbor-Rev7.apk",
+  "size": 75465119,
+  "sha256": "5fc9a596e1d98e463818c0f39336f836f51b6c10361080cb9237f3037aeb06f6",
+  "source_base": "d5d445140ca64f434f6abb0095b84cf4896bfff7",
+  "build_number": 7,
+  "package_id": "org.reware.harbor.revision5",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "signature_verified": true,
+  "fresh_test_signing_key": false,
+  "zip_crc": true,
+  "native_16k_alignment": true,
+  "model_scenes": 32,
+  "abis": [
+    "arm64-v8a",
+    "armeabi-v7a"
+  ],
+  "android_device_tested": false,
+  "gameplay_assertions_rechecked": 35,
+  "mobile_assertions_rechecked": 34,
+  "identity_passed": true
+}

@@ -403,6 +403,15 @@ func recover() -> void:
  actor.set_embarked(false)
  vehicle = null
  change_state("on_foot")
+func abort_for_respawn() -> void:
+ # Clear the reservation, controller and balancing owners even during a lift.
+ if is_instance_valid(vehicle):
+  if vehicle.bike!=null:vehicle.bike.lifting=false;vehicle.bike.mounting=false
+  vehicle.release_seat(actor,false)
+  for side in range(vehicle.doors.size()):vehicle.set_door_open(side,false)
+ vehicle=null;escape_mode=false;ejecting=false;remaining=0;elapsed=0
+ actor.set_embarked(false)
+ change_state("on_foot")
 func change_state(next: String) -> void:
  if is_instance_valid(vehicle) and vehicle.bike!=null:vehicle.bike.mounting=next=="entering"
  actor.interaction_holstered = next!="on_foot"

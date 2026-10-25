@@ -24,12 +24,12 @@
       "passed": true
     },
     {
-      "measured": 2.25923725474964,
+      "measured": 2.71108470569958,
       "name": "running cornering has a bounded tank-like heading rate",
       "passed": true
     },
     {
-      "measured": 0.00403753668069839,
+      "measured": 0.00403634086251259,
       "name": "direction changes do not retain a sideways inertial velocity",
       "passed": true
     },
@@ -40,7 +40,7 @@
     },
     {
       "measured": {
-        "after": 0.933996260166168,
+        "after": 0.933996319770813,
         "before": 5.10496425628662
       },
       "name": "reversal brakes before accelerating in the new direction",
@@ -110,7 +110,7 @@
     {
       "measured": {
         "tilt_rad": 0.596326291561127,
-        "yaw_rad": 0.00000000886832296487228
+        "yaw_rad": 0.00000000886832207669386
       },
       "name": "physical falls retain bounded presentation instead of wheel spins",
       "passed": true

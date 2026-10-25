@@ -24,3 +24,5 @@ extends Resource
 @export var turn_speed_reference := 5.5
 @export var reversal_angle_degrees := 105.0
 @export var pivot_speed := 0.8
+
+@export var player_turn_multiplier := 1.20

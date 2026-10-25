@@ -219,9 +219,18 @@ func restore_control() -> void:
   reference_motion.phase = "idle"
   reference_motion.set_clip("IDLE_stance")
 func respawn(where: Vector3) -> void:
+ if is_instance_valid(ignored_vehicle): remove_collision_exception_with(ignored_vehicle)
+ ignored_vehicle=null;collision_grace=0;impact_cooldown=0;down_time=0
+ visible=true
+ weapon.reload_left=0;weapon.cooldown=0
  health.reset()
  restore_control()
  reset_at(where)
+ visual.rotation=Vector3(0,facing,0)
+ if reference_enabled:
+  reference_motion.intensity=0;reference_motion.cycle=0;reference_motion.time=0
+  reference_motion.preview_clip="";reference_motion.heading_locked=false
+ if reference_pose is SkinnedMotionVisual: reference_pose.snap_next_pose=true
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  root_requested=Vector3.ZERO;root_applied=Vector3.ZERO
  landing.tick(dt)

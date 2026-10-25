@@ -1,0 +1,101 @@
+{
+  "android_device_tested": false,
+  "assertions": 17,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": null,
+      "name": "death remains visible before configured delay",
+      "passed": true
+    },
+    {
+      "measured": "(-24.0, 0.94, 24.0)",
+      "name": "dead pedestrian respawns once on its original mark",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "respawn reuses the same shared character instance",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "respawn restores motor collision, visibility and life",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "respawn clears AI threat and combat pursuit",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "living pedestrian does not continuously reset",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "living pedestrian returns from the void",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "dead physical reaction also recovers immediately from the void",
+      "passed": true
+    },
+    {
+      "measured": "(-22.75, 0.94, 24.0)",
+      "name": "blocked spawn chooses a clear nearby floor position",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "player void return restores health and controls",
+      "passed": true
+    },
+    {
+      "measured": 2.52,
+      "name": "player turning is moderately faster without changing AI tuning",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "mounted void return clears both seat and controller ownership",
+      "passed": true
+    },
+    {
+      "measured": "(10.0, 0.345263, 13.99306)",
+      "name": "vehicle returns to its own spawn mark",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bank_rad": 0.423072518908626,
+        "state": "driving",
+        "tracking_error_rad": 0.0397018715759829
+      },
+      "name": "bike banks into left turn without rider loss",
+      "passed": true
+    },
+    {
+      "measured": 0.0000151889192617455,
+      "name": "bike straightens after left steering is released",
+      "passed": true
+    },
+    {
+      "measured": {
+        "bank_rad": -0.423064020774238,
+        "state": "driving",
+        "tracking_error_rad": 0.0396992877594379
+      },
+      "name": "bike banks into right turn without rider loss",
+      "passed": true
+    },
+    {
+      "measured": 0.00127786164298902,
+      "name": "bike straightens after right steering is released",
+      "passed": true
+    }
+  ]
+}

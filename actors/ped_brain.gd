@@ -15,6 +15,9 @@ var flee_distance := 17.0
 var relationships := {}
 var attack_delay := 0.0
 var pursuit_left := 0.0
+func reset_decisions() -> void:
+ state="wander";destination=0;threat=Vector3.ZERO;aggressor=null
+ flee_left=0;attack_delay=0;pursuit_left=0
 func _ready() -> void:
  if actor.reference_pose is SkinnedMotionVisual:actor.reference_pose.set_process(false)
  actor.attacked.connect(on_attacked)

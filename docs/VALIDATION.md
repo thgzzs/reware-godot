@@ -1,4 +1,14 @@
-# Build 6 validation
+# Build 7 validation
+
+Exactly Godot **4.7.2 Stable** (ed1daf0bf), Jolt Physics, 60 Hz simulation. The complete batch passes **680 assertions across 17 suites**. All **130 scripts** compile and **23 Python tests** pass. Build 7 adds seventeen respawn, void-recovery and actual left/right bike-bank checks to the preceding suites. See [RECOVERY_REVISION.md](RECOVERY_REVISION.md), recovery_validation.json and tests/recovery_validation_transcript.txt for the changes and repeatable evidence.
+
+Player turning rates are 20% higher while AI tuning and locked airborne heading are unchanged. Left/right bike bank tracking error averages approximately 0.040 radians and residual bank after three seconds without steering is below 0.002 radians in the isolated fixture. Pedestrian delay is eight seconds; test clocks use a shorter duplicate Resource to check pre/post expiry without changing shipped tuning.
+
+**Harbor-Rev7.apk**, version **0.5.1-recovery7**, code **7**, launcher **Harbor Rev 7**, HUD **BUILD 7**, same package and test signing identity as the preceding build. Actual packaged-payload checks are recorded in recovery_package.json. No Android hardware execution, original-runtime equivalence or comparative performance improvement is claimed.
+
+The detailed Build 6 results below are historical context; their checked gameplay remains covered by the current full regression batch. Historical timing and renders were not repeated for this revision.
+
+# Historical Build 6 validation
 
 Exactly Godot **4.7.2 Stable** (ed1daf0bf), Jolt Physics, 60 Hz simulation. The complete batch passes **663 assertions across 16 suites**. All **127 scripts** compile and **23 Python tests** pass.
 
