@@ -113,6 +113,10 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   if actor!=null and actor.landing.weight>0 and motion.library.has_animation(actor.landing.clip) and motion.preview_clip.is_empty():
    p=p.lerp(position_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
    q=q.slerp(rotation_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
+  # Relaxed carrying owns only the configured torso/arm bones. The action layer
+  # then overrides it, so aim IK never pulls the standing carry into a shot pose.
+  if actions!=null and actions.life=="alive" and actions.upper_allowed and not actions.crouched and actions.standing_hold_weight>0 and not actions.standing_hold_clip.is_empty() and actions.profile.standing_hold_bones.has(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
+   q=q.slerp(rotation_at(actions.standing_hold_clip,actions.standing_hold_time,i),actions.standing_hold_weight)
   if not upper.is_empty() and actions.includes_upper_bone(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
    q = q.slerp(upper_from[i].slerp(rotation_at(upper,upper_at,i),upper_alpha),actions.aim_weight)
   if actions!=null and actions.life=="alive" and actions.melee_weight>0 and motion.preview_clip.is_empty() and (i in melee_mask or (actions.melee_is_kick and i in melee_kick_mask)) and not actions.melee_clip.is_empty():

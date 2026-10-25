@@ -29,6 +29,7 @@ static func weapon_profile(record: Dictionary, prototype: WeaponProfile, library
  if frames.size()>2:result.fire_frame_seconds=float(frames[2])*0.03
  var catalog:WeaponActionCatalog=preload("res://tuning/weapon_actions.tres")
  if result.two_handed:result.pose=catalog.two_hand_pistol_pose if result.id=="python" else catalog.long_gun_pose
+ if result.two_handed and catalog.standing_long_guns.has(result.id):result.pose=catalog.standing_long_gun_pose
  result.animation_group=catalog.animation_groups.get(result.id,result.animation_group)
  var melee_sets:=catalog.melee_sets
  result.muzzle_local=catalog.muzzle_offsets.get(result.id,result.muzzle_local)

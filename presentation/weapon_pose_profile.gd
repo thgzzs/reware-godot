@@ -3,6 +3,8 @@ extends Resource
 ## Replaceable arm presentation tuning, independent of ballistic weapon stats.
 @export var reach := 0.53
 @export var preserve_native_grip := false
+@export var standing_hold_clips := PackedStringArray()
+@export_range(0.05,0.5,0.01) var standing_hold_blend_seconds := 0.22
 @export var recoil_lift := 0.055
 @export var grip_offset := Vector3(0.02,0,0)
 @export var reload_grip := Vector3(0.10,-0.02,-0.30)

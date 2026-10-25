@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponPoseProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://presentation/weapon_pose_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+preserve_native_grip = true
+standing_hold_clips = PackedStringArray("IDLE_armed")
+standing_hold_blend_seconds = 0.22
+reach = 0.32
+grip_offset = Vector3(-0.16,-0.015,0)
+support_reach = 0.16
+support_drop = 0.025
+solver_passes = 6

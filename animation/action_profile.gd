@@ -6,6 +6,7 @@ extends Resource
 @export var reaction_max_lift := 0.35
 @export var reaction_settle_speed := 1.0
 @export var upper_blend_rate := 12.0
+@export var standing_hold_bones:=PackedStringArray(["Spine1","Bip01 L Clavicle","Bip01 R Clavicle","L UpperArm","L Forearm","L Hand","L Finger","R UpperArm","R Forearm","R Hand","R Finger"])
 @export var weapon_lower_seconds := 0.14
 @export var weapon_raise_seconds := 0.10
 @export var death_clips := PackedStringArray(["KO_shot_front","FALL_front","HIT_FLOOR"])

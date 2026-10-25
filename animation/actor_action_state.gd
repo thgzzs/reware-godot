@@ -26,6 +26,9 @@ var fire_frame_seconds := 0.0
 var procedural_fire := true
 var native_fire_owns_upper := false
 var native_aim_hold := false
+var standing_hold_clip := ""
+var standing_hold_weight := 0.0
+var standing_hold_time := 0.0
 var crouched := false
 var next_death := ""
 var reaction_clip := ""
@@ -96,6 +99,7 @@ func begin_life(next: String) -> void:
  if motion!=null:motion.vehicle_layers.clear()
  life_time = 0
  aim_weight = 0
+ standing_hold_weight=0
  firing_left = 0
  reloading = false
  reload_weight=0;preparing_fire=false;reaction_left=0;reaction_spatial=false
@@ -108,6 +112,7 @@ func begin_life(next: String) -> void:
 func reset() -> void:
  next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
  preparing_fire=false
+ standing_hold_clip="";standing_hold_weight=0;standing_hold_time=0
  life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0;reaction_previous_time=0;reaction_spatial=false
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
@@ -140,6 +145,12 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
  if reaction_left>0:upper_allowed=false
+ var carry:=resolve(weapon_pose.standing_hold_clips)
+ if carry!=standing_hold_clip:standing_hold_clip=carry;standing_hold_time=0
+ var carrying:=not carry.is_empty() and upper_allowed and not crouched and (motion==null or motion.phase=="idle")
+ var carry_target:float=gun.equip_action.pose_weight() if carrying else 0.0
+ standing_hold_weight=move_toward(standing_hold_weight,carry_target,dt/maxf(0.001,weapon_pose.standing_hold_blend_seconds))
+ if not carry.is_empty() and standing_hold_weight>0:standing_hold_time=fposmod(standing_hold_time+dt,maxf(0.001,motion.duration(carry)))
  var target := 1.0 if upper_allowed and (cmd.aim or cmd.fire or firing_left>0 or reloading) else 0.0
  target*=gun.equip_action.pose_weight()
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)
@@ -153,6 +164,9 @@ func upper_clip() -> String:
  procedural_fire = action.is_empty()
  native_aim_hold=false
  if not action.is_empty():return action
+ # A missing reload must use the procedural reload fallback, never sample a
+ # firing clip as if it were a reload/standing hold.
+ if reloading:return ""
  if weapon_two_handed or preparing_fire:
   var hold:=resolve(PackedStringArray([weapon_group+"_crouchfire" if crouched else weapon_group+"_fire"]))
   if not hold.is_empty():native_aim_hold=true;return hold

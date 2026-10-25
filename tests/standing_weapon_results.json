@@ -1,0 +1,293 @@
+{
+  "android_device_tested": false,
+  "assertions": 57,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": "IDLE_armed",
+      "name": "shotgun uses the native relaxed armed loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0009765625,
+      "name": "shotgun standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.000000128184638015227,
+      "name": "shotgun preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.294451355934143,
+      "name": "shotgun lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun sprint releases the carry layer",
+      "passed": true
+    },
+    {
+      "measured": "IDLE_armed",
+      "name": "stubbyshotgun uses the native relaxed armed loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "stubbyshotgun standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.0000000957044434812815,
+      "name": "stubbyshotgun preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.191656470298767,
+      "name": "stubbyshotgun lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun sprint releases the carry layer",
+      "passed": true
+    },
+    {
+      "measured": "IDLE_armed",
+      "name": "spas12shotgun uses the native relaxed armed loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "spas12shotgun standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.0000000957044434812815,
+      "name": "spas12shotgun preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.191656470298767,
+      "name": "spas12shotgun lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun sprint releases the carry layer",
+      "passed": true
+    },
+    {
+      "measured": "IDLE_armed",
+      "name": "ruger uses the native relaxed armed loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "ruger standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.000000128184638015227,
+      "name": "ruger preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.260086566209793,
+      "name": "ruger lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger sprint releases the carry layer",
+      "passed": true
+    },
+    {
+      "measured": "IDLE_armed",
+      "name": "m4 uses the native relaxed armed loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "m4 standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.000000128184638015227,
+      "name": "m4 preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.260086566209793,
+      "name": "m4 lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 sprint releases the carry layer",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "pistol standing pose is unaffected",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "death clears standing weapon ownership",
+      "passed": true
+    }
+  ]
+}

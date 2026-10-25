@@ -12,16 +12,16 @@
       "speed": 6.27376174926758
     },
     "orchestration": {
-      "max_us": 3613.0,
-      "mean_us": 333.718888888889,
-      "p95_us": 533.0,
+      "max_us": 4928.0,
+      "mean_us": 335.501944444444,
+      "p95_us": 498.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "wheel_forces": {
-      "max_us": 801.0,
-      "mean_us": 35.3536111111111,
-      "p95_us": 72.0,
+      "max_us": 2563.0,
+      "mean_us": 35.7347222222222,
+      "p95_us": 68.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
