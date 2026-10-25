@@ -48,7 +48,7 @@ func run() -> void:
  player.receive_damage(10000,player.global_position,Vector3.FORWARD)
  player.reset_at(Vector3(50,-25,0));await frames(3)
  check("player void return restores health and controls",player.health.health==player.health.max_health and player.control_enabled and player.visible and player.global_position.distance_to(arena.player_spawn.spawn_position)<0.15)
- check("player turning is moderately faster without changing AI tuning",is_equal_approx(player.profile.running_turn_rate,ped.profile.running_turn_rate*1.2) and is_equal_approx(player.profile.standing_turn_rate,ped.profile.standing_turn_rate*1.2),player.profile.running_turn_rate)
+ check("player turning is moderately faster without changing AI tuning",is_equal_approx(player.profile.running_turn_rate,ped.profile.running_turn_rate*player.profile.player_turn_multiplier) and is_equal_approx(player.profile.standing_turn_rate,ped.profile.standing_turn_rate*player.profile.player_turn_multiplier),player.profile.running_turn_rate)
  var bike:DriveVehicle=arena.get_node("pcj600")
  board(bike);bike.global_position=Vector3(45,-22,0);player.global_position=bike.global_position
  await frames(5)

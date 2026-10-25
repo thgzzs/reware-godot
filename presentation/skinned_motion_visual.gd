@@ -77,7 +77,7 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   transition_time = 0
  transition_time += dt
  var duration := actions.profile.blend_seconds if actions!=null else 0.16
- if motion.clip=="JUMP_launch" or (actor!=null and actor.landing.active): duration = minf(duration,0.04)
+ if motion.clip=="JUMP_launch" or (actor!=null and actor.landing.active) or (actions!=null and actions.spatial_hit()): duration = minf(duration,0.04)
  var alpha := smoothstep(0,1,clampf(transition_time/maxf(0.001,duration),0,1))
  if not motion.preview_clip.is_empty() or snap_next_pose: alpha = 1
  snap_next_pose=false
@@ -118,7 +118,7 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   if actions!=null and actions.life=="alive" and actions.melee_weight>0 and motion.preview_clip.is_empty() and (i in melee_mask or (actions.melee_is_kick and i in melee_kick_mask)) and not actions.melee_clip.is_empty():
    q=q.slerp(rotation_at(actions.melee_clip,minf(actions.melee_time,motion.duration(actions.melee_clip)),i),actions.melee_weight)
   upper_rotations[i] = q
-  if actions!=null and actions.life=="alive" and actions.reaction_left>0 and motion.library.has_animation(actions.reaction_clip) and motion.preview_clip.is_empty():
+  if actions!=null and actions.life=="alive" and actions.reaction_left>0 and not actions.spatial_hit() and motion.library.has_animation(actions.reaction_clip) and motion.preview_clip.is_empty():
    var at:=actions.reaction_time/maxf(0.001,actions.reaction_duration)*motion.duration(actions.reaction_clip)
    var weight:=minf(clampf(actions.reaction_time/0.05,0,1),clampf(actions.reaction_left/0.15,0,1))
    var stationary:=actor!=null and actor.drive_velocity.length()<0.2

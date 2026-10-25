@@ -129,7 +129,9 @@ func receive_hit(event: DamageEvent) -> void:
  if actions.life in ["down","getting_up"] and event.kind=="melee":actions.react_on_floor(reaction_body.rest.face_down)
  if health.health>0:
   if event.amount>=actions.profile.hit_interrupt_damage:weapon.melee.cancel();actions.firing_left=0
-  actions.react(event)
+  var spatial_hit:=reference_enabled and grounded and phase=="grounded" and control_enabled and not stance.crouched
+  actions.react(event,facing,spatial_hit)
+  if spatial_hit:weapon.melee.cancel();reaction_velocity.x=0;reaction_velocity.z=0
   if event.kind=="melee" and event.amount>=actions.profile.melee_knockdown_damage and actions.life=="alive" and grounded:
    actions.begin_life("down");control_enabled=false;down_time=0
    reaction_body.launch_velocity(global_position,facing,event.direction*2.5+Vector3.UP*1.5)
@@ -261,7 +263,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   fall.hard_landing = false
  if reference_enabled and not landing.active and phase=="grounded" and reference_motion.phase=="action" and reference_motion.clip==landing.clip:
   reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
- if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not (reference_enabled and reference_motion.heading_locked):
+ if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not actions.spatial_hit() and not (reference_enabled and reference_motion.heading_locked):
   if reference_enabled:
    var desired := LegacyPhysicsUnits.jump_forward(reference_motion.intensity,reference_motion.was_sprinting)
    jump_forward = Basis(Vector3.UP,facing)*Vector3(0,0,-desired)
@@ -301,6 +303,9 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   var local_delta := Vector3.ZERO
   if not reference_motion.preview_clip.is_empty():
    local_delta = reference_motion.step(0,false,false,dt)
+  elif actions.spatial_hit():
+   reference_motion.force_action(actions.reaction_clip,0);reference_motion.time=actions.reaction_at()
+   local_delta=actions.reaction_travel()
   elif actions.melee_active and not actions.melee_mobile:
    reference_motion.force_action(actions.melee_clip,0)
    reference_motion.time = actions.melee_time
@@ -325,10 +330,11 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   visual.rotation.y = facing
   if grounded and (not actions.melee_active or actions.melee_mobile):
    # The exact sampled root displacement owns collision travel. No second velocity lerp.
-   drive_velocity=Basis(Vector3.UP,landing.heading if landing.active or landing.travel.length_squared()>0 else facing)*local_delta/maxf(0.00001,dt)
+   var heading:=actions.reaction_heading if actions.spatial_hit() else (landing.heading if landing.active or landing.travel.length_squared()>0 else facing)
+   drive_velocity=Basis(Vector3.UP,heading)*local_delta/maxf(0.00001,dt)
   if stance.crouched:
    drive_velocity = direction*profile.speed*stance.profile.move_multiplier if stance.profile.allow_crouch_walk else Vector3.ZERO
-  if grounded and cmd.aim and not stance.crouched and not landing.active and phase!="landing":
+  if grounded and cmd.aim and not stance.crouched and not landing.active and phase!="landing" and not actions.spatial_hit():
    drive_velocity = direction*Vector2(local_delta.x,local_delta.z).length()/maxf(0.00001,dt)*actions.profile.aim_movement_multiplier
   horizontal = drive_velocity
   if grounded: horizontal = horizontal.slide(support_normal)
@@ -354,7 +360,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if grounded and phase not in ["launch","airborne"]: velocity.y = horizontal.y
   else: velocity.y -= profile.gravity*dt
   visual.rotation.y = facing
- if actions.reaction_left>0:
+ if actions.reaction_left>0 and not actions.spatial_hit():
   velocity.x*=actions.profile.hit_move_multiplier;velocity.z*=actions.profile.hit_move_multiplier
  velocity+=reaction_velocity
  reaction_velocity=reaction_velocity.move_toward(Vector3.ZERO,actions.profile.hit_impulse_decay*dt)
@@ -477,7 +483,7 @@ func jump_has_clearance() -> bool:
   if not get_world_3d().direct_space_state.intersect_shape(query,1).is_empty(): return false
  return true
 func can_use_weapon() -> bool:
- return control_enabled and not interaction_holstered and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy() and actions.reaction_left<=0
+ return control_enabled and not interaction_holstered and health.health>0 and actions.life=="alive" and grounded and phase=="grounded" and not actions.full_body_busy() and actions.reaction_left<=0 and not actions.spatial_hit()
 func slope_cos() -> float:
  return cos(deg_to_rad(profile.max_slope_degrees))
 func try_step(horizontal: Vector3) -> bool:

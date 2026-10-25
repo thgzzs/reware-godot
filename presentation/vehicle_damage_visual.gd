@@ -3,8 +3,10 @@ extends Node3D
 var car: DriveVehicle
 var smoke := CPUParticles3D.new()
 var flame := CPUParticles3D.new()
+var scorch:=VehicleScorch.new()
 func configure(vehicle: DriveVehicle) -> void:
  car = vehicle
+ scorch.car=car
  position = Vector3(0,0.5,-1.5)
  for emitter in [smoke,flame]:
   emitter.emitting = false
@@ -41,5 +43,7 @@ func configure(vehicle: DriveVehicle) -> void:
   add_child(emitter)
  car.damage.state_changed.connect(update_state)
 func update_state(state: String) -> void:
+ if state=="destroyed":scorch.apply()
+ elif state=="healthy":scorch.restore()
  smoke.emitting = state in ["smoking","burning","destroyed"]
  flame.emitting = state=="burning"

@@ -314,7 +314,7 @@
     },
     {
       "measured": {
-        "distance_m": 0.21835458278656,
+        "distance_m": 0.218352809548378,
         "phase": "start"
       },
       "name": "stationary strikes can transition into walking or running",

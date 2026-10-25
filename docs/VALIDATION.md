@@ -1,4 +1,14 @@
-# Build 7 validation
+# Build 8 validation
+
+Exactly Godot **4.7.2 Stable** (ed1daf0bf), Jolt Physics, 60 Hz simulation. The complete batch passes **712 assertions across 18 suites**. All **134 scripts** compile and **23 Python tests** pass. The new suite contributes 32 native spatial-hit, wall collision, steering range, entry timing/cancellation, pickup hand-direction and scorched/wreck-lifecycle assertions. See [ACTIONS_DRIVING_REVISION.md](ACTIONS_DRIVING_REVISION.md), actions_validation.json and tests/actions_validation_transcript.txt.
+
+An identical four-case approach/alignment benchmark measures Build 7 at 1.35–1.40 seconds and Build 8 at 0.533–0.550 seconds before the native opening/mounting stage, about 60% less delay. Opening/seating animation durations are retained. Maximum unobstructed spatial-hit displacement error against independently sampled native keys is below 0.000003 m per tick, with a 0.003 m tolerance; walls block travel. This is interaction latency and collision/animation validation, not an FPS or GPU improvement claim.
+
+**Harbor-Rev8.apk**, version **0.6.0-actions8**, code **8**, launcher **Harbor Rev 8**, HUD **BUILD 8**, same package and private signing identity as the preceding app. Export and actual packaged-payload checks are recorded in actions_package.json. Physical Android execution and original-game runtime parity remain untested. Existing corpse settling, fall/jump motion, bicycle balancing, entry/exit, combat, native asset, mobile and UI checks remain in the full batch.
+
+The earlier detailed results below are historical context. Their old timing/render captures were not repeated for this revision.
+
+# Historical Build 7 validation
 
 Exactly Godot **4.7.2 Stable** (ed1daf0bf), Jolt Physics, 60 Hz simulation. The complete batch passes **680 assertions across 17 suites**. All **130 scripts** compile and **23 Python tests** pass. Build 7 adds seventeen respawn, void-recovery and actual left/right bike-bank checks to the preceding suites. See [RECOVERY_REVISION.md](RECOVERY_REVISION.md), recovery_validation.json and tests/recovery_validation_transcript.txt for the changes and repeatable evidence.
 

@@ -9,14 +9,14 @@
       "speed": 10.02503490448
     },
     "cornering": {
-      "maximum_steer": 0.0521754335993973,
-      "minimum_up_dot": 0.99980103969574,
-      "speed": 28.5064582824707
+      "maximum_steer": 0.0591169107405516,
+      "minimum_up_dot": 0.999749362468719,
+      "speed": 28.4352684020996
     },
     "orchestration": {
-      "max_us": 2966.0,
-      "mean_us": 331.710833333333,
-      "p95_us": 483.0,
+      "max_us": 3739.0,
+      "mean_us": 320.001111111111,
+      "p95_us": 428.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -122,13 +122,13 @@
     {
       "measured": {
         "state": "fight",
-        "swings": 2
+        "swings": 1
       },
       "name": "attacked pedestrians enter fight state instead of ignoring melee",
       "passed": true
     },
     {
-      "measured": 95.4955,
+      "measured": 98.0695,
       "name": "pedestrian melee can physically hit the player",
       "passed": true
     },
@@ -214,9 +214,9 @@
     },
     {
       "measured": {
-        "maximum_steer": 0.0521754335993973,
-        "minimum_up_dot": 0.99980103969574,
-        "speed": 28.5064582824707
+        "maximum_steer": 0.0591169107405516,
+        "minimum_up_dot": 0.999749362468719,
+        "speed": 28.4352684020996
       },
       "name": "high-speed turning uses curvature-limited steering without routine flips",
       "passed": true

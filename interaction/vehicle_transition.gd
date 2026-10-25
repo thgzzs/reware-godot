@@ -41,7 +41,7 @@ func clip_for(action_name:String, side:int) -> String:
 func request_enter(candidate: DriveVehicle, passenger_only := false) -> bool:
  message = ""
  if state!="on_foot" or not is_instance_valid(candidate) or not actor.control_enabled or actor.health.health<=0: return false
- if not actor.grounded or actor.phase!="grounded" or actor.actions.full_body_busy(): return false
+ if not actor.grounded or actor.phase!="grounded" or actor.actions.full_body_busy() or actor.actions.reaction_left>0: return false
  if actor.stance.crouched and not actor.stance.set_crouched(false): return false
  if candidate.damage.state=="destroyed": return false
  escape_mode=false;ejecting=false;seated_time=0
@@ -98,29 +98,36 @@ func begin_entry() -> void:
 func approach_command() -> GameplayCommand:
  return approach.command()
 func cancel_approach(reason: String) -> void:
+ approach.cancel_alignment()
  if is_instance_valid(vehicle):vehicle.release_seat(actor)
  vehicle=null
  message=reason
  change_state("on_foot")
 func tick_approach(dt: float) -> void:
- if actor.health.health<=0 or not actor.control_enabled or not actor.grounded:
+ if actor.health.health<=0 or (not actor.control_enabled and not approach.aligning) or not actor.grounded or actor.actions.reaction_left>0:
   cancel_approach("Entry interrupted")
   return
  if vehicle.damage.state=="destroyed" or vehicle.seating.reservations.get(seat_index)!=actor or vehicle.linear_velocity.length()>profile.max_transition_speed or (vehicle.kind!="bike" and vehicle.global_basis.y.dot(Vector3.UP)<0.65):
   cancel_approach("Vehicle or seat changed")
   return
  var target:=vehicle.approach_position(seat_index,entry_side if vehicle.kind=="bike" else -1)
- var arrived:=approach.advance(dt,target)
+ var arrived:=false
+ if not approach.aligning:
+  approach.advance(dt,target)
+  if approach.can_align():approach.begin_alignment()
+ if approach.aligning:
+  arrived=approach.align(dt,target)
+  var clip:="IDLE_stance" if vehicle.kind=="bike" else ("CAR_align_RHS" if entry_side%2==0 else "CAR_align_LHS")
+  if actor.reference_enabled:
+   actor.reference_motion.force_action(clip,0);actor.reference_motion.time=minf(approach.alignment_elapsed,actor.reference_motion.duration(clip))
+  if approach.alignment_elapsed>profile.alignment_timeout:
+   cancel_approach("Door alignment blocked");return
  if approach.elapsed>profile.approach_timeout or approach.stalled>profile.approach_stall_timeout:
   cancel_approach("Approach blocked / try another position")
   return
  if arrived:
-  var desired:=vehicle.upright_basis().get_euler().y
-  actor.facing=rotate_toward(actor.facing,desired,profile.approach_turn_rate*dt)
-  actor.visual.rotation.y=actor.facing
-  if absf(angle_difference(actor.facing,desired))<=profile.approach_heading_tolerance and Vector2(actor.velocity.x,actor.velocity.z).length()<0.25:
-   if vehicle.kind=="bike" and vehicle.bike.fallen():begin_lift()
-   else:begin_entry()
+  if vehicle.kind=="bike" and vehicle.bike.fallen():begin_lift()
+  else:begin_entry()
 func request_exit() -> bool:
  message = ""
  if state not in ["driving","passenger"] or not is_instance_valid(vehicle): return false
@@ -404,6 +411,7 @@ func recover() -> void:
  vehicle = null
  change_state("on_foot")
 func abort_for_respawn() -> void:
+ approach.cancel_alignment()
  # Clear the reservation, controller and balancing owners even during a lift.
  if is_instance_valid(vehicle):
   if vehicle.bike!=null:vehicle.bike.lifting=false;vehicle.bike.mounting=false
@@ -421,9 +429,8 @@ func _exit_tree() -> void:
  if is_instance_valid(vehicle) and vehicle.bike!=null:vehicle.bike.lifting=false;vehicle.bike.mounting=false
  if is_instance_valid(vehicle): vehicle.release_seat(actor)
 func begin_lift() -> void:
- var side:="L" if entry_side%2==0 else "R"
  var pick:=vehicle.global_basis.x.dot(Vector3.UP)*(1 if entry_side%2==0 else -1)>0
- lift_clip=actor.actions.resolve(PackedStringArray(["BIKE_"+("pickup"if pick else "pullup")+side,"BIKE_pickup"+side]))
+ lift_clip=actor.actions.resolve(PackedStringArray([(vehicle.bike.profile.pickup_clips if pick else vehicle.bike.profile.pullup_clips)[entry_side%2]]))
  lift_elapsed=0;vehicle.bike.lifting=true;vehicle.bike.lift_progress=0
  actor.control_enabled=false;actor.sprint.reset();actor.weapon.melee.cancel()
  change_state("lifting")

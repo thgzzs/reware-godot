@@ -11,6 +11,7 @@ extends Resource
 @export var max_speed := 38.0
 @export var max_reverse_speed := 10.0
 @export var steering_angle := 0.50
+@export var steering_range_multiplier := 1.25
 @export var steering_rate := 2.4
 @export var high_speed_steering := 0.018
 @export var static_sag := 0.12

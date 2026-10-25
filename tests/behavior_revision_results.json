@@ -33,7 +33,7 @@
       "passed": true
     },
     {
-      "measured": 0.00550079345703125,
+      "measured": 0.447978496551514,
       "name": "hits apply collision-swept physical stagger",
       "passed": true
     },
@@ -195,10 +195,10 @@
       "measured": {
         "anchor": "(-0.0, 0.351957, -0.793117)",
         "bounds": "[P: (-0.875265, 0.212012, -2.605276), S: (1.75053, 0.157897, 1.812159)]",
-        "damaged": "bonnet_hi_dam:<Node3D#151296939089>",
+        "damaged": "bonnet_hi_dam:<Node3D#152790111334>",
         "detached": false,
         "health": 48.2529842691525,
-        "ok": "bonnet_hi_ok:<Node3D#151330493523>",
+        "ok": "bonnet_hi_ok:<Node3D#152823665768>",
         "state": "damaged"
       },
       "name": "real frontal Jolt collision damages bonnet",
@@ -218,7 +218,7 @@
       "measured": {
         "message": "",
         "state": "driving",
-        "up": 0.999014019966125
+        "up": 0.998848974704742
       },
       "name": "fallen bike uses pickup animation and physical lift",
       "passed": true
@@ -234,7 +234,7 @@
       "passed": true
     },
     {
-      "measured": -0.889783501625061,
+      "measured": -0.890737593173981,
       "name": "bike reverse is capped at walking speed",
       "passed": true
     },
