@@ -14,9 +14,9 @@
       "speed": 28.5064582824707
     },
     "orchestration": {
-      "max_us": 4257.0,
-      "mean_us": 286.751111111111,
-      "p95_us": 439.0,
+      "max_us": 2966.0,
+      "mean_us": 331.710833333333,
+      "p95_us": 483.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -331,8 +331,8 @@
     {
       "measured": {
         "clip": "BIKEs_Ride",
-        "speed": 20.4413604736328,
-        "up": 0.990752279758453
+        "speed": 20.4413757324219,
+        "up": 0.990752220153809
       },
       "name": "bike accelerates with a balanced visible rider pcj600",
       "passed": true
@@ -410,8 +410,8 @@
     {
       "measured": {
         "clip": "BIKEv_Ride",
-        "speed": 17.3551731109619,
-        "up": 0.992660999298096
+        "speed": 17.3551712036133,
+        "up": 0.992660939693451
       },
       "name": "bike accelerates with a balanced visible rider faggio",
       "passed": true
@@ -447,7 +447,7 @@
     {
       "measured": {
         "clip": "BIKEh_Ride",
-        "speed": 20.7181453704834,
+        "speed": 20.718168258667,
         "up": 0.992224633693695
       },
       "name": "bike accelerates with a balanced visible rider freeway",

@@ -1,3 +1,7 @@
+# Current respawn and bike lean milestone
+
+See [RECOVERY_REVISION.md](RECOVERY_REVISION.md) for Build 7 changes, measurements and remaining limits. Respawn delay and the increased turning response are target tuning choices. Original-runtime parity and Android hardware validation remain open.
+
 # Current spatial motion milestone
 
 See [SPATIAL_MOTION_REVISION.md](SPATIAL_MOTION_REVISION.md) for the latest movement, fall-pose and bike-support changes, measured checks and remaining limits.

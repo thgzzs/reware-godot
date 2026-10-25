@@ -25,6 +25,7 @@ var test_mode := false
 var injected_command := GameplayCommand.new()
 var last_tick_us := 0.0
 var tick_number := 0
+var player_spawn: ActorSpawnRecovery
 func _ready() -> void:
 	var version := Engine.get_version_info()
 	if version.major!=4 or version.minor!=7 or version.patch!=2 or version.status!="stable":
@@ -74,6 +75,18 @@ func _ready() -> void:
 		animation_browser.actor = actor
 		animation_browser.database = reference_database
 		canvas.add_child(animation_browser)
+	actor.profile=actor.profile.duplicate()
+	actor.profile.standing_turn_rate*=actor.profile.player_turn_multiplier
+	actor.profile.running_turn_rate*=actor.profile.player_turn_multiplier
+	actor.profile.braking_turn_rate*=actor.profile.player_turn_multiplier
+	player_spawn=ActorSpawnRecovery.new()
+	player_spawn.actor=actor;player_spawn.transition=transition
+	actor.add_child(player_spawn)
+	for i in range(pedestrians.size()):
+		var recovery:=ActorSpawnRecovery.new()
+		recovery.actor=pedestrians[i];recovery.brain=ped_brains[i]
+		recovery.automatic_death_respawn=true
+		pedestrians[i].add_child(recovery)
 	mobile_controls = MobileControls.new()
 	mobile_controls.arena = self
 	mobile_controls.enabled = force_touch_controls or OS.has_feature("mobile") or DisplayServer.is_touchscreen_available() or "--touch" in OS.get_cmdline_user_args()
@@ -130,7 +143,7 @@ func _physics_process(dt: float) -> void:
 		elif transition.state=="lifting":transition.cancel_lift("Lift cancelled")
 		elif transition.state in ["driving","passenger"]: transition.request_exit()
 	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
-		actor.respawn(Vector3(-3,0.94,4))
+		player_spawn.recover("manual")
 	if cmd.switch_seat: transition.request_switch_driver()
 	rig.read_look(cmd)
 	transition.tick(dt)
@@ -161,7 +174,6 @@ func _physics_process(dt: float) -> void:
 	var muzzle := actor.global_position+Vector3.UP*0.35+Basis(Vector3.UP,rig.yaw)*Vector3(0.28,0,-0.48)
 	if is_instance_valid(actor.weapon_muzzle): muzzle = actor.weapon_muzzle.global_position
 	if armed and actor.can_use_weapon(): weapon.try_fire(cmd,get_world_3d().direct_space_state,rig.camera,muzzle,exclude)
-	if actor.global_position.y < -15 and transition.state == "on_foot": actor.reset_at(Vector3(-3,1,4))
 	last_tick_us = Time.get_ticks_usec()-start_us
 	telemetry.record(last_tick_us)
 	tick_number += 1

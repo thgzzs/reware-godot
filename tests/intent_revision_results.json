@@ -74,8 +74,8 @@
     },
     {
       "measured": {
-        "distance": 0.925696757156402,
-        "maximum_tick_displacement": 0.0250026825815439,
+        "distance": 0.918132924009115,
+        "maximum_tick_displacement": 0.0250025875866413,
         "state": "entering"
       },
       "name": "automatic entry physically walks to the approach marker",

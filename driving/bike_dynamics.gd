@@ -74,13 +74,15 @@ func solve(state:PhysicsDirectBodyState3D) -> void:
  var error:=rotation.get_axis()*rotation.get_angle()
  var angular:=state.angular_velocity-Vector3.UP*state.angular_velocity.dot(Vector3.UP)
  var acceleration:=error*(profile.lift_strength if lifting else profile.balance_strength)-angular*(profile.lift_damping if lifting else profile.balance_damping)
- # Rider/stand support cancels the measured wheel-load roll moment. Fallen bikes
+ # Rider/stand support cancels the full measured contact roll moment, including
+ # tire cornering force: cancelling only suspension made bikes bank outward.
+ # Fallen bikes
  # bypass this controller entirely and keep their unassisted physical contacts.
  var load_torque:=Vector3.ZERO
  var com:=state.transform.origin+state.transform.basis*car.center_of_mass
  for i in car.wheel_indices():
   var wheel:WheelForceSolver=car.wheels[i]
-  if wheel.touching:load_torque+=(wheel.point-com).cross(wheel.contact_normal*wheel.normal_load)
+  if wheel.touching:load_torque+=(wheel.point-com).cross(wheel.applied_force)
  var roll_axis:=state.transform.basis.z
  state.apply_torque(-roll_axis*load_torque.dot(roll_axis))
  var inverse:=state.inverse_inertia_tensor

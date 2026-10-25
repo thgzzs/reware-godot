@@ -60,8 +60,8 @@
     },
     {
       "measured": {
-        "distance": 0.983649573521689,
-        "maximum_step": 0.0344155617058277,
+        "distance": 0.899865914369002,
+        "maximum_step": 0.0344155468046665,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation Idaho",
@@ -79,8 +79,8 @@
     },
     {
       "measured": {
-        "distance": 0.983651105314493,
-        "maximum_step": 0.0344157889485359,
+        "distance": 0.8998646766413,
+        "maximum_step": 0.0344160012900829,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation pcj600",
@@ -113,8 +113,8 @@
     },
     {
       "measured": {
-        "distance": 0.983649492263794,
-        "maximum_step": 0.0344157889485359,
+        "distance": 0.899866074090824,
+        "maximum_step": 0.0344160012900829,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation sanchez",
@@ -147,8 +147,8 @@
     },
     {
       "measured": {
-        "distance": 0.98364952695556,
-        "maximum_step": 0.0344157926738262,
+        "distance": 0.899867334170267,
+        "maximum_step": 0.0344160012900829,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation faggio",
@@ -181,8 +181,8 @@
     },
     {
       "measured": {
-        "distance": 0.983650977956131,
-        "maximum_step": 0.0344159007072449,
+        "distance": 0.899859672877938,
+        "maximum_step": 0.0344160571694374,
         "state": "entering"
       },
       "name": "native walk reaches mount before animation freeway",

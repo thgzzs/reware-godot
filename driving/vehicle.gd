@@ -33,7 +33,10 @@ var wheel_angles := PackedFloat32Array([0,0,0,0])
 var force_telemetry := GameplayTelemetry.new()
 var reset_pending := false
 var reset_transform := Transform3D.IDENTITY
+var spawn_position:=Vector3.ZERO
+var recovery_profile:ActorSpawnProfile=preload("res://tuning/spawn.tres")
 func _ready() -> void:
+ spawn_position=global_position
  door_profile = door_profile.duplicate()
  seating.configure(door_profile.seat_offset)
  parts.configure(self)
@@ -69,6 +72,7 @@ func _ready() -> void:
  add_child(presentation)
  presentation.configure(self)
 func _physics_process(dt: float) -> void:
+ if global_position.y<recovery_profile.void_height and not reset_pending:reset_at(spawn_position)
  damage.tick(dt)
  if damage.state!="destroyed": impact_probe.sweep(dt)
  update_visuals(dt)

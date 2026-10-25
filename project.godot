@@ -1,9 +1,9 @@
 config_version=5
 [application]
-config/name="Harbor Rev 6"
-config/version="0.5.0-spatial6"
-config/build_number=6
-config/source_revision="2e27df6e42eceb25d303766a0d7aa73817193104"
+config/name="Harbor Rev 7"
+config/version="0.5.1-recovery7"
+config/build_number=7
+config/source_revision="d5d445140ca64f434f6abb0095b84cf4896bfff7"
 config/icon="res://assets/app_icon.svg"
 config/quit_on_go_back=false
 run/main_scene="res://scenes/arena.tscn"
