@@ -12,6 +12,8 @@ var actor: CharacterMotor
 var car: DriveVehicle
 var profile: InteractionProfile
 var shape_query:=PhysicsShapeQueryParameters3D.new()
+var aligning:=false
+var alignment_elapsed:=0.0
 func clear_segment(a: Vector3,b: Vector3) -> bool:
  shape_query.transform=Transform3D(Basis.IDENTITY,a+Vector3.UP*0.025)
  shape_query.motion=b-a
@@ -23,6 +25,7 @@ func floor_point(at: Vector3) -> Vector3:
 func plan(owner_actor: CharacterMotor, candidate: DriveVehicle, target: Vector3, tuning: InteractionProfile) -> bool:
  actor=owner_actor;car=candidate;goal=target;profile=tuning
  elapsed=0;stalled=0;best_distance=INF;best_heading_error=INF;index=0;points.clear()
+ aligning=false;alignment_elapsed=0
  shape_query.shape=actor.normal_shape;shape_query.margin=0.001;shape_query.collision_mask=15
  shape_query.exclude=[actor.get_rid(),actor.reaction_body.get_rid()]
  if clear_segment(actor.global_position,goal):points.append(goal);return actor.global_position.distance_to(goal)<=profile.maximum_approach_path
@@ -46,17 +49,38 @@ func plan(owner_actor: CharacterMotor, candidate: DriveVehicle, target: Vector3,
  return not points.is_empty()
 func command() -> GameplayCommand:
  var cmd:=GameplayCommand.new()
+ if aligning:cmd.locomotion_scale=0;return cmd
  var delta:=points[index]-actor.global_position;delta.y=0
  cmd.walk=delta.length()<profile.approach_run_distance
  if delta.length()<=profile.approach_arrival_radius:cmd.locomotion_scale=0
  if delta.length()>profile.approach_arrival_radius:
   cmd.move=Vector2(delta.x,delta.z).normalized()
-  cmd.locomotion_scale=clampf(delta.length()/profile.approach_slow_radius,0.08,1)
+  cmd.locomotion_scale=clampf(delta.length()/profile.approach_slow_radius,0.5,1)
   # Native start clips contain planted anticipation; slowing that clock can
   # exhaust the stall timeout before the first physical step near a door.
   if actor.reference_enabled and actor.reference_motion.phase in ["idle","start"]:
    cmd.locomotion_scale=maxf(cmd.locomotion_scale,profile.approach_start_scale)
  return cmd
+func can_align() -> bool:
+ var delta:=goal-actor.global_position;delta.y=0
+ return index==points.size()-1 and delta.length()<=profile.alignment_radius and clear_segment(actor.global_position,goal)
+func begin_alignment() -> void:
+ aligning=true;alignment_elapsed=0
+ actor.control_enabled=false;actor.velocity=Vector3.ZERO;actor.drive_velocity=Vector3.ZERO
+ actor.sprint.reset();actor.weapon.melee.cancel()
+func align(dt:float,target:Vector3) -> bool:
+ alignment_elapsed+=dt;elapsed+=dt;goal=target
+ var travel:=goal-actor.global_position;travel.y=0
+ # Short collision-swept fitting at the marker; no low-speed orbit around it.
+ actor.move_and_collide(travel.limit_length(profile.alignment_speed*dt),false,0.002)
+ var heading:=car.upright_basis().get_euler().y
+ actor.facing=rotate_toward(actor.facing,heading,profile.approach_turn_rate*dt)
+ actor.visual.rotation.y=actor.facing
+ var delta:=goal-actor.global_position;delta.y=0
+ return delta.length()<=profile.approach_arrival_radius and absf(angle_difference(actor.facing,heading))<=profile.approach_heading_tolerance
+func cancel_alignment() -> void:
+ if aligning and actor.health.health>0 and actor.actions.life=="alive":actor.control_enabled=true
+ aligning=false
 func advance(dt: float, target: Vector3) -> bool:
  elapsed+=dt;goal=target;points[-1]=target
  var delta:=points[index]-actor.global_position;delta.y=0

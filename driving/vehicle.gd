@@ -34,9 +34,15 @@ var force_telemetry := GameplayTelemetry.new()
 var reset_pending := false
 var reset_transform := Transform3D.IDENTITY
 var spawn_position:=Vector3.ZERO
+var spawn_floor_height:=0.0
+var recovery:=VehicleRecovery.new()
 var recovery_profile:ActorSpawnProfile=preload("res://tuning/spawn.tres")
 func _ready() -> void:
  spawn_position=global_position
+ recovery.car=self
+ var spawn_ray:=PhysicsRayQueryParameters3D.create(spawn_position+Vector3.UP,spawn_position-Vector3.UP*3,1,[get_rid()])
+ var spawn_floor:=get_world_3d().direct_space_state.intersect_ray(spawn_ray)
+ if not spawn_floor.is_empty():spawn_floor_height=spawn_floor.position.y
  door_profile = door_profile.duplicate()
  seating.configure(door_profile.seat_offset)
  parts.configure(self)
@@ -74,6 +80,7 @@ func _ready() -> void:
 func _physics_process(dt: float) -> void:
  if global_position.y<recovery_profile.void_height and not reset_pending:reset_at(spawn_position)
  damage.tick(dt)
+ recovery.tick(dt)
  if damage.state!="destroyed": impact_probe.sweep(dt)
  update_visuals(dt)
 func set_door_open(side: int, value: bool) -> void:
@@ -121,7 +128,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  if not was_reset: damage.sample_contacts(state)
  var forward := -state.transform.basis.z
  speed = state.linear_velocity.dot(forward)
- var limit := profile.steering_angle/(1.0+absf(speed)*profile.high_speed_steering)
+ var limit := profile.steering_angle*profile.steering_range_multiplier/(1.0+absf(speed)*profile.high_speed_steering)
  var wheelbase: float=absf(mounts[0].z-mounts[2].z)
  limit=minf(limit,atan(profile.maximum_lateral_acceleration*wheelbase/maxf(1.0,speed*speed)))
  steering = move_toward(steering,steering_input*limit,profile.steering_rate*state.step)

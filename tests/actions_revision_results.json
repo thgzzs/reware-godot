@@ -1,0 +1,206 @@
+{
+  "android_device_tested": false,
+  "assertions": 32,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "reference_runtime_parity": false,
+  "results": [
+    {
+      "measured": 3.36,
+      "name": "player steering increases again while retaining a bounded response",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_error": 0.00000236623691307614,
+        "travel_m": 2.01062030252069
+      },
+      "name": "HIT_front uses exact native spatial travel despite movement/aim input",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "HIT_front blocks jump and heading overrides during stagger",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_error": 0.00000227312671086111,
+        "travel_m": 0.900671609153505
+      },
+      "name": "HIT_back uses exact native spatial travel despite movement/aim input",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "HIT_back blocks jump and heading overrides during stagger",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_error": 0.00000239315613725921,
+        "travel_m": 0.639943518908694
+      },
+      "name": "HIT_R uses exact native spatial travel despite movement/aim input",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "HIT_R blocks jump and heading overrides during stagger",
+      "passed": true
+    },
+    {
+      "measured": {
+        "maximum_error": 0.00000216333091884735,
+        "travel_m": 1.00344360992312
+      },
+      "name": "HIT_L uses exact native spatial travel despite movement/aim input",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "HIT_L blocks jump and heading overrides during stagger",
+      "passed": true
+    },
+    {
+      "measured": "(-0.085732, 0.000363, 0.529846)",
+      "name": "spatial hit travel stops at collision instead of passing through a wall",
+      "passed": true
+    },
+    {
+      "measured": {
+        "actual": -0.654498467848444,
+        "old_lock": 0.523598775598299
+      },
+      "name": "car steering has 25 percent more low-speed range",
+      "passed": true
+    },
+    {
+      "measured": {
+        "actual": -0.763580891874863,
+        "old_lock": 0.610865238198015
+      },
+      "name": "bike steering has 25 percent more low-speed range",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "seconds": 0.533333333333333,
+        "state": "entering"
+      },
+      "name": "car side 0 reaches the entry marker promptly",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "seconds": 0.55,
+        "state": "entering"
+      },
+      "name": "car side 1 reaches the entry marker promptly",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "seconds": 0.533333333333333,
+        "state": "entering"
+      },
+      "name": "bike side 0 reaches the entry marker promptly",
+      "passed": true
+    },
+    {
+      "measured": {
+        "message": "",
+        "seconds": 0.55,
+        "state": "entering"
+      },
+      "name": "bike side 1 reaches the entry marker promptly",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "cancelled close alignment immediately releases control and the seat",
+      "passed": true
+    },
+    {
+      "measured": "BIKE_pickupR",
+      "name": "pickup side/tilt 0/-1.2 resolves the source action alias",
+      "passed": true
+    },
+    {
+      "measured": "(0.573889, -0.833517, -0.049755)",
+      "name": "pickup hands reach toward the bike from side 0/-1.2",
+      "passed": true
+    },
+    {
+      "measured": "BIKE_pullupR",
+      "name": "pickup side/tilt 0/1.2 resolves the source action alias",
+      "passed": true
+    },
+    {
+      "measured": "(0.871019, -0.253825, -0.157335)",
+      "name": "pickup hands reach toward the bike from side 0/1.2",
+      "passed": true
+    },
+    {
+      "measured": "BIKE_pullupL",
+      "name": "pickup side/tilt 1/-1.2 resolves the source action alias",
+      "passed": true
+    },
+    {
+      "measured": "(-0.870685, -0.252882, -0.156587)",
+      "name": "pickup hands reach toward the bike from side 1/-1.2",
+      "passed": true
+    },
+    {
+      "measured": "BIKE_pickupL",
+      "name": "pickup side/tilt 1/1.2 resolves the source action alias",
+      "passed": true
+    },
+    {
+      "measured": "(-0.581039, -0.84336, -0.058838)",
+      "name": "pickup hands reach toward the bike from side 1/1.2",
+      "passed": true
+    },
+    {
+      "measured": "(0.152, 0.0644, 0.0364, 1.0)",
+      "name": "exploded vehicle is visibly scorched using private materials",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "scorch does not mutate another vehicle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "wreck is retained before the configured respawn delay",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(1.0, 0.64086, -0.000019)",
+        "state": "healthy"
+      },
+      "name": "wreck returns repaired to its spawn after the delay",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "recycling restores paint, tires, glass and vehicle ownership",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "blocked parking area defers wreck respawn without overlap",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "clearing the parking area resumes the same pending respawn",
+      "passed": true
+    }
+  ]
+}

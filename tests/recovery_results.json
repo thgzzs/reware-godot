@@ -55,7 +55,7 @@
       "passed": true
     },
     {
-      "measured": 2.52,
+      "measured": 3.36,
       "name": "player turning is moderately faster without changing AI tuning",
       "passed": true
     },
@@ -71,29 +71,29 @@
     },
     {
       "measured": {
-        "bank_rad": 0.423072518908626,
+        "bank_rad": 0.653927225914905,
         "state": "driving",
-        "tracking_error_rad": 0.0397018715759829
+        "tracking_error_rad": 0.09481193285657
       },
       "name": "bike banks into left turn without rider loss",
       "passed": true
     },
     {
-      "measured": 0.0000151889192617455,
+      "measured": 0.0000146162083281959,
       "name": "bike straightens after left steering is released",
       "passed": true
     },
     {
       "measured": {
-        "bank_rad": -0.423064020774238,
+        "bank_rad": -0.653905225767142,
         "state": "driving",
-        "tracking_error_rad": 0.0396992877594379
+        "tracking_error_rad": 0.0948056377178573
       },
       "name": "bike banks into right turn without rider loss",
       "passed": true
     },
     {
-      "measured": 0.00127786164298902,
+      "measured": 0.0000145975533079966,
       "name": "bike straightens after right steering is released",
       "passed": true
     }

@@ -21,7 +21,7 @@ static func apply(car: DriveVehicle, record: Dictionary) -> void:
  var center: Array = record.center_of_mass_source
  cfg.center_of_mass = Vector3(center[0],center[2],-center[1])
  cfg.launch_force_multiplier=1.6
- cfg.maximum_lateral_acceleration=7.5
+ cfg.maximum_lateral_acceleration=8.5
  cfg.center_of_mass.y-=0.45
  car.mass = cfg.mass
  car.center_of_mass = cfg.center_of_mass

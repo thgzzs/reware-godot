@@ -5,6 +5,7 @@ var reversing := false
 var error := 0.0
 func update(actor:CharacterMotor,direction:Vector3,aim_yaw:float,aiming:bool,dt:float) -> float:
  reversing=false;error=0
+ if actor.actions.spatial_hit():return 0
  if not actor.grounded or actor.phase in ["launch","airborne","falling","landing"]:return direction.length()
  if direction.length_squared()<0.0001 and not aiming:return 0
  var desired:=aim_yaw if aiming else atan2(-direction.x,-direction.z)

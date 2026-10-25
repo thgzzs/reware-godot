@@ -71,7 +71,7 @@ func _physics_process(dt: float) -> void:
  if state!="fight":cmd.move=Vector2(direction.x,direction.z)
  var yaw:=atan2(-direction.x,-direction.z) if direction.length_squared()>0.001 else actor.facing
  # AI sets facing independently of the player's camera. Full-body attacks lock it.
- if state=="fight" and not actor.weapon.melee.active: actor.facing=rotate_toward(actor.facing,yaw,actor.profile.turn_rate*dt)
+ if state=="fight" and not actor.weapon.melee.active and not actor.actions.spatial_hit() and actor.grounded and actor.phase=="grounded": actor.facing=rotate_toward(actor.facing,yaw,actor.profile.turn_rate*dt)
  actor.weapon.advance(cmd,true,dt)
  actor.tick(cmd,0,dt)
  if cmd.fire and actor.weapon.cooldown<=0 and actor.can_use_weapon():

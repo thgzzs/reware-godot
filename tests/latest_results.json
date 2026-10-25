@@ -26,9 +26,9 @@
       "time_s": 1.2
     },
     "gameplay_cpu": {
-      "max_us": 737.0,
-      "mean_us": 103.98566102667,
-      "p95_us": 178.0,
+      "max_us": 493.0,
+      "mean_us": 103.930025810152,
+      "p95_us": 176.0,
       "samples": 3487,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
@@ -38,16 +38,16 @@
       "launch_delay_s": 0.15
     },
     "node_count": 205.0,
-    "physics_process_seconds_last": 0.002013,
+    "physics_process_seconds_last": 0.006207,
     "suspension": {
       "height_m": 0.582499980926514,
       "load_N": 23999.9991864669,
       "vertical_speed": 0.0000000120941390235885
     },
     "vehicle_force_cpu": {
-      "max_us": 331.0,
-      "mean_us": 65.5110410094637,
-      "p95_us": 104.0,
+      "max_us": 497.0,
+      "mean_us": 64.0186406653284,
+      "p95_us": 100.0,
       "samples": 3487,
       "scope": "four wheel queries and forces; excludes Jolt contact solve"
     }
@@ -86,7 +86,7 @@
       "passed": true
     },
     {
-      "measured": "(-3.92787, 0.0, -0.93825)",
+      "measured": "(-4.020073, 0.0, -0.646107)",
       "name": "camera relative forward follows a bounded turning arc",
       "passed": true
     },
@@ -130,7 +130,7 @@
       "passed": true
     },
     {
-      "measured": 13.4799957275391,
+      "measured": 13.4799947738647,
       "name": "wall collision prevents tunneling",
       "passed": true
     },

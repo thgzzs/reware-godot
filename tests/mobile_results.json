@@ -77,7 +77,7 @@
     },
     {
       "measured": {
-        "distance": 1.19695889949799,
+        "distance": 1.19699013233185,
         "shots": 3
       },
       "name": "simultaneous move/aim/fire uses the live gameplay loop",
@@ -155,7 +155,7 @@
     },
     {
       "measured": {
-        "speed": 7.14319801330566,
+        "speed": 7.10498809814453,
         "steer": -0.375192761421204
       },
       "name": "touch gas and steering drive the real Jolt vehicle",
@@ -163,8 +163,8 @@
     },
     {
       "measured": [
-        7.29367923736572,
-        -0.0494281202554703
+        7.25567770004272,
+        -0.048829659819603
       ],
       "name": "touch brake slows the vehicle",
       "passed": true

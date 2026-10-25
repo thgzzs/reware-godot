@@ -24,12 +24,12 @@
       "passed": true
     },
     {
-      "measured": 2.71108470569958,
+      "measured": 3.61477939952503,
       "name": "running cornering has a bounded tank-like heading rate",
       "passed": true
     },
     {
-      "measured": 0.00403634086251259,
+      "measured": 0.00403675623238087,
       "name": "direction changes do not retain a sideways inertial velocity",
       "passed": true
     },
@@ -40,8 +40,8 @@
     },
     {
       "measured": {
-        "after": 0.933996319770813,
-        "before": 5.10496425628662
+        "after": 0.933996260166168,
+        "before": 5.10496473312378
       },
       "name": "reversal brakes before accelerating in the new direction",
       "passed": true

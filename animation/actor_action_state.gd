@@ -37,6 +37,9 @@ var melee_mobile := false
 var melee_is_kick := false
 var melee_weight := 0.0
 var reaction_time := 0.0
+var reaction_previous_time := 0.0
+var reaction_heading := 0.0
+var reaction_spatial := false
 var floor_hit_clip := ""
 var floor_hit_time := 0.0
 var floor_hit_left := 0.0
@@ -54,11 +57,21 @@ func choose_reaction(event: DamageEvent, facing: float, origin: Vector3) -> void
  if event.kind=="bullet" and (event.part=="head" or (not crouched and event.point.y-origin.y>0.55)):
   next_death = resolve(PackedStringArray(["KO_shot_face",deaths[side]]))
  reaction_clip = resolve(PackedStringArray(["HIT_"+side,"HIT_front"]))
-func react(event: DamageEvent) -> void:
+func react(event: DamageEvent, heading:=0.0, spatial:=false) -> void:
  if life!="alive" or event.kind=="vehicle" or motion==null: return
  reaction_duration = minf(profile.hit_max_seconds,motion.duration(reaction_clip)/profile.hit_playback_rate)
  reaction_left = reaction_duration
  reaction_time=0
+ reaction_previous_time=0;reaction_heading=heading;reaction_spatial=spatial
+func spatial_hit() -> bool:
+ return reaction_spatial and (reaction_left>0 or reaction_time>reaction_previous_time)
+func reaction_at() -> float:
+ return reaction_time/maxf(0.001,reaction_duration)*motion.duration(reaction_clip) if motion!=null else 0.0
+func reaction_travel() -> Vector3:
+ if not spatial_hit() or motion==null:return Vector3.ZERO
+ var previous:=reaction_previous_time/maxf(0.001,reaction_duration)*motion.duration(reaction_clip)
+ var delta:=motion.segment(reaction_clip,previous,reaction_at());delta.y=0
+ return delta
 func react_on_floor(face_down:bool) -> void:
  floor_hit_clip=resolve(PackedStringArray(["FLOOR_hit_f","FLOOR_hit"]) if face_down else PackedStringArray(["FLOOR_hit","FLOOR_hit_f"]))
  floor_hit_time=0
@@ -91,11 +104,12 @@ func begin_life(next: String) -> void:
   motion.time = 0
 func reset() -> void:
  next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
- life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0
+ life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0;reaction_previous_time=0;reaction_spatial=false
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
+ reaction_previous_time=reaction_time
+ if reaction_left>0:reaction_time=minf(reaction_duration,reaction_time+dt)
  reaction_left = maxf(0,reaction_left-dt)
- if reaction_left>0:reaction_time+=dt
  floor_hit_left=maxf(0,floor_hit_left-dt)
  if floor_hit_left>0:floor_hit_time+=dt
  firing_left = maxf(0,firing_left-dt)

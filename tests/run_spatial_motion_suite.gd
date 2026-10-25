@@ -48,7 +48,7 @@ func run() -> void:
   max_rate=maxf(max_rate,absf(angle_difference(heading,actor.facing))*60)
   var delta:=actor.global_position-before;delta.y=0
   slide=maxf(slide,absf(delta.dot(Basis(Vector3.UP,actor.facing)*Vector3.RIGHT)))
- check("running cornering has a bounded tank-like heading rate",max_rate<=actor.profile.standing_turn_rate+0.01 and max_rate<4,max_rate)
+ check("running cornering has a bounded tank-like heading rate",max_rate<=actor.profile.standing_turn_rate+0.01 and max_rate<6,max_rate)
  check("direction changes do not retain a sideways inertial velocity",slide<0.015,slide)
  var reverse:=GameplayCommand.new();reverse.move=Vector2(-1,0)
  var was:=actor.facing;await frames(1,reverse)

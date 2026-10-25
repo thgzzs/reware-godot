@@ -8,9 +8,9 @@ func run() -> void:
  var vehicles:=0
  for child in arena.get_children():
   if child is DriveVehicle:vehicles+=1
- var build_ok:bool=ProjectSettings.get_setting("application/config/build_number",0)==7 and ProjectSettings.get_setting("application/config/version","")=="0.5.1-recovery7" and arena.overlay.build_label=="GAMEPLAY REVISION / BUILD 7"
+ var build_ok:bool=ProjectSettings.get_setting("application/config/build_number",0)==8 and ProjectSettings.get_setting("application/config/version","")=="0.6.0-actions8" and arena.overlay.build_label=="GAMEPLAY REVISION / BUILD 8"
  var native_ok:bool=arena.actor.reference_enabled and arena.actor.reference_motion.library.get_animation_list().size()==1168 and arena.weapon.inventory.size()==24 and arena.pedestrians.size()==4 and vehicles==7 and arena.mobile_controls.enabled and arena.vehicle.seating.definitions.size()==2 and is_equal_approx(arena.actor.reference_motion.library.get_animation("WEAPON_crouch").length,0.5)
  var label_width:=ThemeDB.fallback_font.get_string_size(arena.overlay.build_label,HORIZONTAL_ALIGNMENT_LEFT,-1,12).x
  var layout_ok:bool=label_width<=DisplayController.hud_layout(Vector2(480,720)).context.size.x
- print("APK BUILD 7 metadata=",build_ok," native=",native_ok," label_fits=",layout_ok," clips=",arena.actor.reference_motion.library.get_animation_list().size()," vehicles=",vehicles)
+ print("APK BUILD 8 metadata=",build_ok," native=",native_ok," label_fits=",layout_ok," clips=",arena.actor.reference_motion.library.get_animation_list().size()," vehicles=",vehicles)
  arena.queue_free();await process_frame;quit(0 if build_ok and native_ok and layout_ok else 1)

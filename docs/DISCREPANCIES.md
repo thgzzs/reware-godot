@@ -1,3 +1,7 @@
+# Current action and driving milestone
+
+See [ACTIONS_DRIVING_REVISION.md](ACTIONS_DRIVING_REVISION.md) for Build 8 changes and measured target behavior. No original-runtime equivalence or Android device validation is claimed. Crouched/airborne hits retain their constrained response, custom shaders need a scorch adapter, and the twenty-second wreck policy is target tuning.
+
 # Current respawn and bike lean milestone
 
 See [RECOVERY_REVISION.md](RECOVERY_REVISION.md) for Build 7 changes, measurements and remaining limits. Respawn delay and the increased turning response are target tuning choices. Original-runtime parity and Android hardware validation remain open.

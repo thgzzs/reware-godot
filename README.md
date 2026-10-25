@@ -16,6 +16,8 @@ The latest [spatial movement and bike revision](docs/SPATIAL_MOTION_REVISION.md)
 
 The current [respawn and bike lean revision](docs/RECOVERY_REVISION.md) adds timed pedestrian respawn, safe actor and vehicle void recovery, twenty-percent quicker player turning and corrected tire-force compensation during bike banking. Android Build 7 updates the preceding app using the same package.
 
+The latest [spatial reactions, entry and wreck revision](docs/ACTIONS_DRIVING_REVISION.md) corrects pickup aliases, speeds up player turns and final vehicle alignment, widens steering range, drives grounded hit reactions from native motion and adds scorched vehicles with a safe twenty-second wreck respawn. Android Build 8 updates the same app package.
+
 ## Run
 
 1. Install [Godot 4.7.2 Stable](https://godotengine.org/download/archive/4.7.2-stable/). The application rejects other versions.

@@ -5,7 +5,7 @@ extends Resource
 @export var maximum_lean := 0.48
 @export var pickup_up_dot := 0.85
 @export var parked_lean := 0.05
-@export var lateral_acceleration := 7.0
+@export var lateral_acceleration := 8.0
 @export var suspension_length := 0.45
 @export var static_sag := 0.16
 @export var wheel_radius := 0.30
@@ -29,3 +29,6 @@ extends Resource
 
 @export var lift_weight_support := 0.80
 @export var lift_max_angular_acceleration := 120.0
+## reVC action aliases are opposite the literal L/R clip suffixes.
+@export var pickup_clips := PackedStringArray(["BIKE_pickupR","BIKE_pickupL"])
+@export var pullup_clips := PackedStringArray(["BIKE_pullupR","BIKE_pullupL"])
