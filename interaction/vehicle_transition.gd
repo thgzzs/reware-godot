@@ -27,6 +27,7 @@ var escape_clip := ""
 var ejecting := false
 var ejection_delay := 0.12
 var seated_time := 0.0
+var reverse_animation_time:=0.0
 var approach := VehicleApproach.new()
 var lift_clip := ""
 var lift_elapsed := 0.0
@@ -206,8 +207,11 @@ func tick(dt: float) -> void:
   actor.visible = actor.reference_enabled
   if vehicle.kind=="bike":
    var pushing:bool=vehicle.bike.reverse_intent and vehicle.speed<0.25
+   if pushing:reverse_animation_time+=dt*clampf(absf(vehicle.speed)/vehicle.bike.profile.reverse_animation_reference_speed,0.55,1.8)
+   else:reverse_animation_time=0
    var base:=vehicle.bike_animation+("_pushes" if pushing else ("_Still" if absf(vehicle.speed)<0.35 else "_Ride")) if seat_index==0 else vehicle.bike_animation+"_passenger"
-   action(base,fposmod(seated_time,maxf(0.001,actor.reference_motion.duration(base))) if actor.reference_enabled else 0)
+   var at:=reverse_animation_time if pushing else seated_time
+   action(base,fposmod(at,maxf(0.001,actor.reference_motion.duration(base))) if actor.reference_enabled else 0)
    if actor.reference_enabled and seat_index==0:
     var lean:=clampf(absf(vehicle.bike.lean)/vehicle.bike.profile.maximum_lean,0,1)*0.7 if not pushing else 0.0
     var leaning:=vehicle.bike_animation+("_Left" if vehicle.bike.lean>0 else "_Right")

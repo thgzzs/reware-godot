@@ -6,6 +6,8 @@ extends Resource
 @export var acceleration := 20.0
 @export var deceleration := 28.0
 @export var air_acceleration := 3.0
+@export var air_control_speed := 1.2
+@export var air_recovery_acceleration := 16.0
 @export var gravity := 18.0
 @export var jump_speed := 6.5
 @export var launch_delay := 0.12

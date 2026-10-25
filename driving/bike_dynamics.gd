@@ -90,7 +90,8 @@ func solve(state:PhysicsDirectBodyState3D) -> void:
  if not lifting and absf(car.steering_input)<0.03:
   state.apply_torque(Vector3.UP*(-state.angular_velocity.y*car.mass*profile.coast_yaw_damping))
  if ridden and reverse_intent and car.throttle<0 and car.brake<0.5 and supported and not lifting:
-  var reverse_force:=car.mass*profile.reverse_acceleration+car.profile.rolling_drag*2.0
+  var remaining:=clampf((profile.reverse_speed+car.speed)/maxf(0.1,profile.reverse_speed*0.25),0,1)
+  var reverse_force:=(car.mass*profile.reverse_acceleration*remaining+car.profile.rolling_drag*2.0)*absf(car.throttle)
   if car.speed> -profile.reverse_speed:state.apply_central_force(-forward*reverse_force)
   else:state.apply_central_force(forward*car.mass*(-car.speed-profile.reverse_speed)*6)
 func update_visuals() -> void:

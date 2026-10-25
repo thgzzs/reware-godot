@@ -13,7 +13,7 @@
     {
       "measured": {
         "locked": false,
-        "motion": 0.418677730020136,
+        "motion": 0.418677718844265,
         "visible": true
       },
       "name": "low drop plays spatial landing travel without disabling control",
@@ -195,10 +195,10 @@
       "measured": {
         "anchor": "(-0.0, 0.351957, -0.793117)",
         "bounds": "[P: (-0.875265, 0.212012, -2.605276), S: (1.75053, 0.157897, 1.812159)]",
-        "damaged": "bonnet_hi_dam:<Node3D#152790111334>",
+        "damaged": "bonnet_hi_dam:<Node3D#154283283592>",
         "detached": false,
         "health": 48.2529842691525,
-        "ok": "bonnet_hi_ok:<Node3D#152823665768>",
+        "ok": "bonnet_hi_ok:<Node3D#154316838026>",
         "state": "damaged"
       },
       "name": "real frontal Jolt collision damages bonnet",
@@ -234,8 +234,8 @@
       "passed": true
     },
     {
-      "measured": -0.890737593173981,
-      "name": "bike reverse is capped at walking speed",
+      "measured": -3.13631391525269,
+      "name": "bike reverse respects its model-specific maneuvering cap",
       "passed": true
     },
     {

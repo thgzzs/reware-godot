@@ -40,6 +40,9 @@ static func spawn(parent: Node3D, variant: VehicleVariant, db: ImportedGameplayD
  assets.vehicle_hull_size=size
  if variant.kind=="bike":
   car.bike=BikeDynamics.new()
+  car.bike.profile=car.bike.profile.duplicate()
+  car.bike.profile.reverse_speed=clampf(car.profile.max_speed*0.075,2.0,3.25)
+  car.bike.profile.reverse_acceleration=clampf(car.profile.engine_force/car.mass*0.16,1.8,3.0)
   car.bike.configure(car)
   if ResourceLoader.exists(variant.model_scene):ModelPlaceholderSetup.apply_bike(car,assets)
  else:

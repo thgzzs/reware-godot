@@ -1,0 +1,115 @@
+{
+  "android_device_tested": false,
+  "assertions": 17,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": null,
+      "name": "player and pedestrians own independent copies of the same recovery component",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "actual Jolt bike-on-player contact is detected as a blocked stand-up",
+      "passed": true
+    },
+    {
+      "measured": {
+        "attempts": 1,
+        "impulses": 8,
+        "travel": 0.405161947011948
+      },
+      "name": "bike pin recovery applies physical separation impulses",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-41.62944, 0.900005, 43.98792)",
+        "bike": "(-41.04729, 0.168085, 43.97436)",
+        "life": "alive"
+      },
+      "name": "pinned player returns through get-up into live locomotion",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "recovery keeps bike collision active",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "actual rifle and shotgun placeholder models are present",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon lowering preserves old attachment and ammo ownership",
+      "passed": true
+    },
+    {
+      "measured": "raising",
+      "name": "weapon switch commits once between lower and raise",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "weapon raise finishes without repeating the attachment commit",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "dying cancels pending equipment and upper-body ownership",
+      "passed": true
+    },
+    {
+      "measured": {
+        "angle": 0.113678693771362,
+        "upper": "RIFLE_fire",
+        "weight": 0.2
+      },
+      "name": "hip fire starts raising the authored upper-body pose before firing presentation",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "hip-fire input retains immediate ballistic response",
+      "passed": true
+    },
+    {
+      "measured": 0.113678693771362,
+      "name": "first firing pose blends without a full-pose snap",
+      "passed": true
+    },
+    {
+      "measured": {
+        "at": "(-44.09613, 0.900012, 17.16286)",
+        "landed_high": true,
+        "origin": "(-44.01498, 0.900375, 30.97161)"
+      },
+      "name": "jumping reaches an elevated collision platform",
+      "passed": true
+    },
+    {
+      "measured": {
+        "assist": 1.20000004768372,
+        "yaw_change": 0.0
+      },
+      "name": "air steering preserves heading and remains bounded",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "imported movement retains useful jump buffering and grace",
+      "passed": true
+    },
+    {
+      "measured": {
+        "acceleration": 3.0,
+        "speed": 3.25
+      },
+      "name": "bike reverse improves maneuvering while keeping model-specific caps",
+      "passed": true
+    }
+  ]
+}

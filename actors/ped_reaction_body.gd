@@ -3,6 +3,7 @@ extends RigidBody3D
 ## Reusable dormant Jolt torso proxy. The same component serves player and NPC.
 ## Animation supplies articulation; this body exclusively owns impact trajectory.
 var rest := ReactionRestState.new()
+var recovery:=PedRecoverySolver.new()
 var support_normal := Vector3.UP
 var fall_landing_pending := false
 var tumble_fall := false
@@ -25,6 +26,7 @@ var maximum_contact_speed := 0.0
 var last_contact_normal := Vector3.ZERO
 func configure(owner_actor: CharacterMotor) -> void:
  actor = owner_actor
+ recovery.body=self
  name = "ImpactBody"
  top_level = true
  mass = profile.mass_kg
@@ -46,8 +48,10 @@ func configure(owner_actor: CharacterMotor) -> void:
  collider.shape = shape
  collider.rotation.x = PI*0.5
  add_child(collider)
+ recovery.collider=collider
 func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall := false) -> void:
  presentation_settled=false
+ recovery.reset()
  rest.begin(heading,initial)
  tumble_fall=physical_fall;fall_landing_pending=physical_fall;air_animation_time=0
  active=true;age=0;vehicle_contacts=0;contact_ticks=0
@@ -66,6 +70,7 @@ func launch_velocity(at:Vector3, heading:float, initial:Vector3, physical_fall :
 func launch(car: DriveVehicle, closing: float, direction: Vector3) -> void:
  if active: return
  presentation_settled=false
+ recovery.reset()
  rest.begin(actor.facing,direction*closing)
  tumble_fall=false;fall_landing_pending=false;air_animation_time=0
  impact_contacts.clear()
@@ -149,6 +154,7 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
  previous_angular = state.angular_velocity
 func follow_pose(dt: float) -> void:
  age += dt
+ recovery.tick(dt)
  actor.reaction_velocity = linear_velocity
  actor.velocity = linear_velocity
  actor.grounded = supported
@@ -211,6 +217,7 @@ func can_recover() -> bool:
 func getup_clip() -> String:
  return actor.actions.resolve(rest.profile.prone_getup if rest.face_down else rest.profile.supine_getup)
 func deactivate() -> void:
+ recovery.reset()
  rest.reset();fall_landing_pending=false;tumble_fall=false;presentation_settled=false
  active = false
  minimum_recovery_age=0

@@ -137,7 +137,7 @@ func run() -> void:
    await frames(30,reverse)
    print("REVERSE ",bike.speed," pos ",bike.global_position," up ",bike.global_basis.y," touching ",bike.wheels[0].touching," ",bike.wheels[2].touching," load ",bike.wheels[0].normal_load," brake ",bike.brake," throttle ",bike.throttle," driver ",bike.driver)
   check("bike reverse uses pushing clip",actor.reference_motion.clip.ends_with("_pushes"),actor.reference_motion.clip)
-  check("bike reverse is capped at walking speed",bike.speed< -0.15 and bike.speed> -1.4,bike.speed)
+  check("bike reverse respects its model-specific maneuvering cap",bike.speed< -0.15 and bike.speed> -bike.bike.profile.reverse_speed-0.25,bike.speed)
   check("bike reverse releases steering lean",absf(bike.bike.lean)<0.05,bike.bike.lean)
   transition.recover();bike.reset_at(Vector3(-10,0.6,38));bike.reset_transform.basis=Basis(Vector3.FORWARD,1.2);await frames(120)
   reset(bike.approach_position(0,0));await frames(30)

@@ -12,16 +12,16 @@
       "speed": 6.27376174926758
     },
     "orchestration": {
-      "max_us": 3301.0,
-      "mean_us": 361.618333333333,
-      "p95_us": 518.0,
+      "max_us": 3613.0,
+      "mean_us": 333.718888888889,
+      "p95_us": 533.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "wheel_forces": {
-      "max_us": 435.0,
-      "mean_us": 36.4983333333333,
-      "p95_us": 71.0,
+      "max_us": 801.0,
+      "mean_us": 35.3536111111111,
+      "p95_us": 72.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -37,7 +37,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 0",
       "passed": true
@@ -51,7 +51,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 1",
       "passed": true
@@ -65,7 +65,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 2",
       "passed": true
@@ -79,7 +79,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 3",
       "passed": true
@@ -93,7 +93,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 4",
       "passed": true
@@ -107,7 +107,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 5",
       "passed": true
@@ -121,7 +121,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 6",
       "passed": true
@@ -135,7 +135,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 7",
       "passed": true
@@ -149,7 +149,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 8",
       "passed": true
@@ -163,7 +163,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 9",
       "passed": true
@@ -177,7 +177,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 10",
       "passed": true
@@ -191,7 +191,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 11",
       "passed": true
@@ -205,7 +205,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 12",
       "passed": true
@@ -219,7 +219,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 13",
       "passed": true
@@ -233,7 +233,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 14",
       "passed": true
@@ -247,7 +247,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 15",
       "passed": true
@@ -261,7 +261,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 16",
       "passed": true
@@ -275,7 +275,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 17",
       "passed": true
@@ -289,7 +289,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 18",
       "passed": true
@@ -303,7 +303,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 19",
       "passed": true
@@ -317,7 +317,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 20",
       "passed": true
@@ -331,7 +331,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 21",
       "passed": true
@@ -345,7 +345,7 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 22",
       "passed": true
@@ -359,13 +359,13 @@
       "measured": {
         "bone_delta": 1.6572140455246,
         "exclusive_layers": true,
-        "rise": 0.874407112598419
+        "rise": 0.87440687417984
       },
       "name": "run jump owns visible pose and completes in slot 23",
       "passed": true
     },
     {
-      "measured": 0.000000230323053074244,
+      "measured": 0.000000115307365433637,
       "name": "world gun axis converges on camera-center target pitch -0.35",
       "passed": true
     },

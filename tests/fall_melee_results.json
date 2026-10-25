@@ -189,7 +189,7 @@
     },
     {
       "measured": {
-        "at": "(-28.02882, 0.90031, 25.1298)",
+        "at": "(-28.02882, 0.90031, 24.85425)",
         "health": 86.4416929530807
       },
       "name": "running off geometry produces a real falling and damaged landing loop",

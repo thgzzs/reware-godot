@@ -21,6 +21,7 @@ var life_clip := ""
 var weapon_group := "colt45"
 var weapon_two_handed := false
 var hip_firing := false
+var preparing_fire:=false
 var fire_frame_seconds := 0.0
 var procedural_fire := true
 var native_fire_owns_upper := false
@@ -97,6 +98,8 @@ func begin_life(next: String) -> void:
  aim_weight = 0
  firing_left = 0
  reloading = false
+ reload_weight=0;preparing_fire=false;reaction_left=0;reaction_spatial=false
+ melee_active=false;melee_weight=0;floor_hit_left=0
  life_clip = next_death if next=="dying" and not next_death.is_empty() else resolve(profile.death_clips if next=="dying" else profile.knockdown_clips)
  if motion!=null and not life_clip.is_empty():
   motion.phase = next
@@ -104,6 +107,7 @@ func begin_life(next: String) -> void:
   motion.time = 0
 func reset() -> void:
  next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
+ preparing_fire=false
  life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0;reaction_previous_time=0;reaction_spatial=false
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
@@ -129,13 +133,15 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  reload_time = reload_duration-gun.reload_left
  weapon_group = gun.profile.animation_group
  weapon_two_handed = gun.profile.two_handed
- hip_firing = cmd.fire and not cmd.aim and not weapon_two_handed
+ hip_firing = cmd.fire and not cmd.aim
+ preparing_fire=cmd.fire and firing_left<=0 and gun.profile.kind!="melee"
  fire_frame_seconds = gun.profile.fire_frame_seconds
  weapon_pose = gun.profile.pose
  upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
  if reaction_left>0:upper_allowed=false
- var target := 1.0 if upper_allowed and (cmd.aim or firing_left>0 or reloading) else 0.0
+ var target := 1.0 if upper_allowed and (cmd.aim or cmd.fire or firing_left>0 or reloading) else 0.0
+ target*=gun.equip_action.pose_weight()
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)
 func upper_clip() -> String:
  if not upper_allowed: return ""
@@ -147,7 +153,7 @@ func upper_clip() -> String:
  procedural_fire = action.is_empty()
  native_aim_hold=false
  if not action.is_empty():return action
- if weapon_two_handed:
+ if weapon_two_handed or preparing_fire:
   var hold:=resolve(PackedStringArray([weapon_group+"_crouchfire" if crouched else weapon_group+"_fire"]))
   if not hold.is_empty():native_aim_hold=true;return hold
  return resolve(profile.aim_clips)

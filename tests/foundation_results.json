@@ -56,7 +56,7 @@
       "passed": true
     },
     {
-      "measured": 2.14357042312622,
+      "measured": 2.14466428756714,
       "name": "walkable uphill slope gains only terrain height",
       "passed": true
     },
@@ -70,8 +70,8 @@
     },
     {
       "measured": {
-        "at": "(-28.20493, 0.902228, -10.73352)",
-        "max_y": 1.77316904067993,
+        "at": "(-28.21202, 0.902336, -10.73359)",
+        "max_y": 1.77316892147064,
         "speed": 7.61089611053467
       },
       "name": "steep wedge cannot accumulate upward launch energy",
@@ -87,21 +87,21 @@
     },
     {
       "measured": {
-        "after": 43.18965113568,
+        "after": 43.1896318847934,
         "age": 2.83333333333333,
         "before": 99.99285,
-        "closing": 10.0044374465942,
+        "closing": 10.0044431686401,
         "contacts": 155,
         "fresh_hits": 1,
-        "normal": "(0.030539, -0.609319, 0.792337)"
+        "normal": "(0.030541, -0.609325, 0.792332)"
       },
       "name": "fresh collision damages an already active knockdown",
       "passed": true
     },
     {
       "measured": {
-        "after": 43.18965113568,
-        "before": 43.18965113568
+        "after": 43.1896318847934,
+        "before": 43.1896318847934
       },
       "name": "sustained resting contact does not drain pedestrian health",
       "passed": true

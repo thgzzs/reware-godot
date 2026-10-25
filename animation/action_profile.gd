@@ -6,6 +6,8 @@ extends Resource
 @export var reaction_max_lift := 0.35
 @export var reaction_settle_speed := 1.0
 @export var upper_blend_rate := 12.0
+@export var weapon_lower_seconds := 0.14
+@export var weapon_raise_seconds := 0.10
 @export var death_clips := PackedStringArray(["KO_shot_front","FALL_front","HIT_FLOOR"])
 @export var knockdown_clips := PackedStringArray(["KO_skid_front","FALL_front"])
 @export var getup_clips := PackedStringArray(["GETUP_front","GETUP"])

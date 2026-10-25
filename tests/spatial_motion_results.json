@@ -59,7 +59,7 @@
     {
       "measured": {
         "clip": "JUMP_land",
-        "distance_m": 1.28090895712376
+        "distance_m": 1.27638371288776
       },
       "name": "landing is a progressing spatial clip rather than an idle slide",
       "passed": true

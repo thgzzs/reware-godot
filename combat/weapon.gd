@@ -17,6 +17,7 @@ var last_hit := false
 var rng := RandomNumberGenerator.new()
 var inventory: Array[Dictionary] = []
 var active_slot := 0
+var equip_action:=WeaponEquipState.new()
 func _ready() -> void:
  melee.configure(actor)
  magazine = profile.magazine_size
@@ -27,6 +28,7 @@ func _ready() -> void:
  else: profiles[0] = profile
  configure_loadout(profiles)
 func configure_loadout(profiles: Array[WeaponProfile]) -> void:
+ equip_action.reset()
  inventory.clear()
  for item in profiles:
   inventory.append({"profile":item,"magazine":item.magazine_size,"reserve":item.reserve_ammo})
@@ -34,6 +36,7 @@ func configure_loadout(profiles: Array[WeaponProfile]) -> void:
  equip_slot(0)
 func equip_slot(index: int) -> bool:
  if index<0 or index>=inventory.size() or index==active_slot: return false
+ equip_action.reset()
  if active_slot>=0:
   inventory[active_slot].magazine = magazine
   inventory[active_slot].reserve = reserve
@@ -46,25 +49,48 @@ func equip_slot(index: int) -> bool:
  # Switching cannot bypass an outstanding shot cooldown.
  equipped.emit(profile)
  return true
+func request_equip(index:int) -> bool:
+ if index<0 or index>=inventory.size() or index==active_slot or equip_action.busy():return false
+ if actor==null or not actor.reference_enabled:return equip_slot(index)
+ if actor.actions.life!="alive" or not actor.control_enabled:return false
+ equip_action.lower_seconds=actor.actions.profile.weapon_lower_seconds
+ equip_action.raise_seconds=actor.actions.profile.weapon_raise_seconds
+ equip_action.begin(index,profile)
+ melee.cancel();reload_left=0
+ actor.actions.firing_left=0
+ return true
 func select(cmd: GameplayCommand) -> void:
- if cmd.weapon_slot>=0: equip_slot(cmd.weapon_slot)
- elif cmd.weapon_step!=0 and not inventory.is_empty(): equip_slot(posmod(active_slot+cmd.weapon_step,inventory.size()))
+ if cmd.weapon_slot>=0: request_equip(cmd.weapon_slot)
+ elif cmd.weapon_step!=0 and not inventory.is_empty(): request_equip(posmod(active_slot+cmd.weapon_step,inventory.size()))
+func advance_equip(dt:float) -> void:
+ if not equip_action.busy():return
+ if profile!=equip_action.source:
+  equip_action.reset();return
+ equip_action.elapsed+=dt
+ if equip_action.phase=="lowering" and equip_action.elapsed>=equip_action.lower_seconds:
+  var target:=equip_action.slot
+  if equip_slot(target):
+   equip_action.phase="raising";equip_action.source=profile;equip_action.elapsed=0
+ elif equip_action.phase=="raising" and equip_action.elapsed>=equip_action.raise_seconds:
+  equip_action.reset()
 func start_reload() -> void:
  if profile.kind=="melee": return
- if reload_left>0 or magazine>=profile.magazine_size or reserve<=0: return
+ if equip_action.busy() or reload_left>0 or magazine>=profile.magazine_size or reserve<=0: return
  reload_left = profile.reload_seconds
 func tick(cmd: GameplayCommand, active: bool, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID], dt: float) -> void:
  advance(cmd,active,dt)
  if active: try_fire(cmd,space,camera,muzzle,exclude)
 func advance(cmd: GameplayCommand, active: bool, dt: float) -> void:
  cooldown = maxf(0,cooldown-dt)
- if actor!=null:
-  if not active: melee.cancel()
-  else: melee.tick(cmd,dt)
  if not active:
-  reload_left = 0
+  equip_action.reset();melee.cancel();reload_left=0
   return
+ advance_equip(dt)
  select(cmd)
+ if equip_action.busy():
+  melee.cancel();reload_left=0
+  return
+ if actor!=null:melee.tick(cmd,dt)
  if actor!=null and (not actor.grounded or actor.phase!="grounded" or cmd.jump): reload_left = 0
  if reload_left>0:
   reload_left = maxf(0,reload_left-dt)
@@ -74,7 +100,7 @@ func advance(cmd: GameplayCommand, active: bool, dt: float) -> void:
    reserve -= transferred
  if cmd.reload and (actor==null or actor.can_use_weapon()): start_reload()
 func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Camera3D, muzzle: Vector3, exclude: Array[RID]) -> void:
- if not cmd.fire or not trigger_allowed: return
+ if not cmd.fire or not trigger_allowed or equip_action.busy(): return
  if actor!=null and not actor.can_use_weapon(): return
  if profile.kind=="melee":
   if cooldown>0.000001: return

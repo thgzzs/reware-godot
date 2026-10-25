@@ -9,8 +9,9 @@ extends Resource
 @export var suspension_length := 0.45
 @export var static_sag := 0.16
 @export var wheel_radius := 0.30
-@export var reverse_speed := 0.9
-@export var reverse_acceleration := 0.9
+@export var reverse_speed := 2.5
+@export var reverse_acceleration := 2.2
+@export var reverse_animation_reference_speed := 1.8
 @export var lean_return_rate := 3.5
 @export var coast_yaw_damping := 1.5
 @export var crash_min_speed := 6.5
