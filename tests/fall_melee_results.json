@@ -6,15 +6,15 @@
   "metrics": {
     "high_drop": {
       "blocked_fire": true,
-      "damage": 67.0436309075012,
+      "damage": 64.2012749778405,
       "events": 1,
       "fell": true,
       "hard": true,
-      "health": 32.9563690924988,
+      "health": 35.7987250221595,
       "height": 7.0,
       "native_clip": true,
-      "phase": "falling",
-      "speed": 16.8235855102539
+      "phase": "landing",
+      "speed": 16.6666603088379
     },
     "medium_drop": {
       "blocked_fire": true,
@@ -110,15 +110,15 @@
     {
       "measured": {
         "blocked_fire": true,
-        "damage": 67.0436309075012,
+        "damage": 64.2012749778405,
         "events": 1,
         "fell": true,
         "hard": true,
-        "health": 32.9563690924988,
+        "health": 35.7987250221595,
         "height": 7.0,
         "native_clip": true,
-        "phase": "falling",
-        "speed": 16.8235855102539
+        "phase": "landing",
+        "speed": 16.6666603088379
       },
       "name": "larger drops cause more damage without automatic death",
       "passed": true
@@ -133,14 +133,14 @@
         "health": 0.0,
         "height": 18.0,
         "native_clip": true,
-        "phase": "falling",
-        "speed": 24.7975177764893
+        "phase": "landing",
+        "speed": 26.6666793823242
       },
       "name": "severe falls deplete health once with a fall-specific death clip",
       "passed": true
     },
     {
-      "measured": "FALL_fall",
+      "measured": "FALL_glide",
       "name": "a long descent uses native falling presentation",
       "passed": true
     },
@@ -151,8 +151,8 @@
     },
     {
       "measured": [
-        0.433530680338542,
-        0.633530680338541
+        0.483662923177081,
+        0.68366292317708
       ],
       "name": "long falls loop their glide animation instead of freezing",
       "passed": true
@@ -163,7 +163,7 @@
       "passed": true
     },
     {
-      "measured": 32.9563690924988,
+      "measured": 35.7987250221595,
       "name": "pedestrians use the same fall damage component with independent state",
       "passed": true
     },

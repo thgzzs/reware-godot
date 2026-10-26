@@ -18,15 +18,15 @@
       "measured": {
         "attempts": 1,
         "impulses": 8,
-        "travel": 0.405161947011948
+        "travel": 0.306372165679932
       },
       "name": "bike pin recovery applies physical separation impulses",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-41.62944, 0.900005, 43.98792)",
-        "bike": "(-41.04729, 0.168085, 43.97436)",
+        "at": "(-41.73569, 0.900005, 43.99081)",
+        "bike": "(-41.1531, 0.164679, 43.98815)",
         "life": "alive"
       },
       "name": "pinned player returns through get-up into live locomotion",
@@ -64,7 +64,7 @@
     },
     {
       "measured": {
-        "angle": 0.138892620801926,
+        "angle": 0.0450131632387638,
         "upper": "RIFLE_fire",
         "weight": 0.2
       },
@@ -77,13 +77,13 @@
       "passed": true
     },
     {
-      "measured": 0.138892620801926,
+      "measured": 0.0450131632387638,
       "name": "first firing pose blends without a full-pose snap",
       "passed": true
     },
     {
       "measured": {
-        "at": "(-44.09613, 0.900012, 17.16286)",
+        "at": "(-44.1566, 0.900012, 18.36395)",
         "landed_high": true,
         "origin": "(-44.01498, 0.900375, 30.97161)"
       },

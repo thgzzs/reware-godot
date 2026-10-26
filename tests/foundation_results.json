@@ -91,9 +91,9 @@
         "age": 2.83333333333333,
         "before": 99.99285,
         "closing": 10.0044431686401,
-        "contacts": 155,
+        "contacts": 159,
         "fresh_hits": 1,
-        "normal": "(0.030541, -0.609325, 0.792332)"
+        "normal": "(0.02099, -0.563647, 0.825749)"
       },
       "name": "fresh collision damages an already active knockdown",
       "passed": true

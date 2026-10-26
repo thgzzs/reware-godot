@@ -1,12 +1,12 @@
 {
   "android_device_tested": false,
-  "assertions": 57,
+  "assertions": 67,
   "engine": "4.7.2-stable (official)",
   "failures": 0,
   "results": [
     {
-      "measured": "IDLE_armed",
-      "name": "shotgun uses the native relaxed armed loop",
+      "measured": "shotgun_fire",
+      "name": "shotgun uses the native supported two-hand ready pose",
       "passed": true
     },
     {
@@ -15,12 +15,12 @@
       "passed": true
     },
     {
-      "measured": 0.0009765625,
+      "measured": 0.0,
       "name": "shotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.000000128184638015227,
+      "measured": 0.000000271920669092651,
       "name": "shotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -36,6 +36,16 @@
     },
     {
       "measured": null,
+      "name": "shotgun walk keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun run keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
       "name": "shotgun blends from carry into aim",
       "passed": true
     },
@@ -45,7 +55,7 @@
       "passed": true
     },
     {
-      "measured": 0.294451355934143,
+      "measured": 0.0,
       "name": "shotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -60,8 +70,8 @@
       "passed": true
     },
     {
-      "measured": "IDLE_armed",
-      "name": "stubbyshotgun uses the native relaxed armed loop",
+      "measured": "buddy_fire",
+      "name": "stubbyshotgun uses the native supported two-hand ready pose",
       "passed": true
     },
     {
@@ -70,12 +80,12 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.0009765625,
       "name": "stubbyshotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.0000000957044434812815,
+      "measured": 0.000000149754811218372,
       "name": "stubbyshotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -91,6 +101,16 @@
     },
     {
       "measured": null,
+      "name": "stubbyshotgun walk keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun run keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
       "name": "stubbyshotgun blends from carry into aim",
       "passed": true
     },
@@ -100,7 +120,7 @@
       "passed": true
     },
     {
-      "measured": 0.191656470298767,
+      "measured": 0.0009765625,
       "name": "stubbyshotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -115,8 +135,8 @@
       "passed": true
     },
     {
-      "measured": "IDLE_armed",
-      "name": "spas12shotgun uses the native relaxed armed loop",
+      "measured": "buddy_fire",
+      "name": "spas12shotgun uses the native supported two-hand ready pose",
       "passed": true
     },
     {
@@ -125,12 +145,12 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.0009765625,
       "name": "spas12shotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.0000000957044434812815,
+      "measured": 0.000000149754811218372,
       "name": "spas12shotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -146,6 +166,16 @@
     },
     {
       "measured": null,
+      "name": "spas12shotgun walk keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun run keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
       "name": "spas12shotgun blends from carry into aim",
       "passed": true
     },
@@ -155,7 +185,7 @@
       "passed": true
     },
     {
-      "measured": 0.191656470298767,
+      "measured": 0.0009765625,
       "name": "spas12shotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -170,8 +200,8 @@
       "passed": true
     },
     {
-      "measured": "IDLE_armed",
-      "name": "ruger uses the native relaxed armed loop",
+      "measured": "RIFLE_fire",
+      "name": "ruger uses the native supported two-hand ready pose",
       "passed": true
     },
     {
@@ -185,7 +215,7 @@
       "passed": true
     },
     {
-      "measured": 0.000000128184638015227,
+      "measured": 0.000000044703483581543,
       "name": "ruger preserves both hands' native grip relationship",
       "passed": true
     },
@@ -201,6 +231,16 @@
     },
     {
       "measured": null,
+      "name": "ruger walk keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger run keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
       "name": "ruger blends from carry into aim",
       "passed": true
     },
@@ -210,7 +250,7 @@
       "passed": true
     },
     {
-      "measured": 0.260086566209793,
+      "measured": 0.0,
       "name": "ruger lowers smoothly back into carry",
       "passed": true
     },
@@ -225,8 +265,8 @@
       "passed": true
     },
     {
-      "measured": "IDLE_armed",
-      "name": "m4 uses the native relaxed armed loop",
+      "measured": "RIFLE_fire",
+      "name": "m4 uses the native supported two-hand ready pose",
       "passed": true
     },
     {
@@ -240,7 +280,7 @@
       "passed": true
     },
     {
-      "measured": 0.000000128184638015227,
+      "measured": 0.000000044703483581543,
       "name": "m4 preserves both hands' native grip relationship",
       "passed": true
     },
@@ -256,6 +296,16 @@
     },
     {
       "measured": null,
+      "name": "m4 walk keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 run keeps both hands in the authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
       "name": "m4 blends from carry into aim",
       "passed": true
     },
@@ -265,7 +315,7 @@
       "passed": true
     },
     {
-      "measured": 0.260086566209793,
+      "measured": 0.0,
       "name": "m4 lowers smoothly back into carry",
       "passed": true
     },

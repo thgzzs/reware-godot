@@ -26,9 +26,9 @@
       "time_s": 1.2
     },
     "gameplay_cpu": {
-      "max_us": 997.0,
-      "mean_us": 84.6868368224835,
-      "p95_us": 155.0,
+      "max_us": 7129.0,
+      "mean_us": 174.648981932894,
+      "p95_us": 362.0,
       "samples": 3487,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
@@ -38,16 +38,16 @@
       "launch_delay_s": 0.15
     },
     "node_count": 456.0,
-    "physics_process_seconds_last": 0.003492,
+    "physics_process_seconds_last": 0.005402,
     "suspension": {
       "height_m": 0.582499980926514,
       "load_N": 23999.9991864669,
       "vertical_speed": 0.0000000120941390235885
     },
     "vehicle_force_cpu": {
-      "max_us": 642.0,
-      "mean_us": 55.1720676799541,
-      "p95_us": 95.0,
+      "max_us": 5508.0,
+      "mean_us": 107.827645540579,
+      "p95_us": 233.0,
       "samples": 3487,
       "scope": "four wheel queries and forces; excludes Jolt contact solve"
     }

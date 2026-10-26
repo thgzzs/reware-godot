@@ -195,10 +195,10 @@
       "measured": {
         "anchor": "(-0.0, 0.351957, -0.793117)",
         "bounds": "[P: (-0.875265, 0.212012, -2.605276), S: (1.75053, 0.157897, 1.812159)]",
-        "damaged": "bonnet_hi_dam:<Node3D#154534941833>",
+        "damaged": "bonnet_hi_dam:<Node3D#163426866723>",
         "detached": false,
         "health": 48.2529842691525,
-        "ok": "bonnet_hi_ok:<Node3D#154568496267>",
+        "ok": "bonnet_hi_ok:<Node3D#163460421157>",
         "state": "damaged"
       },
       "name": "real frontal Jolt collision damages bonnet",

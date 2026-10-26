@@ -20,5 +20,9 @@ func run() -> void:
   arena.weapon.equip_slot(slot)
   for i in range(40):await physics_frame;await process_frame
   if arena.actor.actions.standing_hold_native_ready and arena.actor.actions.standing_hold_weight>0.99 and arena.actor.actions.aim_weight==0:holds+=1
- print("APK BUILD 11 metadata=",build_ok," native=",native_ok," label_fits=",layout_ok," clips=",arena.actor.reference_motion.library.get_animation_list().size()," vehicles=",vehicles," standing_holds=",holds)
- arena.queue_free();await process_frame;quit(0 if build_ok and native_ok and layout_ok and fixes_ok and holds==5 and arena.traversal_course.void_platforms.size()==13 else 1)
+ var map_ok:bool=arena.traversal_course.void_platforms.size()==13 and arena.traversal_course.slopes.size()==6 and arena.traversal_course.drop_decks.size()==4 and arena.traversal_course.garden.size()==7
+ var gap:=PhysicsRayQueryParameters3D.create(Vector3(12,5,90),Vector3(12,-25,90),1)
+ map_ok=map_ok and arena.get_world_3d().direct_space_state.intersect_ray(gap).is_empty()
+ print("APK BUILD 11 metadata=",build_ok," native=",native_ok," label_fits=",layout_ok," clips=",arena.actor.reference_motion.library.get_animation_list().size()," vehicles=",vehicles," standing_holds=",holds," expanded_map=",map_ok)
+ var valid:bool=build_ok and native_ok and layout_ok and fixes_ok and holds==5 and map_ok
+ arena.queue_free();await process_frame;quit(0 if valid else 1)

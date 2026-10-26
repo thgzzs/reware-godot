@@ -74,33 +74,38 @@ new validation with the private assets after restoration.
 Fixtures share materials and need no per-frame map logic. No performance gain is
 claimed; device frame-time and draw-call profiling remain outstanding.
 
-## Fresh validation after restoration
+## Completed validation with restored private assets
 
-`python3 tools/validate.py --godot /absolute/path/to/godot`:
-**207 assertions passed in five public suites** using exact Godot 4.7.2 + Jolt.
-The 42 traversal contracts cover collision angles, climbing 10°/30° and rejecting
-50°, actual run/sprint jump-contact-stride sequences, falling into the void and
-respawning, carry/action priority, two-hand transform preservation, head/root
-isolation, landing root travel at 30/60/120 Hz, and interrupted bike get-up.
+All **839 assertions passed across 21 Godot/Jolt suites** using exact Godot
+4.7.2 Stable. The native standing-weapon suite now passes 67 checks, including
+walking/running with the authored supported grip for all five rifles/shotguns.
+The movement suite verifies contact and stride pose ownership on the actual skin
+in all 24 inventory slots; sprint measurement uses a flat lane outside the new
+platform garden. Carry geometry for M4 and shotgun was inspected from two views
+while standing, walking and running. Python validation: **23 passed, zero skipped**.
 
-Python: **14 passed, 9 skipped** (23 discovered). The skipped tests require the
-private converted asset set. The native standing-weapon suite has been extended
-to walking/running and the new ready-pose selection; it cannot be re-run without
-those files. Synthetic clips and primitive colliders validate state/geometry
-contracts, not final native skin quality or original-game runtime parity.
+Tests that previously required one JUMP_* landing clip were updated to verify
+both contact/stride layers, normalized weights, exclusive action ownership and
+the actual rendered layer signature. Collision stopping in the new platform
+course is kept separate from continuous sprint timing measurements.
 
-## Build status
+The compiled APK was checked for package/version/HUD Build 11 identity, signature,
+ZIP CRC, ARM64 16 KiB alignment, ARM64/ARMv7 binaries with Jolt, all 32 model scenes,
+and exclusion of source asset archives and signing keys. A clean extraction of
+its own assets passed the native catalog, touch UI, five weapon holds, expanded
+map and real void-gap checks. **17 gameplay assertions** also passed from that
+extracted APK, including actual Jolt pin recovery, equipment cancellation and
+jumping onto a raised platform.
 
-This revision is source-ready. **No Build 11 APK has been compiled or signed.**
-Workspace maintenance removed the private assets and signing key. They are
-intentionally excluded from git and unavailable through the current file-reader
-capabilities. Restore the complete private project ZIP (including
-`assets/converted` and `android/test-signing/test.keystore`) before running the
-native suites, native pose inspection and Android export. A previous APK can
-recover shipped resources, but not its private signing key.
+## Compiled Android artifact
 
-After restoration, run the full validator, Python tests, export with
-`tools/export_android.py`, verify APK signature/alignment/version, and run
-`tools/check_android_payload.gd` against its clean extracted assets. Android device
-visual/performance validation remains required; earlier Build 10 results are not
-reported as Build 11 verification.
+`Harbor-Rev11.apk`, version `0.8.0-gameplay11`, version code **11**, package
+`org.reware.harbor.revision11`. Universal ARM64/ARMv7; target SDK 36. A ZIP fallback
+contains the identical APK. The supplied archive restored the private assets;
+the original crouch compatibility resource was regenerated from its source data.
+A fresh private test signing key was generated because the archive contained no
+keystore. Assets and keys remain excluded from public git.
+
+The earlier source-only status is superseded by these completed build checks.
+Android device playtesting and device frame-time profiling remain unavailable;
+headless skin/collision validation is not full original-game runtime parity.

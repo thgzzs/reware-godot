@@ -56,20 +56,30 @@ func run() -> void:
   var jump_first := visual.skeleton.get_bone_pose_rotation(thigh)
   var motion_change := 0.0
   var selected_exclusively := true
+  var saw_contact := false
+  var saw_stride := false
   for i in range(100):
    await frames(1,sprint)
    maximum_y = maxf(maximum_y,actor.global_position.y)
    motion_change = maxf(motion_change,jump_first.angle_to(visual.skeleton.get_bone_pose_rotation(thigh)))
    var phase: String = actor.phase
    if phase in ["launch","airborne","landing"]:
-    var layers := actor.reference_motion.pose_layers()
-    selected_exclusively = selected_exclusively and layers.size()==1 and layers[0].clip.begins_with("JUMP_")
+    var layers := actor.landing.pose_layers() if actor.landing.active else actor.reference_motion.pose_layers()
+    if phase=="landing" and actor.landing.active:
+     var signature:="";var total:=0.0
+     for layer in layers:
+      signature+=layer.clip+"|";total+=layer.weight
+      selected_exclusively=selected_exclusively and layer.clip in ["FALL_land","JUMP_land"]
+      saw_contact=saw_contact or (layer.clip=="FALL_land" and layer.weight>0.5)
+      saw_stride=saw_stride or (layer.clip=="JUMP_land" and layer.weight>0.5)
+     selected_exclusively=selected_exclusively and is_equal_approx(total,1.0) and visual.signature==signature
+    else:selected_exclusively = selected_exclusively and layers.size()==1 and layers[0].clip.begins_with("JUMP_")
     check_upper_block(actor)
    if phase=="launch": saw_launch = true
    if phase=="airborne": saw_glide = true
    if phase=="landing" or actor.landing.weight>0: saw_land = true
    if i==16 and slot==0: await image_at("jump",actor.global_position+Vector3(-3,1.1,-2.5),actor.global_position)
-  check("run jump owns visible pose and completes in slot %d"%slot,saw_launch and saw_glide and saw_land and selected_exclusively and motion_change>0.3 and maximum_y-base_y>0.5,{"rise":maximum_y-base_y,"bone_delta":motion_change,"exclusive_layers":selected_exclusively})
+  check("run jump owns contact/stride poses and completes in slot %d"%slot,saw_launch and saw_glide and saw_land and saw_contact and saw_stride and selected_exclusively and motion_change>0.3 and maximum_y-base_y>0.5,{"rise":maximum_y-base_y,"bone_delta":motion_change,"exclusive_layers":selected_exclusively,"contact":saw_contact,"stride":saw_stride})
  actor.weapon.equip_slot(0)
  actor.respawn(Vector3(-28,0.94,40));await frames(25)
  var aim := GameplayCommand.new(); aim.aim = true; aim.move = Vector2(0.4,-0.5)

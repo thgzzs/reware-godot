@@ -39,7 +39,8 @@ func run() -> void:
  for brain in arena.ped_brains:brain.set_physics_process(false)
  var actor:CharacterMotor=arena.actor
  check("supplied native player and animation library activated",actor.reference_pose is SkinnedMotionVisual and actor.reference_motion.library.get_animation_list().size()==1168)
- actor.respawn(Vector3(-25,0.94,65));actor.facing=0;await frames(30)
+ # Keep the continuous-sprint measurement outside the new platform garden.
+ actor.respawn(Vector3(-44,0.94,65));actor.facing=0;await frames(30)
  var cmd:=GameplayCommand.new();cmd.move=Vector2(0,-1);cmd.sprint=true;await frames(75,cmd)
  var minimum:=INF;var maximum:=0.0;var continuous:=true;var lowest_boosted:=INF;var advance_count:=0;var old_time:=actor.reference_motion.time
  for i in range(300):
