@@ -26,6 +26,7 @@ var injected_command := GameplayCommand.new()
 var last_tick_us := 0.0
 var tick_number := 0
 var player_spawn: ActorSpawnRecovery
+var traversal_course: TraversalCourse
 func _ready() -> void:
 	var version := Engine.get_version_info()
 	if version.major!=4 or version.minor!=7 or version.patch!=2 or version.status!="stable":
@@ -241,6 +242,9 @@ func build_world() -> void:
 	steep.rotation.x = deg_to_rad(55)
 	LabGeometry.box(self,Vector3(4,3,0.4),Vector3(-8,1.5,14),Color("516c76"),true).name = "TestWall"
 	LabGeometry.box(self,Vector3(4,0.25,4),Vector3(-15,2.35,14),Color("516c76"),true).name = "LowCeiling"
-	for x in [-34,38]:
-		LabGeometry.box(self,Vector3(0.8,1.0,100),Vector3(x,0.5,0),Color("748e8b"),true)
+	LabGeometry.box(self,Vector3(0.8,1.0,100),Vector3(-34,0.5,0),Color("748e8b"),true)
+	LabGeometry.box(self,Vector3(0.8,1.0,80),Vector3(38,0.5,-10),Color("748e8b"),true)
+	LabGeometry.box(self,Vector3(0.8,1.0,8),Vector3(38,0.5,46),Color("748e8b"),true)
+	traversal_course=TraversalCourse.new()
+	add_child(traversal_course)
 

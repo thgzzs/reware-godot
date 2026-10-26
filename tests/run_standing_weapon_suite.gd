@@ -32,18 +32,24 @@ func run() -> void:
   actor.respawn(Vector3(-35,0.94,44));gun.equip_slot(slot(id));await frames(40)
   var start:=actor.global_position;var shots:=gun.shots
   var state:=actor.actions
-  check(id+" uses the native relaxed armed loop",state.standing_hold_clip=="IDLE_armed" and state.standing_hold_weight>0.999,state.standing_hold_clip)
+  var carry_clip:=state.resolve(PackedStringArray([gun.profile.animation_group+"_fire"]))
+  check(id+" uses the native supported two-hand ready pose",state.standing_hold_clip==carry_clip and state.standing_hold_native_ready and state.standing_hold_weight>0.999,state.standing_hold_clip)
   check(id+" carrying never enables aim IK or firing",state.aim_weight==0 and gun.shots==shots)
   var error:=skeleton.get_bone_pose_rotation(shoulder).angle_to(visual.rotation_at(state.standing_hold_clip,state.standing_hold_time,shoulder))
   check(id+" standing shoulder follows its authored carry pose",error<0.002,error)
   var grip:=skeleton.get_bone_global_pose(right).affine_inverse()*skeleton.get_bone_global_pose(left)
-  motion.preview_clip="IDLE_armed";motion.preview_time=state.standing_hold_time;motion.preview_playing=false;visual.sample_pose(0.2)
+  motion.preview_clip=state.standing_hold_clip;motion.preview_time=state.standing_hold_time;motion.preview_playing=false;visual.sample_pose(0.2)
   var native_grip:=skeleton.get_bone_global_pose(right).affine_inverse()*skeleton.get_bone_global_pose(left)
   motion.preview_clip="";visual.sample_pose(0.2)
   check(id+" preserves both hands' native grip relationship",grip.origin.distance_to(native_grip.origin)<0.003 and grip.basis.get_rotation_quaternion().angle_to(native_grip.basis.get_rotation_quaternion())<0.003,grip.origin.distance_to(native_grip.origin))
   check(id+" leaves the standing legs in the base idle",skeleton.get_bone_pose_rotation(thigh).angle_to(visual.base_rotations[thigh])<0.002)
   await frames(45)
   check(id+" idle loop neither drifts nor fires",actor.global_position.distance_to(start)<0.02 and gun.shots==shots)
+  for walk in [true,false]:
+   var moving:=GameplayCommand.new();moving.move=Vector2(0,-1);moving.walk=walk
+   await frames(45,moving)
+   check(id+(" walk" if walk else " run")+" keeps both hands in the authored grip",state.standing_hold_weight>0.999 and state.standing_hold_native_ready and state.aim_weight==0 and actor.drive_velocity.length()>0.5)
+  await frames(50)
   var cmd:=GameplayCommand.new();cmd.aim=true
   var before:=skeleton.get_bone_pose_rotation(shoulder)
   await frames(1,cmd)

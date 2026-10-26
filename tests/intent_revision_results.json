@@ -1,5 +1,5 @@
 {
-  "assertions": 42,
+  "assertions": 43,
   "assets": "synthetic clips and primitive models, deliberately independent of private assets",
   "backend": "Jolt Physics",
   "engine": "4.7.2-stable (official)",
@@ -214,13 +214,18 @@
     },
     {
       "measured": null,
-      "name": "long on-foot falls transfer motion to the Jolt reaction body",
+      "name": "long on-foot falls keep the airborne controller until impact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "terrain tumbles begin after the measured landing",
       "passed": true
     },
     {
       "measured": {
-        "damage": 138.296429812549,
-        "health": 0.0
+        "damage": 165.312554836278,
+        "health": 834.687445163722
       },
       "name": "physical fall landing dispatches environmental damage once",
       "passed": true

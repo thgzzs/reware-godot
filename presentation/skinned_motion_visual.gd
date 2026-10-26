@@ -66,6 +66,7 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
  sampled_physics_frame=Engine.get_physics_frames()
  sample_count+=1
  var layers := motion.pose_layers()
+ if actor!=null and actions!=null and actions.life=="alive" and (actor.landing.active or actor.landing.travel.length_squared()>0) and motion.preview_clip.is_empty():layers=actor.landing.pose_layers()
  var next := ""
  for layer in layers: next += layer.clip+"|"
  if next!=signature:
@@ -110,9 +111,6 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   q = from_rotations[i].slerp(q,alpha)
   s = from_scales[i].lerp(s,alpha)
   base_rotations[i] = q
-  if actor!=null and actor.landing.weight>0 and motion.library.has_animation(actor.landing.clip) and motion.preview_clip.is_empty():
-   p=p.lerp(position_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
-   q=q.slerp(rotation_at(actor.landing.clip,actor.landing.time,i),actor.landing.weight)
   # Relaxed carrying owns only the configured torso/arm bones. The action layer
   # then overrides it, so aim IK never pulls the standing carry into a shot pose.
   if actions!=null and actions.life=="alive" and actions.upper_allowed and not actions.crouched and actions.standing_hold_weight>0 and not actions.standing_hold_clip.is_empty() and actions.profile.standing_hold_bones.has(skeleton.get_bone_name(i)) and motion.preview_clip.is_empty():
@@ -134,10 +132,32 @@ func sample_pose(dt: float = 1.0/60.0) -> void:
   skeleton.set_bone_pose_rotation(i,q)
   skeleton.set_bone_pose_scale(i,s)
  skeleton.force_update_all_bone_transforms()
+ if actions!=null and actions.life=="alive" and actions.upper_allowed and not actions.crouched and motion.preview_clip.is_empty() and actions.standing_hold_native_ready:
+  lower_native_carry()
  if actions!=null and actions.life=="alive" and motion.preview_clip.is_empty() and actions.aim_weight>0 and actions.upper_allowed:
   aim_arms()
  settle_reaction_pose(dt)
  sample_us = Time.get_ticks_usec()-started
+func lower_native_carry() -> void:
+ # A shared upper-torso rotation retains the authored relationship between
+ # BOTH hands. Do not solve wrists independently or aim a relaxed carry at the
+ # camera target. Counter-rotate the neck to preserve the base head direction.
+ var weight:=actions.standing_hold_weight*(1.0-actions.aim_weight)
+ if weight<=0:return
+ var spine:=skeleton.find_bone("Spine1")
+ var neck:=skeleton.find_bone("Neck")
+ if mini(spine,neck)<0:return
+ var parent:=skeleton.get_bone_parent(spine)
+ var neck_parent:=skeleton.get_bone_parent(neck)
+ if mini(parent,neck_parent)<0:return
+ var head_rotation:=skeleton.get_bone_global_pose(neck).basis.get_rotation_quaternion()
+ var rotation:=skeleton.get_bone_global_pose(spine).basis.get_rotation_quaternion()
+ var parent_rotation:=skeleton.get_bone_global_pose(parent).basis.get_rotation_quaternion()
+ var lowered:=Quaternion(Vector3.RIGHT,-actions.weapon_pose.standing_lower_pitch*weight)*rotation
+ skeleton.set_bone_pose_rotation(spine,parent_rotation.inverse()*lowered)
+ skeleton.force_update_all_bone_transforms()
+ skeleton.set_bone_pose_rotation(neck,skeleton.get_bone_global_pose(neck_parent).basis.get_rotation_quaternion().inverse()*head_rotation)
+ skeleton.force_update_all_bone_transforms()
 func skin_minimum_y() -> float:
  var minimum := INF
  for mesh in find_children("*","MeshInstance3D",true,false):

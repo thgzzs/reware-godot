@@ -29,6 +29,7 @@ var native_aim_hold := false
 var standing_hold_clip := ""
 var standing_hold_weight := 0.0
 var standing_hold_time := 0.0
+var standing_hold_native_ready := false
 var crouched := false
 var next_death := ""
 var reaction_clip := ""
@@ -112,7 +113,7 @@ func begin_life(next: String) -> void:
 func reset() -> void:
  next_death = ""; reaction_left = 0; melee_active = false; melee_clip = ""; melee_mobile=false; melee_weight=0; melee_is_kick=false
  preparing_fire=false
- standing_hold_clip="";standing_hold_weight=0;standing_hold_time=0
+ standing_hold_clip="";standing_hold_weight=0;standing_hold_time=0;standing_hold_native_ready=false
  life = "alive"; life_time = 0; life_clip = ""; firing_left = 0; aim_weight = 0; reloading = false; reload_weight = 0;floor_hit_left=0;floor_hit_time=0;reaction_time=0;reaction_previous_time=0;reaction_spatial=false
 func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  melee_weight = move_toward(melee_weight,1.0 if melee_active and melee_mobile else 0.0,profile.upper_blend_rate*dt)
@@ -146,11 +147,16 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
  if reaction_left>0:upper_allowed=false
  var carry:=resolve(weapon_pose.standing_hold_clips)
+ standing_hold_native_ready=false
+ if weapon_pose.standing_use_weapon_ready_pose:
+  var ready:=resolve(PackedStringArray([weapon_group+"_fire"]))
+  if not ready.is_empty():carry=ready;standing_hold_native_ready=true
  if carry!=standing_hold_clip:standing_hold_clip=carry;standing_hold_time=0
- var carrying:=not carry.is_empty() and upper_allowed and not crouched and (motion==null or motion.phase=="idle")
+ var carrying:=not carry.is_empty() and upper_allowed and not crouched and (motion==null or motion.phase in ["idle","start","move","stop"])
  var carry_target:float=gun.equip_action.pose_weight() if carrying else 0.0
  standing_hold_weight=move_toward(standing_hold_weight,carry_target,dt/maxf(0.001,weapon_pose.standing_hold_blend_seconds))
- if not carry.is_empty() and standing_hold_weight>0:standing_hold_time=fposmod(standing_hold_time+dt,maxf(0.001,motion.duration(carry)))
+ if not carry.is_empty() and standing_hold_weight>0:
+  standing_hold_time=clampf(fire_frame_seconds-0.03,0,motion.duration(carry)) if standing_hold_native_ready else fposmod(standing_hold_time+dt,maxf(0.001,motion.duration(carry)))
  var target := 1.0 if upper_allowed and (cmd.aim or cmd.fire or firing_left>0 or reloading) else 0.0
  target*=gun.equip_action.pose_weight()
  aim_weight = move_toward(aim_weight,target,profile.upper_blend_rate*dt)

@@ -172,11 +172,10 @@ func follow_pose(dt: float) -> void:
    actor.actions.life_time=actor.reference_motion.duration(clip)
  elif tumble_fall and actor.health.health>0 and actor.reference_enabled:
   air_animation_time+=dt
-  var first:=actor.actions.resolve(actor.fall.profile.fall_clips)
+  var first:=actor.actions.resolve(actor.landing.profile.roll_clips)
   var length:=actor.reference_motion.duration(first)
-  var clip:=first if air_animation_time<=length else actor.actions.resolve(actor.fall.profile.glide_clips)
-  actor.actions.life_clip=clip
-  actor.actions.life_time=air_animation_time if air_animation_time<=length else fposmod(air_animation_time-length,maxf(0.001,actor.reference_motion.duration(clip)))
+  actor.actions.life_clip=first
+  actor.actions.life_time=minf(air_animation_time,length)
  if actor.reference_enabled:
   actor.reference_motion.set_clip(actor.actions.life_clip,false)
   actor.reference_motion.time=actor.actions.life_time

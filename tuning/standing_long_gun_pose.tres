@@ -4,6 +4,7 @@
 script = ExtResource("1")
 preserve_native_grip = true
 standing_hold_clips = PackedStringArray("IDLE_armed")
+standing_use_weapon_ready_pose = true
 standing_hold_blend_seconds = 0.22
 reach = 0.32
 grip_offset = Vector3(-0.16,-0.015,0)

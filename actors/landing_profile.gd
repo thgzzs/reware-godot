@@ -11,3 +11,11 @@ extends Resource
 @export var moving_min_speed := 0.7
 @export var minimum_moving_playback := 0.4
 @export var maximum_moving_playback := 1.5
+@export var contact_clips:=PackedStringArray(["FALL_land","JUMP_land"])
+@export var moving_contact_seconds:=0.14
+@export var moving_follow_seconds:=0.26
+@export var contact_transition_seconds:=0.06
+@export var roll_clips:=PackedStringArray(["FALL_fall","FALL_land"])
+@export var roll_minimum_impact:=10.5
+@export var roll_minimum_speed:=2.0
+@export var roll_playback:=1.15

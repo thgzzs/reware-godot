@@ -153,10 +153,15 @@ func run() -> void:
   check("Jolt reaction remains spinning before support "+str(direction),actor.reaction_body.active and not actor.reaction_body.rest.locked and actor.reaction_body.rest.weight==0)
   await frames(260)
   check("landed quiet corpse chooses the matching face orientation "+str(direction),actor.reaction_body.rest.locked and actor.reaction_body.rest.face_down==(direction==Vector3.FORWARD) and actor.visual.global_basis.y.dot(Vector3.UP)>0.99,{"locked":actor.reaction_body.rest.locked,"clip":actor.actions.life_clip,"angular":actor.reaction_body.angular_velocity.length()})
- actor.respawn(Vector3(-25,12,35));var landing_count:=actor.fall.landing_events;await frames(50)
- check("long on-foot falls transfer motion to the Jolt reaction body",actor.reaction_body.active and actor.reaction_body.tumble_fall)
- await frames(200)
- check("physical fall landing dispatches environmental damage once",actor.fall.landing_events==landing_count+1 and actor.fall.last_damage>0,{"damage":actor.fall.last_damage,"health":actor.health.health})
+ actor.respawn(Vector3(-25,12,35));actor.health.health=1000;var landing_count:=actor.fall.landing_events;await frames(50)
+ check("long on-foot falls keep the airborne controller until impact",not actor.reaction_body.active and actor.actions.life=="alive")
+ var impact_tumble:=false;var terrain_damage:=0.0
+ for i in range(200):
+  await frames(1)
+  impact_tumble=impact_tumble or (actor.reaction_body.active and actor.reaction_body.tumble_fall and actor.fall.landing_events>landing_count)
+  terrain_damage=maxf(terrain_damage,actor.fall.last_damage)
+ check("terrain tumbles begin after the measured landing",impact_tumble)
+ check("physical fall landing dispatches environmental damage once",actor.fall.landing_events==landing_count+1 and terrain_damage>0,{"damage":terrain_damage,"health":actor.health.health})
  for prefix in ["BIKEs","BIKEd","BIKEv","BIKEh"]:
   var variant:=VehicleVariant.new()
   check("intentional bike bailout selects rear get-off for "+prefix,variant.bailout_clip(prefix,actor.actions)==prefix+"_getoffBACK")

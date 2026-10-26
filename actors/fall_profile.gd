@@ -13,7 +13,7 @@ extends Resource
 @export var damage_coefficient := 1.25
 @export var maximum_damage := 200.0
 @export var hard_landing_speed := 10.5
-@export var fall_clips := PackedStringArray(["FALL_fall","JUMP_glide"])
+@export var fall_clips := PackedStringArray(["FALL_glide","JUMP_glide"])
 @export var glide_clips := PackedStringArray(["FALL_glide","JUMP_glide"])
 @export var landing_clips := PackedStringArray(["FALL_land","JUMP_land"])
 @export var death_clips := PackedStringArray(["FALL_collapse","FALL_front"])

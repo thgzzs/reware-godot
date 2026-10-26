@@ -14,9 +14,13 @@ var hard_landing := false
 var last_impact_speed := 0.0
 var last_damage := 0.0
 var landing_events := 0
+var jumped := false
 func reset() -> void:
  air_seconds=0;descent_time=0;peak_height=0;drop=0;tracked=false
- falling=false;fall_time=0;hard_landing=false;last_impact_speed=0;last_damage=0
+ falling=false;fall_time=0;hard_landing=false;last_impact_speed=0;last_damage=0;jumped=false
+func begin_jump(height:float) -> void:
+ air_seconds=0;descent_time=0;peak_height=height;drop=0;tracked=true
+ falling=false;fall_time=0;hard_landing=false;jumped=true
 func observe_air(height: float, vertical_speed: float, dt: float) -> void:
  if not tracked:
   tracked=true;peak_height=height;hard_landing=false
@@ -27,19 +31,17 @@ func observe_air(height: float, vertical_speed: float, dt: float) -> void:
  if descent_time>=profile.descent_seconds and drop>=profile.minimum_drop:falling=true
  if falling:fall_time+=dt
 func air_clip(actions: ActorActionState) -> String:
- var first:=actions.resolve(profile.fall_clips)
- return first if fall_time<=actions.motion.duration(first) else actions.resolve(profile.glide_clips)
+ # The supplied Stories FALL_fall is a ground roll, not a free-fall loop.
+ return actions.resolve(profile.glide_clips)
 func pose_time(actions: ActorActionState) -> float:
- var first_duration:=actions.motion.duration(actions.resolve(profile.fall_clips))
- if fall_time<=first_duration:return fall_time
- return fposmod(fall_time-first_duration,maxf(0.001,actions.motion.duration(actions.resolve(profile.glide_clips))))
+ return fposmod(air_seconds,maxf(0.001,actions.motion.duration(air_clip(actions))))
 func land(speed: float) -> float:
  if not tracked:return 0
  last_impact_speed=maxf(0,speed)
  var qualified:=air_seconds>=profile.minimum_air_seconds and drop>=profile.minimum_drop
  hard_landing=qualified and speed>=profile.hard_landing_speed
  last_damage=minf(profile.maximum_damage,pow(maxf(0,speed-profile.safe_impact_speed),2)*profile.damage_coefficient) if qualified and profile.damage_enabled else 0.0
- tracked=false;falling=false;fall_time=0;air_seconds=0;descent_time=0;drop=0
+ tracked=false;falling=false;fall_time=0;air_seconds=0;descent_time=0;drop=0;jumped=false
  landing_events+=1
  landed.emit(last_impact_speed,last_damage)
  return last_damage

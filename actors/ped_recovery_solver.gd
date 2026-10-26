@@ -14,6 +14,14 @@ var impulses:=0
 var blocked:=false
 func reset() -> void:
  probe_left=0;destination=Vector3.INF;blocked=false
+func getup_obstructed() -> bool:
+ # Revalidate vehicles throughout get-up, without treating the supporting
+ # ground contact as an obstruction to the standing capsule.
+ stand_query.shape=body.actor.normal_shape
+ stand_query.transform=Transform3D(Basis.IDENTITY,body.actor.global_position)
+ stand_query.collision_mask=4
+ stand_query.exclude=[body.get_rid(),body.actor.get_rid()];stand_query.margin=0.003
+ return not body.get_world_3d().direct_space_state.intersect_shape(stand_query,1).is_empty()
 func floor_at(at:Vector3) -> Dictionary:
  floor_query.from=at+Vector3.UP*0.6;floor_query.to=at-Vector3.UP*1.3
  floor_query.collision_mask=5;floor_query.exclude=[body.get_rid(),body.actor.get_rid()]

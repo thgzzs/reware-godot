@@ -159,6 +159,21 @@ func tick_reaction(dt: float) -> void:
  down_time += dt
  actions.tick(GameplayCommand.new(),weapon,dt)
  if corpse_retired:return
+ if actions.life=="getting_up" and not reaction_body.active and reaction_body.recovery.getup_obstructed():
+  # A bike can roll back into the reserved standing volume after clearance
+  # was checked. Resume the solid torso at its current pelvis, then let the
+  # existing physical separation planner find a safe recovery route.
+  var pelvis:=global_position-Vector3.UP*0.5
+  if reference_pose is SkinnedMotionVisual:
+   var pose:SkinnedMotionVisual=reference_pose
+   var bone:=pose.skeleton.find_bone("Pelvis")
+   if bone>=0:pelvis=pose.skeleton.to_global(pose.skeleton.get_bone_global_pose(bone).origin)
+  actions.begin_life("down");actions.life_clip=actions.resolve(PackedStringArray(["FALL_front","BIKE_fall_off"]))
+  down_time=0;control_enabled=false
+  reaction_body.launch_velocity(pelvis,facing,velocity)
+  reaction_body.minimum_recovery_age=reaction_body.recovery.profile.getup_retry_delay
+  reaction_body.follow_pose(dt)
+  return
  if reaction_body.active:
   reaction_body.follow_pose(dt)
   if health.health<=0:
@@ -286,6 +301,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if reference_enabled: drive_velocity = jump_forward
   air_launch_velocity=drive_velocity
   velocity.y = profile.jump_speed
+  fall.begin_jump(global_position.y)
   launched_now=true
   grounded = false
   grace_left = 0
@@ -295,15 +311,6 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   air_steering=Vector3.ZERO;air_steering_blocked=false;air_recovering_momentum=false
   air_launch_velocity=drive_velocity
  if not grounded: fall.observe_air(global_position.y,velocity.y,dt)
- if fall.profile.physical_tumble_enabled and fall.falling and fall.drop>=fall.profile.physical_tumble_drop and velocity.y<= -fall.profile.physical_tumble_speed:
-  weapon.melee.cancel()
-  actions.begin_life("down")
-  actions.life_clip=actions.resolve(fall.profile.fall_clips)
-  actions.life_time=0
-  control_enabled=false
-  reaction_body.launch_velocity(global_position,facing,velocity,true)
-  reaction_body.follow_pose(dt)
-  return
  var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
  var aim_turn:bool=cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active)
  var locomotion_amount:=steering.update(self,direction,camera_yaw,aim_turn,dt)
@@ -331,8 +338,9 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    local_delta=landing.travel
   elif phase=="landing":reference_motion.force_action("HIT_wall" if blocked_jump else actions.resolve(fall.profile.landing_clips),dt)
   elif not grounded:
-   reference_motion.force_action(fall.air_clip(actions) if fall.falling else "JUMP_glide",dt)
-   if fall.falling:reference_motion.time=fall.pose_time(actions)
+   var falling_pose:=fall.falling or not fall.jumped
+   reference_motion.force_action(fall.air_clip(actions) if falling_pose else "JUMP_glide",dt)
+   if falling_pose:reference_motion.time=fall.pose_time(actions)
   else:
    if actions.melee_mobile and reference_motion.phase=="action":
     reference_motion.phase="move"
@@ -448,9 +456,10 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    landing_count += 1
    var air_time:=fall.air_seconds
    var drop_height:=fall.drop
+   var was_jump:=fall.jumped
    var amount := fall.land(landing_speed)
    if reference_enabled:
-    landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing)
+    landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing,was_jump)
     landing.heading=facing
    if reference_enabled:
     if landing.active:reference_motion.force_action(landing.clip,0);reference_motion.time=0
@@ -464,6 +473,15 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if amount>0:
     actions.next_death = actions.resolve(fall.profile.death_clips)
     health.receive(amount,false)
+   # Terrain tumbles begin at impact; bike/combat ejections retain Jolt motion.
+   if health.health>0 and fall.profile.physical_tumble_enabled and drop_height>=fall.profile.physical_tumble_drop and landing_speed>=fall.profile.physical_tumble_speed:
+    weapon.melee.cancel();landing.reset()
+    actions.begin_life("down");actions.life_clip=actions.resolve(landing.profile.roll_clips)
+    control_enabled=false
+    reaction_body.launch_velocity(global_position,facing,Vector3(incoming.x,minf(0,incoming.y*0.15),incoming.z),true)
+    reaction_body.fall_landing_pending=false
+    reaction_body.follow_pose(dt)
+    return
   elif phase != "launch" and phase != "landing":
    if fall.tracked:fall.land(landing_speed)
    phase = "grounded"

@@ -1,0 +1,243 @@
+{
+  "android_device_tested": false,
+  "assertions": 42,
+  "assets": "synthetic clips and primitive collision",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "native_visual_validation": false,
+  "results": [
+    {
+      "measured": null,
+      "name": "map has graded slopes, platform garden, drop decks and void loop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 10 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 20 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 30 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 40 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 50 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ramp 60 collision matches its angle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "drop deck has advertised top height",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "drop deck has advertised top height",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "drop deck has advertised top height",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "drop deck has advertised top height",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "void loop has a real gap with no hidden catch floor",
+      "passed": true
+    },
+    {
+      "measured": {
+        "height": 0.882023906707764,
+        "reached": true
+      },
+      "name": "ramp 10 respects the climb limit",
+      "passed": true
+    },
+    {
+      "measured": {
+        "height": 2.88713655471802,
+        "reached": true
+      },
+      "name": "ramp 30 respects the climb limit",
+      "passed": true
+    },
+    {
+      "measured": {
+        "height": 0.000375306606292702,
+        "reached": false
+      },
+      "name": "ramp 50 respects the climb limit",
+      "passed": true
+    },
+    {
+      "measured": {
+        "contact_frames": 11,
+        "stride_frames": 14
+      },
+      "name": "run jump passes through contact and stride after collision",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "landing returns to normal grounded locomotion",
+      "passed": true
+    },
+    {
+      "measured": {
+        "contact_frames": 11,
+        "stride_frames": 14
+      },
+      "name": "sprint jump passes through contact and stride after collision",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "landing returns to normal grounded locomotion",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "RIFLE keeps the supported grip in idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "RIFLE keeps the supported grip in start",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "RIFLE keeps the supported grip in move",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "RIFLE keeps the supported grip in stop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint yields to its full-body action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat pose cannot inherit long-gun holding",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun keeps the supported grip in idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun keeps the supported grip in start",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun keeps the supported grip in move",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun keeps the supported grip in stop",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "sprint yields to its full-body action",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike seat pose cannot inherit long-gun holding",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "lowered carry preserves both hands as a rigid authored grip",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "lowered carry preserves head direction and root pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "aiming cancels the relaxed carry lowering",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "confirmed jumps can land on higher surfaces despite a short descent",
+      "passed": true
+    },
+    {
+      "measured": {
+        "contact": 0.166666666666667,
+        "stride": 0.25,
+        "total": 0.416666666666667
+      },
+      "name": "contact and running follow-through are both visible",
+      "passed": true
+    },
+    {
+      "measured": [
+        "(0.0, 0.0, -1.14505)",
+        "(0.0, 0.0, -1.148181)",
+        "(0.0, 0.0, -1.149072)"
+      ],
+      "name": "spatial landing travel is stable at 30/60/120 Hz",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "roll requires a grounded hard moving impact",
+      "passed": true
+    },
+    {
+      "measured": 68,
+      "name": "void descent never turns into an airborne roll",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "void recovery reuses the original actor at its safe spawn",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "bike overlap interrupts get-up into solid physical recovery",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "clearing the bike permits a normal get-up without control lock",
+      "passed": true
+    }
+  ]
+}

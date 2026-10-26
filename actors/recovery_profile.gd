@@ -1,5 +1,6 @@
 class_name PedRecoveryProfile
 extends Resource
+@export var getup_retry_delay:=0.35
 ## Recovery uses physical impulses and clear supported routes; no rescue teleport.
 @export var probe_interval := 0.12
 @export var minimum_floor_dot := 0.68
