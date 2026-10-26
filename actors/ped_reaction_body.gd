@@ -165,14 +165,15 @@ func follow_pose(dt: float) -> void:
  var angles:Vector3=(frame.inverse()*global_basis).get_euler()
  var bounded:=frame*Basis.from_euler(Vector3(clampf(angles.x,-profile.maximum_air_pitch,profile.maximum_air_pitch),0,clampf(angles.z,-profile.maximum_air_roll,profile.maximum_air_roll)))
  actor.visual.global_basis=bounded.slerp(rest.basis_on_floor(support_normal),rest.weight)
- if rest.locked:
+ var collapse_playing:=tumble_fall and actor.health.health>0 and actor.reference_enabled and air_animation_time<actor.reference_motion.duration(actor.actions.resolve(actor.fall.profile.collapse_clips))
+ if rest.locked and actor.actions.life!="dying" and not collapse_playing:
   var clip:=actor.actions.resolve(rest.profile.prone_clips if rest.face_down else rest.profile.supine_clips)
   if not clip.is_empty():
    actor.actions.life_clip=clip
    actor.actions.life_time=actor.reference_motion.duration(clip)
  elif tumble_fall and actor.health.health>0 and actor.reference_enabled:
   air_animation_time+=dt
-  var first:=actor.actions.resolve(actor.landing.profile.roll_clips)
+  var first:=actor.actions.resolve(actor.fall.profile.collapse_clips)
   var length:=actor.reference_motion.duration(first)
   actor.actions.life_clip=first
   actor.actions.life_time=minf(air_animation_time,length)
@@ -199,6 +200,7 @@ func follow_pose(dt: float) -> void:
     presentation_settled=absf(rest.floor_offset-target)<0.002
    actor.global_position+=support_normal*rest.floor_offset
 func can_recover() -> bool:
+ if tumble_fall and actor.reference_enabled and air_animation_time<actor.reference_motion.duration(actor.actions.resolve(actor.fall.profile.collapse_clips)):return false
  if age<minimum_recovery_age or not rest.locked or rest.weight<0.99:return false
  if age<profile.recovery_delay or linear_velocity.length()>profile.recovery_speed: return false
  var space := actor.get_world_3d().direct_space_state

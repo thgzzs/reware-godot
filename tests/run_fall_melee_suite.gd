@@ -58,7 +58,7 @@ func run() -> void:
  metrics.high_drop=high
  check("larger drops cause more damage without automatic death",high.damage>medium.damage*2 and high.health>0 and high.health<medium.health,high)
  var lethal:=await drop(18.0)
- check("severe falls deplete health once with a fall-specific death clip",lethal.health==0 and actor.actions.life in ["dying","dead"] and actor.actions.life_clip=="FALL_collapse",lethal)
+ check("severe falls deplete health once into a grounded collapse clip",lethal.health==0 and actor.actions.life in ["dying","dead"] and actor.actions.life_clip==actor.actions.resolve(actor.fall.profile.death_clips) and actor.actions.life_clip!="FALL_collapse",lethal)
  actor.respawn(Vector3(-28,14,38));await frames(25)
  check("a long descent uses native falling presentation",actor.fall.falling and actor.phase=="falling",actor.reference_motion.clip)
  actor.reset_at(Vector3(-28,0.94,38));await frames(50)

@@ -6,22 +6,22 @@
     "impact": {
       "car_contacts": 288,
       "contact_ticks": 120,
-      "displacement": 17.8735485076904,
+      "displacement": 17.8734378814697,
       "health": 60.6738351130392,
       "lift": 0.5514275431633,
-      "speed": 6.27376174926758
+      "speed": 6.27378368377686
     },
     "orchestration": {
-      "max_us": 158819.0,
-      "mean_us": 592.946666666667,
-      "p95_us": 1016.0,
+      "max_us": 1526.0,
+      "mean_us": 312.243888888889,
+      "p95_us": 455.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "wheel_forces": {
-      "max_us": 1350.0,
-      "mean_us": 54.1341666666667,
-      "p95_us": 133.0,
+      "max_us": 3314.0,
+      "mean_us": 32.6730555555556,
+      "p95_us": 47.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }
@@ -479,10 +479,10 @@
       "measured": {
         "car_contacts": 288,
         "contact_ticks": 120,
-        "displacement": 17.8735485076904,
+        "displacement": 17.8734378814697,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 6.27376174926758
+        "speed": 6.27378368377686
       },
       "name": "moderate impact survives and physically contacts car",
       "passed": true
@@ -491,10 +491,10 @@
       "measured": {
         "car_contacts": 288,
         "contact_ticks": 120,
-        "displacement": 17.8735485076904,
+        "displacement": 17.8734378814697,
         "health": 60.6738351130392,
         "lift": 0.5514275431633,
-        "speed": 6.27376174926758
+        "speed": 6.27378368377686
       },
       "name": "Jolt impact transfers momentum and lifts the torso",
       "passed": true
@@ -502,7 +502,7 @@
     {
       "measured": {
         "life": "alive",
-        "position": "(17.99379, 0.900375, -1.21071)"
+        "position": "(17.99469, 0.900375, -1.210408)"
       },
       "name": "nonfatal proxy safely returns to standing control",
       "passed": true

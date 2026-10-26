@@ -18,4 +18,8 @@ extends Resource
 @export var roll_clips:=PackedStringArray(["FALL_fall","FALL_land"])
 @export var roll_minimum_impact:=10.5
 @export var roll_minimum_speed:=2.0
+@export var roll_maximum_impact:=13.0
+@export var roll_maximum_drop:=4.5
+@export var continuation_dot:=0.15
+@export var soft_jump_cancel_seconds:=0.10
 @export var roll_playback:=1.15

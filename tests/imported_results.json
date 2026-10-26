@@ -6,10 +6,10 @@
   "failures": 0,
   "metrics": {
     "gameplay_cpu": {
-      "max_us": 37945.0,
-      "mean_us": 992.049666110184,
-      "p95_us": 1992.0,
-      "samples": 2396,
+      "max_us": 3165.0,
+      "mean_us": 585.21261487051,
+      "p95_us": 1131.0,
+      "samples": 2394,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     },
     "model_binding_verified": "covered separately by presentation/stories rig-ID suites",
@@ -190,7 +190,7 @@
       "passed": true
     },
     {
-      "measured": 11.3707294464111,
+      "measured": 11.3707323074341,
       "name": "driving still accelerates with mapped data",
       "passed": true
     },

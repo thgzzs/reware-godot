@@ -144,7 +144,7 @@ func tick(cmd: GameplayCommand, gun: WeaponController, dt: float) -> void:
  fire_frame_seconds = gun.profile.fire_frame_seconds
  weapon_pose = gun.profile.pose
  upper_allowed = gun.profile.kind!="melee" and not melee_active and (motion==null or motion.phase in ["idle","start","move","stop"] or crouched)
- if cmd.sprint and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
+ if cmd.sprint and not weapon_pose.standing_hold_while_sprinting and not (cmd.aim or cmd.fire or reloading) and cmd.move.length_squared()>0.01: upper_allowed = false
  if reaction_left>0:upper_allowed=false
  var carry:=resolve(weapon_pose.standing_hold_clips)
  standing_hold_native_ready=false

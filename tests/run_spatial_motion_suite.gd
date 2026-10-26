@@ -63,7 +63,11 @@ func run() -> void:
  var launch_travel:=0.0;var air_turn:=0.0;var saw_air:=false;var saw_land:=false;var land_travel:=0.0;var land_clock:=true;var landing_heading:=0.0;var landing_turn:=0.0
  for i in range(170):
   var before:=actor.global_position;var previous_time:=actor.landing.time
-  var input:=GameplayCommand.new();input.move=Vector2(sin(i*0.4),cos(i*0.4));arena.rig.yaw=i*0.2
+  var input:=GameplayCommand.new()
+  # Vary air intent without deliberately issuing the new opposite-input brake.
+  # Full reversal/zero-travel landing is covered by the fall/landing suite.
+  input.move=Vector2(sin(i*0.4)*0.4,-1) if not actor.grounded else cmd.move
+  arena.rig.yaw=heading+sin(i*0.2)*0.25 if not actor.grounded else heading
   await frames(1,input)
   var delta:=actor.global_position-before;delta.y=0
   if actor.phase=="launch":launch_travel+=delta.length()

@@ -1,0 +1,131 @@
+{
+  "android_device_tested": false,
+  "assertions": 19,
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": {
+        "follow": false,
+        "speed": 0.0,
+        "travel": 0.0
+      },
+      "name": "stationary jump lands without an unrequested forward step",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "stationary jump keeps the airborne heading stable",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stationary jump completes once",
+      "passed": true
+    },
+    {
+      "measured": {
+        "follow": false,
+        "speed": 0.0,
+        "travel": 0.0
+      },
+      "name": "released running jump lands without an unrequested forward step",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "released running jump keeps the airborne heading stable",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "opposite air input hard-stops planar momentum without spinning",
+      "passed": true
+    },
+    {
+      "measured": {
+        "follow": false,
+        "speed": 0.0,
+        "travel": 0.0
+      },
+      "name": "opposite-input jump lands without an unrequested forward step",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "opposite-input jump keeps the airborne heading stable",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "released input cancels landing root travel immediately",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "opposite input cancels landing root travel immediately",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "opposite ground input stops immediately before the pivot",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "opposite input also interrupts a locked sprint-stop clip",
+      "passed": true
+    },
+    {
+      "measured": {
+        "jumps": 2,
+        "pressed": true
+      },
+      "name": "buffered jump survives the soft landing contact phase",
+      "passed": true
+    },
+    {
+      "measured": {
+        "damage": 64.2012749778405,
+        "down": true,
+        "getup": true,
+        "resumed": true,
+        "roll": false
+      },
+      "name": "high survivable fall collapses without rolling",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "get-up cannot replay the old landing",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "survivable fall applies impact once",
+      "passed": true
+    },
+    {
+      "measured": {
+        "change_radians": 2.69068884849548,
+        "clip": "KO_skid_back"
+      },
+      "name": "fatal fall animates the impact instead of freezing in glide",
+      "passed": true
+    },
+    {
+      "measured": {
+        "minimum_y": 0.0152987241744995,
+        "retired": true,
+        "roll": false
+      },
+      "name": "fatal fall finishes as a grounded terminal corpse",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "fatal fall cancels every pending landing phase",
+      "passed": true
+    }
+  ]
+}

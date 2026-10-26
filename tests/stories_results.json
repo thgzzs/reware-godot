@@ -14,9 +14,9 @@
       "speed": 28.4352684020996
     },
     "orchestration": {
-      "max_us": 15511.0,
-      "mean_us": 497.252777777778,
-      "p95_us": 886.0,
+      "max_us": 8381.0,
+      "mean_us": 302.435833333333,
+      "p95_us": 436.0,
       "samples": 3600,
       "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
     }

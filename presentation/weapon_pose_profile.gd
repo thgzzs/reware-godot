@@ -5,6 +5,7 @@ extends Resource
 @export var preserve_native_grip := false
 @export var standing_hold_clips := PackedStringArray()
 @export var standing_use_weapon_ready_pose := false
+@export var standing_hold_while_sprinting := false
 @export_range(0,0.8,0.01) var standing_lower_pitch := 0.30
 @export_range(0.05,0.5,0.01) var standing_hold_blend_seconds := 0.22
 @export var recoil_lift := 0.055

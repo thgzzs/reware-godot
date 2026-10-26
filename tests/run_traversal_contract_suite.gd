@@ -87,10 +87,10 @@ func run()->void:
    actor.reference_motion.phase=phase
    var cmd:=GameplayCommand.new();cmd.move=Vector2(0,-1) if phase!="idle" else Vector2.ZERO
    for i in range(20):actor.actions.tick(cmd,gun,1.0/60)
-   check(gun.profile.animation_group+" keeps the supported grip in "+phase,actor.actions.standing_hold_weight>0.999 and actor.actions.standing_hold_native_ready and actor.actions.standing_hold_clip==gun.profile.animation_group+"_fire" and actor.actions.aim_weight==0)
+   check(gun.profile.animation_group+" keeps restored carry arms in "+phase,actor.actions.standing_hold_weight>0.999 and not actor.actions.standing_hold_native_ready and actor.actions.standing_hold_clip=="IDLE_armed" and actor.actions.aim_weight==0)
   var sprint:=GameplayCommand.new();sprint.move=Vector2(0,-1);sprint.sprint=true
   for i in range(20):actor.actions.tick(sprint,gun,1.0/60)
-  check("sprint yields to its full-body action",actor.actions.standing_hold_weight==0 and not actor.actions.upper_allowed)
+  check("sprint combines restored carrying arms with its leg action",actor.actions.standing_hold_weight>0.999 and actor.actions.upper_allowed and actor.actions.aim_weight==0)
   actor.reference_motion.phase="seated"
   for i in range(20):actor.actions.tick(GameplayCommand.new(),gun,1.0/60)
   check("bike seat pose cannot inherit long-gun holding",actor.actions.standing_hold_weight==0 and not actor.actions.upper_allowed)

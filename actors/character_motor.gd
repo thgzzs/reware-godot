@@ -34,6 +34,7 @@ var air_steering:=Vector3.ZERO
 var air_steering_blocked:=false
 var air_launch_velocity:=Vector3.ZERO
 var air_recovering_momentum:=false
+var air_braked:=false
 var blocked_jump := false
 var low_shape := SphereShape3D.new()
 var grounded := false
@@ -84,6 +85,9 @@ func _ready() -> void:
  stance.configure(self)
  low_shape.radius = 0.32
  health.depleted.connect(func():
+  reaction_velocity+=velocity
+  cancel_locomotion()
+  weapon.melee.cancel();weapon.equip_action.reset();weapon.reload_left=0
   control_enabled = false
   actions.begin_life("dying")
   set_reaction_shape())
@@ -155,7 +159,29 @@ func receive_vehicle_impact(car: DriveVehicle, closing_speed: float, direction: 
  control_enabled = false
  # Standing capsule hands ownership to a solid Jolt torso, never to a no-contact mover.
  reaction_body.launch(car,closing_speed,direction)
+func cancel_locomotion() -> void:
+ landing.reset();sprint.reset()
+ phase="reaction";phase_left=0;jump_left=0;grace_left=0;blocked_jump=false
+ drive_velocity=Vector3.ZERO;air_steering=Vector3.ZERO;air_recovering_momentum=false;air_braked=false
+ steering.pivoting=false
+ if reference_enabled:
+  reference_motion.intensity=0;reference_motion.was_sprinting=false;reference_motion.sprint_weight=0;reference_motion.heading_locked=false
+func begin_terrain_collapse(incoming:Vector3) -> void:
+ var pelvis:=global_position
+ if reference_pose is SkinnedMotionVisual:
+  var pose:SkinnedMotionVisual=reference_pose
+  var bone:=pose.skeleton.find_bone("Pelvis")
+  if bone>=0:pelvis=pose.skeleton.to_global(pose.skeleton.get_bone_global_pose(bone).origin)
+ cancel_locomotion();weapon.melee.cancel();control_enabled=false;down_time=0
+ if health.health>0:
+  actions.begin_life("down");actions.life_clip=actions.resolve(fall.profile.collapse_clips);actions.life_time=0
+ reaction_body.launch_velocity(pelvis,facing,Vector3(incoming.x,0,incoming.z),true)
+ reaction_body.fall_landing_pending=false
+ # A high terrain impact collapses directly; never seed a somersault.
+ reaction_body.angular_velocity=Vector3.ZERO;reaction_body.previous_angular=Vector3.ZERO
+ reaction_body.follow_pose(0)
 func tick_reaction(dt: float) -> void:
+ if phase!="reaction":cancel_locomotion()
  down_time += dt
  actions.tick(GameplayCommand.new(),weapon,dt)
  if corpse_retired:return
@@ -177,7 +203,7 @@ func tick_reaction(dt: float) -> void:
  if reaction_body.active:
   reaction_body.follow_pose(dt)
   if health.health<=0:
-   if reaction_body.rest.locked and reaction_body.rest.weight>=0.99 and reaction_body.presentation_settled:retire_corpse()
+   if actions.life=="dead" and reaction_body.rest.locked and reaction_body.rest.weight>=0.99 and reaction_body.presentation_settled:retire_corpse()
    return
   if actions.life=="down" and reaction_body.can_recover():
    actions.life = "getting_up"
@@ -221,6 +247,8 @@ func restore_control() -> void:
  corpse_retired=false
  if is_instance_valid(corpse_hitbox):corpse_hitbox.clear()
  landing.reset()
+ phase="grounded" if grounded else "airborne"
+ phase_left=0;jump_left=0;grace_left=0;blocked_jump=false;drive_velocity=Vector3.ZERO;air_braked=false;steering.pivoting=false
  air_steering=Vector3.ZERO;air_steering_blocked=false;air_recovering_momentum=false;air_launch_velocity=Vector3.ZERO
  interaction_holstered = false
  sprint.reset()
@@ -239,6 +267,7 @@ func restore_control() -> void:
  if reference_enabled:
   reference_motion.vehicle_layers.clear()
   reference_motion.phase = "idle"
+  reference_motion.intensity=0;reference_motion.was_sprinting=false;reference_motion.sprint_weight=0;reference_motion.heading_locked=false
   reference_motion.set_clip("IDLE_stance")
 func respawn(where: Vector3) -> void:
  if is_instance_valid(ignored_vehicle): remove_collision_exception_with(ignored_vehicle)
@@ -255,7 +284,9 @@ func respawn(where: Vector3) -> void:
  if reference_pose is SkinnedMotionVisual: reference_pose.snap_next_pose=true
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  var launched_now:=false
+ var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
  root_requested=Vector3.ZERO;root_applied=Vector3.ZERO
+ landing.set_intent(direction)
  landing.tick(dt)
  impact_cooldown = maxf(0,impact_cooldown-dt)
  if is_instance_valid(ignored_vehicle):
@@ -278,6 +309,11 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  grace_left = profile.coyote_time if grounded else maxf(0.0,grace_left-dt)
  if cmd.jump: jump_left = profile.jump_buffer
  phase_left = maxf(0.0,phase_left-dt)
+ if landing.active and not landing.hard and grounded and cmd.jump:landing.queued_jump=true
+ if landing.active and not landing.hard and grounded and landing.queued_jump and landing.time>=landing.profile.soft_jump_cancel_seconds:
+  landing.reset();phase="grounded";phase_left=0;jump_left=profile.jump_buffer;grace_left=profile.coyote_time
+  if reference_enabled:reference_motion.phase="idle"
+ if phase=="landing" and not blocked_jump:phase_left=maxf(0,(landing.duration-landing.time)/landing.playback_rate) if landing.active else 0.0
  if phase == "landing" and phase_left <= 0:
   phase = "grounded"
   blocked_jump = false
@@ -290,8 +326,11 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    jump_forward = Basis(Vector3.UP,facing)*Vector3(0,0,-desired)
    if drive_velocity.length()>desired: jump_forward = drive_velocity
   phase = "launch"
+  air_braked=false
   phase_left = profile.launch_delay
   jump_left = 0
+ if phase=="launch" and direction.length_squared()>0.01 and direction.normalized().dot(Basis(Vector3.UP,facing)*Vector3.FORWARD)<profile.opposite_input_dot:
+  air_braked=true;jump_forward=Vector3.ZERO;drive_velocity=Vector3.ZERO
  if phase == "launch" and phase_left <= 0 and reference_enabled and not jump_has_clearance():
   phase = "landing"
   phase_left = maxf(0.1,reference_motion.duration("HIT_wall"))
@@ -308,13 +347,18 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   phase = "airborne"
   jump_count += 1
  if grounded:
+  if phase=="grounded":air_braked=false
   air_steering=Vector3.ZERO;air_steering_blocked=false;air_recovering_momentum=false
   air_launch_velocity=drive_velocity
  if not grounded: fall.observe_air(global_position.y,velocity.y,dt)
- var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
  var aim_turn:bool=cmd.aim or (cmd.fire and weapon.profile.two_handed and not actions.melee_active)
  var locomotion_amount:=steering.update(self,direction,camera_yaw,aim_turn,dt)
- var sprint_allowed := grounded and phase=="grounded" and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy)
+ if grounded and phase=="grounded" and steering.reversing:
+  drive_velocity=Vector3.ZERO
+  if reference_enabled:
+   reference_motion.intensity=0;reference_motion.was_sprinting=false;reference_motion.sprint_weight=0
+   reference_motion.phase="idle";reference_motion.set_clip("IDLE_stance")
+ var sprint_allowed := grounded and phase=="grounded" and not steering.reversing and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy)
  sprint.tick(cmd,sprint_allowed,dt)
  var horizontal := Vector3.ZERO
  if reference_enabled:
@@ -333,6 +377,7 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    var before:=reference_motion.time if reference_motion.clip=="JUMP_launch" else 0.0
    reference_motion.force_action("JUMP_launch",dt)
    local_delta=reference_motion.segment("JUMP_launch",before,reference_motion.time);local_delta.y=0
+   if air_braked:local_delta=Vector3.ZERO
   elif landing.active or landing.travel.length_squared()>0:
    reference_motion.force_action(landing.clip,0);reference_motion.time=landing.time
    local_delta=landing.travel
@@ -458,9 +503,19 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    var drop_height:=fall.drop
    var was_jump:=fall.jumped
    var amount := fall.land(landing_speed)
+   var lethal:=amount>=health.health and amount>0
+   var collapse:=fall.hard_landing and fall.profile.physical_tumble_enabled and (drop_height>=fall.profile.physical_tumble_drop or landing_speed>=fall.profile.physical_tumble_speed)
+   if lethal or collapse:
+    if amount>0:
+     actions.next_death=actions.resolve(fall.profile.death_clips);health.receive(amount,false)
+    begin_terrain_collapse(Vector3(incoming.x,0,incoming.z))
+    return
    if reference_enabled:
-    landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing,was_jump)
     landing.heading=facing
+    landing.start(actions,air_time,drop_height,landing_speed,drive_velocity.length(),fall.hard_landing,was_jump,direction)
+    landing.queued_jump=jump_left>0
+    if landing.active and not landing.travel_allowed:
+     drive_velocity=Vector3.ZERO;velocity.x=0;velocity.z=0
    if reference_enabled:
     if landing.active:reference_motion.force_action(landing.clip,0);reference_motion.time=0
     elif not fall.hard_landing:reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
@@ -473,21 +528,16 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
    if amount>0:
     actions.next_death = actions.resolve(fall.profile.death_clips)
     health.receive(amount,false)
-   # Terrain tumbles begin at impact; bike/combat ejections retain Jolt motion.
-   if health.health>0 and fall.profile.physical_tumble_enabled and drop_height>=fall.profile.physical_tumble_drop and landing_speed>=fall.profile.physical_tumble_speed:
-    weapon.melee.cancel();landing.reset()
-    actions.begin_life("down");actions.life_clip=actions.resolve(landing.profile.roll_clips)
-    control_enabled=false
-    reaction_body.launch_velocity(global_position,facing,Vector3(incoming.x,minf(0,incoming.y*0.15),incoming.z),true)
-    reaction_body.fall_landing_pending=false
-    reaction_body.follow_pose(dt)
-    return
   elif phase != "launch" and phase != "landing":
    if fall.tracked:fall.land(landing_speed)
    phase = "grounded"
  elif phase != "launch": phase = "falling" if fall.falling else "airborne"
  root_applied=global_position-root_start;root_applied.y=0
 func apply_air_control(direction:Vector3,dt:float) -> void:
+ if direction.length_squared()>0.01 and direction.normalized().dot(Basis(Vector3.UP,facing)*Vector3.FORWARD)<profile.opposite_input_dot:air_braked=true
+ if air_braked:
+  drive_velocity=Vector3.ZERO;air_steering=Vector3.ZERO;air_launch_velocity=Vector3.ZERO;air_recovering_momentum=false
+  return
  var desired_air:=direction.limit_length(1.0)*profile.air_control_speed
  if air_recovering_momentum:
   var target:=air_launch_velocity+desired_air

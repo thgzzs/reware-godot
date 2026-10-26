@@ -28,12 +28,13 @@ func run() -> void:
  var left:=skeleton.find_bone("L Hand")
  var right:=skeleton.find_bone("R Hand")
  var thigh:=skeleton.find_bone("R Thigh")
- for id in ["shotgun","stubbyshotgun","spas12shotgun","ruger","m4"]:
+ for id in ["shotgun","stubbyshotgun","spas12shotgun","ruger","m4","m60"]:
   actor.respawn(Vector3(-35,0.94,44));gun.equip_slot(slot(id));await frames(40)
   var start:=actor.global_position;var shots:=gun.shots
   var state:=actor.actions
-  var carry_clip:=state.resolve(PackedStringArray([gun.profile.animation_group+"_fire"]))
-  check(id+" uses the native supported two-hand ready pose",state.standing_hold_clip==carry_clip and state.standing_hold_native_ready and state.standing_hold_weight>0.999,state.standing_hold_clip)
+  var carry_clip:=state.resolve(PackedStringArray(["IDLE_armed"]))
+  check(id+" restores the original armed carry pose",state.standing_hold_clip==carry_clip and not state.standing_hold_native_ready and state.standing_hold_weight>0.999,state.standing_hold_clip)
+  check(id+" carries with both arm chains enabled",gun.profile.two_handed and state.includes_upper_bone("L Hand") and state.includes_upper_bone("R Hand"))
   check(id+" carrying never enables aim IK or firing",state.aim_weight==0 and gun.shots==shots)
   var error:=skeleton.get_bone_pose_rotation(shoulder).angle_to(visual.rotation_at(state.standing_hold_clip,state.standing_hold_time,shoulder))
   check(id+" standing shoulder follows its authored carry pose",error<0.002,error)
@@ -48,7 +49,7 @@ func run() -> void:
   for walk in [true,false]:
    var moving:=GameplayCommand.new();moving.move=Vector2(0,-1);moving.walk=walk
    await frames(45,moving)
-   check(id+(" walk" if walk else " run")+" keeps both hands in the authored grip",state.standing_hold_weight>0.999 and state.standing_hold_native_ready and state.aim_weight==0 and actor.drive_velocity.length()>0.5)
+   check(id+(" walk" if walk else " run")+" keeps both arms in the restored hold",state.standing_hold_weight>0.999 and state.standing_hold_clip==carry_clip and state.aim_weight==0 and actor.drive_velocity.length()>0.5)
   await frames(50)
   var cmd:=GameplayCommand.new();cmd.aim=true
   var before:=skeleton.get_bone_pose_rotation(shoulder)
@@ -65,7 +66,7 @@ func run() -> void:
   check(id+" reload overrides carrying",state.reloading and state.reload_weight>0.99 and not state.native_aim_hold)
   gun.reload_left=0;await frames(25)
   cmd=GameplayCommand.new();cmd.move=Vector2(0,-1);cmd.sprint=true;await frames(60,cmd)
-  check(id+" sprint releases the carry layer",state.standing_hold_weight==0 and not state.upper_allowed and actor.drive_velocity.length()>3)
+  check(id+" sprint keeps carry arms with moving legs",state.standing_hold_weight>0.999 and state.upper_allowed and state.aim_weight==0 and actor.drive_velocity.length()>3 and skeleton.get_bone_pose_rotation(thigh).angle_to(visual.base_rotations[thigh])<0.002)
  actor.respawn(Vector3(-35,0.94,44));gun.equip_slot(slot("colt45"));await frames(30)
  check("pistol standing pose is unaffected",actor.actions.standing_hold_clip.is_empty() and actor.actions.standing_hold_weight==0)
  gun.equip_slot(slot("m4"));await frames(30)

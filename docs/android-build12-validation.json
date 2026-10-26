@@ -1,0 +1,52 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "assertions": 877,
+  "suites": 22,
+  "failures": 0,
+  "verified": {
+    "suite": 47,
+    "revision_suite": 41,
+    "intent_revision_suite": 43,
+    "mobile_suite": 34,
+    "traversal_contract_suite": 42,
+    "imported_suite": 37,
+    "presentation_suite": 28,
+    "native_action_suite": 66,
+    "motion_suite": 63,
+    "systems_suite": 54,
+    "foundation_suite": 13,
+    "native_intent_suite": 43,
+    "stories_assets": 10,
+    "stories_suite": 77,
+    "fall_melee_suite": 48,
+    "behavior_revision_suite": 42,
+    "spatial_motion_suite": 18,
+    "recovery_suite": 17,
+    "actions_revision_suite": 32,
+    "overhaul_suite": 17,
+    "standing_weapon_suite": 86,
+    "landing_control_suite": 19
+  },
+  "python_tests": 23,
+  "android_device_tested": false,
+  "package": {
+    "bytes": 75504241,
+    "sha256": "d88e33291f3eaf345e581be2e7b8d9c17011edf523516e652ba1969a7850b068",
+    "source_base": "104342a5ea63547093a138dd4da5303b3c055cc9",
+    "build_number": 12,
+    "package_id": "org.reware.harbor.revision12",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "signature_verified": true,
+    "fresh_test_signing_key": false,
+    "zip_crc": true,
+    "native_16k_alignment": true,
+    "model_scenes": 32,
+    "abis": [
+      "arm64-v8a",
+      "armeabi-v7a"
+    ],
+    "android_device_tested": false
+  },
+  "packaged_gameplay_assertions": 36,
+  "packaged_carry_weapons": 6
+}

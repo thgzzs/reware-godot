@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import zipfile
 
 
 def main():
@@ -46,6 +47,14 @@ def main():
             raise SystemExit(result.returncode or 1)
     if not args.output.is_file():
         raise SystemExit('Godot did not produce the requested APK.')
+    with zipfile.ZipFile(args.output) as apk:
+        forbidden = [name for name in apk.namelist() if
+                     name.startswith(('assets/tests/', 'assets/docs/', 'assets/tools/',
+                                      'assets/assets/local_source/', 'assets/assets/local_models/',
+                                      'assets/android/test-signing/')) or
+                     name.endswith(('.keystore', '.jks')) or '/tmp' in name]
+        if forbidden:
+            raise SystemExit('Development-only files found in APK: '+', '.join(forbidden[:3]))
     print(f'Created {args.output.resolve()} ({args.output.stat().st_size} bytes)')
 
 

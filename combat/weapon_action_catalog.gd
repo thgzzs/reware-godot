@@ -14,5 +14,5 @@ extends Resource
  "machete":PackedStringArray(["sword_3"]),"chainsaw":PackedStringArray(["WEAPON_csawlo"])}
 @export var long_gun_pose:WeaponPoseProfile=preload("res://tuning/long_gun_pose.tres")
 @export var standing_long_gun_pose:WeaponPoseProfile=preload("res://tuning/standing_long_gun_pose.tres")
-@export var standing_long_guns:=PackedStringArray(["m4","ruger","shotgun","stubbyshotgun","spas12shotgun"])
+@export var standing_long_guns:=PackedStringArray(["m4","ruger","shotgun","stubbyshotgun","spas12shotgun","m60"])
 @export var two_hand_pistol_pose:WeaponPoseProfile=preload("res://tuning/two_hand_pistol_pose.tres")

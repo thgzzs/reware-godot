@@ -8,6 +8,7 @@ extends Resource
 @export var air_acceleration := 3.0
 @export var air_control_speed := 1.2
 @export var air_recovery_acceleration := 16.0
+@export var opposite_input_dot := -0.15
 @export var gravity := 18.0
 @export var jump_speed := 6.5
 @export var launch_delay := 0.12
@@ -25,6 +26,7 @@ extends Resource
 @export var braking_turn_rate := 1.0
 @export var turn_speed_reference := 5.5
 @export var reversal_angle_degrees := 105.0
+@export var reversal_resume_degrees := 35.0
 @export var pivot_speed := 0.8
 
 @export var player_turn_multiplier := 1.60

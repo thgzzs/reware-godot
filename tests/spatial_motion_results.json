@@ -40,8 +40,8 @@
     },
     {
       "measured": {
-        "after": 0.933996260166168,
-        "before": 5.10496473312378
+        "after": 0.0,
+        "before": 0.0
       },
       "name": "reversal brakes before accelerating in the new direction",
       "passed": true
@@ -59,7 +59,7 @@
     {
       "measured": {
         "clip": "FALL_land",
-        "distance_m": 1.30743922665715
+        "distance_m": 1.32316182926297
       },
       "name": "landing is a progressing spatial clip rather than an idle slide",
       "passed": true

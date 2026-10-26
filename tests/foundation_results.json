@@ -70,7 +70,7 @@
     },
     {
       "measured": {
-        "at": "(-28.21202, 0.902336, -10.73359)",
+        "at": "(-28.33242, 0.902384, -10.73334)",
         "max_y": 1.77316892147064,
         "speed": 7.61089611053467
       },
@@ -87,21 +87,21 @@
     },
     {
       "measured": {
-        "after": 43.1896318847934,
+        "after": 43.1895807436387,
         "age": 2.83333333333333,
         "before": 99.99285,
-        "closing": 10.0044431686401,
+        "closing": 10.0044498443604,
         "contacts": 159,
         "fresh_hits": 1,
-        "normal": "(0.02099, -0.563647, 0.825749)"
+        "normal": "(0.020985, -0.563675, 0.82573)"
       },
       "name": "fresh collision damages an already active knockdown",
       "passed": true
     },
     {
       "measured": {
-        "after": 43.1896318847934,
-        "before": 43.1896318847934
+        "after": 43.1895807436387,
+        "before": 43.1895807436387
       },
       "name": "sustained resting contact does not drain pedestrian health",
       "passed": true

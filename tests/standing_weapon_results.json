@@ -1,12 +1,17 @@
 {
   "android_device_tested": false,
-  "assertions": 67,
+  "assertions": 86,
   "engine": "4.7.2-stable (official)",
   "failures": 0,
   "results": [
     {
-      "measured": "shotgun_fire",
-      "name": "shotgun uses the native supported two-hand ready pose",
+      "measured": "IDLE_armed",
+      "name": "shotgun restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "shotgun carries with both arm chains enabled",
       "passed": true
     },
     {
@@ -15,12 +20,12 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.0009765625,
       "name": "shotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.000000271920669092651,
+      "measured": 0.000000128184638015227,
       "name": "shotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -36,12 +41,12 @@
     },
     {
       "measured": null,
-      "name": "shotgun walk keeps both hands in the authored grip",
+      "name": "shotgun walk keeps both arms in the restored hold",
       "passed": true
     },
     {
       "measured": null,
-      "name": "shotgun run keeps both hands in the authored grip",
+      "name": "shotgun run keeps both arms in the restored hold",
       "passed": true
     },
     {
@@ -55,7 +60,7 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.294451355934143,
       "name": "shotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -66,12 +71,17 @@
     },
     {
       "measured": null,
-      "name": "shotgun sprint releases the carry layer",
+      "name": "shotgun sprint keeps carry arms with moving legs",
       "passed": true
     },
     {
-      "measured": "buddy_fire",
-      "name": "stubbyshotgun uses the native supported two-hand ready pose",
+      "measured": "IDLE_armed",
+      "name": "stubbyshotgun restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "stubbyshotgun carries with both arm chains enabled",
       "passed": true
     },
     {
@@ -80,12 +90,12 @@
       "passed": true
     },
     {
-      "measured": 0.0009765625,
+      "measured": 0.0,
       "name": "stubbyshotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.000000149754811218372,
+      "measured": 0.0000000957044434812815,
       "name": "stubbyshotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -101,12 +111,12 @@
     },
     {
       "measured": null,
-      "name": "stubbyshotgun walk keeps both hands in the authored grip",
+      "name": "stubbyshotgun walk keeps both arms in the restored hold",
       "passed": true
     },
     {
       "measured": null,
-      "name": "stubbyshotgun run keeps both hands in the authored grip",
+      "name": "stubbyshotgun run keeps both arms in the restored hold",
       "passed": true
     },
     {
@@ -120,7 +130,7 @@
       "passed": true
     },
     {
-      "measured": 0.0009765625,
+      "measured": 0.191656470298767,
       "name": "stubbyshotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -131,12 +141,17 @@
     },
     {
       "measured": null,
-      "name": "stubbyshotgun sprint releases the carry layer",
+      "name": "stubbyshotgun sprint keeps carry arms with moving legs",
       "passed": true
     },
     {
-      "measured": "buddy_fire",
-      "name": "spas12shotgun uses the native supported two-hand ready pose",
+      "measured": "IDLE_armed",
+      "name": "spas12shotgun restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "spas12shotgun carries with both arm chains enabled",
       "passed": true
     },
     {
@@ -145,12 +160,12 @@
       "passed": true
     },
     {
-      "measured": 0.0009765625,
+      "measured": 0.0,
       "name": "spas12shotgun standing shoulder follows its authored carry pose",
       "passed": true
     },
     {
-      "measured": 0.000000149754811218372,
+      "measured": 0.0000000957044434812815,
       "name": "spas12shotgun preserves both hands' native grip relationship",
       "passed": true
     },
@@ -166,12 +181,12 @@
     },
     {
       "measured": null,
-      "name": "spas12shotgun walk keeps both hands in the authored grip",
+      "name": "spas12shotgun walk keeps both arms in the restored hold",
       "passed": true
     },
     {
       "measured": null,
-      "name": "spas12shotgun run keeps both hands in the authored grip",
+      "name": "spas12shotgun run keeps both arms in the restored hold",
       "passed": true
     },
     {
@@ -185,7 +200,7 @@
       "passed": true
     },
     {
-      "measured": 0.0009765625,
+      "measured": 0.191656470298767,
       "name": "spas12shotgun lowers smoothly back into carry",
       "passed": true
     },
@@ -196,12 +211,17 @@
     },
     {
       "measured": null,
-      "name": "spas12shotgun sprint releases the carry layer",
+      "name": "spas12shotgun sprint keeps carry arms with moving legs",
       "passed": true
     },
     {
-      "measured": "RIFLE_fire",
-      "name": "ruger uses the native supported two-hand ready pose",
+      "measured": "IDLE_armed",
+      "name": "ruger restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "ruger carries with both arm chains enabled",
       "passed": true
     },
     {
@@ -215,7 +235,7 @@
       "passed": true
     },
     {
-      "measured": 0.000000044703483581543,
+      "measured": 0.000000128184638015227,
       "name": "ruger preserves both hands' native grip relationship",
       "passed": true
     },
@@ -231,12 +251,12 @@
     },
     {
       "measured": null,
-      "name": "ruger walk keeps both hands in the authored grip",
+      "name": "ruger walk keeps both arms in the restored hold",
       "passed": true
     },
     {
       "measured": null,
-      "name": "ruger run keeps both hands in the authored grip",
+      "name": "ruger run keeps both arms in the restored hold",
       "passed": true
     },
     {
@@ -250,7 +270,7 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.260088413953781,
       "name": "ruger lowers smoothly back into carry",
       "passed": true
     },
@@ -261,12 +281,17 @@
     },
     {
       "measured": null,
-      "name": "ruger sprint releases the carry layer",
+      "name": "ruger sprint keeps carry arms with moving legs",
       "passed": true
     },
     {
-      "measured": "RIFLE_fire",
-      "name": "m4 uses the native supported two-hand ready pose",
+      "measured": "IDLE_armed",
+      "name": "m4 restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m4 carries with both arm chains enabled",
       "passed": true
     },
     {
@@ -280,7 +305,7 @@
       "passed": true
     },
     {
-      "measured": 0.000000044703483581543,
+      "measured": 0.000000128184638015227,
       "name": "m4 preserves both hands' native grip relationship",
       "passed": true
     },
@@ -296,12 +321,12 @@
     },
     {
       "measured": null,
-      "name": "m4 walk keeps both hands in the authored grip",
+      "name": "m4 walk keeps both arms in the restored hold",
       "passed": true
     },
     {
       "measured": null,
-      "name": "m4 run keeps both hands in the authored grip",
+      "name": "m4 run keeps both arms in the restored hold",
       "passed": true
     },
     {
@@ -315,7 +340,7 @@
       "passed": true
     },
     {
-      "measured": 0.0,
+      "measured": 0.260088413953781,
       "name": "m4 lowers smoothly back into carry",
       "passed": true
     },
@@ -326,7 +351,77 @@
     },
     {
       "measured": null,
-      "name": "m4 sprint releases the carry layer",
+      "name": "m4 sprint keeps carry arms with moving legs",
+      "passed": true
+    },
+    {
+      "measured": "IDLE_armed",
+      "name": "m60 restores the original armed carry pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 carries with both arm chains enabled",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 carrying never enables aim IK or firing",
+      "passed": true
+    },
+    {
+      "measured": 0.0,
+      "name": "m60 standing shoulder follows its authored carry pose",
+      "passed": true
+    },
+    {
+      "measured": 0.0000001413648220705,
+      "name": "m60 preserves both hands' native grip relationship",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 leaves the standing legs in the base idle",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 idle loop neither drifts nor fires",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 walk keeps both arms in the restored hold",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 run keeps both arms in the restored hold",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 blends from carry into aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 aim overrides the relaxed hold",
+      "passed": true
+    },
+    {
+      "measured": 0.0484332740306854,
+      "name": "m60 lowers smoothly back into carry",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 reload overrides carrying",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "m60 sprint keeps carry arms with moving legs",
       "passed": true
     },
     {

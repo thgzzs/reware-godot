@@ -118,27 +118,27 @@
     },
     {
       "measured": null,
-      "name": "RIFLE keeps the supported grip in idle",
+      "name": "RIFLE keeps restored carry arms in idle",
       "passed": true
     },
     {
       "measured": null,
-      "name": "RIFLE keeps the supported grip in start",
+      "name": "RIFLE keeps restored carry arms in start",
       "passed": true
     },
     {
       "measured": null,
-      "name": "RIFLE keeps the supported grip in move",
+      "name": "RIFLE keeps restored carry arms in move",
       "passed": true
     },
     {
       "measured": null,
-      "name": "RIFLE keeps the supported grip in stop",
+      "name": "RIFLE keeps restored carry arms in stop",
       "passed": true
     },
     {
       "measured": null,
-      "name": "sprint yields to its full-body action",
+      "name": "sprint combines restored carrying arms with its leg action",
       "passed": true
     },
     {
@@ -148,27 +148,27 @@
     },
     {
       "measured": null,
-      "name": "shotgun keeps the supported grip in idle",
+      "name": "shotgun keeps restored carry arms in idle",
       "passed": true
     },
     {
       "measured": null,
-      "name": "shotgun keeps the supported grip in start",
+      "name": "shotgun keeps restored carry arms in start",
       "passed": true
     },
     {
       "measured": null,
-      "name": "shotgun keeps the supported grip in move",
+      "name": "shotgun keeps restored carry arms in move",
       "passed": true
     },
     {
       "measured": null,
-      "name": "shotgun keeps the supported grip in stop",
+      "name": "shotgun keeps restored carry arms in stop",
       "passed": true
     },
     {
       "measured": null,
-      "name": "sprint yields to its full-body action",
+      "name": "sprint combines restored carrying arms with its leg action",
       "passed": true
     },
     {
