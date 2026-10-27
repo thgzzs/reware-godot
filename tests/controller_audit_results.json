@@ -1,0 +1,162 @@
+{
+  "android_device_tested": false,
+  "assertions": 28,
+  "assets": "synthetic clips, production Jolt collision",
+  "engine": "4.7.2-stable (official)",
+  "failures": 0,
+  "results": [
+    {
+      "measured": null,
+      "name": "install retains bindings without duplicates",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action left",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action forward",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action jump",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action interact",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action aim",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action fire",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action look_left",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "gamepad uses the shared action look_down",
+      "passed": true
+    },
+    {
+      "measured": "(0.5625, 0.0)",
+      "name": "joypad axis reaches GameplayCommand with analog strength",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "joypad axis release clears movement",
+      "passed": true
+    },
+    {
+      "measured": [
+        -1.44000012427568,
+        -1.44000012427568,
+        -1.44000012427568
+      ],
+      "name": "stick yaw is invariant at 30/60/120 Hz",
+      "passed": true
+    },
+    {
+      "measured": "(0.0, 0.0, -7.0)",
+      "name": "root integration handles more than three loops",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "loop displacement is additive across a delayed tick",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "zero-time motion is zero",
+      "passed": true
+    },
+    {
+      "measured": [
+        0.824999690055847,
+        2.19999980926514
+      ],
+      "name": "half-stick aiming consumes its full selected walk root",
+      "passed": true
+    },
+    {
+      "measured": [
+        0.824999690055847,
+        2.19999980926514
+      ],
+      "name": "full-stick aiming consumes selected run root",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "switching cancels the preceding weapon action pose",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic configuration survives reference setup",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "source gravity and player impulse use 50 Hz units",
+      "passed": true
+    },
+    {
+      "measured": 0.35,
+      "name": "classic intensity rises by 0.07 times normalized time",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic release clears movement intensity immediately",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic heavy-weapon flag blocks jumping",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic heavy-weapon flag blocks sprinting",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic reads source bits instead of modern weapon-name tuning",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic does not apply tap speed boosts",
+      "passed": true
+    },
+    {
+      "measured": {
+        "after": "(0.0, 0.0, -8.5)",
+        "before": "(0.0, 0.0, -8.5)"
+      },
+      "name": "classic opposite air input retains planar launch momentum",
+      "passed": true
+    },
+    {
+      "measured": null,
+      "name": "classic airborne edge does not create a buffered jump",
+      "passed": true
+    }
+  ]
+}

@@ -11,6 +11,8 @@ extends Resource
 @export var fov := 72.0
 @export var aim_fov := 54.0
 @export var mouse_sensitivity := 0.0025
+## Radians per second at full right-stick deflection.
+@export var stick_sensitivity := 2.4
 @export var min_pitch := -0.8
 @export var max_pitch := 1.1
 @export var collision_radius := 0.20

@@ -9,6 +9,15 @@ def module(name):
 converter=module('convert_model_placeholders')
 inspector=module('inspect_rw_archive')
 def chunk(kind,payload):return struct.pack('<III',kind,len(payload),0x1003ffff)+payload
+def texture_inputs_available():
+ folder=ROOT/'assets/converted/models'
+ report=folder/'model_conversion_report.json'
+ return not (folder/'textures/.apk_recovered').exists() and report.is_file() and all((folder/entry['path']).is_file()
+                                 for entry in json.loads(report.read_text())['texture_exports'])
+def original_models_available():
+ selection=json.loads((ROOT/'assets/model_selection.json').read_text())
+ return all((ROOT/'assets/local_models'/(entry['role']+'.dff')).is_file()
+            for entry in selection['models'])
 
 class ModelConversionTests(unittest.TestCase):
  def test_matrix_basis_conjugation(self):
@@ -28,7 +37,7 @@ class ModelConversionTests(unittest.TestCase):
    self.assertEqual(result['entries'][0]['names'],['example'])
    self.assertFalse(result['original_filenames_available'])
    self.assertEqual(len(list(Path(temp).iterdir())),1)
- @unittest.skipUnless((ROOT/'assets/converted/models/model_conversion_report.json').exists(),'Supply private converted assets')
+ @unittest.skipUnless(texture_inputs_available(),'Supply original PNGs; APK texture imports are insufficient for byte provenance')
  def test_every_png_preserves_decoded_rgba(self):
   folder=ROOT/'assets/converted/models'
   report=json.loads((folder/'model_conversion_report.json').read_text())
@@ -42,7 +51,7 @@ class ModelConversionTests(unittest.TestCase):
    self.assertEqual(image.size,(texture['width'],texture['height']))
    self.assertEqual(hashlib.sha256(image.tobytes()).hexdigest(),texture['rgba_sha256'])
    self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),texture['png_sha256'])
- @unittest.skipUnless((ROOT/'assets/converted/models/models.json').exists(),'Supply private converted assets')
+ @unittest.skipUnless(original_models_available(),'Supply original DFF inputs; converted model metadata alone is insufficient')
  def test_selected_original_model_hashes(self):
   selection=json.loads((ROOT/'assets/model_selection.json').read_text())
   for model in selection['models']:

@@ -1,5 +1,7 @@
 class_name MovementProfile
 extends Resource
+## Opt-in source rules; false retains the shipped Rev12 accessibility/turning policy.
+@export var classic_revc := false
 @export var speed := 5.0
 @export var sprint_speed := 7.5
 @export var aim_multiplier := 0.50

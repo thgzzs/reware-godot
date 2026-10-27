@@ -1,5 +1,9 @@
 class_name WeaponProfile
 extends Resource
+## Original WeaponInfo bits; -1 permits manually authored profiles to use heavy.
+@export var source_flags := -1
+func classic_heavy() -> bool:
+ return heavy if source_flags<0 else (source_flags & 0x200)!=0
 @export var pose: WeaponPoseProfile = preload("res://tuning/weapon_pose.tres")
 @export var id := "colt45"
 @export_enum("hitscan","melee") var kind := "hitscan"

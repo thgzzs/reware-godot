@@ -1,0 +1,2162 @@
+{
+  "scope": "Static inventory of every GDScript in the Rev12-derived project; an inventory does not establish semantic equivalence.",
+  "scripts": [
+    {
+      "path": "actors/character_motor.gd",
+      "lines": 669,
+      "class": "CharacterMotor",
+      "functions": [
+        "_ready",
+        "configure_reference",
+        "receive_damage",
+        "receive_hit",
+        "set_reaction_shape",
+        "receive_vehicle_impact",
+        "cancel_locomotion",
+        "begin_terrain_collapse",
+        "tick_reaction",
+        "restore_control",
+        "respawn",
+        "tick",
+        "apply_air_control",
+        "receive_fall_landing",
+        "retire_corpse",
+        "jump_has_clearance",
+        "can_use_weapon",
+        "slope_cos",
+        "try_step",
+        "ignore_vehicle_until_restored",
+        "set_embarked",
+        "reset_at"
+      ],
+      "resource_references": [
+        "res://tuning/weapon.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 2,
+        "intersect_shape": 2,
+        "test_move": 6,
+        "move_and_collide": 5
+      }
+    },
+    {
+      "path": "actors/character_steering.gd",
+      "lines": 30,
+      "class": "CharacterSteering",
+      "functions": [
+        "update"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/corpse_hitbox.gd",
+      "lines": 12,
+      "class": "CorpseHitbox",
+      "functions": [
+        "configure",
+        "activate",
+        "clear",
+        "receive_hit"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/fall_profile.gd",
+      "lines": 20,
+      "class": "FallProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/fall_state.gd",
+      "lines": 54,
+      "class": "ActorFallState",
+      "functions": [
+        "reset",
+        "begin_jump",
+        "observe_air",
+        "air_clip",
+        "pose_time",
+        "land",
+        "closing_speed"
+      ],
+      "resource_references": [
+        "res://tuning/fall.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/impact_profile.gd",
+      "lines": 23,
+      "class": "PedImpactProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/landing_profile.gd",
+      "lines": 25,
+      "class": "LandingProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/landing_state.gd",
+      "lines": 84,
+      "class": "ActorLandingState",
+      "functions": [
+        "reset",
+        "start",
+        "set_intent",
+        "blend_at",
+        "follow_time",
+        "contact_time",
+        "pose_layers",
+        "tick"
+      ],
+      "resource_references": [
+        "res://tuning/landing.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/occupant_hitbox.gd",
+      "lines": 5,
+      "class": "OccupantHitbox",
+      "functions": [
+        "receive_hit"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/ped_brain.gd",
+      "lines": 83,
+      "class": "PedBrain",
+      "functions": [
+        "reset_decisions",
+        "_ready",
+        "on_attacked",
+        "_physics_process",
+        "hear_shot"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/ped_health.gd",
+      "lines": 18,
+      "class": "PedHealth",
+      "functions": [
+        "reset",
+        "receive"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/ped_reaction_body.gd",
+      "lines": 233,
+      "class": "PedReactionBody",
+      "functions": [
+        "configure",
+        "launch_velocity",
+        "launch",
+        "_integrate_forces",
+        "follow_pose",
+        "can_recover",
+        "getup_clip",
+        "deactivate",
+        "receive_hit",
+        "receive_damage"
+      ],
+      "resource_references": [
+        "res://tuning/ped_impact.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 2,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "actors/ped_recovery_solver.gd",
+      "lines": 101,
+      "class": "PedRecoverySolver",
+      "functions": [
+        "reset",
+        "getup_obstructed",
+        "floor_at",
+        "standing",
+        "clear_route",
+        "find_destination",
+        "tick"
+      ],
+      "resource_references": [
+        "res://tuning/ped_recovery.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 3
+      }
+    },
+    {
+      "path": "actors/reaction_rest.gd",
+      "lines": 37,
+      "class": "ReactionRestState",
+      "functions": [
+        "reset",
+        "begin",
+        "observe",
+        "basis_on_floor"
+      ],
+      "resource_references": [
+        "res://tuning/reaction_rest.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/reaction_rest_profile.gd",
+      "lines": 13,
+      "class": "ReactionRestProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/recovery_profile.gd",
+      "lines": 13,
+      "class": "PedRecoveryProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/spawn_profile.gd",
+      "lines": 9,
+      "class": "ActorSpawnProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/spawn_recovery.gd",
+      "lines": 61,
+      "class": "ActorSpawnRecovery",
+      "functions": [
+        "_ready",
+        "_physics_process",
+        "recover",
+        "safe_spawn"
+      ],
+      "resource_references": [
+        "res://tuning/spawn.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "actors/sprint_profile.gd",
+      "lines": 7,
+      "class": "SprintProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/sprint_state.gd",
+      "lines": 34,
+      "class": "ActorSprintState",
+      "functions": [
+        "reset",
+        "tick"
+      ],
+      "resource_references": [
+        "res://tuning/sprint.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "actors/stance.gd",
+      "lines": 34,
+      "class": "CharacterStance",
+      "functions": [
+        "configure",
+        "can_stand",
+        "set_crouched",
+        "read_command",
+        "reset"
+      ],
+      "resource_references": [
+        "res://tuning/stance.tres"
+      ],
+      "physics_queries": {
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "actors/stance_profile.gd",
+      "lines": 7,
+      "class": "StanceProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/action_profile.gd",
+      "lines": 28,
+      "class": "ActionProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/actor_action_state.gd",
+      "lines": 181,
+      "class": "ActorActionState",
+      "functions": [
+        "full_body_busy",
+        "choose_reaction",
+        "react",
+        "spatial_hit",
+        "reaction_at",
+        "reaction_travel",
+        "react_on_floor",
+        "includes_upper_bone",
+        "resolve",
+        "fire",
+        "begin_life",
+        "reset",
+        "tick",
+        "upper_clip",
+        "upper_time"
+      ],
+      "resource_references": [
+        "res://tuning/actions.tres",
+        "res://tuning/weapon_pose.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/gait_profile.gd",
+      "lines": 6,
+      "class": "GaitProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/imported_asset_setup.gd",
+      "lines": 114,
+      "class": "ImportedAssetSetup",
+      "functions": [
+        "available",
+        "weapon_profile",
+        "apply"
+      ],
+      "resource_references": [
+        "res://assets/converted/gameplay_database.tres",
+        "res://assets/converted/legacy_crouch.res",
+        "res://assets/converted/models/",
+        "res://assets/converted/ped_library.res",
+        "res://scenes/character.tscn",
+        "res://tuning/",
+        "res://tuning/all_drive_fixture.tres",
+        "res://tuning/front_drive_fixture.tres",
+        "res://tuning/weapon_actions.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/imported_database.gd",
+      "lines": 14,
+      "class": "ImportedGameplayDatabase",
+      "functions": [
+        "find_record"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/reference_motion.gd",
+      "lines": 127,
+      "class": "ReferenceMotion",
+      "functions": [
+        "_init",
+        "duration",
+        "set_clip",
+        "position_at",
+        "segment",
+        "loop_segment",
+        "pose_layers",
+        "force_action",
+        "step"
+      ],
+      "resource_references": [
+        "res://tuning/gait.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/reference_pose.gd",
+      "lines": 77,
+      "class": "ReferencePose",
+      "functions": [
+        "_ready",
+        "_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/rig_binding.gd",
+      "lines": 27,
+      "class": "AnimationRigBinding",
+      "functions": [
+        "canonical",
+        "indices_for",
+        "build"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "animation/rig_profile.gd",
+      "lines": 4,
+      "class": "AnimationRigProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "camera/follow_rig.gd",
+      "lines": 66,
+      "class": "FollowCameraRig",
+      "functions": [
+        "_ready",
+        "read_look",
+        "tick",
+        "add_recoil"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "cast_motion": 1
+      }
+    },
+    {
+      "path": "combat/aim_solution.gd",
+      "lines": 9,
+      "class": "AimSolution",
+      "functions": [
+        "camera_target"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/ballistic_trace.gd",
+      "lines": 8,
+      "class": "BallisticTrace",
+      "functions": [
+        "cast"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "combat/damage_event.gd",
+      "lines": 23,
+      "class": "DamageEvent",
+      "functions": [
+        "make",
+        "deliver"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/explosion.gd",
+      "lines": 33,
+      "class": "GameplayExplosion",
+      "functions": [
+        "emit"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "combat/health.gd",
+      "lines": 26,
+      "class": "DamageReceiver",
+      "functions": [
+        "_ready",
+        "receive_damage",
+        "_physics_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/melee.gd",
+      "lines": 172,
+      "class": "MeleeController",
+      "functions": [
+        "configure",
+        "request",
+        "cancel",
+        "tick",
+        "read_locomotion",
+        "posed_tip",
+        "root_delta",
+        "strike_tip",
+        "resolve_spatial_hits",
+        "strike",
+        "strike_at"
+      ],
+      "resource_references": [
+        "res://tuning/melee.tres",
+        "res://tuning/weapon_actions.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "combat/melee_profile.gd",
+      "lines": 18,
+      "class": "MeleeProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/melee_targeting.gd",
+      "lines": 18,
+      "class": "MeleeTargeting",
+      "functions": [
+        "ground_target"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "combat/weapon.gd",
+      "lines": 151,
+      "class": "WeaponController",
+      "functions": [
+        "_ready",
+        "configure_loadout",
+        "equip_slot",
+        "request_equip",
+        "select",
+        "advance_equip",
+        "start_reload",
+        "tick",
+        "advance",
+        "try_fire",
+        "fire_ray"
+      ],
+      "resource_references": [
+        "res://tuning/arsenal.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/weapon_action_catalog.gd",
+      "lines": 18,
+      "class": "WeaponActionCatalog",
+      "functions": [],
+      "resource_references": [
+        "res://tuning/long_gun_pose.tres",
+        "res://tuning/standing_long_gun_pose.tres",
+        "res://tuning/two_hand_pistol_pose.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "combat/weapon_equip_state.gd",
+      "lines": 18,
+      "class": "WeaponEquipState",
+      "functions": [
+        "busy",
+        "begin",
+        "reset",
+        "pose_weight"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "core/command.gd",
+      "lines": 25,
+      "class": "GameplayCommand",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "core/input_source.gd",
+      "lines": 74,
+      "class": "LocalInputSource",
+      "functions": [
+        "install",
+        "add_binding",
+        "install_gamepad",
+        "sample"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "debug/animation_browser.gd",
+      "lines": 98,
+      "class": "ImportedAnimationBrowser",
+      "functions": [
+        "_ready",
+        "refilter",
+        "select",
+        "toggle",
+        "_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "debug/lab_overlay.gd",
+      "lines": 3,
+      "class": "LabOverlay",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "debug/telemetry.gd",
+      "lines": 21,
+      "class": "GameplayTelemetry",
+      "functions": [
+        "_init",
+        "record",
+        "summary"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/bike_dynamics.gd",
+      "lines": 99,
+      "class": "BikeDynamics",
+      "functions": [
+        "configure",
+        "release_rider",
+        "use_wheel_support",
+        "fallen",
+        "record_collision",
+        "take_crash",
+        "solve",
+        "update_visuals"
+      ],
+      "resource_references": [
+        "res://tuning/bike.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/bike_profile.gd",
+      "lines": 35,
+      "class": "BikeProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/damage_profile.gd",
+      "lines": 16,
+      "class": "VehicleDamageProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/door_profile.gd",
+      "lines": 13,
+      "class": "VehicleDoorProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/handling_mapper.gd",
+      "lines": 27,
+      "class": "HandlingDataMapper",
+      "functions": [
+        "apply"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/hit_region.gd",
+      "lines": 25,
+      "class": "VehicleHitRegion",
+      "functions": [
+        "configure",
+        "receive_hit",
+        "receive_damage"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/part_debris.gd",
+      "lines": 39,
+      "class": "VehiclePartDebris",
+      "functions": [
+        "configure",
+        "receive_hit",
+        "_physics_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/part_profile.gd",
+      "lines": 11,
+      "class": "VehiclePartProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/pedestrian_impact.gd",
+      "lines": 28,
+      "class": "PedestrianImpactProbe",
+      "functions": [
+        "configure",
+        "sweep"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/respawn_profile.gd",
+      "lines": 8,
+      "class": "VehicleRespawnProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/seat_definition.gd",
+      "lines": 8,
+      "class": "VehicleSeatDefinition",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/seat_map.gd",
+      "lines": 53,
+      "class": "VehicleSeatMap",
+      "functions": [
+        "configure",
+        "add",
+        "available",
+        "reserve",
+        "commit",
+        "transfer",
+        "release",
+        "choose"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle.gd",
+      "lines": 189,
+      "class": "DriveVehicle",
+      "functions": [
+        "wheel_indices",
+        "_ready",
+        "_physics_process",
+        "set_door_open",
+        "seat_position",
+        "approach_position",
+        "upright_basis",
+        "command",
+        "_integrate_forces",
+        "update_visuals",
+        "reserve_seat",
+        "commit_seat",
+        "release_seat",
+        "receive_hit",
+        "coast",
+        "receive_damage",
+        "park",
+        "reset_at"
+      ],
+      "resource_references": [
+        "res://tuning/doors.tres",
+        "res://tuning/spawn.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 2
+      }
+    },
+    {
+      "path": "driving/vehicle_damage.gd",
+      "lines": 133,
+      "class": "VehicleDamage",
+      "functions": [
+        "configure",
+        "receive_hit",
+        "burst_tire",
+        "hit_glass",
+        "update_glass",
+        "sample_contacts",
+        "tick",
+        "change",
+        "detonate",
+        "repair"
+      ],
+      "resource_references": [
+        "res://tuning/vehicle_damage.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_door.gd",
+      "lines": 93,
+      "class": "VehicleDoor",
+      "functions": [
+        "configure",
+        "request_open",
+        "_physics_process",
+        "attach_model",
+        "reset_with_chassis"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_factory.gd",
+      "lines": 57,
+      "class": "VehicleFactory",
+      "functions": [
+        "spawn"
+      ],
+      "resource_references": [
+        "res://scenes/vehicle.tscn",
+        "res://tuning/handling.tres",
+        "res://tuning/placeholder_assets.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_hitboxes.gd",
+      "lines": 65,
+      "class": "VehicleHitboxes",
+      "functions": [
+        "box",
+        "install",
+        "refresh"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_parts.gd",
+      "lines": 99,
+      "class": "VehicleParts",
+      "functions": [
+        "configure",
+        "bind_model",
+        "bounds_for",
+        "id_for_node",
+        "nearest",
+        "receive",
+        "receive_collision",
+        "update_visual",
+        "repair"
+      ],
+      "resource_references": [
+        "res://tuning/vehicle_parts.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_recovery.gd",
+      "lines": 48,
+      "class": "VehicleRecovery",
+      "functions": [
+        "tick",
+        "clear_spawn"
+      ],
+      "resource_references": [
+        "res://tuning/vehicle_respawn.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "driving/vehicle_stability.gd",
+      "lines": 18,
+      "class": "VehicleStability",
+      "functions": [
+        "solve"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/vehicle_variant.gd",
+      "lines": 20,
+      "class": "VehicleVariant",
+      "functions": [
+        "bailout_clip"
+      ],
+      "resource_references": [
+        "res://assets/converted/models/idaho.scn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "driving/wheel_solver.gd",
+      "lines": 58,
+      "class": "WheelForceSolver",
+      "functions": [
+        "solve"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "input/touch_controls.gd",
+      "lines": 153,
+      "class": "MobileControls",
+      "functions": [
+        "_ready",
+        "clear",
+        "sync_context",
+        "update_layout",
+        "add_button",
+        "_process",
+        "_notification",
+        "_input",
+        "gui_pointer",
+        "has_role",
+        "set_stick",
+        "_draw"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "input/touch_intent.gd",
+      "lines": 35,
+      "class": "TouchIntent",
+      "functions": [
+        "press",
+        "release",
+        "down",
+        "clear",
+        "apply"
+      ],
+      "resource_references": [
+        "res://tuning/touch.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "input/touch_profile.gd",
+      "lines": 7,
+      "class": "TouchProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "interaction/bike_ejection_solver.gd",
+      "lines": 18,
+      "class": "BikeEjectionSolver",
+      "functions": [
+        "destination"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1
+      }
+    },
+    {
+      "path": "interaction/vehicle_approach.gd",
+      "lines": 94,
+      "class": "VehicleApproach",
+      "functions": [
+        "clear_segment",
+        "floor_point",
+        "plan",
+        "command",
+        "can_align",
+        "begin_alignment",
+        "align",
+        "cancel_alignment",
+        "advance"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "cast_motion": 1,
+        "move_and_collide": 1
+      }
+    },
+    {
+      "path": "interaction/vehicle_entry_geometry.gd",
+      "lines": 33,
+      "class": "VehicleEntryGeometry",
+      "functions": [
+        "root_at",
+        "configure"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "interaction/vehicle_exit_solver.gd",
+      "lines": 45,
+      "class": "VehicleExitSolver",
+      "functions": [
+        "select"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1,
+        "intersect_shape": 1,
+        "cast_motion": 1
+      }
+    },
+    {
+      "path": "interaction/vehicle_transition.gd",
+      "lines": 473,
+      "class": "VehicleTransition",
+      "functions": [
+        "clip_for",
+        "request_enter",
+        "begin_entry",
+        "approach_command",
+        "cancel_approach",
+        "tick_approach",
+        "request_exit",
+        "action",
+        "tick",
+        "finish_exit",
+        "request_eject",
+        "commit_eject",
+        "align_to_seat",
+        "align_pelvis",
+        "shuffle_duration",
+        "request_switch_driver",
+        "find_exit",
+        "recover",
+        "abort_for_respawn",
+        "change_state",
+        "_exit_tree",
+        "begin_lift",
+        "tick_lift",
+        "cancel_lift",
+        "crash_eject"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 2,
+        "intersect_shape": 1,
+        "cast_motion": 1
+      }
+    },
+    {
+      "path": "physics/legacy_units.gd",
+      "lines": 12,
+      "class": "LegacyPhysicsUnits",
+      "functions": [
+        "velocity",
+        "acceleration",
+        "impulse",
+        "player_jump_speed",
+        "jump_forward"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/display_controller.gd",
+      "lines": 88,
+      "class": "DisplayController",
+      "functions": [
+        "_ready",
+        "save_settings",
+        "set_render_scale",
+        "set_ui_scale",
+        "set_adaptive",
+        "sample_frame",
+        "_process",
+        "hud_layout"
+      ],
+      "resource_references": [
+        "res://tuning/display.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/display_profile.gd",
+      "lines": 10,
+      "class": "DisplayProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/equipped_weapon_visual.gd",
+      "lines": 28,
+      "class": "EquippedWeaponVisual",
+      "functions": [
+        "_ready",
+        "update_model",
+        "_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/explosion_visual.gd",
+      "lines": 20,
+      "class": "ExplosionVisual",
+      "functions": [
+        "_ready",
+        "_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/gameplay_hud.gd",
+      "lines": 229,
+      "class": "GameplayHud",
+      "functions": [
+        "_ready",
+        "build_settings",
+        "sync_settings",
+        "toggle_settings",
+        "on_shot",
+        "_process",
+        "text_at",
+        "modal_style",
+        "_draw",
+        "draw_radar",
+        "radar_point",
+        "draw_world_markers",
+        "draw_help"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/model_placeholder_setup.gd",
+      "lines": 211,
+      "class": "ModelPlaceholderSetup",
+      "functions": [
+        "apply_character",
+        "apply_vehicle",
+        "apply_bike",
+        "apply",
+        "apply_surface"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/placeholder_assets.gd",
+      "lines": 27,
+      "class": "PlaceholderAssets",
+      "functions": [
+        "scene",
+        "texture"
+      ],
+      "resource_references": [
+        "res://assets/converted/models/colt45.scn",
+        "res://assets/converted/models/idaho.scn",
+        "res://assets/converted/models/player.scn",
+        "res://assets/converted/models/player_rig.tres",
+        "res://assets/converted/models/trashcan.scn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/shot_presentation.gd",
+      "lines": 26,
+      "class": "ShotPresentation",
+      "functions": [
+        "configure",
+        "shot",
+        "_process"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/skinned_motion_visual.gd",
+      "lines": 274,
+      "class": "SkinnedMotionVisual",
+      "functions": [
+        "_ready",
+        "binding",
+        "rotation_at",
+        "position_at",
+        "scale_at",
+        "sample_pose",
+        "lower_native_carry",
+        "skin_minimum_y",
+        "settle_reaction_pose",
+        "turn_joint",
+        "aim_arms",
+        "_process",
+        "aim_native_upper_body"
+      ],
+      "resource_references": [],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "presentation/vehicle_damage_visual.gd",
+      "lines": 49,
+      "class": "VehicleDamageVisual",
+      "functions": [
+        "configure",
+        "update_state"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/vehicle_scorch.gd",
+      "lines": 31,
+      "class": "VehicleScorch",
+      "functions": [
+        "material",
+        "apply",
+        "restore"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "presentation/weapon_pose_profile.gd",
+      "lines": 19,
+      "class": "WeaponPoseProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "props/physical_prop.gd",
+      "lines": 25,
+      "class": "PhysicalProp",
+      "functions": [
+        "_ready",
+        "receive_hit"
+      ],
+      "resource_references": [
+        "res://tuning/trashcan.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "props/prop_profile.gd",
+      "lines": 8,
+      "class": "PhysicalPropProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_action_preview.gd",
+      "lines": 67,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "save_image",
+        "capture"
+      ],
+      "resource_references": [
+        "res://docs/revision-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_behavior_preview.gd",
+      "lines": 52,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "equip",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/behavior-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_fall_melee_preview.gd",
+      "lines": 37,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/fall-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_fire_preview.gd",
+      "lines": 21,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/systems-burning.png",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_imported_preview.gd",
+      "lines": 34,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "capture"
+      ],
+      "resource_references": [
+        "res://docs/animation-browser.png",
+        "res://docs/imported-preview.png",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_mobile_preview.gd",
+      "lines": 25,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/mobile-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_model_preview.gd",
+      "lines": 49,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "settle",
+        "save_image",
+        "capture"
+      ],
+      "resource_references": [
+        "res://docs/animation-browser-preview.png",
+        "res://docs/aspect-4-3-preview.png",
+        "res://docs/aspect-portrait-preview.png",
+        "res://docs/aspect-wide-preview.png",
+        "res://docs/display-preview.png",
+        "res://docs/model-preview.png",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_native_intent_preview.gd",
+      "lines": 39,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/intent-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_spatial_preview.gd",
+      "lines": 50,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/spatial-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_stories_preview.gd",
+      "lines": 85,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "equip",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/stories-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/render_systems_preview.gd",
+      "lines": 51,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "capture",
+        "run"
+      ],
+      "resource_references": [
+        "res://docs/systems-",
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_actions_revision_suite.gd",
+      "lines": 119,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "reset",
+        "paint",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/actions_revision_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_behavior_revision_suite.gd",
+      "lines": 161,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "equip",
+        "reset",
+        "board",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/behavior_revision_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_controller_audit_suite.gd",
+      "lines": 101,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "reset",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/controller_audit_results.json",
+        "res://tuning/movement_classic.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_controller_profile.gd",
+      "lines": 24,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/controller_profile_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_fall_melee_suite.gd",
+      "lines": 177,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "equip",
+        "drop",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://scenes/target.tscn",
+        "res://tests/fall_melee_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_foundation_suite.gd",
+      "lines": 97,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/foundation_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_imported_suite.gd",
+      "lines": 213,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "place",
+        "validate_native",
+        "run"
+      ],
+      "resource_references": [
+        "res://assets/converted/stories_animation_source.json",
+        "res://scenes/arena.tscn",
+        "res://tests/imported_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_intent_revision_suite.gd",
+      "lines": 171,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "fixture",
+        "until_state",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/intent_revision_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_landing_control_suite.gd",
+      "lines": 129,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "reset",
+        "forward",
+        "prepare_jump",
+        "landing_with_input",
+        "cancel_after_contact",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/landing_control_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_mobile_suite.gd",
+      "lines": 119,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "touch",
+        "drag",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/mobile_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_motion_suite.gd",
+      "lines": 172,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "image_at",
+        "run",
+        "check_upper_block"
+      ],
+      "resource_references": [
+        "res://docs/motion-",
+        "res://scenes/arena.tscn",
+        "res://tests/motion_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_native_action_suite.gd",
+      "lines": 123,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "skin_bounds",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/native_action_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_native_intent_suite.gd",
+      "lines": 113,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "skin_bounds",
+        "until_state",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/native_intent_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_overhaul_suite.gd",
+      "lines": 108,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "reset",
+        "slot",
+        "pin",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/overhaul_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_presentation_suite.gd",
+      "lines": 142,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "test_skin",
+        "test_layout",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/presentation_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_recovery_suite.gd",
+      "lines": 78,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "recovery_for",
+        "board",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/recovery_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_revision_suite.gd",
+      "lines": 236,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "library",
+        "visual",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://scenes/character.tscn",
+        "res://tests/revision_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_spatial_motion_suite.gd",
+      "lines": 130,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "reset",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/spatial_motion_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_standing_weapon_suite.gd",
+      "lines": 78,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "slot",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/standing_weapon_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_stories_assets.gd",
+      "lines": 90,
+      "class": "",
+      "functions": [
+        "check",
+        "_initialize",
+        "run"
+      ],
+      "resource_references": [
+        "res://assets/converted/gameplay_database.tres",
+        "res://assets/converted/models/",
+        "res://assets/converted/ped_library.res",
+        "res://assets/converted/stories_animation_source.json",
+        "res://assets/converted/stories_catalog.json",
+        "res://assets/stories_model_selection.json",
+        "res://tests/stories_assets_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_stories_suite.gd",
+      "lines": 263,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "equip",
+        "reset_actor",
+        "board",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/stories_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_suite.gd",
+      "lines": 285,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "place_actor",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://scenes/vehicle.tscn",
+        "res://tests/latest_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_systems_suite.gd",
+      "lines": 216,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "frames",
+        "check",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://scenes/vehicle.tscn",
+        "res://tests/systems_results.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_timing_scenario.gd",
+      "lines": 56,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "run",
+        "finish"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/timing_"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/run_traversal_contract_suite.gd",
+      "lines": 141,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "check",
+        "frames",
+        "reset",
+        "ground",
+        "carry_math",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn",
+        "res://tests/traversal_contract_results.json",
+        "res://tuning/standing_long_gun_pose.tres"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "tests/transition_wait.gd",
+      "lines": 10,
+      "class": "TransitionTestWait",
+      "functions": [
+        "approach"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tests/traversal_fixture.gd",
+      "lines": 21,
+      "class": "TraversalTestFixture",
+      "functions": [
+        "library"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tools/build_animation_library.gd",
+      "lines": 78,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "build"
+      ],
+      "resource_references": [
+        "res://assets/converted/gameplay_database.json",
+        "res://assets/converted/gameplay_database.tres",
+        "res://assets/converted/native_build_report.json",
+        "res://assets/converted/ped_animation_source.json",
+        "res://assets/converted/ped_library.res"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tools/build_legacy_crouch.gd",
+      "lines": 25,
+      "class": "",
+      "functions": [
+        "_initialize"
+      ],
+      "resource_references": [
+        "res://assets/converted/legacy_crouch.res",
+        "res://assets/converted/ped_animation_source.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tools/build_model_scenes.gd",
+      "lines": 138,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "vec",
+        "transform",
+        "material",
+        "geometry",
+        "own_children",
+        "build"
+      ],
+      "resource_references": [
+        "res://assets/converted/models/"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tools/build_stories_library.gd",
+      "lines": 67,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "make_animation",
+        "build"
+      ],
+      "resource_references": [
+        "res://assets/converted/gameplay_database.json",
+        "res://assets/converted/gameplay_database.tres",
+        "res://assets/converted/native_stories_build_report.json",
+        "res://assets/converted/ped_library.res",
+        "res://assets/converted/stories_animation_source.json"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tools/check_android_payload.gd",
+      "lines": 37,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "run"
+      ],
+      "resource_references": [
+        "res://scenes/arena.tscn"
+      ],
+      "physics_queries": {
+        "intersect_ray": 1
+      }
+    },
+    {
+      "path": "tools/check_project_scripts.gd",
+      "lines": 16,
+      "class": "",
+      "functions": [
+        "_initialize",
+        "scan"
+      ],
+      "resource_references": [
+        "res://tools/check_project_scripts.gd"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/camera_profile.gd",
+      "lines": 18,
+      "class": "CameraProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/handling_profile.gd",
+      "lines": 32,
+      "class": "HandlingProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/interaction_profile.gd",
+      "lines": 31,
+      "class": "InteractionProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/movement_profile.gd",
+      "lines": 34,
+      "class": "MovementProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/weapon_loadout.gd",
+      "lines": 4,
+      "class": "WeaponLoadout",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "tuning/weapon_profile.gd",
+      "lines": 34,
+      "class": "WeaponProfile",
+      "functions": [
+        "classic_heavy"
+      ],
+      "resource_references": [
+        "res://assets/converted/models/colt45.scn",
+        "res://tuning/weapon_pose.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "world/arena.gd",
+      "lines": 252,
+      "class": "",
+      "functions": [
+        "_ready",
+        "uses_touch_controls",
+        "_notification",
+        "_unhandled_input",
+        "_physics_process",
+        "nearest_vehicle",
+        "build_world"
+      ],
+      "resource_references": [
+        "res://scenes/character.tscn",
+        "res://scenes/target.tscn",
+        "res://scenes/vehicle.tscn",
+        "res://tuning/camera.tres",
+        "res://tuning/interaction.tres",
+        "res://tuning/movement.tres",
+        "res://tuning/placeholder_assets.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "world/primitives.gd",
+      "lines": 38,
+      "class": "LabGeometry",
+      "functions": [
+        "material",
+        "box",
+        "label"
+      ],
+      "resource_references": [],
+      "physics_queries": {}
+    },
+    {
+      "path": "world/traversal_course.gd",
+      "lines": 63,
+      "class": "TraversalCourse",
+      "functions": [
+        "_ready",
+        "block",
+        "signpost",
+        "deck",
+        "build_slopes",
+        "build_garden",
+        "build_drop_tower",
+        "build_void_loop"
+      ],
+      "resource_references": [
+        "res://tuning/traversal_course.tres"
+      ],
+      "physics_queries": {}
+    },
+    {
+      "path": "world/traversal_course_profile.gd",
+      "lines": 16,
+      "class": "TraversalCourseProfile",
+      "functions": [],
+      "resource_references": [],
+      "physics_queries": {}
+    }
+  ]
+}

@@ -41,6 +41,10 @@ func equip_slot(index: int) -> bool:
   inventory[active_slot].magazine = magazine
   inventory[active_slot].reserve = reserve
  melee.cancel()
+ if actor!=null:
+  actor.actions.firing_left=0
+  actor.actions.reloading=false
+  actor.actions.reload_weight=0
  active_slot = index
  profile = inventory[index].profile
  magazine = inventory[index].magazine
@@ -109,7 +113,6 @@ func try_fire(cmd: GameplayCommand, space: PhysicsDirectSpaceState3D, camera: Ca
   return
  if reload_left>0 or cooldown>0.000001: return
  if actor!=null:
-  var target := AimSolution.camera_target(space,camera,profile.range_meters,exclude)
   var toward := -camera.global_basis.z
   var forward := Basis(Vector3.UP,actor.facing)*Vector3.FORWARD
   if forward.dot(Vector3(toward.x,0,toward.z).normalized())<cos(1.1 if cmd.aim or profile.two_handed else 1.65): return

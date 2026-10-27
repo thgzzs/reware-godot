@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="MovementProfile" load_steps=2 format=3]
+[ext_resource type="Script" path="res://tuning/movement_profile.gd" id="1"]
+[resource]
+script = ExtResource("1")
+classic_revc = true
+gravity = 20.0
+jump_speed = 6.0714285714
+jump_buffer = 0.0
+coyote_time = 0.0
+air_acceleration = 0.0
+player_turn_multiplier = 1.0

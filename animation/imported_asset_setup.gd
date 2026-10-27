@@ -7,6 +7,7 @@ static func available() -> bool:
 static func weapon_profile(record: Dictionary, prototype: WeaponProfile, library:AnimationLibrary=null) -> WeaponProfile:
  var result: WeaponProfile = prototype.duplicate()
  result.id = String(record.name).to_lower()
+ result.source_flags = int(record.get("flags",0))
  result.kind = "melee" if record.get("fire_type","INSTANT_HIT")=="MELEE" else "hitscan"
  result.source_model_id = int(record.get("model_ids",[-1,-1])[0])
  result.model_scene = "" if result.id=="unarmed" else "res://assets/converted/models/"+result.id+".scn"
