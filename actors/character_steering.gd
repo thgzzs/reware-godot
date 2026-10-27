@@ -13,6 +13,11 @@ func update(actor:CharacterMotor,direction:Vector3,aim_yaw:float,aiming:bool,dt:
  if direction.length_squared()<0.0001 and not aiming:pivoting=false;return 0
  var desired:=aim_yaw if aiming else atan2(-direction.x,-direction.z)
  error=angle_difference(actor.facing,desired)
+ if actor.profile.classic_revc:
+  pivoting=false
+  if not (actor.reference_enabled and actor.reference_motion.heading_locked):
+   actor.facing=wrapf(rotate_toward(actor.facing,desired,actor.profile.turn_rate*dt),-PI,PI)
+  return direction.length()
  var speed:=Vector2(actor.drive_velocity.x,actor.drive_velocity.z).length()
  var profile:=actor.profile
  reversing=not aiming and absf(error)>deg_to_rad(profile.reversal_resume_degrees if pivoting else profile.reversal_angle_degrees)

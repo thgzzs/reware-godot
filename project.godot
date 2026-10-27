@@ -1,9 +1,9 @@
 config_version=5
 [application]
 config/name="Harbor Rev 12"
-config/version="0.8.1-gameplay12"
-config/build_number=12
-config/source_revision="104342a5ea63547093a138dd4da5303b3c055cc9"
+config/version="0.8.2-controller13"
+config/build_number=13
+config/source_revision="c422aea249b9c01e4c431f9496d6725bc255643c"
 config/icon="res://assets/app_icon.svg"
 config/quit_on_go_back=false
 run/main_scene="res://scenes/arena.tscn"

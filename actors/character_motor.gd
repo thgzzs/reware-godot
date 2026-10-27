@@ -102,15 +102,17 @@ func configure_reference(db: ImportedGameplayDatabase, stat: String, library: An
   health.defense_multiplier = 0.33 if stat=="STAT_PLAYER" else record.defense_multiplier
   attack_multiplier = record.attack_multiplier
  reference_motion = ReferenceMotion.new(library)
+ reference_motion.classic_revc = profile.classic_revc
  actions.motion = reference_motion
  if stat!="STAT_PLAYER":
   reference_motion.walk_clip = "WOMAN_walknorm" if "GIRL" in stat else "WALK_civi"
   reference_motion.run_clip = "woman_run" if "GIRL" in stat else "run_civi"
  profile.launch_delay = reference_motion.duration("JUMP_launch")
  profile.landing_delay = reference_motion.duration("JUMP_land")
- profile.jump_buffer = 0.12
- profile.coyote_time = 0.08
- profile.air_acceleration = 2.0
+ if not profile.classic_revc:
+  profile.jump_buffer = 0.12
+  profile.coyote_time = 0.08
+  profile.air_acceleration = 2.0
  profile.gravity = LegacyPhysicsUnits.acceleration(0.008)
  profile.jump_speed = LegacyPhysicsUnits.player_jump_speed()
  collision_layer = 10
@@ -284,7 +286,7 @@ func respawn(where: Vector3) -> void:
  if reference_pose is SkinnedMotionVisual: reference_pose.snap_next_pose=true
 func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  var launched_now:=false
- var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y)
+ var direction := Basis(Vector3.UP,camera_yaw) * Vector3(cmd.move.x,0,cmd.move.y).limit_length(1.0)
  root_requested=Vector3.ZERO;root_applied=Vector3.ZERO
  landing.set_intent(direction)
  landing.tick(dt)
@@ -307,9 +309,13 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
  last_step = 0.0
  jump_left = maxf(0.0,jump_left-dt)
  grace_left = profile.coyote_time if grounded else maxf(0.0,grace_left-dt)
- if cmd.jump: jump_left = profile.jump_buffer
+ # Classic accepts an edge on support, with no buffered or post-ledge launch.
+ if profile.classic_revc:
+  jump_left = dt if cmd.jump and grounded else 0.0
+  grace_left = dt if grounded else 0.0
+ elif cmd.jump: jump_left = profile.jump_buffer
  phase_left = maxf(0.0,phase_left-dt)
- if landing.active and not landing.hard and grounded and cmd.jump:landing.queued_jump=true
+ if landing.active and not landing.hard and grounded and cmd.jump and not profile.classic_revc:landing.queued_jump=true
  if landing.active and not landing.hard and grounded and landing.queued_jump and landing.time>=landing.profile.soft_jump_cancel_seconds:
   landing.reset();phase="grounded";phase_left=0;jump_left=profile.jump_buffer;grace_left=profile.coyote_time
   if reference_enabled:reference_motion.phase="idle"
@@ -320,16 +326,18 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   fall.hard_landing = false
  if reference_enabled and not landing.active and phase=="grounded" and reference_motion.phase=="action" and reference_motion.clip==landing.clip:
   reference_motion.phase="move" if cmd.move.length_squared()>0.01 else "idle"
- if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not actions.spatial_hit() and not (reference_enabled and reference_motion.heading_locked):
+ if jump_left > 0 and grace_left > 0 and phase != "launch" and phase != "landing" and not stance.crouched and not actions.full_body_busy() and not actions.spatial_hit() and not (profile.classic_revc and weapon.profile.classic_heavy()) and not (reference_enabled and reference_motion.heading_locked):
   if reference_enabled:
    var desired := LegacyPhysicsUnits.jump_forward(reference_motion.intensity,reference_motion.was_sprinting)
+   if profile.classic_revc:
+    desired = LegacyPhysicsUnits.velocity(0.17+0.05*reference_motion.sprint_weight) if reference_motion.sprint_weight>0 else LegacyPhysicsUnits.velocity(0.10+0.07*clampf(reference_motion.intensity-1.0,0,1))
    jump_forward = Basis(Vector3.UP,facing)*Vector3(0,0,-desired)
    if drive_velocity.length()>desired: jump_forward = drive_velocity
   phase = "launch"
   air_braked=false
   phase_left = profile.launch_delay
   jump_left = 0
- if phase=="launch" and direction.length_squared()>0.01 and direction.normalized().dot(Basis(Vector3.UP,facing)*Vector3.FORWARD)<profile.opposite_input_dot:
+ if not profile.classic_revc and phase=="launch" and direction.length_squared()>0.01 and direction.normalized().dot(Basis(Vector3.UP,facing)*Vector3.FORWARD)<profile.opposite_input_dot:
   air_braked=true;jump_forward=Vector3.ZERO;drive_velocity=Vector3.ZERO
  if phase == "launch" and phase_left <= 0 and reference_enabled and not jump_has_clearance():
   phase = "landing"
@@ -358,8 +366,9 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if reference_enabled:
    reference_motion.intensity=0;reference_motion.was_sprinting=false;reference_motion.sprint_weight=0
    reference_motion.phase="idle";reference_motion.set_clip("IDLE_stance")
- var sprint_allowed := grounded and phase=="grounded" and not steering.reversing and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and (actions.profile.allow_sprint_all_guns or not weapon.profile.heavy)
- sprint.tick(cmd,sprint_allowed,dt)
+ var weapon_blocks_sprint:=weapon.profile.classic_heavy() if profile.classic_revc else (weapon.profile.heavy and not actions.profile.allow_sprint_all_guns)
+ var sprint_allowed := grounded and phase=="grounded" and not steering.reversing and not stance.crouched and not cmd.walk and direction.length_squared()>0.01 and not cmd.aim and weapon.reload_left<=0 and (not cmd.fire or weapon.profile.kind=="melee") and (not actions.melee_active or actions.melee_mobile) and not weapon_blocks_sprint
+ sprint.tick(cmd,sprint_allowed,dt,profile.classic_revc)
  var horizontal := Vector3.ZERO
  if reference_enabled:
   var local_delta := Vector3.ZERO
@@ -399,9 +408,10 @@ func tick(cmd: GameplayCommand, camera_yaw: float, dt: float) -> void:
   if stance.crouched:
    drive_velocity = direction*profile.speed*stance.profile.move_multiplier if stance.profile.allow_crouch_walk else Vector3.ZERO
   if grounded and cmd.aim and not stance.crouched and not landing.active and phase!="landing" and not actions.spatial_hit():
-   drive_velocity = direction*Vector2(local_delta.x,local_delta.z).length()/maxf(0.00001,dt)*actions.profile.aim_movement_multiplier
+   # Root travel already includes analog magnitude. Apply only its heading here.
+   drive_velocity = direction.normalized()*Vector2(local_delta.x,local_delta.z).length()/maxf(0.00001,dt)*actions.profile.aim_movement_multiplier
   if not grounded and not launched_now and phase in ["airborne","falling"]:
-   apply_air_control(direction,dt)
+   if not profile.classic_revc: apply_air_control(direction,dt)
   horizontal = drive_velocity
   if grounded: horizontal = horizontal.slide(support_normal)
   velocity.x = horizontal.x

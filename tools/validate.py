@@ -27,7 +27,7 @@ def main():
             raise SystemExit(result.returncode or 1)
 
     run(['--headless', '--editor', '--import', '--quit'])
-    suites = [('suite', 'latest'), ('revision_suite', 'revision'), ('intent_revision_suite', 'intent_revision'), ('mobile_suite', 'mobile'), ('traversal_contract_suite', 'traversal_contract')]
+    suites = [('suite', 'latest'), ('revision_suite', 'revision'), ('intent_revision_suite', 'intent_revision'), ('mobile_suite', 'mobile'), ('traversal_contract_suite', 'traversal_contract'), ('controller_audit_suite', 'controller_audit')]
     if (root/'assets/converted/ped_library.res').exists():
         suites.append(('imported_suite', 'imported'))
     if (root/'assets/converted/models/player.scn').exists():

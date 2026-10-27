@@ -1,0 +1,31 @@
+{
+  "engine": "4.7.2-stable (official)",
+  "native_assets": true,
+  "samples": [
+    {
+      "max_us": 874.0,
+      "mean_us": 302.045833333333,
+      "p95_us": 426.0,
+      "samples": 240,
+      "scenario": "idle",
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    },
+    {
+      "max_us": 3846.0,
+      "mean_us": 424.041666666667,
+      "p95_us": 735.0,
+      "samples": 240,
+      "scenario": "run",
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    },
+    {
+      "max_us": 1673.0,
+      "mean_us": 333.0,
+      "p95_us": 499.0,
+      "samples": 240,
+      "scenario": "aim_fire",
+      "scope": "gameplay orchestration only; excludes Jolt solve and rendering"
+    }
+  ],
+  "scope": "Headless CPU orchestration, player native pose and four pedestrian producers. Excludes render/GPU, Jolt solve, Android thermals; single local sample."
+}

@@ -1,0 +1,214 @@
+{
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "source_base": "c422aea249b9c01e4c431f9496d6725bc255643c",
+  "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
+  "suites": [
+    {
+      "suite": "suite",
+      "assertions": 47,
+      "failures": 0
+    },
+    {
+      "suite": "revision_suite",
+      "assertions": 41,
+      "failures": 0
+    },
+    {
+      "suite": "intent_revision_suite",
+      "assertions": 43,
+      "failures": 0
+    },
+    {
+      "suite": "mobile_suite",
+      "assertions": 34,
+      "failures": 0
+    },
+    {
+      "suite": "traversal_contract_suite",
+      "assertions": 42,
+      "failures": 0
+    },
+    {
+      "suite": "controller_audit_suite",
+      "assertions": 28,
+      "failures": 0
+    },
+    {
+      "suite": "imported_suite",
+      "assertions": 37,
+      "failures": 0
+    },
+    {
+      "suite": "presentation_suite",
+      "assertions": 28,
+      "failures": 0
+    },
+    {
+      "suite": "native_action_suite",
+      "assertions": 66,
+      "failures": 0
+    },
+    {
+      "suite": "motion_suite",
+      "assertions": 63,
+      "failures": 0
+    },
+    {
+      "suite": "systems_suite",
+      "assertions": 54,
+      "failures": 0
+    },
+    {
+      "suite": "foundation_suite",
+      "assertions": 13,
+      "failures": 0
+    },
+    {
+      "suite": "native_intent_suite",
+      "assertions": 43,
+      "failures": 0
+    },
+    {
+      "suite": "stories_assets",
+      "assertions": 10,
+      "failures": 0
+    },
+    {
+      "suite": "stories_suite",
+      "assertions": 77,
+      "failures": 0
+    },
+    {
+      "suite": "fall_melee_suite",
+      "assertions": 48,
+      "failures": 0
+    },
+    {
+      "suite": "behavior_revision_suite",
+      "assertions": 42,
+      "failures": 0
+    },
+    {
+      "suite": "spatial_motion_suite",
+      "assertions": 18,
+      "failures": 0
+    },
+    {
+      "suite": "recovery_suite",
+      "assertions": 17,
+      "failures": 0
+    },
+    {
+      "suite": "actions_revision_suite",
+      "assertions": 32,
+      "failures": 0
+    },
+    {
+      "suite": "overhaul_suite",
+      "assertions": 17,
+      "failures": 0
+    },
+    {
+      "suite": "standing_weapon_suite",
+      "assertions": 86,
+      "failures": 0
+    },
+    {
+      "suite": "landing_control_suite",
+      "assertions": 19,
+      "failures": 0
+    }
+  ],
+  "assertions": 905,
+  "failures": 0,
+  "gdscript_checks": {
+    "parsed_excluding_runner": 146,
+    "failures": 0
+  },
+  "python": {
+    "discovered": 23,
+    "passed": 14,
+    "skipped": 9,
+    "failed": 0,
+    "reason_for_skips": "Original IFP/DAT, DFF and PNG inputs are absent from supplied APK."
+  },
+  "render_timing": {
+    "physics_hz": 60,
+    "scope": "One local CPU fixed-command native fixture; fixed render deltas and real-clock varying render cap. Not cross-platform determinism or GPU timing.",
+    "results": [
+      {
+        "case": "30",
+        "passed": true,
+        "max_position_m": 0.0,
+        "max_velocity_mps": 0.0,
+        "max_car_position_m": 0.0,
+        "max_pose_quaternion_delta": 0.0,
+        "state_shots_equal": true,
+        "render_steps": 301,
+        "render_dt_range": [
+          0.025,
+          0.0416666666666667
+        ]
+      },
+      {
+        "case": "60",
+        "passed": true,
+        "max_position_m": 0.0,
+        "max_velocity_mps": 0.0,
+        "max_car_position_m": 0.0,
+        "max_pose_quaternion_delta": 0.0,
+        "state_shots_equal": true,
+        "render_steps": 601,
+        "render_dt_range": [
+          0.0166666666666667,
+          0.0166666666666667
+        ]
+      },
+      {
+        "case": "120",
+        "passed": true,
+        "max_position_m": 0.0,
+        "max_velocity_mps": 0.0,
+        "max_car_position_m": 0.0,
+        "max_pose_quaternion_delta": 0.0,
+        "state_shots_equal": true,
+        "render_steps": 1202,
+        "render_dt_range": [
+          0.00833333333333333,
+          0.0166666666666667
+        ]
+      },
+      {
+        "case": "144",
+        "passed": true,
+        "max_position_m": 0.0,
+        "max_velocity_mps": 0.0,
+        "max_car_position_m": 4.172526839806083e-07,
+        "max_pose_quaternion_delta": 0.0,
+        "state_shots_equal": true,
+        "render_steps": 1441,
+        "render_dt_range": [
+          0.00666666666666667,
+          0.00833333333333333
+        ]
+      },
+      {
+        "case": "variable",
+        "passed": true,
+        "max_position_m": 0.0,
+        "max_velocity_mps": 0.0,
+        "max_car_position_m": 0.0,
+        "max_pose_quaternion_delta": 0.0,
+        "state_shots_equal": true,
+        "render_steps": 841,
+        "render_dt_range": [
+          0.00504922222222229,
+          0.141687666666667
+        ]
+      }
+    ],
+    "failures": 0
+  },
+  "android_device_tested": false,
+  "original_runtime_tested": false
+}

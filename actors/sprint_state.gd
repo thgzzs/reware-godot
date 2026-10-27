@@ -10,7 +10,11 @@ var previously_held := false
 var taps := 0
 func reset() -> void:
  active=false;multiplier=1.0;grace=0;previously_held=false;since_tap=100
-func tick(cmd: GameplayCommand, permitted: bool, dt: float) -> void:
+func tick(cmd: GameplayCommand, permitted: bool, dt: float, classic:=false) -> void:
+ if classic:
+  active=permitted and cmd.sprint
+  multiplier=1.0;grace=0;previously_held=cmd.sprint
+  return
  since_tap+=dt
  var edge:=cmd.sprint_pressed or (cmd.sprint and not previously_held)
  previously_held=cmd.sprint

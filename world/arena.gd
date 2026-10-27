@@ -1,4 +1,5 @@
 extends Node3D
+@export var player_movement_profile:MovementProfile=preload("res://tuning/movement.tres")
 ## Composition root; owns wiring and explicit gameplay phase order only.
 var enable_reference_assets := true
 var enable_vehicle_fixtures := true
@@ -43,6 +44,7 @@ func _ready() -> void:
 	add_child(display_controller)
 	build_world()
 	actor = preload("res://scenes/character.tscn").instantiate()
+	actor.profile = player_movement_profile
 	actor.position = Vector3(-3,0.94,4)
 	add_child(actor)
 	vehicle = preload("res://scenes/vehicle.tscn").instantiate()
@@ -146,7 +148,7 @@ func _physics_process(dt: float) -> void:
 	if cmd.respawn and actor.health.health<=0 and transition.state=="on_foot":
 		player_spawn.recover("manual")
 	if cmd.switch_seat: transition.request_switch_driver()
-	rig.read_look(cmd)
+	rig.read_look(cmd,dt)
 	transition.tick(dt)
 	var approaching := transition.state=="approaching"
 	if approaching:cmd=transition.approach_command()

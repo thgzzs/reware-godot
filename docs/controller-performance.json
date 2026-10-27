@@ -1,0 +1,101 @@
+{
+  "baseline_commit": "c422aea249b9c01e4c431f9496d6725bc255643c",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "scope": "Three alternating headless runs per version, 240 ticks per scenario after warmup; existing orchestration telemetry; excludes Jolt solve, renderer, GPU, Android thermal/device behavior.",
+  "scenarios": [
+    {
+      "scenario": "idle",
+      "before": {
+        "mean_us": [
+          328.245833333333,
+          314.391666666667,
+          332.2375
+        ],
+        "p95_us": [
+          524.0,
+          460.0,
+          563.0
+        ],
+        "median_mean_us": 328.245833333333,
+        "median_p95_us": 524.0
+      },
+      "after": {
+        "mean_us": [
+          304.270833333333,
+          350.066666666667,
+          302.045833333333
+        ],
+        "p95_us": [
+          450.0,
+          520.0,
+          426.0
+        ],
+        "median_mean_us": 304.270833333333,
+        "median_p95_us": 450.0
+      }
+    },
+    {
+      "scenario": "run",
+      "before": {
+        "mean_us": [
+          394.129166666667,
+          409.225,
+          411.133333333333
+        ],
+        "p95_us": [
+          604.0,
+          672.0,
+          647.0
+        ],
+        "median_mean_us": 409.225,
+        "median_p95_us": 647.0
+      },
+      "after": {
+        "mean_us": [
+          348.55,
+          380.866666666667,
+          424.041666666667
+        ],
+        "p95_us": [
+          460.0,
+          501.0,
+          735.0
+        ],
+        "median_mean_us": 380.866666666667,
+        "median_p95_us": 501.0
+      }
+    },
+    {
+      "scenario": "aim_fire",
+      "before": {
+        "mean_us": [
+          362.4,
+          369.004166666667,
+          431.508333333333
+        ],
+        "p95_us": [
+          568.0,
+          590.0,
+          766.0
+        ],
+        "median_mean_us": 369.004166666667,
+        "median_p95_us": 590.0
+      },
+      "after": {
+        "mean_us": [
+          357.879166666667,
+          378.308333333333,
+          333.0
+        ],
+        "p95_us": [
+          530.0,
+          611.0,
+          499.0
+        ],
+        "median_mean_us": 357.879166666667,
+        "median_p95_us": 530.0
+      }
+    }
+  ],
+  "removed_work": "One unused AimSolution.camera_target/ballistic query per eligible gun-fire attempt; reticle, spread and muzzle-cover queries retained."
+}

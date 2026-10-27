@@ -13,6 +13,8 @@ var locomotion_scale := 1.0
 var walk := false
 var brake := false
 var look := Vector2.ZERO
+## Dimensionless right-stick rate; mouse/touch look remains an accumulated delta.
+var look_stick := Vector2.ZERO
 var weapon_step := 0
 var weapon_slot := -1
 var respawn := false
