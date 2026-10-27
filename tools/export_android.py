@@ -25,6 +25,20 @@ def main():
     version = subprocess.check_output([args.godot, '--version'], text=True).strip()
     if not re.match(r'^4\.7\.2\.stable(?:\.|$)', version):
         raise SystemExit(f'Requires exactly Godot 4.7.2 Stable; found {version!r}.')
+    converted = root/'assets/converted'
+    native = (converted/'ped_library.res').is_file()
+    texture_sources = list((converted/'models/textures').glob('*.png.import'))
+    if native:
+        # Runtime remaps recovered from an APK can load in-editor yet disappear
+        # from a new export. Require actual authoring resources before building.
+        required = [converted/'gameplay_database.tres']
+        if (converted/'models/player.scn').exists():
+            required.append(converted/'models/player_rig.tres')
+        required.extend(path.with_suffix('') for path in texture_sources)
+        missing = [str(path.relative_to(root)) for path in required if not path.is_file()]
+        if missing:
+            raise SystemExit('Native source resources missing; runtime APK remaps alone cannot '
+                             'be re-exported: '+', '.join(missing[:5]))
     env = os.environ.copy()
     test_key = root/'android/test-signing/test.keystore'
     key = args.keystore or Path(env.get('GODOT_ANDROID_KEYSTORE_RELEASE_PATH', str(test_key)))
@@ -71,6 +85,10 @@ def main():
         packaged = json.loads(apk.read('assets/assets/build_revision.json'))
         if packaged['source_commit'] != commit:
             raise SystemExit('Packaged source revision differs from the exported commit.')
+        names = apk.namelist()
+        if native and ('assets/assets/converted/gameplay_database.tres.remap' not in names or
+                       sum(name.endswith('.ctex') for name in names)<len(texture_sources)):
+            raise SystemExit('Native database or texture imports missing from exported APK.')
         forbidden = [name for name in apk.namelist() if
                      name.startswith(('assets/tests/', 'assets/docs/', 'assets/tools/',
                                       'assets/assets/local_source/', 'assets/assets/local_models/',

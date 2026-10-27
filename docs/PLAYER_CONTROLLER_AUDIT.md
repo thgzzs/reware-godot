@@ -9,8 +9,14 @@ The supplied `Harbor-Rev12.apk` is 75,504,241 bytes, SHA-256
 `d88e33291f3eaf345e581be2e7b8d9c17011edf523516e652ba1969a7850b068`.
 This matches the repository's Build 12 validation record. Its exported native
 models, texture imports, animations and gameplay Resources were recovered for
-local validation without reconversion. These private derivatives remain excluded
+local validation without model or animation reconversion. These private derivatives remain excluded
 from Git. Original DFF/PNG conversion inputs and the signing key are absent.
+For re-export, the two runtime-only database/rig remaps were saved as authoring
+Resources. All 71 texture source images were reconstructed from the supplied
+runtime imports; their decoded RGBA is unchanged. Sixty match original PNG
+checksums exactly. Eleven contain the original importer's alpha-border processing,
+so original source-byte provenance cannot be reconstructed for those images.
+The source PNG provenance check remains explicitly skipped.
 
 ## Scope and execution flow
 
@@ -96,14 +102,18 @@ Important changed files: `actors/character_motor.gd`, `character_steering.gd`,
 `combat/weapon.gd`, `core/input_source.gd`, `command.gd`, `camera/follow_rig.gd`,
 `world/arena.gd`, and existing movement/weapon/camera profile scripts.
 Added `tuning/movement_classic.tres` and focused controller/profile runners.
-No scene hierarchy or existing native asset was changed. Android preset package,
+No scene hierarchy, model/animation payload or decoded runtime texture pixels
+changed. Android preset package,
 application label, ARM32/ARM64 configuration and permissions are preserved;
 version code advances to 13, version `0.8.2-controller13`.
 
 `tools/export_android.py` now supports debug export using the same preset,
 requires committed gameplay/configuration, embeds the actual Git commit into
 `assets/build_revision.json`, verifies it in the APK, and restores/removes the
-temporary stamp afterwards. Existing release signing remains supported. Missing
+temporary stamp afterwards. Native authoring-resource preflight and packaged
+database/texture checks prevent a partial APK from being accepted when only
+runtime remaps were restored. The payload smoke check now fails immediately
+for missing native Resources. Existing release signing remains supported. Missing
 original PNG/DFF fixtures are now explicitly skipped by the two provenance tests
 whose previous metadata-only guards incorrectly allowed them to run.
 

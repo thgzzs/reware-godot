@@ -12,7 +12,7 @@ def chunk(kind,payload):return struct.pack('<III',kind,len(payload),0x1003ffff)+
 def texture_inputs_available():
  folder=ROOT/'assets/converted/models'
  report=folder/'model_conversion_report.json'
- return report.is_file() and all((folder/entry['path']).is_file()
+ return not (folder/'textures/.apk_recovered').exists() and report.is_file() and all((folder/entry['path']).is_file()
                                  for entry in json.loads(report.read_text())['texture_exports'])
 def original_models_available():
  selection=json.loads((ROOT/'assets/model_selection.json').read_text())
