@@ -46,6 +46,9 @@ Build metadata advances to version `0.8.3-assets14`, code 14. The existing
 label, rendering configuration, permissions and ARM32/ARM64 architectures remain.
 The exporter embeds the actual published source commit and rejects missing native
 authoring resources or incomplete exported texture/database payloads.
+It also rejects Godot's explicit unsigned-APK warning: a signing-tool failure can
+otherwise return success with an unusable unsigned artifact. Final delivery
+requires independent signature verification in addition to a successful export.
 
 This archive contains no Android export preset or signing key. The preset comes
 from the existing repository. The available build is debug-signed with a fresh

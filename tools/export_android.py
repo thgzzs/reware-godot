@@ -72,7 +72,10 @@ def main():
                                     env=env, capture_output=True, text=True, timeout=360)
             print(result.stdout, end='')
             print(result.stderr, end='')
-            if result.returncode or 'SCRIPT ERROR:' in result.stdout+result.stderr or '\nERROR:' in result.stdout+result.stderr:
+            output = result.stdout+'\n'+result.stderr
+            if 'resulting apk is unsigned' in output.lower():
+                raise SystemExit('Android signing failed; refusing to deliver an unsigned APK.')
+            if result.returncode or 'SCRIPT ERROR:' in output or '\nERROR:' in output:
                 raise SystemExit(result.returncode or 1)
     finally:
         if previous is None:
