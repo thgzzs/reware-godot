@@ -26,7 +26,8 @@ func run()->void:
  Input.parse_input_event(stick);Input.flush_buffered_events()
  var sampled:=input.sample()
  check("joypad axis reaches GameplayCommand with analog strength",sampled.move.x>0.3 and sampled.move.x<0.9,sampled.move)
- stick.axis_value=0;Input.parse_input_event(stick);Input.flush_buffered_events()
+ var released:=stick.duplicate() as InputEventJoypadMotion
+ released.axis_value=0;Input.parse_input_event(released);Input.flush_buffered_events()
  check("joypad axis release clears movement",input.sample().move==Vector2.ZERO)
  # Inject stick rate, independent from mouse/touch accumulated deltas.
  var look:=GameplayCommand.new();look.look_stick=Vector2(0.6,0)

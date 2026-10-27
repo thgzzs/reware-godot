@@ -1,5 +1,11 @@
 # Player controller audit and Build 13
 
+**Asset follow-up / Build 14:** original inputs have now been supplied. All 23
+Python tests pass without skips, and all 905 Godot/Jolt assertions pass in one
+full run. See [ASSET_VALIDATION_FOLLOWUP.md](ASSET_VALIDATION_FOLLOWUP.md) for
+the current build and provenance results. The Build 13 recovery details below
+record the earlier APK-only workflow.
+
 Reviewed on 2026-10-27. Implementation base: `gameplay/carry-landing-fall12`,
 `c422aea249b9c01e4c431f9496d6725bc255643c`. The repository default `main`
 was Build 8. Using Rev12 preserves the intervening movement, carry, recovery,

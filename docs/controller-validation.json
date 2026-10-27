@@ -1,6 +1,6 @@
 {
   "engine": "4.7.2.stable.official.ed1daf0bf",
-  "source_base": "c422aea249b9c01e4c431f9496d6725bc255643c",
+  "source_base": "2e541039c8bef7a716c4b5fbb531fb5fb12cb8e2",
   "reference_commit": "a26fff4af555a8a425ac9f17d1dd718d00d1f942",
   "suites": [
     {
@@ -127,10 +127,9 @@
   },
   "python": {
     "discovered": 23,
-    "passed": 14,
-    "skipped": 9,
-    "failed": 0,
-    "reason_for_skips": "Original IFP/DAT, DFF and PNG inputs are absent from supplied APK."
+    "passed": 23,
+    "skipped": 0,
+    "failed": 0
   },
   "render_timing": {
     "physics_hz": 60,
@@ -202,13 +201,23 @@
         "state_shots_equal": true,
         "render_steps": 841,
         "render_dt_range": [
-          0.00504922222222229,
-          0.141687666666667
+          0.000693249981850386,
+          0.145609
         ]
       }
     ],
     "failures": 0
   },
   "android_device_tested": false,
-  "original_runtime_tested": false
+  "original_runtime_tested": false,
+  "asset_validation": {
+    "archive": "Harbor-Godot-4.7.2-Revised-Test-Build(5).zip",
+    "archive_sha256": "4565ed6dc4777615fe6c14b861f90fe4f9d1533ba9920a7a99cb097637f9ea65",
+    "manifest_files_verified": 728,
+    "manifest_missing": [],
+    "manifest_mismatches": [],
+    "original_pngs_verified": 71,
+    "original_dff_models_verified": 32
+  },
+  "legacy_crouch_sha256": "26cbf4ec23ed7b68c3ec253a890b4e5db4a3a4ec584e62c02928217af2182c9c"
 }
