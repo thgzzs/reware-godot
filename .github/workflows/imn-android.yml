@@ -60,7 +60,8 @@ jobs:
           "$GODOT_BIN" --headless --path . --export-debug "Android Vulkan ARM64" "$PWD/builds/NativeLab_android_arm64_v0.5.apk"
           test -s builds/NativeLab_android_arm64_v0.5.apk
           "$ANDROID_HOME/build-tools/35.0.1/apksigner" verify builds/NativeLab_android_arm64_v0.5.apk
-          "$ANDROID_HOME/build-tools/35.0.1/aapt" dump badging builds/NativeLab_android_arm64_v0.5.apk
+          unzip -t builds/NativeLab_android_arm64_v0.5.apk | tail -1
+          unzip -Z1 builds/NativeLab_android_arm64_v0.5.apk | grep -F "lib/arm64-v8a/libgodot_android.so"
           sha256sum builds/NativeLab_android_arm64_v0.5.apk
       - uses: actions/upload-artifact@v4
         with:
