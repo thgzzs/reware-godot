@@ -1,0 +1,49 @@
+name: Infernal Machine Native ARM64 APK (isolated)
+on:
+  push:
+    branches:
+      - imn-android-build-20261029
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Unpack ROM-free source and verify rendering configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p imn-build/project
+          tar -xJf imn-build/source.tar.xz -C imn-build/project
+          grep -F 'renderer/rendering_method.mobile="forward_plus"' imn-build/project/project.godot
+          grep -F '3d/physics_engine="Jolt Physics"' imn-build/project/project.godot
+      - name: Install official pinned Godot and Android SDK
+        run: |
+          python3 imn-build/project/tools/build/bootstrap_toolchain.py "$GITHUB_WORKSPACE/imn-build/toolchain"
+      - name: Import Godot and export ARM64 debug APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd imn-build/project
+          export NATIVE_TOOLCHAIN_ROOT="$GITHUB_WORKSPACE/imn-build/toolchain"
+          export JAVA_HOME="$JAVA_HOME"
+          export XDG_DATA_HOME="$NATIVE_TOOLCHAIN_ROOT/xdg/data"
+          export XDG_CONFIG_HOME="$NATIVE_TOOLCHAIN_ROOT/xdg/config"
+          export XDG_CACHE_HOME="$NATIVE_TOOLCHAIN_ROOT/xdg/cache"
+          "$NATIVE_TOOLCHAIN_ROOT/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path . --import
+          bash platforms/android/export_debug.sh "$PWD/builds/NativeLab_android_arm64_v0.5.apk"
+          test -s builds/NativeLab_android_arm64_v0.5.apk
+          sha256sum builds/NativeLab_android_arm64_v0.5.apk
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: InfernalMachineNative-v0.5-ARM64-debug
+          path: imn-build/project/builds/NativeLab_android_arm64_v0.5.apk
+          if-no-files-found: error
