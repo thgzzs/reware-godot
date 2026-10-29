@@ -15,9 +15,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
       - name: Install Android build SDK
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.1" "platform-tools"
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME:-/usr/local/lib/android/sdk}" >> "$GITHUB_ENV"
+          yes | /usr/local/lib/android/sdk/cmdline-tools/16.0/bin/sdkmanager "platforms;android-35" "build-tools;35.0.1" "platform-tools" || test ${PIPESTATUS[1]} -eq 0
       - name: Unpack clean-room project
         run: |
           mkdir -p imn-build/project
